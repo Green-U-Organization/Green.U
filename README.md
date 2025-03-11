@@ -44,16 +44,19 @@
     
    - ***Jardin :***
 
-        - Création d'un jardin en interface **graphique**
-         ![](/CreationJardin.png)
-        - Edit de parcelle en interface **graphique** pour :
+      - Création d'un jardin en interface **graphique**
+      ![](/CreationJardin.png =300x200)
+      - Edit de parcelle en interface **graphique** pour :
             
-            1. Changer le statuts de la parcelle
-            2. Ajouer une tache effectuée sur la parcelle
-            3. Ajouter une tache à effectuer sur la parcelle
-            4. Ajouter/Enlever un légume
-            5. Changer sa taille
-        - Vue du jardin en mode **liste**
+        1. Changer le statuts de la parcelle
+        2. Ajouer une tache effectuée sur la parcelle
+        3. Ajouter une tache à effectuer sur la parcelle
+        4. Ajouter/Enlever un légume
+        5. Changer sa taille
+      - Vue du jardin en mode **liste**
         ![](/JardinListe.png)
         
+  - ***Légumes :***
+
+
         
