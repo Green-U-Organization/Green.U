@@ -11,6 +11,7 @@
   "dependencies": {
     "@radix-ui/themes": "^3.2.1",
     "monorepo": "github:radix-ui/themes",
+    "nes.css": "^2.2.1",
     "next": "15.2.1",
     "radix-ui": "^1.1.3",
     "react": "^19.0.0",

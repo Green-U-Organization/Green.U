@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
+//import "nes.css/css/nes.min.css";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,9 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-     <body>
+     <body >
 				<Theme>
-					<main className="p-5">{children}</main>
+					<main className="p-5 h-full">{children}</main>
 				</Theme>
 			</body>
     </html>
