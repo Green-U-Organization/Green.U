@@ -1,0 +1,162 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid()) @map("_id")
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  postalCode    String?   @db.VarChar(5)
+  sexe          String?   @db.VarChar(1)
+  birthdate     DateTime? @db.Date
+  level         Int?
+  xp            Int?
+  avatar        Bytes?    @db.Blob
+  premium       Boolean   @default(false)
+  role          String    @default("user")
+  banned        Boolean   @default(false)
+  banReason     String?
+  banExpires    Int? /// Unix timestamp for ban expiration
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  sessions      Session[]
+  accounts      Account[]
+  gardens       Garden[]
+}
+
+model Session {
+  id             String   @id @default(cuid()) @map("_id")
+  userId         String
+  token          String
+  expiresAt      DateTime
+  ipAddress      String?
+  userAgent      String?
+  impersonatedBy String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String    @id @default(cuid()) @map("_id")
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Verification {
+  id         String   @id @default(cuid()) @map("_id")
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Domain {
+  id          String  @id @default(cuid()) @map("_id")
+  name        String  @db.VarChar(20)
+  description String? @db.VarChar(50)
+  params      Param[]
+}
+
+model Garden {
+  id        String   @id @default(cuid()) @map("_id")
+  name      String?  @db.VarChar(30)
+  latitude  Decimal? @db.Decimal(9, 6)
+  longitude Decimal? @db.Decimal(9, 6)
+  userId    String 
+  length    Decimal? @db.Decimal(10, 0)
+  width     Decimal? @db.Decimal(10, 0)
+  user      User?    @relation(fields: [userId], references: [id])
+  parcels   Parcel[]
+  todos Todo[]
+}
+
+model Line {
+  id          String     @id @default(cuid()) @map("_id")
+  width       Decimal?   @db.Decimal(10, 0)
+  status      Int?       @db.TinyInt
+  parcelId    String    
+  vegetableId String    
+  parcel      Parcel?    @relation(fields: [parcelId], references: [id])
+  vegetable   Vegetable? @relation(fields: [vegetableId], references: [id])
+  todos Todo[]
+}
+
+model Log {
+  id String @id @default(cuid()) @map("_id")
+}
+
+model Param {
+  id        String   @id @default(cuid()) @map("_id")
+  notActive Boolean? @db.TinyInt
+  name      String?  @db.VarChar(30)
+  domainId  String
+  domain    Domain?  @relation(fields: [domainId], references: [id])
+}
+
+model Parcel {
+  id       String   @id @default(cuid()) @map("_id")
+  name     String?  @db.VarChar(30)
+  width    Decimal? @db.Decimal(10, 0)
+  height   Decimal? @db.Decimal(10, 0)
+  gardenId String
+  garden   Garden?  @relation(fields: [gardenId], references: [id])
+  nbrLines Int?     @db.TinyInt
+  lines    Line[]
+  todos    Todo[]
+}
+
+model Todo {
+  id       String   @id @default(cuid()) @map("_id")
+  label    String?  @db.VarChar(50)
+  done     Boolean? @db.TinyInt
+  gardenId String   
+  parcelId String
+  lineId   String
+  line Line? @relation(fields: [lineId], references: [id])
+  parcel Parcel? @relation(fields: [parcelId], references: [id])
+  garden  Garden @relation(fields: [gardenId], references: [id])
+}
+
+model Vegetable {
+  id                      String    @id @default(cuid()) @map("_id")
+  vegetable               String?   @db.VarChar(30)
+  variety                 String?   @db.VarChar(30)
+  startOfSowing           DateTime? @db.Date
+  endOfSowing             DateTime? @db.Date
+  startPlantation         DateTime? @db.Date
+  endPlantation           DateTime? @db.Date
+  startHarvest            DateTime? @db.Date
+  endHarvest              DateTime? @db.Date
+  cultivationUnderShelter Boolean?  @db.TinyInt
+  directSeeding           Boolean?  @db.TinyInt
+  comments                String?   @db.VarChar(255)
+  familyId                String
+  lines                   Line[]
+}

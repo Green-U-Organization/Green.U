@@ -4,6 +4,8 @@ import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 //import "nes.css/css/nes.min.css";
 import "./globals.css";
+import Navbar from "../../components/Navbar";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en">
      <body >
-				<Theme>
-					<main className="p-5 h-full">{children}</main>
-				</Theme>
+				<Navbar/>
+        <div className="min-h-screen pt-20 flex flex-col">
+          {children}
+        </div>
+        <Toaster/>
 			</body>
     </html>
   );
