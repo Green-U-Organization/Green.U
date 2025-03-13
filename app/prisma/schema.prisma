@@ -25,16 +25,18 @@ model User {
   level         Int?
   xp            Int?
   avatar        Bytes?    @db.Blob
+  avatarUrl     String?   @db.VarChar(255)
   premium       Boolean   @default(false)
   role          String    @default("user")
   banned        Boolean   @default(false)
   banReason     String?
-  banExpires    Int? /// Unix timestamp for ban expiration
+  banExpires    DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now())
   sessions      Session[]
   accounts      Account[]
   gardens       Garden[]
+  Log           Log[]
 }
 
 model Session {
@@ -89,27 +91,37 @@ model Garden {
   name      String?  @db.VarChar(30)
   latitude  Decimal? @db.Decimal(9, 6)
   longitude Decimal? @db.Decimal(9, 6)
-  userId    String 
+  userId    String
   length    Decimal? @db.Decimal(10, 0)
   width     Decimal? @db.Decimal(10, 0)
   user      User?    @relation(fields: [userId], references: [id])
   parcels   Parcel[]
-  todos Todo[]
+  todos     Todo[]
+  updatedAt DateTime @default(now())
 }
 
 model Line {
   id          String     @id @default(cuid()) @map("_id")
   width       Decimal?   @db.Decimal(10, 0)
   status      Int?       @db.TinyInt
-  parcelId    String    
-  vegetableId String    
+  parcelId    String
+  vegetableId String
   parcel      Parcel?    @relation(fields: [parcelId], references: [id])
   vegetable   Vegetable? @relation(fields: [vegetableId], references: [id])
-  todos Todo[]
+  todos       Todo[]
+  updatedAt   DateTime   @default(now())
 }
 
 model Log {
-  id String @id @default(cuid()) @map("_id")
+  id          String   @id @default(cuid()) @map("_id")
+  eventType   String   @db.VarChar(50)
+  description String
+  userId      String
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress   String   @db.VarChar(45)
+  createdAt   DateTime @default(now())
+
+  @@index([eventType]) // Index sur eventType pour accélérer les recherches
 }
 
 model Param {
@@ -121,27 +133,29 @@ model Param {
 }
 
 model Parcel {
-  id       String   @id @default(cuid()) @map("_id")
-  name     String?  @db.VarChar(30)
-  width    Decimal? @db.Decimal(10, 0)
-  height   Decimal? @db.Decimal(10, 0)
-  gardenId String
-  garden   Garden?  @relation(fields: [gardenId], references: [id])
-  nbrLines Int?     @db.TinyInt
-  lines    Line[]
-  todos    Todo[]
+  id        String   @id @default(cuid()) @map("_id")
+  name      String?  @db.VarChar(30)
+  width     Decimal? @db.Decimal(10, 0)
+  height    Decimal? @db.Decimal(10, 0)
+  gardenId  String
+  garden    Garden?  @relation(fields: [gardenId], references: [id])
+  nbrLines  Int?     @db.TinyInt
+  lines     Line[]
+  todos     Todo[]
+  updatedAt DateTime @default(now())
 }
 
 model Todo {
-  id       String   @id @default(cuid()) @map("_id")
-  label    String?  @db.VarChar(50)
-  done     Boolean? @db.TinyInt
-  gardenId String   
-  parcelId String
-  lineId   String
-  line Line? @relation(fields: [lineId], references: [id])
-  parcel Parcel? @relation(fields: [parcelId], references: [id])
-  garden  Garden @relation(fields: [gardenId], references: [id])
+  id        String   @id @default(cuid()) @map("_id")
+  label     String?  @db.VarChar(50)
+  done      Boolean? @db.TinyInt
+  gardenId  String
+  parcelId  String?
+  lineId    String?
+  line      Line?    @relation(fields: [lineId], references: [id])
+  parcel    Parcel?  @relation(fields: [parcelId], references: [id])
+  garden    Garden   @relation(fields: [gardenId], references: [id])
+  updatedAt DateTime @default(now())
 }
 
 model Vegetable {

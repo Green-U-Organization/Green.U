@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "@radix-ui/themes/styles.css";
-import { Theme } from "@radix-ui/themes";
+// import "@radix-ui/themes/styles.css";
+// import { Theme } from "@radix-ui/themes";
 //import "nes.css/css/nes.min.css";
-import "./globals.css";
-import Navbar from "../../components/Navbar";
+ import "./styles/globals.css";
+import Navbar from "../components/Navbar";
 import { Toaster } from "sonner";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

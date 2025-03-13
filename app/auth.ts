@@ -1,12 +1,14 @@
 import {betterAuth, BetterAuthOptions} from 'better-auth'
-import {prismaAdapter} from 'better-auth'
+import {prismaAdapter} from 'better-auth/adapters/prisma'
 import prisma from './prisma/prisma'
+import { sendEmail } from './actions/email'
+import { openAPI } from 'better-auth/plugins'
 
 export const auth = betterAuth({
     database : prismaAdapter(prisma, {
         provider: "mysql"
-
     }),
+    plugins: [openAPI()], // /api/auth/reference >> endpoint API
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: true
