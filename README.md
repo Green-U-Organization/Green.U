@@ -59,4 +59,17 @@
   - ***Légumes :***
 
 
+
+-------------------
+Fonctionnalités
+---------------
+- Ajout de todo avec remplissage automatique des champs (garden_id, parcel_id, et line_id).
+
+-----------------------------------------------------
+Listes disponibles :
+------------------
+FAMILY, LINE_STATUS
+
+
+
         
