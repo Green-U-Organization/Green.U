@@ -197,7 +197,11 @@ namespace TodoApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("domainId")
+                    b.Property<short>("NotActive")
+                        .HasColumnType("smallint")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("domain_id")
                         .HasColumnType("int");
 
                     b.Property<string>("name")
@@ -206,7 +210,7 @@ namespace TodoApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("domainId");
+                    b.HasIndex("domain_id");
 
                     b.ToTable("Param");
                 });

@@ -9,9 +9,10 @@ namespace TodoApi.Migrations
     /// <inheritdoc />
     public partial class mymigration : Migration
     {
-        /// <inheritdoc />
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            
             migrationBuilder.AlterDatabase()
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -96,6 +97,7 @@ namespace TodoApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    NotActive = table.Column<short>(nullable: false),
                     name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     domainId = table.Column<int>(type: "int", nullable: false)
@@ -411,6 +413,37 @@ namespace TodoApi.Migrations
                 name: "IX_Vérification_UserId",
                 table: "Vérification",
                 column: "UserId");
+
+            migrationBuilder.InsertData(
+            table: "Domain",
+            columns: new[] { "Id", "name", "description" },
+            values: new object[,]
+            {
+                { 1, "FAMILY", "The vegetable family" },
+                { 2, "LINE_STATUS", "The status of the line"}
+            });
+            migrationBuilder.InsertData(
+            table: "Param",
+            columns: new[] { "Id", "NotActive", "name", "domainId" },
+            values: new object[,]
+            {
+                {1, false, "Apiaciées", 1 },
+                {2, false, "Astéracées", 1},
+                {3, false, "Brassicacées", 1},
+                {4, false, "Chénopodiacées", 1},
+                {5, false, "Curcubitacées", 1},
+                {6, false, "Fabacées", 1},
+                {7, false, "Lamiaciées", 1},
+                {8, false, "Liliacées", 1},
+                {9, false, "Poacés", 1},
+                {10, false, "Solanacées", 1},
+                {11, false, "Semé", 2},
+                {12, false, "Planté", 2},
+                {13, false, "Prêt à la récolte", 2},
+                {14, false, "Récolté", 2},
+                {15, false, "Vide", 2}
+            });
+            
         }
 
         /// <inheritdoc />

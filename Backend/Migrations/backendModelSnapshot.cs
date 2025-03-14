@@ -84,6 +84,7 @@ namespace TodoApi.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -194,16 +195,19 @@ namespace TodoApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("domainId")
+                    b.Property<int>("DomainId")
                         .HasColumnType("int");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<short>("NotActive")
+                        .HasColumnType("smallint");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("domainId");
+                    b.HasIndex("DomainId");
 
                     b.ToTable("Param");
                 });
@@ -502,13 +506,13 @@ namespace TodoApi.Migrations
 
             modelBuilder.Entity("Param", b =>
                 {
-                    b.HasOne("Domain", "domain")
-                        .WithMany("param")
-                        .HasForeignKey("domainId")
+                    b.HasOne("Domain", "Domain")
+                        .WithMany("Params")
+                        .HasForeignKey("DomainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("domain");
+                    b.Navigation("Domain");
                 });
 
             modelBuilder.Entity("Parcel", b =>
@@ -573,7 +577,7 @@ namespace TodoApi.Migrations
 
             modelBuilder.Entity("Domain", b =>
                 {
-                    b.Navigation("param");
+                    b.Navigation("Params");
                 });
 
             modelBuilder.Entity("Garden", b =>

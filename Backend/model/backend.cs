@@ -43,5 +43,13 @@ public class backend : DbContext
             .WithMany(u => u.Logs)
             .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Param>()
+            .Property(p => p.NotActive)
+            .HasColumnType("smallint");     
+        modelBuilder.Entity<Log>()
+            .HasOne(l => l.User)
+            .WithMany(u => u.Logs)
+            .HasForeignKey(l => l.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

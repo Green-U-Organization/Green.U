@@ -1,11 +1,14 @@
-
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Param{
-    public int Id {get; set;}
-    public string name {get; set;}
+public class Param
+{
+    public int Id { get; set; }
 
-    public int domainId {get; set;}
+    public bool NotActive { get; set; } = false;
 
-    [ForeignKey("domainId")] public Domain domain{get; set;} = null!;
+    public string Name { get; set; } = null!;
+
+    public int domain_id { get; set; }
+
+    [ForeignKey("domain_id")] public Domain Domain { get; set; } = null!;
 }
