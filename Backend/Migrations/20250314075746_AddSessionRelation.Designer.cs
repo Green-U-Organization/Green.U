@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TodoApi.Migrations
 {
     [DbContext(typeof(backend))]
-    partial class backendModelSnapshot : ModelSnapshot
+    [Migration("20250314075746_AddSessionRelation")]
+    partial class AddSessionRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,57 +23,6 @@ namespace TodoApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
-
-            modelBuilder.Entity("Account", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("accesToken")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("accesToken_expire_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("accountId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("create_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("impersonateBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("password")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("providerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("refreshToken")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("refreshToken_expire_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("scope")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("update_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Account");
-                });
 
             modelBuilder.Entity("Garden", b =>
                 {
@@ -227,17 +179,6 @@ namespace TodoApi.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Account", b =>
-                {
-                    b.HasOne("User", "User")
-                        .WithMany("Account")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Garden", b =>
                 {
                     b.HasOne("User", "User")
@@ -273,8 +214,6 @@ namespace TodoApi.Migrations
 
             modelBuilder.Entity("User", b =>
                 {
-                    b.Navigation("Account");
-
                     b.Navigation("Gardens");
 
                     b.Navigation("Logs");
