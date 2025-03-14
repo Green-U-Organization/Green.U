@@ -23,7 +23,9 @@ const handleUp = () => {
 <div className='relative m-10'>
 <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-amber-200`}
 onMouseDown={handleDown}
-onMouseUp={handleUp}>
+onMouseUp={handleUp}
+onMouseLeave={handleUp}>
+
 
 <div className={`absolute -top-0 left-0 h-2 w-full bg-white`} style={{display : buttonPush ? "block" : "none" }}></div>
 
