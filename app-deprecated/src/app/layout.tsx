@@ -6,6 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
  import "./styles/globals.css";
 import Navbar from "../components/Navbar";
 import { Toaster } from "sonner";
+import  Button  from "@/components/custom/Button";
 
 
 const geistSans = Geist({
@@ -31,11 +32,12 @@ export default function RootLayout({
   return (
     <html lang="en">
      <body >
-				<Navbar/>
+      <Button>yolo</Button>
+
         <div className="min-h-screen pt-20 flex flex-col">
           {children}
         </div>
-        <Toaster/>
+
 			</body>
     </html>
   );
