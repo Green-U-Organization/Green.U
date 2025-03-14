@@ -38,5 +38,14 @@ UserItems.MapPost("/", UserController.UserController.CreateUser);
 UserItems.MapPut("/{id}", UserController.UserController.UpdateUser);
 UserItems.MapDelete("/{id}", UserController.UserController.DeleteUser);
 
+var accountItems = app.MapGroup("/Account");
+
+accountItems.MapGet("/", UserController.UserController.GetAllUser);
+accountItems.MapGet("/{id}", UserController.UserController.GetUser);
+accountItems.MapPost("/", UserController.UserController.CreateUser);
+accountItems.MapPut("/{id}", UserController.UserController.UpdateUser);
+accountItems.MapDelete("/{id}", UserController.UserController.DeleteUser);
+
+
 app.Run();
 

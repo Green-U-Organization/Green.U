@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 public class backend : DbContext
 {
@@ -10,26 +11,37 @@ public class backend : DbContext
 
     public DbSet<Session> Sessions {get; set;}
     
-    public DbSet<User> Account {get; set;}
+    public DbSet<Account> Account {get; set;}
 
-    // public DbSet<User> Vérification {get; set;}
+    public DbSet<Verification> Vérification {get; set;}
 
-    // public DbSet<User> Domain {get; set;}
+    public DbSet<Domain> Domain {get; set;}
 
-    // public DbSet<User> Param {get; set;}
+    public DbSet<Param> Param {get; set;}
 
-    // public DbSet<User> Parcel {get; set;}
+    public DbSet<Parcel> Parcel {get; set;}
 
-    // public DbSet<User> Vegetable {get; set;}
+    public DbSet<Vegetable> Vegetable {get; set;}
     
-    // public DbSet<User> Todo {get; set;}
+    public DbSet<Todo> Todo {get; set;}
 
-    public DbSet<User> Line {get; set;}
+    public DbSet<Line> Line {get; set;}
 
 
 
     public backend(DbContextOptions options): base(options) 
     { 
-            
+
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Log>()
+            .HasOne(l => l.User)
+            .WithMany(u => u.Logs)
+            .HasForeignKey(l => l.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -26,6 +26,5 @@ public class Account{
     
     
     public int UserId { get; set; }
-    [ForeignKey("UserId")]
-    public User User { get; set; } = null!;
+    [ForeignKey("UserId")] public User User { get; set; } = null!;
 }

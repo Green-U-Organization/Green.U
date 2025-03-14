@@ -7,7 +7,6 @@ public class Log
     public string? eventType { get; set; }
     public string? ip_adress { get; set; }
     public int UserId { get; set; }
-    [ForeignKey("UserId")]
-    public User User { get; set; } = null!;
+    [ForeignKey("UserId")] public User User { get; set; } = null!;
 
 }

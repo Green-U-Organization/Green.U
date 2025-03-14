@@ -15,9 +15,11 @@ public class Garden
     public float width{get; set;}
     
     public int UserId { get; set; }
-    [ForeignKey("UserId")]
-    public User User { get; set; } = null!;
+    [ForeignKey("UserId")] public User User { get; set; } = null!;
 
     public DateTime update_at { get; set; }
 
+    public List<Parcel> parcels { get; set; } = new();
+
+    public List<Todo> todos{ get; set; } = new();
 }
