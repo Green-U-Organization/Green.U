@@ -1,28 +1,46 @@
 "use client"
-import React, { useState } from 'react'
+import { ChangeEvent, FC } from 'react'
 
-const TextInput = ({id} : any) => {
-    const [input, setInput] = useState("")
-    const [selected, setSelected] = useState(false)
-    const [blinker, setBlinker] = useState(true)
+///https://www.codevertiser.com/reusable-input-component-react/
 
-    const handleSelect = () => {
-        setSelected(true)
-        console.log(selected)
-    }
+interface InputProps {
+  type: 'text' | 'number' | 'email' | 'password'
+  label: string
+  value: string | number
+  name: string
+  placeholder: string
+  error: boolean
+  disabled?: boolean
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+}
 
-//     async const blink = () => {
-
-// }
-
-
+const TextInput: FC<InputProps> = ({
+  type,
+  label,
+  value,
+  name,
+  placeholder,
+  error,
+  disabled,
+  onChange,
+}) => {
   return (
-<>
-<div onClick={handleSelect} className='h-5 w-30 bg-green-400 m-5'>
-
-<div className='h-5 w-1 bg-amber-400' style={{display : selected ? "block" : "none"}}></div>
-</div>
-</>
+    <div className="input-wrapper">
+      <label htmlFor={label} className='mr-3 '>
+        {label}:
+      </label>
+      <input
+        type={type}
+        id={label}
+        value={value}
+        name={name}
+        placeholder={placeholder}
+        onChange={onChange}
+        disabled={disabled}
+        className='bg-amber-200 w-full'
+      />
+      {error && <p className="error">Input filed can't be empty!</p>}
+    </div>
   )
 }
 

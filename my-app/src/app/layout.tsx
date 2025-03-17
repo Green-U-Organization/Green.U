@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Jersey_15 } from "next/font/google";
 import "./globals.css";
-//import Button from "@/components/Button(old)";
+import Button from "@/components/Button(old)";
 import Card from "@/components/Card";
 import Button from "@/components/Button";
 import Card2 from "@/components/Card(old)";
 import Checkbox from "@/components/Checkbox";
 import Form from "@/components/Form";
 import TextInput from "@/components/TextInput";
+import Button from "@/components/Button";
 
 
 const geistSans = Geist({
@@ -22,7 +23,7 @@ const geistMono = Geist_Mono({
 
 const jersey15 = Jersey_15({
   variable: "--font-jersey",
-  weight : "400",
+  weight: "400",
   subsets: ["latin"],
 })
 
@@ -45,20 +46,22 @@ export default function RootLayout({
         <Button>Bouton de Pierre</Button>    
         
         <Card>
-          Carte de Manu, sans fioriture, avec héritage
+        <Button2>yoyoyo</Button2>
+        <u>Carte de Manu</u> <br />
+        Sans fioriture, avec héritage
         </Card>
-        
+
         <Card2>
-          Carte de Manu, avec ombrage
-        </Card2>
-        
-        <Form>
-          <TextInput></TextInput>
-         </Form>
-        
-        <Checkbox check="false"></Checkbox>
-       
-      </body>
+          <u>Carte de Manu</u> <br />
+          Avec ombrage
+          </Card2>
+          <Form>
+            <TextInput></TextInput>
+          </Form>
+          <Button href="">Salut les poulets</Button>
+          <Checkbox></Checkbox> */}
+          {children}
+        </body>
     </html>
   );
 }
