@@ -18,7 +18,7 @@ const page = () => {
         console.log("checking password...")
         if (password.length <= 8) {
             setCheckPass(false)
-            console.log("password to short")
+            console.log("password too short")
             return
         }
         const hasSpecialChar = specialChar.some((char) => password.includes(char))
@@ -63,7 +63,7 @@ const page = () => {
                     <form onSubmit={handleSubmit}>
 
                         <div className="flex flex-col items-center justify-center">
-                            <h2>Green.U</h2>
+                            <h2>Green-U</h2>
 
                             <div className='flex flex-col justify-center items-left'>
                                 <TextInput
@@ -90,12 +90,12 @@ const page = () => {
                                     type='submit'
                                     handleSubmit={handleSubmit}
                                     href=''>
-                                        Log In
+                                        Log in
                                 </Button>
                                 <Button
                                     type='link'
                                     href='/signin'>
-                                        Sign In
+                                        Sign in
                                 </Button>
                             </div>
                         </div>

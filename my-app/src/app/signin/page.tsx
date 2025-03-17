@@ -53,7 +53,7 @@ const handlePostalCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
   rowStart={0} 
   rowEnd={0}>
     
-    <h1 className='text-4xl'>Sign In : </h1>
+    <h1 className='text-4xl'>Sign in : </h1>
 
     <TextInput 
     type='text' 
@@ -75,7 +75,7 @@ const handlePostalCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
 
 <TextInput 
     type='password'
-    label='Password Verification'
+    label='Password verification'
     value={passwordVerify} 
     name='passwordVerify' 
     placeholder='Enter your password again' 
@@ -97,7 +97,7 @@ const handlePostalCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
 
 <TextInput 
 type='text'
-label='lastname'
+label='Lastname'
 value={lastname} 
 name='lastname' 
 placeholder='Enter your lastname' 
@@ -117,7 +117,7 @@ onChange={handleLastnameChange}/>
 
   <TextInput 
     type='number'
-    label='Postal Code'
+    label='Postal code'
     value={postalCode} 
     name='postalCode' 
     placeholder='Enter your postal code' 
