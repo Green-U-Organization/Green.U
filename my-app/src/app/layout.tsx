@@ -7,6 +7,9 @@ import Button2 from "@/components/Button";
 import Card2 from "@/components/Card(old)";
 import Button from "@/components/Button";
 import Checkbox from "@/components/Checkbox";
+import Form from "@/components/Form";
+import TextInput from "@/components/TextInput";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +48,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
       >
-        <Button>Salut les copains</Button>
+        <Form>
+<TextInput></TextInput>
+        </Form>
+        <Button href="">Salut les poulets</Button>
         <Checkbox></Checkbox>
         {children}
       </body>
