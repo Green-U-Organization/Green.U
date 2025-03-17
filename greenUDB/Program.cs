@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using GreenUApi.controller;
 using DotNetEnv;
 
-
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -88,7 +87,6 @@ AccountItems.MapGet("/{id}", AccountController.GetAccount);
 AccountItems.MapPost("/", AccountController.CreateAccount);
 AccountItems.MapPut("/{id}", AccountController.UpdateAccount);
 AccountItems.MapDelete("/{id}", AccountController.DeleteAccount);
-
 
 app.Run();
 

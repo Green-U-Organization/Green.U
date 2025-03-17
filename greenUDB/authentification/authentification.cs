@@ -25,6 +25,7 @@ public class Jwt
 
     public bool VerifyJwtToken(string token)
     {
+        Env.Load();
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Convert.FromBase64String($"key={Environment.GetEnvironmentVariable("SECRET_JWT")};");
 
