@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Jersey_15 } from "next/font/google";
 import "./globals.css";
-import Button from "@/components/Button(old)";
 import Card from "@/components/Card";
 import Button from "@/components/Button";
 import Card2 from "@/components/Card(old)";
 import Checkbox from "@/components/Checkbox";
 import Form from "@/components/Form";
 import TextInput from "@/components/TextInput";
-import Button from "@/components/Button";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +43,6 @@ export default function RootLayout({
         <Button>Bouton de Pierre</Button>    
         
         <Card>
-        <Button2>yoyoyo</Button2>
         <u>Carte de Manu</u> <br />
         Sans fioriture, avec héritage
         </Card>
@@ -59,7 +55,7 @@ export default function RootLayout({
             <TextInput></TextInput>
           </Form>
           <Button href="">Salut les poulets</Button>
-          <Checkbox></Checkbox> */}
+          <Checkbox></Checkbox>
           {children}
         </body>
     </html>
