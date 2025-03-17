@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
-using JWT;
 
 namespace GreenUApi.controller;
 public class UserController
@@ -10,17 +9,13 @@ public class UserController
         return TypedResults.Ok(await db.User.ToArrayAsync());
     }
 
-    public static async Task<IResult> GetUser(int id, greenUDB db)
+    public static async Task<User?> GetUser(string login, greenUDB db)
     {
-        return await db.User.FindAsync(id)
-            is User User
-                ? TypedResults.Ok(User)
-                : TypedResults.NotFound();
+        return await db.User.FirstOrDefaultAsync(u => u.login == login);
     }
-
     public static async Task<IResult> CreateUser(User User, greenUDB db)
     {
-        string[] hashSalt = passwordHasher.hasher(User.password);
+        string[] hashSalt = Authentification.hasher(User.password, Convert.FromBase64String(User.salt));
         User.password = hashSalt[0];
         User.salt = hashSalt[1];
         db.User.Add(User);
