@@ -368,3 +368,13 @@ C:\Users\lucas\Desktop\Green.U\greenUDB\obj\Debug\net9.0\GreenUApi.genruntimecon
 C:\Users\lucas\Desktop\Green.U\greenUDB\obj\Debug\net9.0\ref\GreenUApi.dll
 C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\DotNetEnv.dll
 C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Sprache.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Google.Apis.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Google.Apis.Auth.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Google.Apis.Auth.AspNetCore3.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Google.Apis.Calendar.v3.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Google.Apis.Core.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Google.Apis.Drive.v3.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.Google.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\System.Management.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\runtimes\win\lib\net7.0\System.Management.dll

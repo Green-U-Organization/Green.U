@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GreenUApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3d71e23fc63b8a8e11ee8c329c93f4f737265f1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5fa813b12e0cdc8ed9358a3b757716453084eef8")]
 [assembly: System.Reflection.AssemblyProductAttribute("GreenUApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GreenUApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
