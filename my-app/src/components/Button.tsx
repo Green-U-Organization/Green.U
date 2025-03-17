@@ -8,7 +8,7 @@ type Props = {
     href: string;
 }
 
-const Button = ({children} : Props) => {
+const Button = ({children, href=""} : Props) => {
     const [buttonPush, setButtonPush] = useState(false)
 
 const handleDown = () => {
