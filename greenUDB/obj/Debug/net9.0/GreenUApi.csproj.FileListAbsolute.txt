@@ -366,3 +366,5 @@ C:\Users\lucas\Desktop\Green.U\greenUDB\obj\Debug\net9.0\refint\GreenUApi.dll
 C:\Users\lucas\Desktop\Green.U\greenUDB\obj\Debug\net9.0\GreenUApi.pdb
 C:\Users\lucas\Desktop\Green.U\greenUDB\obj\Debug\net9.0\GreenUApi.genruntimeconfig.cache
 C:\Users\lucas\Desktop\Green.U\greenUDB\obj\Debug\net9.0\ref\GreenUApi.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\DotNetEnv.dll
+C:\Users\lucas\Desktop\Green.U\greenUDB\bin\Debug\net9.0\Sprache.dll
