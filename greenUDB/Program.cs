@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using GreenUApi.controller;
 using DotNetEnv;
 
+
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -24,7 +25,12 @@ builder.Services.AddOpenApiDocument(config =>
     config.Version = "v1";
 });
 
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
@@ -37,6 +43,7 @@ if (app.Environment.IsDevelopment())
         config.DocExpansion = "list";
     });
 }
+
 
 var UserItems = app.MapGroup("/Users");
 

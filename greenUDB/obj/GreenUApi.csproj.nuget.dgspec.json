@@ -54,6 +54,22 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "Google.Apis.Auth.AspNetCore3": {
+              "target": "Package",
+              "version": "[1.69.0, )"
+            },
+            "Google.Apis.Calendar.v3": {
+              "target": "Package",
+              "version": "[1.69.0.3667, )"
+            },
+            "Google.Apis.Drive.v3": {
+              "target": "Package",
+              "version": "[1.69.0.3703, )"
+            },
+            "Microsoft.AspNetCore.Authentication.Google": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.2, )"
