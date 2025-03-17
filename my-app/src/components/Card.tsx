@@ -9,7 +9,7 @@ type CardProps = {
 const Card: React.FC<CardProps> = ({children, position = "top-0 left-0 ", className= ""}) => {
     return (
         <div className={`relative m-10 ${position}`}>
-           <div className={`font-(family-name:--font-jersey) text-2xl py-4 px-8 relative bg-amber-200 ${className}`}>
+           <div className={`font-(family-name:--font-jersey) text-2xl py-4 px-8 relative bg-amber-50 ${className}`}>
                {/* Bordures */}
                 <div className="absolute top-0 left-0 h-full w-2 bg-amber-500"></div>
                 <div className="absolute top-0 right-0 h-full w-2 bg-amber-500"></div>
@@ -23,7 +23,7 @@ const Card: React.FC<CardProps> = ({children, position = "top-0 left-0 ", classN
                 <div className="absolute bottom-2 right-2 h-1 w-1 bg-amber-500"></div>
 
                 {/* Contenu */}
-                <p className='relative'>{children}</p>
+                <div className='relative'>{children}</div>
             </div>
         </div>
     )
