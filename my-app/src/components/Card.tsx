@@ -4,11 +4,15 @@ type CardProps = {
     children: React.ReactNode;
     position?: string; //Positionnement de la Card (ex: top-10 left-5)
     className?: string; //Pour personnalisé le style du composant
+    colStart: number;
+    colEnd: number;
+    rowStart: number;
+    rowEnd: number;
 }
 
-const Card: React.FC<CardProps> = ({children, position = "top-0 left-0 ", className= ""}) => {
+const Card: React.FC<CardProps> = ({children, colStart, colEnd, rowStart, rowEnd, className= ""}) => {
     return (
-        <div className={`relative m-10 ${position}`}>
+        <div className={`relative m-10 row-start-${rowStart}, row-end-${rowEnd}, col-start-${colStart}, col-end-${colEnd}`}>
            <div className={`font-(family-name:--font-jersey) text-2xl py-4 px-8 relative bg-amber-50 ${className}`}>
                {/* Bordures */}
                 <div className="absolute top-0 left-0 h-full w-2 bg-amber-500"></div>

@@ -37,7 +37,7 @@ const TextInput: FC<InputProps> = ({
         placeholder={placeholder}
         onChange={onChange}
         disabled={disabled}
-        className='bg-amber-200'
+        className='bg-amber-200 w-full'
       />
       {error && <p className="error">Input filed can't be empty!</p>}
     </div>
