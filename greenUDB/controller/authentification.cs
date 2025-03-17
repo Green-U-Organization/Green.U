@@ -2,13 +2,15 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
+using DotNetEnv;
 
 public class Jwt
 {
     public string GenerateJwtToken()
     {
+        Env.Load();
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Convert.FromBase64String("your-secret-key-here");
+        var key = Convert.FromBase64String($"key={Environment.GetEnvironmentVariable("SECRET_JWT")};");
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -24,7 +26,7 @@ public class Jwt
     public bool VerifyJwtToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Convert.FromBase64String("your-secret-key-here");
+        var key = Convert.FromBase64String($"key={Environment.GetEnvironmentVariable("SECRET_JWT")};");
 
         var validationParameters = new TokenValidationParameters
         {
