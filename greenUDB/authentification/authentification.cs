@@ -1,45 +1,44 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using DotNetEnv;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.ComponentModel;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
-public class Jwt
+namespace GreenUApi.authentification
 {
-    public string GenerateJwtToken()
+    
+    public class Authentification
     {
-        Env.Load();
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Convert.FromBase64String($"key={Environment.GetEnvironmentVariable("SECRET_JWT")};");
-
-        var tokenDescriptor = new SecurityTokenDescriptor
+        public static string[] hasher(string password)
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("userId", "123") }),
-            Expires = DateTime.UtcNow.AddHours(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
+            // Generate a 128-bit salt using a sequence of
+            // cryptographically strong random bytes.
+            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
+            // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: password!,
+            salt: salt,
+            prf: KeyDerivationPrf.HMACSHA256,
+            iterationCount: 100000,
+            numBytesRequested: 256 / 8));
 
-    public bool VerifyJwtToken(string token)
-    {
-        Env.Load();
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Convert.FromBase64String($"key={Environment.GetEnvironmentVariable("SECRET_JWT")};");
+            return [hashed, Convert.ToBase64String(salt)];
 
-        var validationParameters = new TokenValidationParameters
+        /*
+         * SAMPLE OUTPUT
+         *
+         * Enter a password: Xtw9NMgx
+         * Salt: CGYzqeN4plZekNC88Umm1Q==
+         * Hashed: Gt9Yc4AiIvmsC1QQbe2RZsCIqvoYlst2xbz0Fs8aHnw=
+         */
+
+        }
+
+        public static void checkPassword(string password, string salt)
         {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
 
-        SecurityToken validatedToken;
-        var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+        }
 
-        return true;
     }
 }

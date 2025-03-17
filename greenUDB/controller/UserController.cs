@@ -19,7 +19,7 @@ public class UserController
 
     public static async Task<IResult> CreateUser(User User, greenUDB db)
     {
-        string[] hashSalt = passwordHasher.hasher(User.password);
+        string[] hashSalt = Authentification.hasher(User.password);
         User.password = hashSalt[0];
         User.salt = hashSalt[1];
         db.User.Add(User);
