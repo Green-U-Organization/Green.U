@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using GreenUApi.authentification;
 
 namespace GreenUApi.controller;
 public class UserController
@@ -20,7 +21,7 @@ public class UserController
     {
         db.User.Add(User);
         await db.SaveChangesAsync();
-
+        passwordHasher.hasher(User.password);
         return TypedResults.Created($"/Useritems/{User.Id}", User);
     }
 

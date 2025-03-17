@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Security.Cryptography;
     
 namespace GreenUApi.authentification
 {
     public class passwordHasher
     {
-        public string hasher(string password)
+        public static string hasher(string password)
         {
         // Generate a 128-bit salt using a sequence of
         // cryptographically strong random bytes.
@@ -33,7 +31,6 @@ namespace GreenUApi.authentification
          */
 
         }
- 
 
     }
 }

@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using GreenUApi.authentification;
+
 
 namespace GreenUApi.controller;
 public class AccountController
@@ -6,6 +8,7 @@ public class AccountController
     public static async Task<IResult> GetAllAccount(greenUDB db)
     {
         return TypedResults.Ok(await db.Account.ToArrayAsync());
+
     }
 
     public static async Task<IResult> GetAccount(int id, greenUDB db)
