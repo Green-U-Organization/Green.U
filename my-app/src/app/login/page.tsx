@@ -52,7 +52,6 @@ const page = () => {
     }
 
     return (
-        <>
             <section className=''>
 
                 <Card
@@ -103,7 +102,6 @@ const page = () => {
                     </form>
                 </Card>
             </section>
-        </>
     )
 }
 

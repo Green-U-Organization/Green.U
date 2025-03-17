@@ -29,7 +29,7 @@ const Card: React.FC<CardProps> = ({children, colStart, colEnd, rowStart, rowEnd
                 {/* Contenu */}
                 <div className='relative'>{children}</div>
             </div>
-        </div>
+        </section>
     )
 }
 
