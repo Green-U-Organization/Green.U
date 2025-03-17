@@ -12,7 +12,7 @@ type CardProps = {
 
 const Card: React.FC<CardProps> = ({children, colStart, colEnd, rowStart, rowEnd, className= ""}) => {
     return (
-        <div className={`relative m-10 row-start-${rowStart}, row-end-${rowEnd}, col-start-${colStart}, col-end-${colEnd}`}>
+        <section className={`relative m-10 row-start-${rowStart}, row-end-${rowEnd}, col-start-${colStart}, col-end-${colEnd}`}>
            <div className={`font-(family-name:--font-jersey) text-2xl py-4 px-8 relative bg-amber-50 ${className}`}>
                {/* Bordures */}
                 <div className="absolute top-0 left-0 h-full w-2 bg-amber-500"></div>
@@ -29,7 +29,7 @@ const Card: React.FC<CardProps> = ({children, colStart, colEnd, rowStart, rowEnd
                 {/* Contenu */}
                 <div className='relative'>{children}</div>
             </div>
-        </div>
+        </section>
     )
 }
 
