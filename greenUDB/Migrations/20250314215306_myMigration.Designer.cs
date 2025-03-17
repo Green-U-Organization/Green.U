@@ -53,6 +53,9 @@ namespace GreenUApi.Migrations
                     b.Property<string>("password")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("salt")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("providerId")
                         .HasColumnType("int");
 

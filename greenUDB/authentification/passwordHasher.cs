@@ -3,6 +3,7 @@ using System.Security.Cryptography;
     
 namespace GreenUApi.authentification
 {
+    
     public class passwordHasher
     {
         public static string hasher(string password)
@@ -11,6 +12,10 @@ namespace GreenUApi.authentification
         // cryptographically strong random bytes.
         byte[] salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
             Convert.ToBase64String(salt);
+
+            Convert.FromBase64String("CGYzqeN4plZekNC88Umm1Q==");
+
+            Console.WriteLine(salt);
 
         // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
         string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(

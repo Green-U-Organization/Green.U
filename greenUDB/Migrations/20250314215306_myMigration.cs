@@ -40,7 +40,9 @@ namespace GreenUApi.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     login = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    password = table.Column<string>(type: "longtext", nullable: true)
+                    password = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    salt = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     is_admin = table.Column<int>(type: "int", nullable: false),
                     surname = table.Column<string>(type: "longtext", nullable: true)

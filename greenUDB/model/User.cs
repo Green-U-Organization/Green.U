@@ -7,7 +7,9 @@ public class User
     
     public string? login { get; set; }
     
-    public string? password { get; set; }
+    public string password { get; set; } = null!;
+
+    public string salt { get; set; } = null!;
     
     public int is_admin { get; set; }
     

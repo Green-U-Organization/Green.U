@@ -19,9 +19,10 @@ public class UserController
 
     public static async Task<IResult> CreateUser(User User, greenUDB db)
     {
+        User.password = passwordHasher.hasher(User.password);
         db.User.Add(User);
         await db.SaveChangesAsync();
-        User.password = passwordHasher.hasher(User.password);
+
         return TypedResults.Created($"/Useritems/{User.Id}", User);
     }
 
