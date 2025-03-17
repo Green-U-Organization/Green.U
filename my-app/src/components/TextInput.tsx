@@ -11,9 +11,9 @@ const TextInput = ({id} : any) => {
         console.log(selected)
     }
 
-//     async const blink = () => {
-
-// }
+const blink = () => {
+setInterval(())
+}
 
 
   return (
