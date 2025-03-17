@@ -5,7 +5,6 @@ import Button from "@/components/Button(old)";
 import Card from "@/components/Card";
 import Button2 from "@/components/Button";
 import Card2 from "@/components/Card(old)";
-import Button from "@/components/Button";
 import Checkbox from "@/components/Checkbox";
 import Form from "@/components/Form";
 import TextInput from "@/components/TextInput";
@@ -41,18 +40,25 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}>
         <Button>Bouton de Manu avec héritage</Button>    
+        
         <Button2>Bouton de Pierre</Button2>    
-        <Card><Button2></Button2>/><u>Carte de Manu</u> <br/>Sans fioriture, avec héritage</Card>
-        <Card2><u>Carte de Manu</u> <br/>Avec ombrage</Card2>
-
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
-      >
+        
+        <Card>
+          <u>Carte de Manu</u> <br/>Sans fioriture, avec héritage
+        </Card>
+        
+        <Card2>
+          <u>Carte de Manu</u> <br/>Avec ombrage
+        </Card2>
+        
         <Form>
-<TextInput></TextInput>
+          <TextInput></TextInput>
         </Form>
+        
         <Button href="">Salut les poulets</Button>
+        
         <Checkbox></Checkbox>
+        
         {children}
       </body>
     </html>
