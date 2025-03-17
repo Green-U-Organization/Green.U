@@ -21,7 +21,7 @@ public class UserController
     {
         db.User.Add(User);
         await db.SaveChangesAsync();
-        passwordHasher.hasher(User.password);
+        User.password = passwordHasher.hasher(User.password);
         return TypedResults.Created($"/Useritems/{User.Id}", User);
     }
 
