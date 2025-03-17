@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.controller;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-var connectionString = "server=;port=;database=;user=;password=;SslMode=Preferred;";
+var connectionString = "server=SERVEUR;port=PORT;database=DATABASE;user=USER;password=PASSWORD;SslMode=MODE;";
 builder.Services.AddDbContext<greenUDB>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
@@ -62,6 +61,22 @@ LineItems.MapGet("/{id}", LineController.GetLine);
 LineItems.MapPost("/", LineController.CreateLine);
 LineItems.MapPut("/{id}", LineController.UpdateLine);
 LineItems.MapDelete("/{id}", LineController.DeleteLine);
+
+var LogItems = app.MapGroup("/Logs");
+
+LogItems.MapGet("/", LogController.GetAllLog);
+LogItems.MapGet("/{id}", LogController.GetLog);
+LogItems.MapPost("/", LogController.CreateLog);
+LogItems.MapPut("/{id}", LogController.UpdateLog);
+LogItems.MapDelete("/{id}", LogController.DeleteLog);
+
+var AccountItems = app.MapGroup("/Accounts");
+
+AccountItems.MapGet("/", AccountController.GetAllAccount);
+AccountItems.MapGet("/{id}", AccountController.GetAccount);
+AccountItems.MapPost("/", AccountController.CreateAccount);
+AccountItems.MapPut("/{id}", AccountController.UpdateAccount);
+AccountItems.MapDelete("/{id}", AccountController.DeleteAccount);
 
 
 app.Run();
