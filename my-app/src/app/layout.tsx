@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Jersey_15 } from "next/font/google";
 import "./globals.css";
-import Button from "@/components/Button";
+import Button from "@/components/Button(old)";
+import Card from "@/components/Card";
+import Button2 from "@/components/Button";
+import Card2 from "@/components/Card(old)";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,10 +34,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
-      >
-        <Button>Salut les copains</Button>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}>
+        <Button>Bouton de Manu avec héritage</Button>    
+        <Button2>Bouton de Pierre</Button2>    
+        <Card><Button2></Button2>/><u>Carte de Manu</u> <br/>Sans fioriture, avec héritage</Card>
+        <Card2><u>Carte de Manu</u> <br/>Avec ombrage</Card2>
+
         {children}
       </body>
     </html>
