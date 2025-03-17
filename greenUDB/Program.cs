@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using GreenUApi.controller;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -11,8 +12,8 @@ builder.Services.AddDbContext<greenUDB>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>
 {
-    config.DocumentName = "UserAPI";
-    config.Title = "UserAPI v1";
+    config.DocumentName = "GrennUAPI";
+    config.Title = "GrennUAPI v1";
     config.Version = "v1";
 });
 
@@ -23,7 +24,7 @@ if (app.Environment.IsDevelopment())
     app.UseOpenApi();
     app.UseSwaggerUi(config =>
     {
-        config.DocumentTitle = "UserAPI";
+        config.DocumentTitle = "GrennUAPI";
         config.Path = "/swagger";
         config.DocumentPath = "/swagger/{documentName}/swagger.json";
         config.DocExpansion = "list";
@@ -32,19 +33,35 @@ if (app.Environment.IsDevelopment())
 
 var UserItems = app.MapGroup("/Users");
 
-UserItems.MapGet("/", GreenUApi.controller.UserController.GetAllUser);
-UserItems.MapGet("/{id}", GreenUApi.controller.UserController.GetUser);
-UserItems.MapPost("/", GreenUApi.controller.UserController.CreateUser);
-UserItems.MapPut("/{id}", GreenUApi.controller.UserController.UpdateUser);
-UserItems.MapDelete("/{id}", GreenUApi.controller.UserController.DeleteUser);
+UserItems.MapGet("/", UserController.GetAllUser);
+UserItems.MapGet("/{id}", UserController.GetUser);
+UserItems.MapPost("/", UserController.CreateUser);
+UserItems.MapPut("/{id}", UserController.UpdateUser);
+UserItems.MapDelete("/{id}", UserController.DeleteUser);
 
-var accountItems = app.MapGroup("/Account");
+var TodoItems = app.MapGroup("/Todos");
 
-accountItems.MapGet("/", GreenUApi.controller.UserController.GetAllUser);
-accountItems.MapGet("/{id}", GreenUApi.controller.UserController.GetUser);
-accountItems.MapPost("/", GreenUApi.controller.UserController.CreateUser);
-accountItems.MapPut("/{id}", GreenUApi.controller.UserController.UpdateUser);
-accountItems.MapDelete("/{id}", GreenUApi.controller.UserController.DeleteUser);
+TodoItems.MapGet("/", TodoController.GetAllTodo);
+TodoItems.MapGet("/{id}", TodoController.GetTodo);
+TodoItems.MapPost("/", TodoController.CreateTodo);
+TodoItems.MapPut("/{id}", TodoController.UpdateTodo);
+TodoItems.MapDelete("/{id}", TodoController.DeleteTodo);
+
+var GardenItems = app.MapGroup("/Gardens");
+
+GardenItems.MapGet("/", GardenController.GetAllGarden);
+GardenItems.MapGet("/{id}", GardenController.GetGarden);
+GardenItems.MapPost("/", GardenController.CreateGarden);
+GardenItems.MapPut("/{id}", GardenController.UpdateGarden);
+GardenItems.MapDelete("/{id}", GardenController.DeleteGarden);
+
+var LineItems = app.MapGroup("/Lines");
+
+LineItems.MapGet("/", LineController.GetAllLine);
+LineItems.MapGet("/{id}", LineController.GetLine);
+LineItems.MapPost("/", LineController.CreateLine);
+LineItems.MapPut("/{id}", LineController.UpdateLine);
+LineItems.MapDelete("/{id}", LineController.DeleteLine);
 
 
 app.Run();
