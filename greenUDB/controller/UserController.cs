@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
+using JWT;
 
 namespace GreenUApi.controller;
 public class UserController

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using DotNetEnv;
 
+namespace JWT;
 public class Jwt
 {
     public string GenerateJwtToken()
