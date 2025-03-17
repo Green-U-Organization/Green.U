@@ -3,13 +3,23 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --border: #fe9a00;
+  --shadow: #e17100;
+  --cardbackground: #fffbeb;
+  --bgbutton: #fee685;
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+ 
+  --color-border: var(--border);
+  --color-shadow: var(--shadow);
+  --color-cardbackground: var(--cardbackground);
+  --color-bgbutton: var(--bgbutton);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +32,6 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  
   font-family: Arial, Helvetica, sans-serif;
 }

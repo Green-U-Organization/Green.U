@@ -1,14 +1,13 @@
 "use client"
 
-import { Chicle } from 'next/font/google'
 import React, { useState } from 'react'
 
 type Props = {
     children: React.ReactNode;
-    href: string;
+   
 }
 
-const Button = ({children, href=""} : Props) => {
+const Button = ({children} : Props) => {
     const [buttonPush, setButtonPush] = useState(false)
 
     const handleDown = () => {
@@ -20,12 +19,12 @@ const Button = ({children, href=""} : Props) => {
 
     return (
         <>
-            <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-amber-200`}
+            <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-prout`}
                 onMouseDown={handleDown}
                 onMouseUp={handleUp}
                 onMouseLeave={handleUp}>
 
-                <div className={`absolute -top-0 left-0 h-2 w-full bg-white`} style={{ display: buttonPush ? "block" : "none" }}></div>
+                <div className={`absolute -top-0 left-0 h-2 w-full bg-amber-50`} style={{ display: buttonPush ? "block" : "none" }}></div>
 
                 {/* bordure de base */}
                 <div className={`absolute ${buttonPush ? "top-2" : "top-0"} left-0 h-full w-2 bg-amber-500`}></div>

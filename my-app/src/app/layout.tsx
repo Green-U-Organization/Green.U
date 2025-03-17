@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Jersey_15 } from "next/font/google";
 import "./globals.css";
-import Button from "@/components/Button(old)";
+//import Button from "@/components/Button(old)";
 import Card from "@/components/Card";
-import Button2 from "@/components/Button";
+import Button from "@/components/Button";
 import Card2 from "@/components/Card(old)";
 import Checkbox from "@/components/Checkbox";
 import Form from "@/components/Form";
@@ -39,27 +39,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}>
-        <Button>Bouton de Manu avec héritage</Button>    
         
-        <Button2>Bouton de Pierre</Button2>    
+        <Card>TEST COULEURS</Card>
+        
+        <Button>Bouton de Pierre</Button>    
         
         <Card>
-          <u>Carte de Manu</u> <br/>Sans fioriture, avec héritage
+          Carte de Manu, sans fioriture, avec héritage
         </Card>
         
         <Card2>
-          <u>Carte de Manu</u> <br/>Avec ombrage
+          Carte de Manu, avec ombrage
         </Card2>
         
         <Form>
           <TextInput></TextInput>
-        </Form>
+         </Form>
         
-        <Button href="">Salut les poulets</Button>
-        
-        <Checkbox></Checkbox>
-        
-        {children}
+        <Checkbox check="false"></Checkbox>
+       
       </body>
     </html>
   );
