@@ -97,7 +97,7 @@ const page = () => {
 
 	return (
 		<section className="flex items-center justify-center h-screen">
-			<Card style={"max-w-5xl h-full"}>
+			<Card className={"max-w-5xl h-full px-8"}>
 				<form onSubmit={handleSubmit}>
 					<div className="flex flex-col items-center justify-center">
 						<h2 className="text-7xl mb-10">*Green-U*</h2>

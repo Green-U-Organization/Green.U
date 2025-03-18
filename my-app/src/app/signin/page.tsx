@@ -27,6 +27,19 @@ const page = () => {
 	const [email, setEmail] = useState("");
 	const [errorEmptyEmail, setEmptyErrorEmail] = useState<boolean>(false);
 	const [postalCode, setPostalCode] = useState("");
+<<<<<<< HEAD
+	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =
+		useState<boolean>(false);
+	const [sexe, setSexe] = useState(""); // ajouter bouton radio pour définir sexe
+	const [birthDate, setBirthDate] = useState(new Date());
+	const [errorEmptyBirthDate, setErrorEmptyBirthDate] =
+		useState<boolean>(false);
+	const [errorSpecialCharPassword, setErrorSpecialCharPassword] =
+		useState<boolean>(false);
+	const [errorMatchingPassword, setErrorMatchingPassword] =
+		useState<boolean>(false);
+	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
+=======
 	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =	useState<boolean>(false);
 	const [birthDate, setBirthDate] = useState(new Date());
 	const [errorEmptyBirthDate, setErrorEmptyBirthDate] = useState<boolean>(false);
@@ -180,13 +193,13 @@ const page = () => {
 		}
 	};
 
-  const handleClick = () => {
-    setBirthDateDisplay(prev => !prev)
-  }
+	const handleClick = () => {
+		setBirthDateDisplay((prev) => !prev);
+	};
 
 	return (
 		<section className="flex items-center justify-center h-full">
-			<Card style={"max-w-lg h-full "}>
+			<Card className={"max-w-lg h-full px-8"}>
 				<h1 className="text-4xl mb-10">Sign in : </h1>
 
 				<form onSubmit={handleSubmit} className="flex flex-col">
