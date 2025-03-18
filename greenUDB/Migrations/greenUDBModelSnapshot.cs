@@ -363,7 +363,6 @@ namespace GreenUApi.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("salt")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("sexe")

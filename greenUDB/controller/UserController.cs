@@ -9,17 +9,11 @@ public class UserController
         return TypedResults.Ok(await db.User.ToArrayAsync());
     }
 
-    public static async Task<List<User>> GetUserForLogin(string username, greenUDB db)
+    public static async Task<User[]> GetUserForLogin(string username, greenUDB db)
     {
-        // return await db.User.FirstOrDefaultAsync(u => u.username == username);
-<<<<<<< HEAD
-        return await db.User.FromSql("SELECT *");
-=======
         return await db.User
             .Where(u => u.username == username)
-            .Take(4)
-            .ToListAsync();
->>>>>>> 093f0269449ff78cd378a55f91ddfcbe012ac721
+            .ToArrayAsync();
     }
 
     public static async Task<IResult> GetUser(int id, greenUDB db)
