@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 
+//Fonction qui définit la saison selon le mois actuel
 const getSeason = () => {
   const month = new Date().getMonth() + 1;
   if (month >= 3 && month <= 5) return "theme-spring"; // Printemps
@@ -10,14 +11,23 @@ const getSeason = () => {
 };
 
 const ThemeApp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState(getSeason());
+  const [theme, setTheme] = useState<string>(() => {
+      //Vérifier si un thème est déjà stocké dans localStorage
+    return localStorage.getItem("theme") || getSeason();
+  });
 
   useEffect(() => {
+    //Ajout du thème à la page
     document.documentElement.classList.add(theme);
+    
+    //Sauvegarde du thème dans localStorage
+    localStorage.setItem("theme", theme);
+
+    //Nettoyage de l'ancienne classe
     return () => {
-      document.documentElement.classList.remove(theme);
-    };
-  }, [theme]);
+        document.documentElement.classList.remove(theme);
+      };
+    }, [theme]);
 
   return (
     <div>

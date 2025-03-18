@@ -8,6 +8,7 @@ import Card2 from "@/components/Card(old)";
 import Checkbox from "@/components/Checkbox";
 import Form from "@/components/Form";
 import TextInput from "@/components/TextInput";
+import Radio from "@/components/Radio";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,7 @@ const jersey15 = Jersey_15({
 
 export const metadata: Metadata = {
   title: "Green-U",
-  description: "",
+  description: "Bienvenue sur Green-U, une plateforme moderne et élégante.",
 };
 
 export default function RootLayout({
@@ -40,6 +41,8 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}>
         
       <ThemeApp>{children}</ThemeApp>
+
+      <Radio/>
 
         {/*
         <Card>TEST COULEURS</Card>

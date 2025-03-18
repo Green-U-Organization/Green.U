@@ -18,6 +18,7 @@ const Button = ({children,
 
             } : Props) => {
     const [buttonPush, setButtonPush] = useState(false)
+    const [inside, setInside] = useState(false)
 
     const handleDown = () => {
         setButtonPush(true)
@@ -32,15 +33,25 @@ const Button = ({children,
         setButtonPush(false)
     }
 
+    const handleEnter = () => {
+        setInside(true)
+    }
+
+    const handleLeave = () => {
+        setInside(false)
+        setButtonPush(false)
+    }
+
     return (
         
         
             type === "link" ? (
                 <Link href={href}>
-                    <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-button m-5`}
+                    <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-button m-5 ${inside ? "bg-bgbutton" : "bg-cardbackground"}`}
                     onMouseDown={handleDown}
                     onMouseUp={handleUp}
-                    onMouseLeave={handleUp}>
+                    onMouseLeave={handleLeave}
+                    onMouseEnter={handleEnter}>
     
                     <div className={`absolute -top-0 left-0 h-2 w-full bg-extbutton`} style={{ display: buttonPush ? "block" : "none" }}></div>
     
@@ -90,10 +101,11 @@ const Button = ({children,
                 </button>
                     </Link>
                 ) : (
-            <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-button m-5`}
+            <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-button m-5 ${inside ? "bg-bgbutton" : "bg-cardbackground"}`}
                 onMouseDown={handleDown}
                 onMouseUp={handleUp}
-                onMouseLeave={handleUp}>
+                onMouseLeave={handleLeave}
+                onMouseEnter={handleEnter}>
 
                 <div className={`absolute -top-0 left-0 h-2 w-full bg-extbutton`} style={{ display: buttonPush ? "block" : "none" }}></div>
 
