@@ -7,6 +7,7 @@ import Card from "@/components/Card";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
 import Calendar from "react-calendar";
+import Radio from "@/components/Radio";
 
 const page = () => {
 	const [login, setLogin] = useState("");
@@ -20,22 +21,18 @@ const page = () => {
 	const [surname, setSurname] = useState("");
 	const [errorEmptySurname, setErrorEmptySurname] = useState<boolean>(false);
 	const [lastname, setLastname] = useState("");
-	const [errorEmptyLastname, setErrorEmptyLastname] =
-		useState<boolean>(false);
+	const [errorEmptyLastname, setErrorEmptyLastname] =	useState<boolean>(false);
 	const [email, setEmail] = useState("");
 	const [errorEmptyEmail, setEmptyErrorEmail] = useState<boolean>(false);
 	const [postalCode, setPostalCode] = useState("");
-	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =
-		useState<boolean>(false);
+	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =	useState<boolean>(false);
 	const [sexe, setSexe] = useState("");
 	const [birthDate, setBirthDate] = useState(new Date());
-	const [errorEmptyBirthDate, setErrorEmptyBirthDate] =
-		useState<boolean>(false);
-	const [errorSpecialCharPassword, setErrorSpecialCharPassword] =
-		useState<boolean>(false);
-	const [errorMatchingPassword, setErrorMatchingPassword] =
-		useState<boolean>(false);
-  const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
+	const [errorEmptyBirthDate, setErrorEmptyBirthDate] = useState<boolean>(false);
+	const [errorSpecialCharPassword, setErrorSpecialCharPassword] = useState<boolean>(false);
+	const [errorMatchingPassword, setErrorMatchingPassword] = useState<boolean>(false);
+  	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
+	const [selectedValue, setSelectedValue] = useState("");
 
 	const specialChar = [
 		"²",
@@ -215,8 +212,8 @@ const page = () => {
 						onChange={handlePasswordVerifyChange}
 					/>
 
-          <p onClick={handleClick}>BirthDate: </p>
-          <p onClick={handleClick} className="bg-bginput mb-5">{birthDate.toDateString()}</p>
+					<p onClick={handleClick}>BirthDate: </p>
+					<p onClick={handleClick} className="bg-bginput mb-5">{birthDate.toDateString()}</p>
 
 					<div style={{display : birthDateDisplay ? "block" : "none"}}>
 						<Calendar onChange={setBirthDate} value={birthDate} />
@@ -232,8 +229,6 @@ const page = () => {
 						onChange={handleSurnameChange}
 					/>
 
-					{/* Add radio button for sexe and calendar for birthdate */}
-
 					<TextInput
 						type="text"
 						label="Lastname"
@@ -243,6 +238,13 @@ const page = () => {
 						error={errorEmptyLastname}
 						onChange={handleLastnameChange}
 					/>
+
+					<p>Gender: </p>
+					<div className="flex items-center gap-4">
+						<Radio id="M" name="gender" value="M" checked={selectedValue === "option1"} onChange={setSelectedValue}/>
+						<Radio id="F" name="gender" value="F" checked={selectedValue === "option2"} onChange={setSelectedValue}/>
+						<Radio id="X" name="gender" value="X" checked={selectedValue === "option3"} onChange={setSelectedValue}/>
+					</div>
 
 					<TextInput
 						type="email"

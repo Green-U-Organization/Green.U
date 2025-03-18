@@ -1,44 +1,52 @@
-"use client"
-import React, { useEffect, useState } from 'react'
+"use client";
+import React, { useEffect, useState } from "react";
 
 interface RadioProps {
-    name: string
-    value: string
-    checked?: boolean
-    onChange?: (value: string) => void
+  name: string;
+  value: string;
+  checked?: boolean;
+  id: string;
+  onChange?: (value: string) => void;
 }
 
-const Radio: React.FC<RadioProps> = ({name, value, checked = false, onChange }) => {
-    const [selected, setSelected] = useState(checked)
-    const [hover, setHover] = useState(false)
+const Radio: React.FC<RadioProps> = ({ name, value, checked = false, id, onChange }) => {
+  const [hover, setHover] = useState(false);
 
-    const handleClick = () => {
-        if (onChange) {
-            onChange(value)
-        }
-        setSelected(true)
+  const handleClick = () => {
+    if (onChange) {
+      onChange(value);
     }
+  };
 
-    useEffect(() => {
-        setSelected(checked)
-    },[checked])
+  return (
+    <div className="flex flex-row mb-5 items-center">
+        <label htmlFor={id}>{id}:</label>
+    
+    <div 
+      className={`h-6 w-6 flex ml-5 mr-5 items-center justify-center rounded-full cursor-pointer transition-all
+        ${hover ? "bg-bginput" : "bg-gray-100"}
+        ${checked ? "border-2 bg-bgbutton" : "border border-gray-400"}`}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onClick={handleClick}
+      role="radio"
+      aria-checked={checked}
+      tabIndex={0}
+      >
+      {checked && <div className="w-3 h-3 bg-border rounded-full"></div>}
+      
+      <input
+        type="radio"
+        name={name}
+        id={id}
+        value={value}
+        checked={checked}
+        onChange={() => onChange?.(value)}
+        className="hidden"
+      />
+    </div>
+    </div>
+  );
+};
 
-    return (
-        <>
-            <div className={`h-5 w-5 relative m-5 rounded-full flex items-center justify-center
-            ${hover ? "bg-bgbutton" : "bg-cardbackground"}
-            ${selected ? "border-2 border-primary" : "border border-border"}`}
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-           // onClick={handleC}
-            >
-            
-            </div>
-                
-        </>
-
-
-    )
-}
-
-export default Radio
+export default Radio;
