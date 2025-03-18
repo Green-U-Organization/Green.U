@@ -27,26 +27,14 @@ const page = () => {
 	const [email, setEmail] = useState("");
 	const [errorEmptyEmail, setEmptyErrorEmail] = useState<boolean>(false);
 	const [postalCode, setPostalCode] = useState("");
-<<<<<<< HEAD
-	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =
-		useState<boolean>(false);
-	const [sexe, setSexe] = useState(""); // ajouter bouton radio pour définir sexe
-	const [birthDate, setBirthDate] = useState(new Date());
-	const [errorEmptyBirthDate, setErrorEmptyBirthDate] =
-		useState<boolean>(false);
-	const [errorSpecialCharPassword, setErrorSpecialCharPassword] =
-		useState<boolean>(false);
-	const [errorMatchingPassword, setErrorMatchingPassword] =
-		useState<boolean>(false);
-	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
-=======
+	const [gender, setGender] = useState("M"); // ajouter bouton radio pour définir sexe
 	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =	useState<boolean>(false);
 	const [birthDate, setBirthDate] = useState(new Date());
 	const [errorEmptyBirthDate, setErrorEmptyBirthDate] = useState<boolean>(false);
 	const [errorSpecialCharPassword, setErrorSpecialCharPassword] = useState<boolean>(false);
 	const [errorMatchingPassword, setErrorMatchingPassword] = useState<boolean>(false);
   	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
-	const [selectedValue, setSelectedValue] = useState("M");
+
 	
 	const specialChar = [
 		"²",
@@ -110,9 +98,7 @@ const page = () => {
 			setBirthDate(value);
 			setBirthDateDisplay(false);
 		}
-	};
-	  
-	  
+	};	  
 
 	const checkPassword = (password: string) => {
 		console.log("checking password...");
@@ -264,9 +250,9 @@ const page = () => {
 
 					<p>Gender: </p>
 					<div className="flex items-center gap-4">
-						<Radio id="M" name="gender" value="M"  checked={selectedValue === "M"} onChange={() => setSelectedValue("M")}/>
-						<Radio id="F" name="gender" value="F" checked={selectedValue === "F"} onChange={() => setSelectedValue("F")}/>
-						<Radio id="X" name="gender" value="X" checked={selectedValue === "X"} onChange={() => setSelectedValue("X")}/>
+						<Radio id="M" name="gender" value="M" checked={gender === "M"} onChange={() => setGender("M")}/>
+						<Radio id="F" name="gender" value="F" checked={gender === "F"} onChange={() => setGender("F")}/>
+						<Radio id="X" name="gender" value="X" checked={gender === "X"} onChange={() => setGender("X")}/>
 					</div>
 										
 					<TextInput
