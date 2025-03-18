@@ -32,26 +32,26 @@ namespace GreenUApi.authentification
 
         }
 
-        public static async Task<IResult> Login(string username, greenUDB db, string password)
-        {
-          var user = await UserController.GetUser(username, db);
+        // public static async Task<IResult> Login(string username, greenUDB db, string password)
+        // {
+        // //   var user = await UserController.GetUser(usdb);
 
-            if (user == null)
-                return TypedResults.NotFound();
+        //     if (user == null)
+        //         return TypedResults.NotFound();
 
-            var hashedPassword = hasher(password, Convert.FromBase64String(user.salt))[0];
+        //     var hashedPassword = hasher(password, Convert.FromBase64String(user.salt))[0];
 
-            if (user.password == hashedPassword)
-            {
-                // Générer un JWT avec les informations de l'utilisateur
-                var token = Jwt.GenerateJwtToken(user);
+        //     if (user.password == hashedPassword)
+        //     {
+        //         // Générer un JWT avec les informations de l'utilisateur
+        //         var token = Jwt.GenerateJwtToken(user);
 
-                // Retourner le jeton JWT à l'utilisateur
-                return TypedResults.Ok(new { message = "Mot de passe valide !", token });
-            }
+        //         // Retourner le jeton JWT à l'utilisateur
+        //         return TypedResults.Ok(new { message = "Mot de passe valide !", token });
+        //     }
             
-            return TypedResults.Unauthorized();
-        }
+        //     return TypedResults.Unauthorized();
+        // }
 
     }
 }
