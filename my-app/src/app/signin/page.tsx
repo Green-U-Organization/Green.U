@@ -27,7 +27,7 @@ const page = () => {
 	const [postalCode, setPostalCode] = useState("");
 	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =
 		useState<boolean>(false);
-	const [sexe, setSexe] = useState("");
+	const [sexe, setSexe] = useState(""); // ajouter bouton radio pour définir sexe
 	const [birthDate, setBirthDate] = useState(new Date());
 	const [errorEmptyBirthDate, setErrorEmptyBirthDate] =
 		useState<boolean>(false);
@@ -35,7 +35,7 @@ const page = () => {
 		useState<boolean>(false);
 	const [errorMatchingPassword, setErrorMatchingPassword] =
 		useState<boolean>(false);
-  const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
+	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
 
 	const specialChar = [
 		"²",
@@ -173,13 +173,13 @@ const page = () => {
 		}
 	};
 
-  const handleClick = () => {
-    setBirthDateDisplay(prev => !prev)
-  }
+	const handleClick = () => {
+		setBirthDateDisplay((prev) => !prev);
+	};
 
 	return (
 		<section className="flex items-center justify-center h-full">
-			<Card style={"max-w-lg h-full "}>
+			<Card className={"max-w-lg h-full px-8"}>
 				<h1 className="text-4xl mb-10">Sign in : </h1>
 
 				<form onSubmit={handleSubmit} className="flex flex-col">
@@ -215,10 +215,14 @@ const page = () => {
 						onChange={handlePasswordVerifyChange}
 					/>
 
-          <p onClick={handleClick}>BirthDate: </p>
-          <p onClick={handleClick} className="bg-bginput mb-5">{birthDate.toDateString()}</p>
+					<p onClick={handleClick}>BirthDate: </p>
+					<p onClick={handleClick} className="bg-bginput mb-5">
+						{birthDate.toDateString()}
+					</p>
 
-					<div style={{display : birthDateDisplay ? "block" : "none"}}>
+					<div
+						style={{ display: birthDateDisplay ? "block" : "none" }}
+					>
 						<Calendar onChange={setBirthDate} value={birthDate} />
 					</div>
 

@@ -2,13 +2,13 @@ import React from 'react'
 
 type CardProps = {
     children: React.ReactNode;
-    style?: string
+    className?: string
 }
 
-const Card: React.FC<CardProps> = ({children, style}) => {
+const Card: React.FC<CardProps> = ({children, className}) => {
     return (
-        <div>
-           <div className={`font-(family-name:--font-jersey) text-2xl py-4 px-8 relative bg-cardbackground ${style}`}>
+
+           <div className={`font-(family-name:--font-jersey)  text-2xl py-2  relative bg-cardbackground  ${className}`}>
                {/* Bordures */}
                 <div className="absolute top-0 left-0 h-full w-2 bg-border"></div>
                 <div className="absolute top-0 right-0 h-full w-2 bg-border"></div>
@@ -22,9 +22,9 @@ const Card: React.FC<CardProps> = ({children, style}) => {
                 <div className="absolute bottom-2 right-2 h-1 w-1 bg-border"></div>
 
                 {/* Contenu */}
-                <div className='relative'>{children}</div>
+                {children}
             </div>
-        </div>
+
     )
 }
 

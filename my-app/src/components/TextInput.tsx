@@ -9,7 +9,7 @@ interface InputProps {
   value: string | number
   name: string
   placeholder: string
-  style? : string
+  className? : string
   error: boolean
   errorPassMatch?: boolean
   errorPassChar?: boolean
@@ -23,7 +23,7 @@ const TextInput: FC<InputProps> = ({
   value,
   name,
   placeholder,
-  style,
+  className,
   error,
   errorPassChar,
   errorPassMatch,
@@ -31,7 +31,7 @@ const TextInput: FC<InputProps> = ({
   onChange,
 }) => {
   return (
-    <div className={`input-wrapper mb-5 ${style}`} >
+    <div className={`input-wrapper mb-5 ${className}`} >
       <label htmlFor={label} className='mr-3 '>
         {label}:
       </label>
