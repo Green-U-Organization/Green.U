@@ -241,9 +241,9 @@ const page = () => {
 
 					<p>Gender: </p>
 					<div className="flex items-center gap-4">
-						<Radio id="M" name="gender" value="M" checked={selectedValue === "option1"} onChange={setSelectedValue}/>
-						<Radio id="F" name="gender" value="F" checked={selectedValue === "option2"} onChange={setSelectedValue}/>
-						<Radio id="X" name="gender" value="X" checked={selectedValue === "option3"} onChange={setSelectedValue}/>
+						<Radio id="M" name="gender" value="M" checked={selectedValue === "M"} onChange={setSelectedValue}/>
+						<Radio id="F" name="gender" value="F" checked={selectedValue === "F"} onChange={setSelectedValue}/>
+						<Radio id="X" name="gender" value="X" checked={selectedValue === "X"} onChange={setSelectedValue}/>
 					</div>
 
 					<TextInput
