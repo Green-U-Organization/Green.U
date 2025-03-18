@@ -11,11 +11,17 @@ public class Jwt
     {
         Env.Load();
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Convert.FromBase64String($"key={Environment.GetEnvironmentVariable("SECRET_JWT")};");
+        var key = Convert.FromBase64String(Environment.GetEnvironmentVariable("SECRET_JWT"));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim(user.Id.ToString(), user.login, user.password) }),
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.login),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("userId", user.Id.ToString())
+            })
+            ,
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
