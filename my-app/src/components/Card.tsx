@@ -2,18 +2,13 @@ import React from 'react'
 
 type CardProps = {
     children: React.ReactNode;
-    position?: string; //Positionnement de la Card (ex: top-10 left-5)
-    className?: string; //Pour personnalisé le style du composant
-    colStart: number;
-    colEnd: number;
-    rowStart: number;
-    rowEnd: number;
+    style?: string
 }
 
-const Card: React.FC<CardProps> = ({children, colStart, colEnd, rowStart, rowEnd, className= ""}) => {
+const Card: React.FC<CardProps> = ({children, style}) => {
     return (
-        <div className={`relative m-10 row-start-${rowStart}, row-end-${rowEnd}, col-start-${colStart}, col-end-${colEnd}`}>
-           <div className={`font-(family-name:--font-jersey) text-2xl py-4 px-8 relative bg-cardbackground ${className}`}>
+        <div>
+           <div className={`font-(family-name:--font-jersey) text-2xl py-4 px-8 relative bg-cardbackground ${style}`}>
                {/* Bordures */}
                 <div className="absolute top-0 left-0 h-full w-2 bg-border"></div>
                 <div className="absolute top-0 right-0 h-full w-2 bg-border"></div>
