@@ -32,9 +32,9 @@ namespace GreenUApi.authentification
 
         }
 
-        public static async Task<IResult> Login(string login, greenUDB db, string password)
+        public static async Task<IResult> Login(string username, greenUDB db, string password)
         {
-          var user = await UserController.GetUser(login, db);
+          var user = await UserController.GetUser(username, db);
 
             if (user == null)
                 return TypedResults.NotFound();
