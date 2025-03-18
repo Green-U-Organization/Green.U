@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.controller;
 using DotNetEnv;
+using GreenUApi.authentification;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,7 @@ UserItems.MapGet("/{id}", UserController.GetUser);
 UserItems.MapPost("/", UserController.CreateUser);
 UserItems.MapPut("/{id}", UserController.UpdateUser);
 UserItems.MapDelete("/{id}", UserController.DeleteUser);
+UserItems.MapGet("/login", Authentification.Login);
 
 var TodoItems = app.MapGroup("/Todos");
 

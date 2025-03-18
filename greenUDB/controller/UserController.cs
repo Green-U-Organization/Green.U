@@ -11,7 +11,8 @@ public class UserController
 
     public static async Task<User?> GetUserName(string username, greenUDB db)
     {
-        return await db.User.FirstOrDefaultAsync(u => u.username == username);
+        // return await db.User.FirstOrDefaultAsync(u => u.username == username);
+        return await db.User.FromSql("SELECT *");
     }
 
     public static async Task<IResult> GetUser(int id, greenUDB db)

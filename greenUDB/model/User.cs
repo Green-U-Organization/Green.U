@@ -9,7 +9,7 @@ public class User
     
     public string password { get; set; } = null!;
 
-    public string salt { get; set; } = null!;
+    public string? salt { get; set; }
     
     public int is_admin { get; set; }
     
