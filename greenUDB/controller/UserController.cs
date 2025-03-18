@@ -2,6 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
 
 namespace GreenUApi.controller;
+
+public class Result<T>
+{
+    public bool IsSuccess { get; set; }
+    public T Data { get; set; }
+    public string ErrorMessage { get; set; }
+}
+
 public class UserController
 {
     public static async Task<IResult> GetAllUser(greenUDB db)
@@ -9,11 +17,27 @@ public class UserController
         return TypedResults.Ok(await db.User.ToArrayAsync());
     }
 
-    public static async Task<User[]> GetUserForLogin(string username, greenUDB db)
+    public static async Task<Result<User[]>> GetUserForLogin(string username, greenUDB db)
     {
-        return await db.User
+        try
+        {
+        var user = await db.User
             .Where(u => u.username == username)
+            .Select(u => new User
+            {
+                Id = u.Id,
+                username = u.username,
+                password = u.password,
+                salt = u.salt
+            })
             .ToArrayAsync();
+
+            return new Result<User[]> { IsSuccess = true, Data = user };
+
+        }catch (Exception ex)
+        {
+            return new Result<User[]> { IsSuccess = false, ErrorMessage = ex.Message };
+        }
     }
 
     public static async Task<IResult> GetUser(int id, greenUDB db)
@@ -26,7 +50,7 @@ public class UserController
    
     public static async Task<IResult> CreateUser(User User, greenUDB db)
     {
-        string[] hashSalt = Authentification.hasher(User.password);
+        string[] hashSalt = Authentification.hasher(User.password, null);
         User.password = hashSalt[0];
         User.salt = hashSalt[1];
         db.User.Add(User);

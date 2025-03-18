@@ -4,12 +4,13 @@ using System.Security.Cryptography;
 using GreenUApi.controller;
 using Token;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace GreenUApi.authentification
 {
     public class Authentification
     {
-        public static string[] hasher(string password, byte[] salty = null)
+        public static string[] hasher(string password, byte[] salty)
         {
             // Generate a 128-bit salt using a sequence of
             // cryptographically strong random bytes.
@@ -40,7 +41,7 @@ namespace GreenUApi.authentification
             if (user[0].username == null)
                 return TypedResults.NotFound();
 
-            var hashedPassword = hasher(password, Convert.FromBase64String(user[0].salt))[0];
+            var hashedPassword = hasher(password, Encoding.UTF8.GetBytes(user[0].salt))[0];
 
             if (user[0].password == hashedPassword)
             {
