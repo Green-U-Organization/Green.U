@@ -19,13 +19,21 @@ const Radio: React.FC<RadioProps> = ({name, value, checked = false, onChange }) 
         setSelected(true)
     }
 
-
-
+    useEffect(() => {
+        setSelected(checked)
+    },[checked])
 
     return (
         <>
-
-            <div></div>
+            <div className={`h-5 w-5 relative m-5 rounded-full flex items-center justify-center
+            ${hover ? "bg-bgbutton" : "bg-cardbackground"}
+            ${selected ? "border-2 border-primary" : "border border-border"}`}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+           // onClick={handleC}
+            >
+            
+            </div>
                 
         </>
 

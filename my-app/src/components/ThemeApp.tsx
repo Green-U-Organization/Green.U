@@ -1,39 +1,53 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 
-//Fonction qui définit la saison selon le mois actuel
+// Fonction qui définit la saison selon le mois actuel
 const getSeason = () => {
-  const month = new Date().getMonth() + 1;
+  const month = new Date().getMonth() + 1; // Récupère le mois actuel (1-12)
+ 
+  // Détermine la saison en fonction du mois
   if (month >= 3 && month <= 5) return "theme-spring"; // Printemps
-  if (month >= 6 && month <= 8) return "theme-summer";  // Été
-  if (month >= 9 && month <= 11) return "theme-fall";   // Automne
-  return "theme-winter";                                // Hiver
+  if (month >= 6 && month <= 8) return "theme-summer"; // Été
+  if (month >= 9 && month <= 11) return "theme-fall";  // Automne
+  return "theme-winter"; // Hiver
 };
 
 const ThemeApp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<string>(() => {
-      //Vérifier si un thème est déjà stocké dans localStorage
-    return localStorage.getItem("theme") || getSeason();
-  });
+  // Stocke le thème dans l'état (initialisé à une chaîne vide pour éviter SSR)
+  const [theme, setTheme] = useState<string>("");
+
+  // État pour savoir si le composant est monté (évite l'hydratation incorrecte)
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    //Ajout du thème à la page
-    document.documentElement.classList.add(theme);
-    
-    //Sauvegarde du thème dans localStorage
-    localStorage.setItem("theme", theme);
+    // Marquer le composant comme monté
+    setIsMounted(true);
 
-    //Nettoyage de l'ancienne classe
-    return () => {
-        document.documentElement.classList.remove(theme);
+    // Vérifier si on est bien côté client
+    if (typeof window !== "undefined") {
+      // Récupérer le thème du localStorage ou utiliser la saison actuelle
+      const storedTheme = localStorage.getItem("theme") || getSeason();
+
+      // Mettre à jour l'état React
+      setTheme(storedTheme);
+
+      // Appliquer le thème au `document.documentElement`
+      document.documentElement.classList.add(storedTheme);
+
+      // Sauvegarder le thème dans localStorage
+      localStorage.setItem("theme", storedTheme);
+
+      // Nettoyer l'ancienne classe CSS quand le composant est démonté
+      return () => {
+        document.documentElement.classList.remove(storedTheme);
       };
-    }, [theme]);
+    }
+  }, []); // useEffect ne s'exécute qu'une seule fois après le montage du composant
 
-  return (
-    <div>
-        {children}
-    </div>
-  );
+  // Éviter le rendu côté serveur pour éviter l'erreur d'hydratation
+  if (!isMounted) return null;
+
+  return <div>{children}</div>;
 };
 
 export default ThemeApp;
