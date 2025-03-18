@@ -9,9 +9,13 @@ public class UserController
         return TypedResults.Ok(await db.User.ToArrayAsync());
     }
 
-    public static async Task<User?> GetUserName(string username, greenUDB db)
+    public static async Task<List<User>> GetUserForLogin(string username, greenUDB db)
     {
-        return await db.User.FirstOrDefaultAsync(u => u.username == username);
+        // return await db.User.FirstOrDefaultAsync(u => u.username == username);
+        return await db.User
+            .Where(u => u.username == username)
+            .Take(4)
+            .ToListAsync();
     }
 
     public static async Task<IResult> GetUser(int id, greenUDB db)
@@ -24,7 +28,7 @@ public class UserController
    
     public static async Task<IResult> CreateUser(User User, greenUDB db)
     {
-        string[] hashSalt = Authentification.hasher(User.password, Convert.FromBase64String(User.salt));
+        string[] hashSalt = Authentification.hasher(User.password);
         User.password = hashSalt[0];
         User.salt = hashSalt[1];
         db.User.Add(User);

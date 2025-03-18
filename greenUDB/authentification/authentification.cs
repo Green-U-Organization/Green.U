@@ -8,7 +8,7 @@ namespace GreenUApi.authentification
 {
     public class Authentification
     {
-        public static string[] hasher(string password, byte[] salty)
+        public static string[] hasher(string password, byte[] salty = null)
         {
             // Generate a 128-bit salt using a sequence of
             // cryptographically strong random bytes.
@@ -32,26 +32,26 @@ namespace GreenUApi.authentification
 
         }
 
-        // public static async Task<IResult> Login(string username, greenUDB db, string password)
-        // {
-        // //   var user = await UserController.GetUser(usdb);
+        public static async Task<IResult> Login(string usernameInput, string password, greenUDB db)
+        {
+            var user = await UserController.GetUserForLogin(usernameInput, db);
 
-        //     if (user == null)
-        //         return TypedResults.NotFound();
+            if (user[0].username == null)
+                return TypedResults.NotFound();
 
-        //     var hashedPassword = hasher(password, Convert.FromBase64String(user.salt))[0];
+            var hashedPassword = hasher(password, Convert.FromBase64String(user[0].salt))[0];
 
-        //     if (user.password == hashedPassword)
-        //     {
-        //         // Générer un JWT avec les informations de l'utilisateur
-        //         var token = Jwt.GenerateJwtToken(user);
+            if (user[0].password == hashedPassword)
+            {
+                // Générer un JWT avec les informations de l'utilisateur
+                var token = Jwt.GenerateJwtToken(user[0]);
 
-        //         // Retourner le jeton JWT à l'utilisateur
-        //         return TypedResults.Ok(new { message = "Mot de passe valide !", token });
-        //     }
-            
-        //     return TypedResults.Unauthorized();
-        // }
+                // Retourner le jeton JWT à l'utilisateur
+                return TypedResults.Ok(new { message = "Mot de passe valide !", token });
+            }
+
+            return TypedResults.Unauthorized();
+        }
 
     }
 }
