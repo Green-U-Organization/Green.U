@@ -2,7 +2,8 @@
 
 namespace GreenUApi.controller
 {
-    public class LoginController
+    public class ConnectionController
     { 
+        
     }
 }
