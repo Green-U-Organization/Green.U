@@ -5,7 +5,7 @@ public class User
 {
     public int Id { get; set; }
     
-    public string? username { get; set; }
+    public string username { get; set; } = null!;
     
     public string password { get; set; } = null!;
 
@@ -13,9 +13,9 @@ public class User
     
     public int is_admin { get; set; }
     
-    public string? surname { get; set; }
+    public string surname { get; set; } = null!;
     
-    public string? lastname { get; set; }
+    public string lastname { get; set; } = null!;
     
     public string? email { get; set; }
     
