@@ -42,7 +42,7 @@ export default function RootLayout({
         
       <ThemeApp>{children}</ThemeApp>
 
-      <Radio/>
+      <Radio></Radio>
 
         {/*
         <Card>TEST COULEURS</Card>
