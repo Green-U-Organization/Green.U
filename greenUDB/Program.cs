@@ -43,7 +43,7 @@ if (app.Environment.IsDevelopment())
 var UserItems = app.MapGroup("/Users");
 
 UserItems.MapGet("/", UserController.GetAllUser);
-UserItems.MapGet("/{id}", UserController.GetUser);
+UserItems.MapGet("/id={id}", UserController.GetUser);
 UserItems.MapPost("/", UserController.CreateUser);
 UserItems.MapPut("/{id}", UserController.UpdateUser);
 UserItems.MapDelete("/{id}", UserController.DeleteUser);

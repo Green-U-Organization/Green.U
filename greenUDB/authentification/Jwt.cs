@@ -17,11 +17,10 @@ public class Jwt
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.login),
+                new Claim(JwtRegisteredClaimNames.Sub, user.username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("userId", user.Id.ToString())
-            })
-            ,
+            }),
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
