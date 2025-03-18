@@ -6,6 +6,7 @@ import { useState } from "react";
 import Card from "@/components/Card";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
+import Calendar from "react-calendar";
 
 const page = () => {
 	const [login, setLogin] = useState("");
@@ -27,13 +28,14 @@ const page = () => {
 	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =
 		useState<boolean>(false);
 	const [sexe, setSexe] = useState("");
-	const [birthDate, setBirthDate] = useState("");
+	const [birthDate, setBirthDate] = useState(new Date());
 	const [errorEmptyBirthDate, setErrorEmptyBirthDate] =
 		useState<boolean>(false);
 	const [errorSpecialCharPassword, setErrorSpecialCharPassword] =
 		useState<boolean>(false);
 	const [errorMatchingPassword, setErrorMatchingPassword] =
 		useState<boolean>(false);
+  const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
 
 	const specialChar = [
 		"²",
@@ -171,9 +173,13 @@ const page = () => {
 		}
 	};
 
+  const handleClick = () => {
+    setBirthDateDisplay(prev => !prev)
+  }
+
 	return (
 		<section className="flex items-center justify-center h-full">
-			<Card style={"max-w-5xl h-full "}>
+			<Card style={"max-w-lg h-full "}>
 				<h1 className="text-4xl mb-10">Sign in : </h1>
 
 				<form onSubmit={handleSubmit} className="flex flex-col">
@@ -194,7 +200,7 @@ const page = () => {
 						name="password"
 						placeholder="Enter your password"
 						error={errorEmptyPassword}
-            errorPassChar={errorSpecialCharPassword}
+						errorPassChar={errorSpecialCharPassword}
 						onChange={handlePasswordChange}
 					/>
 
@@ -205,9 +211,16 @@ const page = () => {
 						name="passwordVerify"
 						placeholder="Enter your password again"
 						error={errorEmptyPasswordVerify}
-            errorPassMatch={errorMatchingPassword}
+						errorPassMatch={errorMatchingPassword}
 						onChange={handlePasswordVerifyChange}
 					/>
+
+          <p onClick={handleClick}>BirthDate: </p>
+          <p onClick={handleClick} className="bg-bginput mb-5">{birthDate.toDateString()}</p>
+
+					<div style={{display : birthDateDisplay ? "block" : "none"}}>
+						<Calendar onChange={setBirthDate} value={birthDate} />
+					</div>
 
 					<TextInput
 						type="text"
