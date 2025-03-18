@@ -2,13 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Jersey_15 } from "next/font/google";
 import "./globals.css";
 import ThemeApp from "@/components/ThemeApp";
-import Card from "@/components/Card";
-import Button from "@/components/Button";
-import Card2 from "@/components/Card(old)";
-import Checkbox from "@/components/Checkbox";
-import Form from "@/components/Form";
-import TextInput from "@/components/TextInput";
-import Radio from "@/components/Radio";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +21,7 @@ const jersey15 = Jersey_15({
 
 export const metadata: Metadata = {
   title: "Green-U",
-  description: "Bienvenue sur Green-U, une plateforme moderne et élégante.",
+  description: "Welcome to Green-U, a modern and elegant platform.",
 };
 
 export default function RootLayout({
@@ -40,32 +33,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}>
         
-      <ThemeApp>{children}</ThemeApp>
-
-      <Radio></Radio>
-
-        {/*
-        <Card>TEST COULEURS</Card>
-        
-        <Button>Bouton de Pierre</Button>    
-        
-        <Card>
-        <u>Carte de Manu</u> <br />
-        Sans fioriture, avec héritage
-        </Card>
-
-        <Card2>
-          <u>Carte de Manu</u> <br />
-          Avec ombrage
-          </Card2>
-          <Form>
-            <TextInput></TextInput>
-          </Form>
-          <Button href="">Salut les poulets</Button>
-          <Checkbox></Checkbox>
-         */}
-
-        </body>
+        <ThemeApp>{children}</ThemeApp>
+   
+      </body>
     </html>
   );
 }

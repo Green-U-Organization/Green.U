@@ -7,17 +7,19 @@ import Card from "@/components/Card";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
 import Calendar from "react-calendar";
+import { CalendarProps } from "react-calendar";
+type Value = CalendarProps["value"];
 import Radio from "@/components/Radio";
+import DropDown from "@/components/DropDown";
+import postalCodes from "@/data/postalCodesBE.json";
 
 const page = () => {
 	const [login, setLogin] = useState("");
 	const [errorEmptyLogin, setErrorEmptyLogin] = useState<boolean>(false);
 	const [password, setPassword] = useState("");
-	const [errorEmptyPassword, setErrorEmptyPassword] =
-		useState<boolean>(false);
+	const [errorEmptyPassword, setErrorEmptyPassword] = useState<boolean>(false);
 	const [passwordVerify, setPasswordVerify] = useState("");
-	const [errorEmptyPasswordVerify, setErrorEmptyPasswordVerify] =
-		useState<boolean>(false);
+	const [errorEmptyPasswordVerify, setErrorEmptyPasswordVerify] = useState<boolean>(false);
 	const [surname, setSurname] = useState("");
 	const [errorEmptySurname, setErrorEmptySurname] = useState<boolean>(false);
 	const [lastname, setLastname] = useState("");
@@ -26,14 +28,13 @@ const page = () => {
 	const [errorEmptyEmail, setEmptyErrorEmail] = useState<boolean>(false);
 	const [postalCode, setPostalCode] = useState("");
 	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =	useState<boolean>(false);
-	const [sexe, setSexe] = useState("");
 	const [birthDate, setBirthDate] = useState(new Date());
 	const [errorEmptyBirthDate, setErrorEmptyBirthDate] = useState<boolean>(false);
 	const [errorSpecialCharPassword, setErrorSpecialCharPassword] = useState<boolean>(false);
 	const [errorMatchingPassword, setErrorMatchingPassword] = useState<boolean>(false);
   	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
-	const [selectedValue, setSelectedValue] = useState("");
-
+	const [selectedValue, setSelectedValue] = useState("M");
+	
 	const specialChar = [
 		"²",
 		"&",
@@ -88,9 +89,17 @@ const page = () => {
 	const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setEmail(e.target.value);
 	};
-	const handlePostalCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handlePostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setPostalCode(e.target.value);
 	};
+	const handleDateChange = (value: Value) => {
+		if (value instanceof Date) {
+			setBirthDate(value);
+			setBirthDateDisplay(false);
+		}
+	};
+	  
+	  
 
 	const checkPassword = (password: string) => {
 		console.log("checking password...");
@@ -151,6 +160,7 @@ const page = () => {
 		} else {
 			setErrorEmptyBirthDate(false);
 		}
+
 		checkPassword(password);
 		checkPasswordVerify(password, passwordVerify);
 
@@ -164,7 +174,7 @@ const page = () => {
 			!errorEmptyPostalCode &&
 			!errorEmptyBirthDate &&
 			!errorSpecialCharPassword &&
-			!errorMatchingPassword
+			!errorMatchingPassword  
 		) {
 			console.log("everything is ok");
 		}
@@ -213,12 +223,12 @@ const page = () => {
 					/>
 
 					<p onClick={handleClick}>BirthDate: </p>
-					<p onClick={handleClick} className="bg-bginput mb-5">{birthDate.toDateString()}</p>
+					<p onClick={handleClick} className="bg-bginput pl-3 mb-5">{birthDate.toDateString()}</p>
 
 					<div style={{display : birthDateDisplay ? "block" : "none"}}>
-						<Calendar onChange={setBirthDate} value={birthDate} />
+						<Calendar onChange={handleDateChange} value={birthDate} />
 					</div>
-
+					
 					<TextInput
 						type="text"
 						label="Surname"
@@ -241,11 +251,11 @@ const page = () => {
 
 					<p>Gender: </p>
 					<div className="flex items-center gap-4">
-						<Radio id="M" name="gender" value="M" checked={selectedValue === "M"} onChange={setSelectedValue}/>
-						<Radio id="F" name="gender" value="F" checked={selectedValue === "F"} onChange={setSelectedValue}/>
-						<Radio id="X" name="gender" value="X" checked={selectedValue === "X"} onChange={setSelectedValue}/>
+						<Radio id="M" name="gender" value="M"  checked={selectedValue === "M"} onChange={() => setSelectedValue("M")}/>
+						<Radio id="F" name="gender" value="F" checked={selectedValue === "F"} onChange={() => setSelectedValue("F")}/>
+						<Radio id="X" name="gender" value="X" checked={selectedValue === "X"} onChange={() => setSelectedValue("X")}/>
 					</div>
-
+										
 					<TextInput
 						type="email"
 						label="Email"
@@ -256,6 +266,13 @@ const page = () => {
 						onChange={handleEmailChange}
 					/>
 
+					<DropDown
+						label="Postal Code:"
+						value={postalCode}
+						onChange={handlePostalCodeChange}
+						error={errorEmptyPostalCode}
+					/>
+{/*
 					<TextInput
 						type="number"
 						label="Postal code"
@@ -265,7 +282,7 @@ const page = () => {
 						error={errorEmptyPostalCode}
 						onChange={handlePostalCodeChange}
 					/>
-
+*/}
 					<Button type="submit" handleSubmit={handleSubmit}>
 						Sign
 					</Button>

@@ -43,15 +43,13 @@ const TextInput: FC<InputProps> = ({
         placeholder={placeholder}
         onChange={onChange}
         disabled={disabled}
-        className={`w-full ${error || errorPassChar || errorPassMatch ? "bg-amber-300" : "bg-bginput"}`}
+        className={`w-full pl-3 ${error || errorPassChar || errorPassMatch ? "border border-txterror" : "bg-bginput"}`}
       />
-      {/* Ajuster les messages d'erreurs pour les password >> if (type === password) alors blablabla  */}
-      {errorPassMatch && <p className="text-red-600">Your password must be strictly identical!</p>}
-      {errorPassChar && <p className="text-red-600">Password must have at least 8 character and 1 special character!</p>}
-      {error && <p className="text-red-600">Input filed can't be empty!</p>}
+      {/* Ajuster les messages d'erreurs pour les passwords >> if (type === password) alors blablabla  */}
+      {errorPassMatch && <p className="text-txterror">Your password must be strictly identical!</p>}
+      {errorPassChar && <p className="text-txterror">Password must have at least 8 characters and 1 special character!</p>}
+      {error && <p className="text-txterror">Input field can't be empty!</p>}
 
-
-    
     </div>
   )
 }

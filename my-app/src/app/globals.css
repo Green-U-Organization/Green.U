@@ -11,7 +11,7 @@
   --extbutton: #fffbeb;
   --bgbutton: #fee685;
   --bginput: #fee685;
-  --bgerror: #ffa2a2;
+  --txterror: #e7000b;
 }
 
 /* Printemps */
@@ -22,7 +22,7 @@
   --extbutton: #d4edda;
   --bgbutton: #c3e6cb;
   --bginput: #7bf1a8;
-  --bgerror: #ffa2a2;
+  --txterror: #e7000b;
 }
 
 /* Été */
@@ -33,7 +33,7 @@
   --extbutton: #d1ecf1;
   --bgbutton: #bee5eb;
   --bginput: #8ec5ff;
-  --bgerror: #ffa2a2;
+  --txterror: #e7000b;
 }
 
 /* Automne */
@@ -44,7 +44,7 @@
   --extbutton: #fffbeb;
   --bgbutton: #fee685;
   --bginput: #ffb86a;
-  --bgerror: #ffa2a2;
+  --txterror: #e7000b;
 }
 
 /* Hiver */
@@ -55,7 +55,7 @@
   --extbutton: #f8f9fa;
   --bgbutton: #e9ecef;
   --bginput: #d1d5dc;
-  --bgerror: #ffa2a2;
+  --txterror: #e7000b;
 }
 
 @theme {
@@ -70,7 +70,7 @@
   --color-bgbutton: var(--bgbutton);
   --color-extbutton: var(--extbutton);
   --color-bginput: var(--bginput);
-  --color-bgerror: var(--bgerror);
+  --color-txterror: var(--txterror);
 }
 
 @media (prefers-color-scheme: dark) {
