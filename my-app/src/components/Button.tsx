@@ -6,7 +6,7 @@ import React, { FormEvent, useState } from 'react'
 
 type Props = {
     children: React.ReactNode;
-    href: string;
+    href?: string;
     type: "link" | "submit";
     handleSubmit?: (e: FormEvent<HTMLFormElement>) => void;
 }
