@@ -11,7 +11,7 @@ public class Jwt
     {
         Env.Load();
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Convert.FromBase64String($"key={Environment.GetEnvironmentVariable("SECRET_JWT")};");
+        var key = Convert.FromBase64String(Environment.GetEnvironmentVariable("SECRET_JWT"));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

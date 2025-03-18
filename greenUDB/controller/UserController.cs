@@ -11,7 +11,7 @@ public class UserController
 
     public static async Task<User?> GetUser(string login, greenUDB db)
     {
-        return await db.User.FirstOrDefaultAsync(u => u.login == login);
+        return await db.User.FirstOrDefaultAsync(u => u.username == login);
     }
     public static async Task<IResult> CreateUser(User User, greenUDB db)
     {
