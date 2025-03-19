@@ -93,3 +93,11 @@ body {
   height: 100%;
   cursor: text;
 }
+
+.custom-clickable {
+  cursor: url('/cursors/hand.cur');
+}
+
+.navbar {
+  font-family: var(--font-jersey);
+}

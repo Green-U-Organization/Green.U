@@ -4,7 +4,7 @@
 import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import { useState } from "react";
 import Card from "@/components/Card";
-import TextInput from "../../components/TextInput";
+import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
 
 const page = () => {
@@ -96,13 +96,13 @@ const page = () => {
 	};
 
 	return (
-		<section className="flex items-center justify-center h-screen">
+		<section className="flex items-center justify-center min-h-[calc(100vh-15px)] overflow-auto">
 			<Card className={"max-w-5xl h-full px-8"}>
 				<form onSubmit={handleSubmit}>
 					<div className="flex flex-col items-center justify-center">
 						<h2 className="text-7xl mb-10">*Green-U*</h2>
 
-						<div className="flex flex-col justify-center items-left">
+						<div className="flex flex-col justify-center items-start">
 							<TextInput
 								type="email"
 								label="Email"
@@ -125,11 +125,7 @@ const page = () => {
 						</div>
 						<br />
 						<div className="flex flex-row justify-between">
-							<Button
-								type="submit"
-								handleSubmit={handleSubmit}
-								href=""
-							>
+							<Button type="submit">
 								Log in
 							</Button>
 							<Button type="link" href="/signin">

@@ -1,21 +1,19 @@
 "use client"
 
-import { Chicle } from 'next/font/google'
 import Link from 'next/link';
 import React, { FormEvent, useState } from 'react'
 
 type Props = {
     children: React.ReactNode;
     href?: string;
-    type: "link" | "submit";
-    handleSubmit?: (e: FormEvent<HTMLFormElement>) => void;
+    type: "link" | "submit" | "button";
+    handleSubmit?: (e: FormEvent<HTMLButtonElement>) => void;
 }
 
 const Button = ({children,
                  href,
                 type,
                 handleSubmit
-
             } : Props) => {
     const [buttonPush, setButtonPush] = useState(false)
     const [inside, setInside] = useState(false)
@@ -25,7 +23,7 @@ const Button = ({children,
         if(type === "link"){
 
         }
-        if(type === "submit"){
+        if(type === "submit" && handleSubmit){
             handleSubmit
         }
     }
@@ -45,7 +43,7 @@ const Button = ({children,
     return (
         
         
-            type === "link" ? (
+            type === "link" && href ? (
                 <Link href={href}>
                     <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-button m-5 ${inside ? "bg-bgbutton" : "bg-cardbackground"}`}
                     onMouseDown={handleDown}
@@ -105,7 +103,8 @@ const Button = ({children,
                 onMouseDown={handleDown}
                 onMouseUp={handleUp}
                 onMouseLeave={handleLeave}
-                onMouseEnter={handleEnter}>
+                onMouseEnter={handleEnter}
+                onClick={handleSubmit}>
 
                 <div className={`absolute -top-0 left-0 h-2 w-full bg-extbutton`} style={{ display: buttonPush ? "block" : "none" }}></div>
 

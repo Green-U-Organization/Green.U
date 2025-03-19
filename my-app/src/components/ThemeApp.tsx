@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { ClassName } from "react-calendar/src/shared/types.js";
 
 // Fonction qui définit la saison selon le mois actuel
 const getSeason = () => {
@@ -12,7 +13,7 @@ const getSeason = () => {
   return "theme-winter"; // Hiver
 };
 
-const ThemeApp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ThemeApp: React.FC<{ children: React.ReactNode , className?: string}> = ({ children, className }) => {
   // Stocke le thème dans l'état (initialisé à une chaîne vide pour éviter SSR)
   const [theme, setTheme] = useState<string>("");
 
@@ -47,7 +48,7 @@ const ThemeApp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Éviter le rendu côté serveur pour éviter l'erreur d'hydratation
   if (!isMounted) return null;
 
-  return <div>{children}</div>;
+  return <div className={className}>{children}</div>;
 };
 
 export default ThemeApp;
