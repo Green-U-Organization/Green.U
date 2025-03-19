@@ -94,10 +94,12 @@ body {
   cursor: text;
 }
 
+/* TEST D'UN CURSEUR PERSONNALISE */
 .custom-clickable {
   cursor: url('/cursors/hand.cur');
 }
 
+/* TEST DE LA POLICE SUR LA NAVBAR */
 .navbar {
   font-family: var(--font-jersey);
 }

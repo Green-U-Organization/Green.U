@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-gray-800 text-white p-4 shadow-md z-50">
+    <nav className="fixed top-0 left-0 w-full bg-gray-800 text-white p-4 shadow-md z-10">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold hover:text-gray-600">
