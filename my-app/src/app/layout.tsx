@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Jersey_15 } from "next/font/google";
 import "./globals.css";
 import ThemeApp from "@/components/ThemeApp";
 import Navbar from "@/components/Navbar";
+import { LanguageProvider } from "@/app/contexts/LanguageProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,18 +26,14 @@ export const metadata: Metadata = {
   description: "Welcome to Green-U, a modern and elegant platform.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}>
-        
-        <Navbar />
-        <ThemeApp className='pt-15'>{children}</ThemeApp>
-
+    <html lang="en" className="bg-bgbutton">      
+      <body className={`pt-15 ${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}>  
+        <LanguageProvider>
+          <Navbar />
+          <ThemeApp>{children}</ThemeApp>
+        </LanguageProvider>
       </body>
     </html>
   );

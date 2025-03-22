@@ -4,10 +4,16 @@ import { FaHeart, FaMapMarkerAlt, FaInstagram, FaFacebook, FaEnvelope } from 're
 import Card from "@/components/Card"
 import Button from "@/components/Button"
 import { useRouter } from "next/navigation"
+import { useState } from "react";
+import AvatarSelector from "@/components/AvatarSelector";
+import { useLanguage } from '../contexts/LanguageProvider'
 
 export default function GardenerProfile() {
     
     const router = useRouter()
+    const [avatar, setAvatar] = useState<string | null>(null);
+    const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
+    const {translations} = useLanguage();
 
     // Simuler les données d'XP, de badges et de likes
     const xp = 300 // XP actuel (NE PAS DEPASSER LE maxXp!!!)
@@ -16,10 +22,10 @@ export default function GardenerProfile() {
 
     // Définition des badges en fonction du niveau d'XP
     const badges = [
-        { level: 100, name: "🌱 Novice Gardener" },
-        { level: 200, name: "🌿 Skilled Gardener" },
-        { level: 300, name: "🌻 Expert Gardener" },
-        { level: 500, name: "🌳 Master Gardener" }
+        { level: 100, name: `🌱 ${translations.level1}` },
+        { level: 200, name: `🌿 ${translations.level2}` },
+        { level: 300, name: `🌻 ${translations.level3}` },
+        { level: 500, name: `🌳 ${translations.level4}` }
     ];
 
     //Détermination des badges débloqués
@@ -34,16 +40,38 @@ export default function GardenerProfile() {
 
     return (
     <div className="flex justify-center items-center">
-        <Card className="flex flex-col p-5 pt-5 max-w-150">
-            {/* Profil Header */}
-            <div className="flex items-center space-x-4">
+     
+        {/* Sélecteur d'avatar */}
+       
+       {isAvatarSelectorOpen ? (
+        <AvatarSelector
+            onSelect={setAvatar}
+            isOpen={isAvatarSelectorOpen}
+            onClose={() => setIsAvatarSelectorOpen(false)}
+        />
+       ):(
+        <Card className="flex flex-col p-5 max-w-150">
+        <div id="profilePage">
+            {/* Image du profil */}
+            <div className="relative flex items-center space-x-4">
                 <Image
-                    src="/image/avatars/PI_05.png"
+                    src={avatar || "/image/avatars/PI_01.png"}
                     alt="Profile picture"
                     width={96}
                     height={96}
-                    className="rounded-full border-4 border-border"
+                    className="relative rounded-full border-4 border-border"
                 />
+
+                {/* Bouton pour ouvrir le sélecteur d'avatar */}
+                <Image 
+                    src="/image/divers/PI_blank.png"
+                    alt="Change Avatar"
+                    width={32}
+                    height={32}
+                    className="absolute mt-20 ml-15 bg-bginput rounded-full border-3 border-border cursor-pointer"
+                    onClick={() => setIsAvatarSelectorOpen(true)}
+                />
+
                 <div>
                     <h1 className="text-3xl font-bold">Jean Dupont</h1>
                     <p className="flex items-center gap-1 text-shadow "><FaMapMarkerAlt /> 1000-Bruxelles</p>
@@ -55,7 +83,7 @@ export default function GardenerProfile() {
             
             {/* XP et Badges */}
             <div className="mt-5">
-                <h2 className="text-2xl font-semibold">🏆 Experience & Badges</h2>
+                <h2 className="text-2xl font-semibold">🏆 {translations.xpandbadges}</h2>
 
                 {/* Barre d'XP */}
                 <div className='w-full bg-bgbutton rounded-full h-4 mt-2'>
@@ -81,7 +109,7 @@ export default function GardenerProfile() {
 
             {/* Liste des jardins */}
             <div className="mt-5">
-                <h2 className="text-2xl font-semibold mb-2">🌿 Gardens Participating</h2>
+                <h2 className="text-2xl font-semibold mb-2">🌿 {translations.participating}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                      {/* ROUTE A AJOUTER AVEC L'ID DU JARDIN POUR Y ACCEDER */}
                     {gardens.map((garden, index) => (
@@ -95,7 +123,7 @@ export default function GardenerProfile() {
 
             {/* Compétences */}
             <div className="mt-5">
-                <h2 className="text-2xl font-semibold">🌱 Specialties</h2>
+                <h2 className="text-2xl font-semibold">🌱{translations.specialties}</h2>
                 <ul className="list-disc list-inside text-gray-700">
                     <li>Permaculture & organic vegetable gardens</li>
                     <li>Creation and maintenance of gardens</li>
@@ -105,13 +133,13 @@ export default function GardenerProfile() {
         
             {/* Réalisations */}
             <div className="mt-5">
-                <h2 className="text-2xl font-semibold">🏡 Achievements</h2>
+                <h2 className="text-2xl font-semibold">🏡 {translations.achievements}</h2>
                 <p className="text-gray-700">I recently set up a community vegetable garden and designed an ecological pond attracting local biodiversity.</p>
             </div>
         
             {/* Réseaux Sociaux */}
             <div className="mt-5">
-                <h2 className="text-2xl font-semibold">📢 Contact & Networks</h2>
+                <h2 className="text-2xl font-semibold">📢 {translations.contact}</h2>
                 <div className="flex space-x-4 mt-2 text-border">
                     <a href="#" target='_blank' className="hover:text-shadow"><FaInstagram /></a>
                     <a href="#" target='_blank' className="hover:text-shadow"><FaFacebook /></a>
@@ -122,14 +150,16 @@ export default function GardenerProfile() {
             <div className="flex justify-center mt-auto p-2">
                 {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
                 <Button type="submit" handleSubmit ={() => router.push("/login")}>
-                    Back
+                    {translations.back}
                 </Button>
                 {/* ID DU USER A TRANSMETTRE POUR L'EDITION DU PROFILE */}
                 <Button type="submit" handleSubmit ={() => router.push("/editProfile")}>
-                    Edit
+                    {translations.edit}
                 </Button>
             </div>
+        </div>
         </Card>
+       )}
     </div>
     )
 }

@@ -6,12 +6,14 @@ import { useState } from "react";
 import Card from "@/components/Card";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 const page = () => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [errorEmail, setErrorEmail] = useState<boolean>(false);
     const [errorPassword, setErrorPassword] = useState<boolean>(false);
+	const {translations} = useLanguage();
 	// const [checkPass, setCheckPass] = useState<Boolean>(false);
 
 	// const specialChar = [
@@ -105,20 +107,20 @@ const page = () => {
 						<div className="flex flex-col justify-center items-start">
 							<TextInput
 								type="email"
-								label="Email"
+								label={translations.email}
 								value={email}
 								name="email"
-								placeholder="Enter your email"
+								placeholder={translations.enteremail}
 								onChange={handleEmailChange}
 								error={errorEmail}
 							/>
 							<br />
 							<TextInput
 								type="password"
-								label="Password"
+								label={translations.password}
 								value={password}
 								name="password"
-								placeholder="Enter your password"
+								placeholder={translations.enterpassword}
 								onChange={handlePasswordChange}
 								error={errorPassword}
 							/>
@@ -126,10 +128,10 @@ const page = () => {
 						<br />
 						<div className="flex flex-row justify-between">
 							<Button type="submit">
-								Log in
+								{translations.login}
 							</Button>
 							<Button type="link" href="/signin">
-								Sign in
+								{translations.signup}
 							</Button>
 						</div>
 					</div>

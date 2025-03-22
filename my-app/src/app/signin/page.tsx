@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-
+import { useRef, useEffect } from "react";
 import React, { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import Card from "@/components/Card";
@@ -10,8 +10,9 @@ import Calendar from "react-calendar";
 import { CalendarProps } from "react-calendar";
 type Value = CalendarProps["value"];
 import Radio from "@/components/Radio";
-import DropDown from "@/components/DropDown";
+import DropDown from "@/components/DropDownPostalCode";
 import postalCodes from "@/data/postalCodesBE.json";
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 const page = () => {
 	const [login, setLogin] = useState("");
@@ -20,8 +21,8 @@ const page = () => {
 	const [errorEmptyPassword, setErrorEmptyPassword] = useState<boolean>(false);
 	const [passwordVerify, setPasswordVerify] = useState("");
 	const [errorEmptyPasswordVerify, setErrorEmptyPasswordVerify] = useState<boolean>(false);
-	const [surname, setSurname] = useState("");
-	const [errorEmptySurname, setErrorEmptySurname] = useState<boolean>(false);
+	const [firstname, setFirstname] = useState("");
+	const [errorEmptyFirstname, setErrorEmptyFirstname] = useState<boolean>(false);
 	const [lastname, setLastname] = useState("");
 	const [errorEmptyLastname, setErrorEmptyLastname] =	useState<boolean>(false);
 	const [email, setEmail] = useState("");
@@ -34,8 +35,33 @@ const page = () => {
 	const [errorSpecialCharPassword, setErrorSpecialCharPassword] = useState<boolean>(false);
 	const [errorMatchingPassword, setErrorMatchingPassword] = useState<boolean>(false);
   	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
+	const {translations} = useLanguage();
 
-	
+	const calendarRef = useRef<HTMLDivElement>(null);
+
+	//Gérer le clic en dehors du calendrier
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if(calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
+				setBirthDateDisplay(false)
+			}
+		}
+
+		if (birthDateDisplay) {
+			document.addEventListener("mousedown", handleClickOutside)
+		} else {
+			document.removeEventListener("mousedown",handleClickOutside)
+		}
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside)
+		}
+	}, [birthDateDisplay])
+
+	const handleClick = () => {
+		setBirthDateDisplay((prev) => !prev)
+	}
+
 	const specialChar = [
 		"²",
 		"&",
@@ -81,8 +107,8 @@ const page = () => {
 	const handlePasswordVerifyChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setPasswordVerify(e.target.value);
 	};
-	const handleSurnameChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setSurname(e.target.value);
+	const handleFirstnameChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setFirstname(e.target.value);
 	};
 	const handleLastnameChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setLastname(e.target.value);
@@ -134,10 +160,10 @@ const page = () => {
 		} else {
 			setErrorEmptyPasswordVerify(false);
 		}
-		if (!surname) {
-			setErrorEmptySurname(true);
+		if (!firstname) {
+			setErrorEmptyFirstname(true);
 		} else {
-			setErrorEmptySurname(false);
+			setErrorEmptyFirstname(false);
 		}
 		if (!lastname) {
 			setErrorEmptyLastname(true);
@@ -167,7 +193,7 @@ const page = () => {
 			!errorEmptyLogin &&
 			!errorEmptyPassword &&
 			!errorEmptyPasswordVerify &&
-			!errorEmptySurname &&
+			!errorEmptyFirstname &&
 			!errorEmptyLastname &&
 			!errorEmptyEmail &&
 			!errorEmptyPostalCode &&
@@ -179,32 +205,28 @@ const page = () => {
 		}
 	};
 
-	const handleClick = () => {
-		setBirthDateDisplay((prev) => !prev);
-	};
-
 	return (
 		<section className="flex items-center justify-center h-full">
-			<Card className={"max-w-lg h-full px-8"}>
-				<h1 className="text-4xl mb-10">Sign in : </h1>
+			<Card className={"max-w-lg h-full px-8 pt-5"}>
+				<h1 className="text-4xl mb-5">{translations.signup}: </h1>
 
 				<form onSubmit={handleSubmit} className="flex flex-col">
 					<TextInput
 						type="text"
-						label="Username"
+						label={translations.username}
 						value={login}
 						name="login"
-						placeholder="Enter your user name"
+						placeholder={translations.enterusername}
 						error={errorEmptyLogin}
 						onChange={handleLoginChange}
 					/>
 
 					<TextInput
 						type="password"
-						label="Password"
+						label={translations.password}
 						value={password}
 						name="password"
-						placeholder="Enter your password"
+						placeholder={translations.enterpassword}
 						error={errorEmptyPassword}
 						errorPassChar={errorSpecialCharPassword}
 						onChange={handlePasswordChange}
@@ -212,43 +234,45 @@ const page = () => {
 
 					<TextInput
 						type="password"
-						label="Password verification"
+						label={translations.pwdverif}
 						value={passwordVerify}
 						name="passwordVerify"
-						placeholder="Enter your password again"
+						placeholder={translations.enterpasswordagain}
 						error={errorEmptyPasswordVerify}
 						errorPassMatch={errorMatchingPassword}
 						onChange={handlePasswordVerifyChange}
 					/>
 
-					<p onClick={handleClick}>BirthDate: </p>
+					<p onClick={handleClick}>{translations.birthdate} </p>
 					<p onClick={handleClick} className="bg-bginput pl-3 mb-5">{birthDate.toDateString()}</p>
 
-					<div style={{display : birthDateDisplay ? "block" : "none"}}>
-						<Calendar onChange={handleDateChange} value={birthDate} />
-					</div>
-					
+					{birthDateDisplay && (
+						<div ref={calendarRef}>
+							<Calendar onChange={handleDateChange} value={birthDate} />
+						</div>
+					)}
+
 					<TextInput
 						type="text"
-						label="Surname"
-						value={surname}
-						name="surname"
-						placeholder="Enter your surname"
-						error={errorEmptySurname}
-						onChange={handleSurnameChange}
+						label={translations.firstname}
+						value={firstname}
+						name="firstname"
+						placeholder={translations.enterfirstname}
+						error={errorEmptyFirstname}
+						onChange={handleFirstnameChange}
 					/>
 
 					<TextInput
 						type="text"
-						label="Lastname"
+						label={translations.lastname}
 						value={lastname}
 						name="lastname"
-						placeholder="Enter your lastname"
+						placeholder={translations.enterlastname}
 						error={errorEmptyLastname}
 						onChange={handleLastnameChange}
 					/>
 
-					<p>Gender: </p>
+					<p>{translations.gender} </p>
 					<div className="flex items-center gap-4">
 						<Radio id="M" name="gender" value="M" checked={gender === "M"} onChange={() => setGender("M")}/>
 						<Radio id="F" name="gender" value="F" checked={gender === "F"} onChange={() => setGender("F")}/>
@@ -257,16 +281,16 @@ const page = () => {
 										
 					<TextInput
 						type="email"
-						label="Email"
+						label={translations.email}
 						value={email}
 						name="email"
-						placeholder="Enter your email"
+						placeholder={translations.enteremail}
 						error={errorEmptyEmail}
 						onChange={handleEmailChange}
 					/>
 
 					<DropDown
-						label="Postal Code:"
+						label={translations.postalcode}
 						value={postalCode}
 						onChange={handlePostalCodeChange}
 						error={errorEmptyPostalCode}
@@ -282,9 +306,11 @@ const page = () => {
 						onChange={handlePostalCodeChange}
 					/>
 */}
-					<Button type="submit" handleSubmit={handleSubmit}>
-						Sign
-					</Button>
+					<div className="flex justify-center pb-5">
+						<Button type="submit" handleSubmit={handleSubmit}>
+							{translations.sign}
+						</Button>
+					</div>
 				</form>
 			</Card>
 		</section>

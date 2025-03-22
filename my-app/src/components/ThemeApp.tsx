@@ -28,6 +28,11 @@ const ThemeApp: React.FC<{ children: React.ReactNode , className?: string}> = ({
     if (typeof window !== "undefined") {
       // Récupérer le thème du localStorage ou utiliser la saison actuelle
       const storedTheme = localStorage.getItem("theme") || getSeason();
+      
+      //-------------------------------------------//
+      // PEUT-ETRE ACTIVE POUR LE TEST DES SAISONS
+      //const storedTheme = "theme-summer";
+      //-------------------------------------------//
 
       // Mettre à jour l'état React
       setTheme(storedTheme);

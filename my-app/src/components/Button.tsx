@@ -1,19 +1,21 @@
 "use client"
 
 import Link from 'next/link';
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, MouseEvent, useState } from 'react'
 
 type Props = {
     children: React.ReactNode;
     href?: string;
     type: "link" | "submit" | "button";
     handleSubmit?: (e: FormEvent<HTMLButtonElement>) => void;
+    onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button = ({children,
                  href,
                 type,
-                handleSubmit
+                handleSubmit, 
+                onClick
             } : Props) => {
     const [buttonPush, setButtonPush] = useState(false)
     const [inside, setInside] = useState(false)
@@ -27,29 +29,31 @@ const Button = ({children,
             handleSubmit
         }
     }
-    const handleUp = () => {
-        setButtonPush(false)
-    }
-
-    const handleEnter = () => {
-        setInside(true)
-    }
-
+    const handleUp = () => setButtonPush(false)
+    const handleEnter = () => setInside(true)
     const handleLeave = () => {
         setInside(false)
         setButtonPush(false)
     }
 
-    return (
-        
-        
+    const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+        if(type === 'submit' && handleSubmit) {
+            handleSubmit(e as unknown as FormEvent<HTMLButtonElement>)
+        }
+        if (onClick) {
+            onClick(e)
+        }
+    }
+
+    return (        
             type === "link" && href ? (
                 <Link href={href}>
-                    <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-button m-5 ${inside ? "bg-bgbutton" : "bg-cardbackground"}`}
+                    <button className={`select-none font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-button m-5 ${inside ? "bg-bgbutton" : "bg-cardbackground"}`}
                     onMouseDown={handleDown}
                     onMouseUp={handleUp}
                     onMouseLeave={handleLeave}
-                    onMouseEnter={handleEnter}>
+                    onMouseEnter={handleEnter}
+                    onClick={handleClick}>
     
                     <div className={`absolute -top-0 left-0 h-2 w-full bg-extbutton`} style={{ display: buttonPush ? "block" : "none" }}></div>
     
@@ -99,12 +103,12 @@ const Button = ({children,
                 </button>
                     </Link>
                 ) : (
-            <button className={`font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-button m-5 ${inside ? "bg-bgbutton" : "bg-cardbackground"}`}
+            <button className={`select-none font-(family-name:--font-jersey) text-2xl py-2 px-6 relative bg-button m-5 ${inside ? "bg-bgbutton" : "bg-cardbackground"} cursor-pointer`}
                 onMouseDown={handleDown}
                 onMouseUp={handleUp}
                 onMouseLeave={handleLeave}
                 onMouseEnter={handleEnter}
-                onClick={handleSubmit}>
+                onClick={handleClick}>
 
                 <div className={`absolute -top-0 left-0 h-2 w-full bg-extbutton`} style={{ display: buttonPush ? "block" : "none" }}></div>
 

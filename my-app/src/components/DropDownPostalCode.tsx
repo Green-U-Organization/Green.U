@@ -1,16 +1,18 @@
 "use client"
 import { useState } from "react";
 import postalCodes from "@/data/postalCodesBE.json"; // Assurez-vous que le fichier est bien dans /data
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
-interface DropdownProps {
+interface DropDownProps {
   label: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ label, value, onChange, error }) => {
+const DropDownPostalCode: React.FC<DropDownProps> = ({ label, value, onChange, error }) => {
   const [search, setSearch] = useState("");
+  const {translations} = useLanguage();
 
   // Filtrage des codes postaux en fonction de la recherche
   const filteredOptions = postalCodes.filter(({ code, city }) =>
@@ -20,7 +22,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, value, onChange, error }) =>
   return (
     <div className="flex flex-col mb-4">
       <label htmlFor="postal-search" className="mb-1 font-medium">
-        {label}
+        {translations.postalcode}
       </label>
       
       {/* Input avec datalist pour affichage dynamique */}
@@ -31,7 +33,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, value, onChange, error }) =>
         value={value}
         onChange={onChange}
         onInput={(e) => setSearch(e.currentTarget.value)}
-        placeholder="Enter a postal code or city..."
+        placeholder={translations.enterpostalcode}
         className={`w-full pl-3 ${error ? "border border-txterror" : "bg-bginput"}`}
       />
 
@@ -42,9 +44,9 @@ const Dropdown: React.FC<DropdownProps> = ({ label, value, onChange, error }) =>
         ))}
       </datalist>
 
-      {error && <p className="text-txterror">Enter a postal code</p>}
+      {error && <p className="text-txterror">{translations.enterpostalcode}</p>}
     </div>
   );
 };
 
-export default Dropdown;
+export default DropDownPostalCode;

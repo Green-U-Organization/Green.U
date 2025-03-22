@@ -8,7 +8,7 @@ type CardProps = {
 const Card: React.FC<CardProps> = ({children, className}) => {
     return (
 
-           <div className={`font-(family-name:--font-jersey)  text-2xl py-2  relative bg-cardbackground  ${className}`}>
+           <div className={`font-(family-name:--font-jersey)  text-2xl relative bg-cardbackground  ${className}`}>
                {/* Bordures */}
                 <div className="absolute top-0 left-0 h-full w-2 bg-border"></div>
                 <div className="absolute top-0 right-0 h-full w-2 bg-border"></div>
