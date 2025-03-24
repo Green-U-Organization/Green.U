@@ -1,0 +1,62 @@
+{
+  "name": "next-international",
+  "version": "1.3.1",
+  "description": "Type-safe internationalization (i18n) for Next.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./client": {
+      "types": "./dist/app/client/index.d.ts",
+      "default": "./dist/app/client/index.js"
+    },
+    "./server": {
+      "types": "./dist/app/server/index.d.ts",
+      "default": "./dist/app/server/index.js"
+    },
+    "./middleware": {
+      "types": "./dist/app/middleware/index.d.ts",
+      "default": "./dist/app/middleware/index.js"
+    }
+  },
+  "keywords": [
+    "next",
+    "i18n",
+    "translate",
+    "internationalization"
+  ],
+  "files": [
+    "dist",
+    "client.d.ts",
+    "server.d.ts",
+    "middleware.d.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuiiBz/next-international.git"
+  },
+  "bugs": {
+    "url": "https://github.com/QuiiBz/next-international/issues"
+  },
+  "homepage": "https://next-international.vercel.app",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup src/index.ts src/app/client/index.ts src/app/server/index.ts src/app/middleware/index.ts --external next --external react --dts",
+    "watch": "pnpm build --watch"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "next": "^15.0.0",
+    "react": "^18.2.0",
+    "tsup": "^8.0.1"
+  },
+  "dependencies": {
+    "client-only": "^0.0.1",
+    "international-types": "^0.8.1",
+    "server-only": "^0.0.1"
+  }
+}
