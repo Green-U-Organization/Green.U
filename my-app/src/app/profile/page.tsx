@@ -16,7 +16,7 @@ export default function GardenerProfile() {
     const {translations} = useLanguage();
 
     // Simuler les données d'XP, de badges et de likes
-    const xp = 300 // XP actuel (NE PAS DEPASSER LE maxXp!!!)
+    const xp = 500 // XP actuel (NE PAS DEPASSER LE maxXp!!!)
     const maxXp = 500 // XP nécessaire pour le niveau max
     const likes = 120 // Nombre de likes
 
@@ -50,7 +50,7 @@ export default function GardenerProfile() {
             onClose={() => setIsAvatarSelectorOpen(false)}
         />
        ):(
-        <Card className="flex flex-col p-5 max-w-150">
+        <Card className="flex flex-col p-5 max-w-5xl">
         <div id="profilePage">
             {/* Image du profil */}
             <div className="relative flex items-center space-x-4">
