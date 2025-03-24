@@ -6,15 +6,17 @@ import React, { FormEvent, MouseEvent, useState } from 'react'
 type Props = {
     children: React.ReactNode;
     href?: string;
-    type: "link" | "submit" | "button";
+    type: "link" | "submit" | "button" | "action";
     handleSubmit?: (e: FormEvent<HTMLButtonElement>) => void;
+    handleAction?: (e: FormEvent<HTMLButtonElement>) => void;
     onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button = ({children,
-                 href,
+                href,
                 type,
                 handleSubmit, 
+                handleAction,
                 onClick
             } : Props) => {
     const [buttonPush, setButtonPush] = useState(false)
@@ -28,6 +30,9 @@ const Button = ({children,
         if(type === "submit" && handleSubmit){
             handleSubmit
         }
+        if(type === "action" && handleAction){
+            handleAction
+        }
     }
     const handleUp = () => setButtonPush(false)
     const handleEnter = () => setInside(true)
@@ -39,6 +44,9 @@ const Button = ({children,
     const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
         if(type === 'submit' && handleSubmit) {
             handleSubmit(e as unknown as FormEvent<HTMLButtonElement>)
+        }
+        if (type === 'action' && handleAction) {
+            handleAction(e as unknown as FormEvent<HTMLButtonElement>)
         }
         if (onClick) {
             onClick(e)
