@@ -38,15 +38,15 @@ namespace GreenUApi.authentification
         {
             var user = await UserController.GetUserForLogin(usernameInput, db);
 
-            if (user[0].username == null)
+            if (user.Data[0].username == null)
                 return TypedResults.NotFound();
 
-            var hashedPassword = hasher(password, Encoding.UTF8.GetBytes(user[0].salt))[0];
+            var hashedPassword = hasher(password, Encoding.UTF8.GetBytes(user.Data[0].salt))[0];
 
-            if (user[0].password == hashedPassword)
+            if (user.Data[0].password == hashedPassword)
             {
                 // Générer un JWT avec les informations de l'utilisateur
-                var token = Jwt.GenerateJwtToken(user[0]);
+                var token = Jwt.GenerateJwtToken(user.Data[0]);
 
                 // Retourner le jeton JWT à l'utilisateur
                 return TypedResults.Ok(new { message = "Mot de passe valide !", token });
