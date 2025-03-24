@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
+using GreenUApi.model;
 
 namespace GreenUApi.controller;
 
@@ -61,7 +62,7 @@ public class UserController
         {
             return TypedResults.Conflict(new { message = "This username already exists" });
         }
-        string[] hashSalt = Authentification.hasher(User.Password, null);
+        string[] hashSalt = Authentification.Hasher(User.Password, null);
         User.Password = hashSalt[0];
         User.Salt = hashSalt[1];
         db.User.Add(User);

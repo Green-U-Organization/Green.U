@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using GreenUApi.model;
 
 public class greenUDB : DbContext
 {

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using GreenUApi.model;
 public class Verification{
     public int Id { get; set; }
 

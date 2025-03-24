@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using DotNetEnv;
+using GreenUApi.model;
 
 namespace Token;
 public class Jwt

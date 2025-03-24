@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using GreenUApi.model;
+
 public class Session{
     public int Id { get; set; }
     

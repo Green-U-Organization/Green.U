@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace GreenUApi.model;
+
 [Table("Users")]
 public class User
 {
