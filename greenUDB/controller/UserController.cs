@@ -6,8 +6,8 @@ namespace GreenUApi.controller;
 public class Result<T>
 {
     public bool IsSuccess { get; set; }
-    public T Data { get; set; }
-    public string ErrorMessage { get; set; }
+    public T? Data { get; set; }
+    public string? ErrorMessage { get; set; }
 }
 
 public class UserController
@@ -22,13 +22,13 @@ public class UserController
         try
         {
         var user = await db.User
-            .Where(u => u.username == username)
+            .Where(u => u.Username == username)
             .Select(u => new User
             {
                 Id = u.Id,
-                username = u.username,
-                password = u.password,
-                salt = u.salt
+                Username = u.Username,
+                Password = u.Password,
+                Salt = u.Salt
             })
             .ToArrayAsync();
 
@@ -50,9 +50,9 @@ public class UserController
    
     public static async Task<IResult> CreateUser(User User, greenUDB db)
     {
-        string[] hashSalt = Authentification.hasher(User.password, null);
-        User.password = hashSalt[0];
-        User.salt = hashSalt[1];
+        string[] hashSalt = Authentification.hasher(User.Password, null);
+        User.Password = hashSalt[0];
+        User.Salt = hashSalt[1];
         db.User.Add(User);
         await db.SaveChangesAsync();
         return TypedResults.Created($"/Useritems/{User.Id}", User);
@@ -64,7 +64,7 @@ public class UserController
 
         if (User is null) return TypedResults.NotFound();
 
-        User.surname = inputUser.surname;
+        User.Surname = inputUser.Surname;
 
         await db.SaveChangesAsync();
 

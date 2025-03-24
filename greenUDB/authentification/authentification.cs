@@ -10,7 +10,7 @@ namespace GreenUApi.authentification
 {
     public class Authentification
     {
-        public static string[] hasher(string password, byte[] salty)
+        public static string[] hasher(string password, byte[]? salty)
         {
             // Generate a 128-bit salt using a sequence of
             // cryptographically strong random bytes.
@@ -38,12 +38,12 @@ namespace GreenUApi.authentification
         {
             var user = await UserController.GetUserForLogin(usernameInput, db);
 
-            if (user.Data[0].username == null)
+            if (user.Data[0].Username == null)
                 return TypedResults.NotFound();
 
-            var hashedPassword = hasher(password, Encoding.UTF8.GetBytes(user.Data[0].salt))[0];
+            var hashedPassword = hasher(password, Encoding.UTF8.GetBytes(user.Data[0].Salt))[0];
 
-            if (user.Data[0].password == hashedPassword)
+            if (user.Data[0].Password == hashedPassword)
             {
                 // Générer un JWT avec les informations de l'utilisateur
                 var token = Jwt.GenerateJwtToken(user.Data[0]);

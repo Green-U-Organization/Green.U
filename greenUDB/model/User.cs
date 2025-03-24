@@ -5,31 +5,31 @@ public class User
 {
     public int Id { get; set; }
     
-    public string username { get; set; } = null!;
+    public string Username { get; set; } = null!;
     
-    public string password { get; set; } = null!;
+    public string Password { get; set; } = null!;
 
-    public string? salt { get; set; }
+    public string? Salt { get; set; }
     
-    public int is_admin { get; set; }
+    public int Is_admin { get; set; }
     
-    public string surname { get; set; } = null!;
+    public string Surname { get; set; } = null!;
     
-    public string lastname { get; set; } = null!;
+    public string Lastname { get; set; } = null!;
     
-    public string? email { get; set; }
+    public string? Email { get; set; }
     
-    public string? postal_code { get; set; }
+    public string? Postal_code { get; set; }
     
-    public string sexe { get; set; } = string.Empty;
+    public string Sexe { get; set; } = string.Empty;
     
-    public DateTime? birthdate { get; set; }
+    public DateOnly Birthdate { get; set; }
     
-    public int level { get; set; }
+    public int Level { get; set; }
     
-    public int xp { get; set; }
+    public int Xp { get; set; }
     
-    public DateTime created_at { get; set; }
+    public DateTime Created_at { get; set; }
     
 
     //Clés étrangères.
