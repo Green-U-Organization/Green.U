@@ -10,7 +10,7 @@ const page = () => {
 
 
  {/* TodoList */}
-<Card className={'row-start-2 row-end-4 col-start-1 col-end-5 h-full px-3 flex flex-col justify-between'}>
+<Card className={'row-start-2 row-end-4 col-start-1 col-end-5 h-full px-3 grid grid-cols-2 gap-2'}>
     {
         data.todos.map((todo, index) => (
             <Todo
