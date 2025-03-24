@@ -14,7 +14,7 @@ const page = () => {
     {
         data.todos.map((todo, index) => (
             <Todo
-                key={index}
+                itemKey={index}
                 status={todo.status}
                 content={todo.content}
                 added={todo.added}

@@ -9,12 +9,12 @@ type Props = {
 	added: number; //A CHANGER
 	publishBy: string;
 	id: string;
-    key: number
+    itemKey: number
 };
 
-const Todo = ({ status, content, added, publishBy, key,  id }: Props) => {
+const Todo = ({ status, content, added, publishBy, itemKey,  id }: Props) => {
 	return (
-		<Link href={`/todo/${id}`} style={{display : key > 1 ? "none" : "flex"}}>
+		<Link href={`/todo/${id}`} style={{display : itemKey > 1 ? "none" : "flex"}}>
             <section
                 className={`p-1 my-1 rounded-lg w-full ${
                     status === "chill"
@@ -23,7 +23,7 @@ const Todo = ({ status, content, added, publishBy, key,  id }: Props) => {
                         ? "bg-amber-300"
                         : "bg-red-400"
                 } flex flex-col justify-between`}
-                 
+                
             >
                 {/* Add profile picture from the publishBy props */}
                 <p>id : {id}</p>
