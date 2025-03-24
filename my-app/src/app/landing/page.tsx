@@ -14,7 +14,7 @@ const page = () => {
         <Image src="/image/avatar/test-profile.png" alt="Profile" width={100} height={100} />
         </Card> */}
 
-        <div className="row-start-1 row-end-1 col-start-1 col-end-1 h-p-3">
+        <div className="row-start-1 row-end-2 col-start-1 col-end-1 h-p-3">
             <Link href="/profile">
                 <Image
                     src={"/image/avatars/PI_01.png"}
@@ -35,7 +35,7 @@ const page = () => {
         <div className='row-start-1 row-end-2 col-start-2 col-end-3 px-3'>
             <Link href="/post">
                 <Image
-                    src=""
+                    
                     alt="Post page"
                     width={96}
                     height={96}
@@ -53,7 +53,7 @@ const page = () => {
         <div className='row-start-1 row-end-1 col-start-3 col-end-4 h-full w-full px-3'>
             <Link href="/explore">
                 <Image
-                    src=""
+                    src={"/image/divers/explore.png"}
                     alt="Explore page"
                     width={96}
                     height={96}
@@ -71,7 +71,7 @@ const page = () => {
         <div className='row-start-1 row-end-2 col-start-4 col-end-5  h-full w-full px-3'>
             <Link href="/login">
                 <Image
-                    src=""
+                    src="/image/divers/logged-in.png"
                     alt="Login page"
                     width={96}
                     height={96}
