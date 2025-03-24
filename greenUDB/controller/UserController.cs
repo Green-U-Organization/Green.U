@@ -17,12 +17,12 @@ public class UserController
         return TypedResults.Ok(await db.User.ToArrayAsync());
     }
 
-    public static async Task<Result<User[]>> GetUserForLogin(string username, greenUDB db)
+    public static async Task<Result<User[]>> GetUserForLogin(string Username, greenUDB db)
     {
         try
         {
         var user = await db.User
-            .Where(u => u.Username == username)
+            .Where(u => u.Username == Username)
             .Select(u => new User
             {
                 Id = u.Id,
@@ -49,7 +49,18 @@ public class UserController
     }
    
     public static async Task<IResult> CreateUser(User User, greenUDB db)
-    {
+    { 
+        var UserDbData = await db.User
+           .Where(u => u.Username == User.Username)
+           .Select(u => new User
+           {
+               Username = u.Username
+           })
+           .ToArrayAsync();
+        if (UserDbData != null)
+        {
+            return TypedResults.Conflict(new { message = "This username already exists" });
+        }
         string[] hashSalt = Authentification.hasher(User.Password, null);
         User.Password = hashSalt[0];
         User.Salt = hashSalt[1];

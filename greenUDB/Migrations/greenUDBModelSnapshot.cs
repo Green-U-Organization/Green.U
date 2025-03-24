@@ -336,48 +336,48 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("birthdate")
+                    b.Property<DateOnly>("Birthdate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("Created_at")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("created_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("email")
+                    b.Property<string>("Email")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("is_admin")
+                    b.Property<int>("Is_admin")
                         .HasColumnType("int");
 
-                    b.Property<string>("lastname")
+                    b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("level")
+                    b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("postal_code")
+                    b.Property<string>("Postal_code")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("salt")
+                    b.Property<string>("Salt")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("sexe")
+                    b.Property<string>("Sexe")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("surname")
+                    b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("username")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("xp")
+                    b.Property<int>("Xp")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

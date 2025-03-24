@@ -30,6 +30,11 @@ public class User
     public int Xp { get; set; }
     
     public DateTime Created_at { get; set; }
+
+    public User()
+    {
+        Created_at = DateTime.Now;
+    }
     
 
     //Clés étrangères.

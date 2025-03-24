@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenUApi.Migrations
 {
     /// <inheritdoc />
-    public partial class newMigration : Migration
+    public partial class NamingConventionMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,27 +38,27 @@ namespace GreenUApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    username = table.Column<string>(type: "longtext", nullable: false)
+                    Username = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    password = table.Column<string>(type: "longtext", nullable: false)
+                    Password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    salt = table.Column<string>(type: "longtext", nullable: true)
+                    Salt = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    is_admin = table.Column<int>(type: "int", nullable: false),
-                    surname = table.Column<string>(type: "longtext", nullable: false)
+                    Is_admin = table.Column<int>(type: "int", nullable: false),
+                    Surname = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    lastname = table.Column<string>(type: "longtext", nullable: false)
+                    Lastname = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    email = table.Column<string>(type: "longtext", nullable: true)
+                    Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    postal_code = table.Column<string>(type: "longtext", nullable: true)
+                    Postal_code = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    sexe = table.Column<string>(type: "longtext", nullable: false)
+                    Sexe = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    birthdate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    level = table.Column<int>(type: "int", nullable: false),
-                    xp = table.Column<int>(type: "int", nullable: false),
-                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    Birthdate = table.Column<DateOnly>(type: "date", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    Xp = table.Column<int>(type: "int", nullable: false),
+                    Created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
