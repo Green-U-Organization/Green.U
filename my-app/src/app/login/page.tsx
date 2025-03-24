@@ -99,12 +99,13 @@ const page = () => {
 
 	return (
 		<section className="flex items-center justify-center min-h-[calc(100vh-15px)] overflow-auto">
-			<Card className={"max-w-5xl h-full px-8"}>
+			<Card className={"max-w-5xl px-8 pt-5"}>
+			{/*}flex flex-col p-5 max-w-150*/}
 				<form onSubmit={handleSubmit}>
 					<div className="flex flex-col items-center justify-center">
 						<h2 className="text-7xl mb-10">*Green-U*</h2>
 
-						<div className="flex flex-col justify-center items-start">
+						<div className="flex flex-col justify-center">
 							<TextInput
 								type="email"
 								label={translations.email}
@@ -126,7 +127,7 @@ const page = () => {
 							/>
 						</div>
 						<br />
-						<div className="flex flex-row justify-between">
+						<div className="flex flex-row justify-between pb-5">
 							<Button type="submit">
 								{translations.login}
 							</Button>
