@@ -4,6 +4,8 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+
+
 | 19/03/25 | @Emmanuel | Création d'un markdown RELEASENOTE
 |||Création de la page Profile | Il faudra ajuster le code pour pouvoir récupérer les données de la db
 |||Ajout d'une home page avec une navbar | Utile pour le test des pages
