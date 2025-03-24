@@ -9,19 +9,23 @@ type Props = {
 	added: number; //A CHANGER
 	publishBy: string;
 	id: string;
-    itemKey: number
+    itemKey: number;
+
 };
 
 const Todo = ({ status, content, added, publishBy, itemKey,  id }: Props) => {
 	return (
-		<Link href={`/todo/${id}`} style={{display : itemKey > 1 ? "none" : "flex"}}>
+		<Link 
+        href={`/todo/${id}`} 
+        style={{display : itemKey > 1 ? "none" : "flex"}} 
+        className={`col-start-${itemKey + 1} col-end-${itemKey + 2} row-start-2 row-end-7`}>
             <section
-                className={`p-1 my-4 rounded-lg w-full ${
+                className={`p-1 mb-3 rounded-lg w-full ${
                     status === "chill"
-                        ? "bg-green-400"
+                        ? "bg-green-200"
                         : status === "normal"
-                        ? "bg-amber-300"
-                        : "bg-red-400"
+                        ? "bg-amber-200"
+                        : "bg-red-200"
                 } flex flex-col justify-between`}
                 
             >
