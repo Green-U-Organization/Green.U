@@ -100,29 +100,6 @@ const page = () => {
 
 
 
-{/* Explore */}
-<Card className='row-start-1 row-end-1 col-start-3 col-end-4 h-full w-full px-3'>
-    Explore
-</Card>
-
-
-{/* Logout/Login */}
-<Card className='row-start-1 row-end-2 col-start-4 col-end-5 h-full w-full px-3'>
-    Login
-</Card>
-
-
-{/* Profile */}
-<Card className='row-start-1 row-end-2 col-start-1 col-end-2 h-full w-full px-0 flex justify-center items-center'>
-<Image src="/image/avatar/test-profile.png" alt="Profile" width={100} height={100} />
-</Card>
-
-{/* Post */}
-<Card className='row-start-1 row-end-2 col-start-2 col-end-3 h-full w-full px-3'>
-    Post
-</Card>
-
-
         {/* Garden */}
         <Card className='row-start-4 row-end-7 col-start-1 col-end-3 h-full w-full px-3'>
             Garden
