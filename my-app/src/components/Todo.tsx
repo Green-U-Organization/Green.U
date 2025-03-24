@@ -16,7 +16,7 @@ const Todo = ({ status, content, added, publishBy, itemKey,  id }: Props) => {
 	return (
 		<Link href={`/todo/${id}`} style={{display : itemKey > 1 ? "none" : "flex"}}>
             <section
-                className={`p-1 my-1 rounded-lg w-full ${
+                className={`p-1 my-1 rounded-lg ${
                     status === "chill"
                         ? "bg-green-400"
                         : status === "normal"
