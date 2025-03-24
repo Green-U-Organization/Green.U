@@ -41,7 +41,7 @@ const page = () => {
 
 {/* Profile */}
 <Card className='row-start-1 row-end-2 col-start-1 col-end-2 h-full w-full px-0 flex justify-center items-center'>
-<Image src="/image/avatar/test-profile.png" alt="Profile" width={100} height={100} />
+<Image src="/image/avatars/PI_25.png" alt="Profile" width={100} height={100} />
 </Card>
 
 {/* Post */}
