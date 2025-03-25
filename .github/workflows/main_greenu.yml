@@ -42,10 +42,17 @@ jobs:
           name: .net-app
           path: ${{ github.workspace }}/published_app
 
-      - name: Vérifier le fichier ZIP généré
+      - name: Vérifier l'intégrité du fichier ZIP
         run: |
-          zip -T published_app.zip
-          unzip -l published_app.zip
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          try {
+            [System.IO.Compression.ZipFile]::OpenRead("published_app.zip").Dispose()
+            Write-Host "✅ Le fichier ZIP est valide"
+          } catch {
+            Write-Host "❌ Le fichier ZIP est corrompu"
+            exit 1
+          }
+        shell: pwsh
 
   deploy:
     runs-on: windows-latest
