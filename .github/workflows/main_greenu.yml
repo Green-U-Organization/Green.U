@@ -41,6 +41,16 @@ jobs:
         with:
           name: .net-app
           path: ${{ github.workspace }}/published_app
+          
+      - name: Lister les fichiers générés
+        run: ls -R
+
+      - name: Créer un fichier ZIP propre
+        run: |
+          Remove-Item -Force published_app.zip -ErrorAction Ignore
+          Compress-Archive -Path published_app/* -DestinationPath published_app.zip
+        shell: pwsh
+
 
       - name: Vérifier l'intégrité du fichier ZIP
         run: |
