@@ -12,6 +12,7 @@
     <PackageReference Include="Google.Apis.Calendar.v3" Version="1.69.0.3667" />
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.69.0.3703" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
@@ -26,6 +27,7 @@
     </PackageReference>
     <PackageReference Include="NSwag.AspNetCore" Version="14.2.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.7.0" />
   </ItemGroup>
 
   <ItemGroup>

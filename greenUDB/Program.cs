@@ -40,12 +40,12 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+AuthMapGet("/login", Authentification.Login);
 
 var UserItems = app.MapGroup("/Users");
 
 UserItems.MapGet("/", UserController.GetAllUser);
 //UserItems.MapGet("/login", UserController.GetUserForLogin);
-UserItems.MapGet("/login", Authentification.Login);
 UserItems.MapGet("/{id}", UserController.GetUser);
 UserItems.MapPost("/", UserController.CreateUser);
 UserItems.MapPut("/{id}", UserController.UpdateUser);
