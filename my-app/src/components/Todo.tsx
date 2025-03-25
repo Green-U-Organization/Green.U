@@ -15,8 +15,9 @@ type Props = {
     garden: string;
     parcel : string;
     line : string;
-    className?: string
+    className?: string;
     onStatusChange : (id: string, newStatus: number) => void;
+    handleEdit : (e: React.FormEvent) => void;
 };
 
 const Todo = ({ 
@@ -32,6 +33,7 @@ const Todo = ({
     id,
     className,
     onStatusChange, 
+    handleEdit
     }: Props) => {
 
     const [checked, setChecked] = useState(false)
@@ -43,23 +45,18 @@ const Todo = ({
         //TODO Changer le status dans la DB + faire disparaitre de l'écran pour afficher todo suivant
     }
 
-    const handleEdit = () => {
-        console.log("edit")
-    }
-
 	return (
 		<section
 			className={` mx-1 relative col-start-${itemKey + 1} col-end-${itemKey + 2} row-start-2 row-end-7 ${className}`}
 			style={style}
 		>
-			<Link
-				href={`/todo/${id}`}
+			<section
 				className={`col-start-${itemKey + 1} col-end-${
 					itemKey + 2
-				} row-start-2 row-end-7 w-full`}
+				} row-start-2 row-end-7 w-full h-full`}
 			>
-				<section
-					className={`p-1 mb-3 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-all w-full ${
+				<div
+					className={`p-1 mb-2 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-all w-full ${
 						status === 0
 							? "bg-white"
 							: status === 1
@@ -81,8 +78,8 @@ const Todo = ({
 					<p className="text-sm text-gray-500 text-right mr-2">
 						{added}
 					</p>
-				</section>
-			</Link>
+				</div>
+			</section>
 			<div 
             onClick={handleCheck}
             className="absolute h-8 w-8 bg-white border-2 rounded-md top-1 right-1"></div>
