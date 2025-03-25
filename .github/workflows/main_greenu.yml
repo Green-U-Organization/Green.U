@@ -56,6 +56,9 @@ jobs:
       
       - name: Vérifier le fichier ZIP
         run: unzip -l published_app.zip
+        
+      - name: Vérifier les fichiers après la création du ZIP
+        run: ls -R . # Afficher les fichiers dans le répertoire courant pour vérifier la présence du fichier ZIP
 
 
       - name: Vérifier l'intégrité du fichier ZIP
