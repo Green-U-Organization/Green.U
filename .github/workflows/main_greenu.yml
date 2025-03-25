@@ -24,10 +24,10 @@ jobs:
           dotnet-version: '9.x'
 
       - name: Build with dotnet
-        run: dotnet build GreenU/greenUDB/GreenUApi.csproj --configuration Release
+        run: dotnet build greenUDB/GreenUApi.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish GreenU/greenUDB/GreenUApi.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish greenUDB/GreenUApi.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
