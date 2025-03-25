@@ -58,9 +58,9 @@ public class UserController
                Username = u.Username
            })
            .ToArrayAsync();
-        if (UserDbData != null)
+        if (UserDbData.Length != 0)
         {
-            return TypedResults.Conflict(new { message = "This username already exists" });
+            return TypedResults.Conflict(new { message = "This username is already exist" });
         }
         string[] hashSalt = Authentification.Hasher(User.Password, null);
         User.Password = hashSalt[0];
