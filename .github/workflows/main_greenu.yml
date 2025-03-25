@@ -68,5 +68,5 @@ jobs:
         with:
           app-name: 'GreenU'
           slot-name: 'Production'
-          package: ${{ github.workspace }}/published_app
+          package: .
           
