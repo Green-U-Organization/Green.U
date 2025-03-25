@@ -25,6 +25,8 @@
     "gender": "Gender:",
     "email": "Email",
     "postalcode": "Postal Code:",
+    "yourinterests": "Your interests",
+    "addahashtag":"Add a hashtag",
 
     "__COMMENT_4" : "LOGIN",
 
@@ -48,10 +50,8 @@
     "back": "Back",
     "edit": "Edit",
     "sign": "Sign",
-
-
-    "__COMMENT_xxxx" : "SIGN UP"
-   
-
+    "next": "Next",
+    "previous": "Previous",
+    "add": "Add"
 }
 

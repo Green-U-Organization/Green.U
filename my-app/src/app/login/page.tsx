@@ -98,8 +98,8 @@ const page = () => {
 	};
 
 	return (
-		<section className="flex items-center justify-center min-h-[calc(100vh-15px)] overflow-auto">
-			<Card className={"max-w-5xl px-8 pt-5"}>
+		<section className="flex items-center justify-center max-h-[calc(100vh-15px)] overflow-auto">
+			<Card className={"max-w-screen px-8 pt-7"}>
 			{/*}flex flex-col p-5 max-w-150*/}
 				<form onSubmit={handleSubmit}>
 					<div className="flex flex-col items-center justify-center">

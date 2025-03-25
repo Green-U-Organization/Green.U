@@ -25,6 +25,8 @@
     "gender": "Genre:",
     "email": "E-mail",
     "postalcode": "Code Postal:",
+    "yourinterests": "Vos intérêts",
+    "addahashtag":"Ajouter un hashtag",
 
     "__COMMENT_4" : "LOGIN",
 
@@ -47,6 +49,9 @@
     "close": "Fermer",
     "back": "Retour",
     "edit": "Edition",
-    "sign": "S'inscrire"
+    "sign": "S'inscrire",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "add": "Ajouter"
 }
   

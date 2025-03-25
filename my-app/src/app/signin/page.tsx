@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { useRef, useEffect } from "react";
-import React, { ChangeEvent, FormEvent } from "react";
-import { useState } from "react";
+import React from "react";
+import { useState, useRef, useEffect, ChangeEvent, FormEvent} from "react";
 import Card from "@/components/Card";
 import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
@@ -13,6 +12,8 @@ import Radio from "@/components/Radio";
 import DropDown from "@/components/DropDownPostalCode";
 import postalCodes from "@/data/postalCodesBE.json";
 import { useLanguage } from '@/app/contexts/LanguageProvider';
+import Checkbox from "@/components/Checkbox";
+import HashtagInput from "@/components/HashtagInput";
 
 const page = () => {
 	const [login, setLogin] = useState("");
@@ -36,6 +37,46 @@ const page = () => {
 	const [errorMatchingPassword, setErrorMatchingPassword] = useState<boolean>(false);
   	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
 	const {translations} = useLanguage();
+	const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"
+
+        //Pour gérer la liste des hashtags
+        const [hashtags, setHashtags] = useState<string[]>([]);
+
+	//Fonction de vérification de la validité des champs obligatoires avant de pouvoir changer de page
+	const validateStep = () => {
+		if (step === 1) {
+			const isValid = login && password && passwordVerify && firstname && lastname && email && postalCode && birthDate;
+			setErrorEmptyLogin(!login);
+			setErrorEmptyPassword(!password);
+			setErrorEmptyPasswordVerify(!passwordVerify);
+			setErrorEmptyFirstname(!firstname);
+			setErrorEmptyLastname(!lastname);
+			setEmptyErrorEmail(!email);
+			setErrorEmptyPostalCode(!postalCode);
+			setErrorEmptyBirthDate(!birthDate);
+			
+			return true; //
+		} else if (step === 2) {
+			//A ADAPTER SI VALIDATIONS A LA PAGE 2
+			const isValid = true;
+			return isValid;
+		}
+		return true; 
+	};
+
+	//Fonction permettant d'avancer dans les pages
+	const nextStep = () => {
+		if (validateStep()) {
+			setStep((prevStep) => prevStep + 1);
+		}
+	}
+
+	//Fonction permettant de reculer dans les pages
+	const prevStep = () => {
+		if (validateStep()) {
+			setStep((prevStep) => prevStep - 1);
+		}
+	}
 
 	const calendarRef = useRef<HTMLDivElement>(null);
 
@@ -211,106 +252,130 @@ const page = () => {
 				<h1 className="text-4xl mb-5">{translations.signup}: </h1>
 
 				<form onSubmit={handleSubmit} className="flex flex-col">
-					<TextInput
-						type="text"
-						label={translations.username}
-						value={login}
-						name="login"
-						placeholder={translations.enterusername}
-						error={errorEmptyLogin}
-						onChange={handleLoginChange}
-					/>
+					{step === 1 && (
+						<>
+						<TextInput
+							type="text"
+							label={translations.username}
+							value={login}
+							name="login"
+							placeholder={translations.enterusername}
+							error={errorEmptyLogin}
+							onChange={handleLoginChange}
+						/>
 
-					<TextInput
-						type="password"
-						label={translations.password}
-						value={password}
-						name="password"
-						placeholder={translations.enterpassword}
-						error={errorEmptyPassword}
-						errorPassChar={errorSpecialCharPassword}
-						onChange={handlePasswordChange}
-					/>
+						<TextInput
+							type="password"
+							label={translations.password}
+							value={password}
+							name="password"
+							placeholder={translations.enterpassword}
+							error={errorEmptyPassword}
+							errorPassChar={errorSpecialCharPassword}
+							onChange={handlePasswordChange}
+						/>
 
-					<TextInput
-						type="password"
-						label={translations.pwdverif}
-						value={passwordVerify}
-						name="passwordVerify"
-						placeholder={translations.enterpasswordagain}
-						error={errorEmptyPasswordVerify}
-						errorPassMatch={errorMatchingPassword}
-						onChange={handlePasswordVerifyChange}
-					/>
+						<TextInput
+							type="password"
+							label={translations.pwdverif}
+							value={passwordVerify}
+							name="passwordVerify"
+							placeholder={translations.enterpasswordagain}
+							error={errorEmptyPasswordVerify}
+							errorPassMatch={errorMatchingPassword}
+							onChange={handlePasswordVerifyChange}
+						/>
 
-					<p onClick={handleClick}>{translations.birthdate} </p>
-					<p onClick={handleClick} className="bg-bginput pl-3 mb-5">{birthDate.toDateString()}</p>
+						<p onClick={handleClick}>{translations.birthdate} </p>
+						<p onClick={handleClick} className="bg-bginput pl-3 mb-5">{birthDate.toDateString()}</p>
 
-					{birthDateDisplay && (
-						<div ref={calendarRef}>
-							<Calendar onChange={handleDateChange} value={birthDate} />
+						{birthDateDisplay && (
+							<div ref={calendarRef}>
+								<Calendar onChange={handleDateChange} value={birthDate} />
+							</div>
+						)}
+
+						<TextInput
+							type="text"
+							label={translations.firstname}
+							value={firstname}
+							name="firstname"
+							placeholder={translations.enterfirstname}
+							error={errorEmptyFirstname}
+							onChange={handleFirstnameChange}
+						/>
+
+						<TextInput
+							type="text"
+							label={translations.lastname}
+							value={lastname}
+							name="lastname"
+							placeholder={translations.enterlastname}
+							error={errorEmptyLastname}
+							onChange={handleLastnameChange}
+						/>
+
+						<p>{translations.gender} </p>
+						<div className="flex items-center gap-4">
+							<Radio id="M" name="gender" value="M" checked={gender === "M"} onChange={() => setGender("M")}/>
+							<Radio id="F" name="gender" value="F" checked={gender === "F"} onChange={() => setGender("F")}/>
+							<Radio id="X" name="gender" value="X" checked={gender === "X"} onChange={() => setGender("X")}/>
 						</div>
+											
+						<TextInput
+							type="email"
+							label={translations.email}
+							value={email}
+							name="email"
+							placeholder={translations.enteremail}
+							error={errorEmptyEmail}
+							onChange={handleEmailChange}
+						/>
+
+						<DropDown
+							label={translations.postalcode}
+							value={postalCode}
+							onChange={handlePostalCodeChange}
+							error={errorEmptyPostalCode}
+						/>
+					</>
 					)}
 
-					<TextInput
-						type="text"
-						label={translations.firstname}
-						value={firstname}
-						name="firstname"
-						placeholder={translations.enterfirstname}
-						error={errorEmptyFirstname}
-						onChange={handleFirstnameChange}
-					/>
+					{step === 2 && (
+						<>
+			            {/* Vos intérêts */}
+							<div>
+								<HashtagInput 
+									label={translations.yourinterests}
+									name={""}
+									placeHolder={translations.addahashtag}
+									error={false}
+								/>
+							</div>
 
-					<TextInput
-						type="text"
-						label={translations.lastname}
-						value={lastname}
-						name="lastname"
-						placeholder={translations.enterlastname}
-						error={errorEmptyLastname}
-						onChange={handleLastnameChange}
-					/>
+							
+						</>
+					)}
 
-					<p>{translations.gender} </p>
-					<div className="flex items-center gap-4">
-						<Radio id="M" name="gender" value="M" checked={gender === "M"} onChange={() => setGender("M")}/>
-						<Radio id="F" name="gender" value="F" checked={gender === "F"} onChange={() => setGender("F")}/>
-						<Radio id="X" name="gender" value="X" checked={gender === "X"} onChange={() => setGender("X")}/>
-					</div>
-										
-					<TextInput
-						type="email"
-						label={translations.email}
-						value={email}
-						name="email"
-						placeholder={translations.enteremail}
-						error={errorEmptyEmail}
-						onChange={handleEmailChange}
-					/>
-
-					<DropDown
-						label={translations.postalcode}
-						value={postalCode}
-						onChange={handlePostalCodeChange}
-						error={errorEmptyPostalCode}
-					/>
-{/*
-					<TextInput
-						type="number"
-						label="Postal code"
-						value={postalCode}
-						name="postalCode"
-						placeholder="Enter your postal code"
-						error={errorEmptyPostalCode}
-						onChange={handlePostalCodeChange}
-					/>
-*/}
 					<div className="flex justify-center pb-5">
+					{step > 1 && (
+						<Button type="action" handleAction={prevStep}>
+							{translations.previous}
+						</Button>
+					)}
+
+					{step < 2 ? (
+						<Button type="action" handleAction={nextStep}>
+							{translations.next}
+						</Button>
+					) : (
 						<Button type="submit" handleSubmit={handleSubmit}>
 							{translations.sign}
 						</Button>
-					</div>
+					)}
+				</div>
+
+
 				</form>
 			</Card>
 		</section>
