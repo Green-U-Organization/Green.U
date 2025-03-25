@@ -97,13 +97,14 @@ const page = () => {
                 {
                     data.todos.map((todo, index) => (
                         <Todo
+                            key={todo.id}
                             itemKey={index}
                             status={todo.status}
                             content={todo.content}
                             added={todo.added}
                             publishBy={todo.publishBy}
                             id={todo.id}
-
+                            style={{ display: index > 1 ? "none" : "flex" }}
                         />
                     ))
                 }

@@ -3,6 +3,7 @@
 import React from 'react'
 import data from '../data/data'
 import Button from '@/components/Button'
+import Todo from '@/components/Todo'
 
 const page = () => {
 
@@ -32,14 +33,22 @@ const page = () => {
                 </select>
             </section>
 
-                {
-                    data.todos.map((todo) => {
-                        console.log(todo)
+            <section className='font-(family-name:--font-jersey) text-lg flex flex-col bg-cardbackground'>
+            {
+                data.todos.map((todo, index) => (
+                    <Todo
+                        key={todo.id}
+                        itemKey={index}
+                        status={todo.status}
+                        content={todo.content}
+                        added={todo.added}
+                        publishBy={todo.publishBy}
+                        id={todo.id} 
+                        style={{}}/>
+                ))
+            }
 
-                    })
-                }
-
-
+            </section>
         </>
     )
 }
