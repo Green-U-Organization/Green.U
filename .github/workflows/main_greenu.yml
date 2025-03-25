@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy ASP.Net Core app to Azure Web App - GreenU
 
 on:
@@ -13,7 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -41,25 +38,15 @@ jobs:
         with:
           name: .net-app
           path: ${{ github.workspace }}/published_app
-          
-      - name: Lister les fichiers générés
-        run: ls -R
 
-      - name: Vérifier le contenu avant compression
-        run: ls -R published_app
-      
       - name: Créer un fichier ZIP propre
         run: |
           Remove-Item -Force published_app.zip -ErrorAction Ignore
           Compress-Archive -Path published_app/* -DestinationPath published_app.zip
         shell: pwsh
-      
+
       - name: Vérifier le fichier ZIP
         run: unzip -l published_app.zip
-        
-      - name: Vérifier les fichiers après la création du ZIP
-        run: ls -R . # Afficher les fichiers dans le répertoire courant pour vérifier la présence du fichier ZIP
-
 
       - name: Vérifier l'intégrité du fichier ZIP
         run: |
@@ -80,19 +67,25 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-          path: ./  # Assure-toi que le chemin de téléchargement est bien défini
-      
+          path: ./
+
       - name: Vérifier le fichier ZIP téléchargé
-        run: ls -R published_app.zip  # Vérifie que le fichier .zip est bien présent
-      
+        run: |
+          if (Test-Path "published_app.zip") {
+            Write-Host "✅ Le fichier ZIP est présent"
+          } else {
+            Write-Host "❌ Le fichier ZIP est manquant"
+            exit 1
+          }
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -107,4 +100,3 @@ jobs:
           app-name: 'GreenU'
           slot-name: 'Production'
           package: published_app.zip
-          
