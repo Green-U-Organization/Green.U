@@ -18,6 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Vérification du contenu du package
+        run: ls -R published_app
+
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
@@ -38,6 +41,11 @@ jobs:
         with:
           name: .net-app
           path: ${{ github.workspace }}/published_app
+
+      - name: Vérifier le fichier ZIP généré
+        run: |
+          zip -T published_app.zip
+          unzip -l published_app.zip
 
   deploy:
     runs-on: windows-latest
