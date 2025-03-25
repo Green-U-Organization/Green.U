@@ -4,8 +4,9 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
-||| 25/03/25 | @Pierre | Ajout CheckBox dans le composant Todo
-| Mise en place du sorting sur la page todo
+| 25/03/25 | @Pierre | Ajout CheckBox dans le composant Todo
+||| Mise en place du sorting sur la page todo
+||| Ajout d'un event listener pour les bouttons sur smartphone (onTouchStart et onTouchEnd)
 | 24/03/25 | @Emmanuel | Correction du css du Login
 ||| Ajout de badge en haut du dashboard
 | 24/03/25 | @Pierre | Ajout CardHeader sur landing
