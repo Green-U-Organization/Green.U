@@ -64,5 +64,5 @@ jobs:
         with:
           app-name: 'GreenU'
           slot-name: 'Production'
-          package: .
+          package: ${{env.DOTNET_ROOT}}/myapp
           
