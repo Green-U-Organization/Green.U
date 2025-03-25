@@ -5,7 +5,7 @@
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
 ||| 25/03/25 | @Pierre | Ajout CheckBox dans le composant Todo
-| Création de la page todo en mode très basique >>> besoin de l'accès à la DB pour élaborer plus en détail
+| Mise en place du sorting sur la page todo
 | 24/03/25 | @Emmanuel | Correction du css du Login
 ||| Ajout de badge en haut du dashboard
 | 24/03/25 | @Pierre | Ajout CardHeader sur landing

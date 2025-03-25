@@ -97,14 +97,17 @@ const page = () => {
                 {
                     data.todos.map((todo, index) => (
                         <Todo
-                            key={todo.id}
-                            itemKey={index}
-                            status={todo.status}
-                            content={todo.content}
-                            added={todo.added}
-                            publishBy={todo.publishBy}
-                            id={todo.id}
-                            style={{ display: index > 1 ? "none" : "flex" }}
+                        key={todo.id}
+                        itemKey={index}
+                        status={todo.status}
+                        content={todo.content}
+                        added={todo.update_at}
+                        publishBy={todo.publishBy}
+                        garden={todo.garden_id}
+                        parcel={todo.parcel_id}
+                        line={todo.line_id}
+                        id={todo.id} 
+                        style={{ display: index > 1 ? "none" : "flex" }}
                         />
                     ))
                 }

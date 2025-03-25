@@ -1,18 +1,75 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import data from '../data/data'
 import Button from '@/components/Button'
 import Todo from '@/components/Todo'
+import Card from '@/components/Card'
 
 const page = () => {
+    const [processedData, setProcessedData] = useState(data.todos)
 
     const addTask = () => {
         console.log("add task")
     }
 
+
+    //Sorting des Todos
+    //https://www.javascripttutorial.net/array/javascript-sort-an-array-of-objects/
+    const handleProcess = (e: { target: { value: unknown } }) => {
+        const tempData = [...data.todos]
+        console.log(e.target.value)
+        switch (e.target.value) {
+            case ("nameAsc") :
+                tempData.sort((a, b) => a.content.localeCompare(b.content))
+                setProcessedData([...tempData])
+                break
+    
+            case ("nameDesc") :
+                tempData.sort((a, b) => b.content.localeCompare(a.content))
+                setProcessedData([...tempData])
+                break
+
+            case ("dateAsc") :
+                tempData.sort((a, b) => new Date(a.update_at).getTime() - new Date(b.update_at).getTime())
+                setProcessedData([...tempData])
+                break
+
+            case ("dateDesc") :
+                tempData.sort((a, b) => new Date(b.update_at).getTime() - new Date(a.update_at).getTime())
+                setProcessedData([...tempData])
+                break
+
+            case ("statusAsc") : 
+                tempData.sort((a, b) => a.status - b.status)
+                setProcessedData([...tempData])
+                break
+
+            case ("statusDesc") :
+                tempData.sort((a, b) => b.status - a.status)
+                setProcessedData([...tempData])
+                break
+
+        }        
+    }
+    useEffect(() => {
+        console.log("yolo")
+    } , [processedData])
+
+    const handleStatusChange = (id: string, newStatus: number) => {
+        const updatedData = processedData.map(todo => 
+          todo.id === id ? { ...todo, status: newStatus } : todo
+        );
+        setProcessedData(updatedData);
+      };
+
+
+
+
     return (
-        <>
+<Card>  
+
             <section className='font-(family-name:--font-jersey) text-lg flex justify-center items-center bg-cardbackground'>
                 <Button
                     type={'action'}
@@ -23,7 +80,7 @@ const page = () => {
                 <p>
                     sort by :
                 </p> 
-                <select name="sortBy" id="sortBy">
+                <select onChange={handleProcess} name="sortBy" id="sortBy">
                     <option value="nameAsc">Name ascendant</option>
                     <option value="nameDesc">Name descendant</option>
                     <option value="dateAsc">Date ascendant</option>
@@ -35,21 +92,26 @@ const page = () => {
 
             <section className='font-(family-name:--font-jersey) text-lg flex flex-col bg-cardbackground'>
             {
-                data.todos.map((todo, index) => (
+                processedData.map((todo, index) => (
                     <Todo
-                        key={todo.id}
-                        itemKey={index}
-                        status={todo.status}
-                        content={todo.content}
-                        added={todo.added}
-                        publishBy={todo.publishBy}
-                        id={todo.id} 
-                        style={{}}/>
+                    key={todo.id}
+                    itemKey={index}
+                    status={todo.status}
+                    content={todo.content}
+                    added={todo.update_at}
+                    publishBy={todo.publishBy}
+                    garden={todo.garden_id}
+                    parcel={todo.parcel_id}
+                    line={todo.line_id}
+                    id={todo.id} 
+                    style={{}}
+                    className="mx-5"
+                    onStatusChange={handleStatusChange}/>
                 ))
             }
 
             </section>
-        </>
+            </Card>
     )
 }
 
