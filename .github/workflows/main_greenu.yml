@@ -88,10 +88,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-          
-      - name: Vérifier les fichiers après téléchargement
-        run: ls -R
-
+          path: ./  # Assure-toi que le chemin de téléchargement est bien défini
+      
+      - name: Vérifier le fichier ZIP téléchargé
+        run: ls -R published_app.zip  # Vérifie que le fichier .zip est bien présent
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
