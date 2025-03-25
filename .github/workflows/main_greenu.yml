@@ -102,5 +102,5 @@ jobs:
         with:
           app-name: 'GreenU'
           slot-name: 'Production'
-          package: './published_app.zip'
+          package: ./published_app.zip
           
