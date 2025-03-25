@@ -45,11 +45,17 @@ jobs:
       - name: Lister les fichiers générés
         run: ls -R
 
+      - name: Vérifier le contenu avant compression
+        run: ls -R published_app
+      
       - name: Créer un fichier ZIP propre
         run: |
           Remove-Item -Force published_app.zip -ErrorAction Ignore
           Compress-Archive -Path published_app/* -DestinationPath published_app.zip
         shell: pwsh
+      
+      - name: Vérifier le fichier ZIP
+        run: unzip -l published_app.zip
 
 
       - name: Vérifier l'intégrité du fichier ZIP
@@ -79,7 +85,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
+          
+      - name: Vérifier les fichiers après téléchargement
+        run: ls -R
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -93,5 +102,5 @@ jobs:
         with:
           app-name: 'GreenU'
           slot-name: 'Production'
-          package: .
+          package: './published_app.zip'
           
