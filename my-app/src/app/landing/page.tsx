@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
 import Card from '@/components/Card'
@@ -9,8 +10,22 @@ import Link from 'next/link';
 import CardHeader from '@/components/CardHeader'
 
 const page = () => {
+    const [processedData, setProcessedData] = useState(data.todos)
 
 
+//TODO AJOUTER RERENDER QUAND ON CHECK UN TODO
+    const handleStatusChange = (id: string, newStatus: number) => {
+        const updatedData = processedData.map(todo => 
+          todo.id === id ? { ...todo, status: newStatus } : todo
+        );
+        setProcessedData(updatedData);
+    };
+
+    useEffect(() => {
+        const tempData = [...data.todos];
+        tempData.sort((a, b) => b.status - a.status);
+        setProcessedData([...tempData]);
+    }, []);
 
 
 
@@ -76,6 +91,8 @@ const page = () => {
             Login
             </Card> */}
 
+        
+
             <div className="row-start-1 row-end-2 col-start-4 col-end-5 h-full w-full flex justify-center">
                 <Link href="/login">
                     <Image
@@ -89,14 +106,12 @@ const page = () => {
                 </Link>
             </div>
 
-            {/* TodoList */}
-            <Card className={'row-start-2 row-end-4 col-start-1 col-end-5 h-full px-3 grid grid-cols-2 grid-rows-6 gap-2'}>
+                        {/* TodoList */}
+                        <Card className={'row-start-2 row-end-4 col-start-1 col-end-5 h-full px-3 grid grid-cols-2 grid-rows-6 gap-2'}>
                 <CardHeader
                     className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Todo'} ></CardHeader>
-
-                {
-                    data.todos.map((todo, index) => (
-                        <Todo
+                {processedData.map((todo, index) => (
+                    <Todo
                         key={todo.id}
                         itemKey={index}
                         status={todo.status}
@@ -107,11 +122,12 @@ const page = () => {
                         parcel={todo.parcel_id}
                         line={todo.line_id}
                         id={todo.id} 
+                        onStatusChange={handleStatusChange}
                         style={{ display: index > 1 ? "none" : "flex" }}
-                        />
-                    ))
-                }
-
+                    />
+                ))}
+                
+                    
 
             </Card>
 

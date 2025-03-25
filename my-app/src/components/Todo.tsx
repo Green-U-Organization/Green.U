@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import React, { FormEvent, useState } from "react";
 
 type Props = {
@@ -40,6 +41,10 @@ const Todo = ({
         setChecked(prev => !prev)
         onStatusChange(id, 0)
         //TODO Changer le status dans la DB + faire disparaitre de l'écran pour afficher todo suivant
+    }
+
+    const handleEdit = () => {
+        console.log("edit")
     }
 
 	return (
@@ -84,6 +89,11 @@ const Todo = ({
             <div 
             onClick={handleCheck}
             style={{display : checked || status === 0 ? "block" : "none"}} className="absolute text-5xl -top-1 right-2"> X </div>
+            <div 
+            onClick={handleEdit}
+            className="absolute h-8 w-8 top-10 right-1 bg-white rounded-md border-2  ">
+                <Image src="/image/divers/pen.png" alt="" width={80} height={80}/>
+            </div>
 		</section>
 	);
 };
