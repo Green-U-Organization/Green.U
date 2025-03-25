@@ -40,8 +40,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-AuthMapGet("/login", Authentification.Login);
-
 var Auth = app.MapGroup("/");
 
 Auth.MapGet("/login", Authentification.Login);
