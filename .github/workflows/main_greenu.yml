@@ -71,7 +71,6 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_011C3F26CC2040A1B6404AC04C50F6FD }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_BE441480952545C6B739805513D0B40A }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C4A3CFBA85F549C7A321609D8B9CF832 }}
-          password: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8CC0A56830A3408DB06FE98F1666B4E9  }}
       
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -79,6 +78,7 @@ jobs:
         with:
           app-name: 'GreenU'
           slot-name: 'Production'
+          password: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8CC0A56830A3408DB06FE98F1666B4E9  }}
           package: './artifact/published_app.zip'
           clean: true
 
