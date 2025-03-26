@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
+using GreenUApi.model;
 
 public class Line{
     public int id { get; set; }

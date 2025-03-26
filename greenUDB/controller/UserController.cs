@@ -22,7 +22,7 @@ public class UserController
     {
         try
         {
-        var user = await db.User
+        var User = await db.User
             .Where(u => u.Username == Username)
             .Select(u => new User
             {
@@ -33,7 +33,7 @@ public class UserController
             })
             .ToArrayAsync();
 
-            return new Result<User[]> { IsSuccess = true, Data = user };
+            return new Result<User[]> { IsSuccess = true, Data = User };
 
         }catch (Exception ex)
         {

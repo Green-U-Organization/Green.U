@@ -24,10 +24,10 @@ public class Todo{
     }
 
     public int Garden_id { get; set; }
-    [ForeignKey("garden_id")] public Garden Garden{ get; set; } = null!;
+    [ForeignKey("Garden_id")] public Garden Garden{ get; set; } = null!;
 
     public int Parcel_id { get; set; }
-    [ForeignKey("parcel_id")] public Parcel Parcel{ get; set; } = null!;
+    [ForeignKey("Parcel_id")] public Parcel Parcel{ get; set; } = null!;
 
     public int Line_id { get; set; }
     [ForeignKey("Line_id")] public Line Line{ get; set; } = null!;
