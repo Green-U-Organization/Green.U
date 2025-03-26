@@ -1,4 +1,4 @@
-name: Build and Deploy to Azure Web App
+name: Build and Deploy GreenU API
 
 on:
   push:
@@ -6,13 +6,13 @@ on:
   workflow_dispatch:
 
 env:
-  DOTNET_VERSION: '9.0.x'  # Adaptez à votre version
-  AZURE_WEBAPP_NAME: ${{ secrets.AZURE_WEBAPP_NAME }}
-  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+  DOTNET_VERSION: '9.0.x'  # Adaptez à votre version exacte
+  PROJECT_PATH: 'greenUDB/GreenUAPI.csproj'  # Chemin relatif depuis la racine
+  PUBLISH_OUTPUT_DIR: './publish'  # Dossier de sortie
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest  # Ou ubuntu-latest pour Linux
+    runs-on: windows-latest  # Nécessaire pour les Web Apps Windows
 
     steps:
     - uses: actions/checkout@v4
@@ -24,26 +24,33 @@ jobs:
 
     - name: Build with dotnet
       run: |
-        dotnet restore
-        dotnet build --configuration Release --no-restore
+        dotnet restore ${{ env.PROJECT_PATH }}
+        dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release -o ${{ env.PUBLISH_OUTPUT_DIR }} --no-build
 
-    - name: Publish app
+    - name: Verify publish output
       run: |
-        dotnet publish -c Release -o ./publish --no-build
+        ls ${{ env.PUBLISH_OUTPUT_DIR }}
+        if (!(Test-Path "${{ env.PUBLISH_OUTPUT_DIR }}/GreenUAPI.dll")) {
+            Write-Host "::error::Fichier DLL manquant !"
+            exit 1
+        }
+      shell: pwsh
 
     - name: Zip artifacts
       run: |
-        Compress-Archive -Path "./publish/*" -DestinationPath "./deploy.zip" -Force
+        Compress-Archive -Path "${{ env.PUBLISH_OUTPUT_DIR }}/*" -DestinationPath "./deploy.zip" -Force
+      shell: pwsh
 
     - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Deploy to Web App
+    - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
         package: ./deploy.zip
-        resource-group: ${{ env.RESOURCE_GROUP }}
-        slot-name: 'Production'  # Optionnel pour les slots de déploiement
+        resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
+        slot-name: 'Production'
