@@ -37,7 +37,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: net-app
-          path: ${{ github.workspace }}/published_app ${{ github.workspace }}/published_app.zip
+          path: |
+            D:\a\Green.U\Green.U\published_app
+            D:\a\Green.U\Green.U\published_app.zip
+
 
       - name: Créer un fichier ZIP propre
         run: |
