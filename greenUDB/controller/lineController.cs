@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using GreenUApi.model;
 
 namespace GreenUApi.controller;
 public class LineController
@@ -21,7 +22,7 @@ public class LineController
         db.Line.Add(Line);
         await db.SaveChangesAsync();
 
-        return TypedResults.Created($"/Lineitems/{Line.id}", Line);
+        return TypedResults.Created($"/Lineitems/{Line.Id}", Line);
     }
 
     public static async Task<IResult> UpdateLine(int id, Line inputLine, greenUDB db)

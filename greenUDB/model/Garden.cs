@@ -8,14 +8,19 @@ public class Garden
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
+
+    public string Description { get; set; } = string.Empty;
     
     public float Latitude { get; set; } required
     
     public float Longitude { get; set; } required
 
-    public float Length {set; get;} required
+    public float Length {set; get;} 
 
-    public float Width {get; set;} required
+    public float Width {get; set;} 
+
+    public string Tags { get; set; } = string.Empty;
+
     public DateTime Update_at { get; set; }
 
     public DateTime Created_at { get; set; }
