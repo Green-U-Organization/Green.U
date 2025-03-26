@@ -81,8 +81,8 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
-          path: ./
+          name: net-app
+          path: ./artifact
 
       - name: Lister tous les fichiers dans le répertoire
         run: ls -R . # Affiche tous les fichiers dans le répertoire courant
