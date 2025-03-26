@@ -30,5 +30,5 @@ public class Todo{
     [ForeignKey("parcel_id")] public Parcel Parcel{ get; set; } = null!;
 
     public int Line_id { get; set; }
-    [ForeignKey("lien_id")] public Line Line{ get; set; } = null!;
+    [ForeignKey("Line_id")] public Line Line{ get; set; } = null!;
 }
