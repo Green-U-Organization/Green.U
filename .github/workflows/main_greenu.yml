@@ -33,9 +33,6 @@ jobs:
         run: Get-ChildItem "${{ github.workspace }}/published_app" -Recurse
         shell: pwsh
 
-      - name: Vérifier le contenu avant l'upload
-        run: ls -R ${{ github.workspace }}
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -74,6 +71,10 @@ jobs:
       contents: read
 
     steps:
+
+      - name: Vérifier le contenu avant l'upload
+        run: ls -R ${{ github.workspace }}
+  
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
