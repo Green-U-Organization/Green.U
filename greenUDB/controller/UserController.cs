@@ -70,13 +70,14 @@ public class UserController
         return TypedResults.Created($"/Useritems/{User.Id}", User);
     }
 
-    public static async Task<IResult> UpdateUser(int id, User inputUser, greenUDB db)
+    public static async Task<IResult> UpdateUser(int Id, User inputUser, greenUDB db)
     {
-        var User = await db.User.FindAsync(id);
+        // Ask the team what needs to be changed
+        var User = await db.User.FindAsync(Id);
 
         if (User is null) return TypedResults.NotFound();
 
-        User.Surname = inputUser.Surname;
+        User.Firstname = inputUser.Firstname;
 
         await db.SaveChangesAsync();
 
