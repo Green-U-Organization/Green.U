@@ -80,5 +80,8 @@ jobs:
       - name: Get Azure WebApp Deployment Logs
         if: failure()
         run: |
-          az webapp deployment list-publishing-credentials -n GreenU -g RessourceGroup
-          az webapp log tail -n GreenU -g RessourceGroup
+          # Connexion à Azure CLI (si ce n'est pas déjà fait)
+          az login --service-principal -u ${{ secrets.AZUREAPPSERVICE_CLIENTID_011C3F26CC2040A1B6404AC04C50F6FD }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZUREAPPSERVICE_TENANTID_BE441480952545C6B739805513D0B40A }}
+          
+          # Récupérer les logs de déploiement
+          az webapp log show -n GreenU
