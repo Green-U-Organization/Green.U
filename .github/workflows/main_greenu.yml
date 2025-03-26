@@ -83,13 +83,10 @@ jobs:
         with:
           name: net-app
           path: ./artifact
-
-      - name: Lister tous les fichiers dans le répertoire
-        run: ls -R . # Affiche tous les fichiers dans le répertoire courant
       
       - name: Vérifier le fichier ZIP téléchargé
         run: |
-          if (Test-Path "published_app.zip") {
+          if (Test-Path "./artifact/published_app.zip") {
               Write-Host "✅ Le fichier ZIP est présent"
           } else {
               Write-Host "❌ Le fichier ZIP est manquant"
