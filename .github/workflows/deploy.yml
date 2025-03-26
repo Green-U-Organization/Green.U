@@ -1,0 +1,49 @@
+name: Build and Deploy to Azure Web App
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '9.0.x'  # Adaptez à votre version
+  AZURE_WEBAPP_NAME: ${{ secrets.AZURE_WEBAPP_NAME }}
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest  # Ou ubuntu-latest pour Linux
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Build with dotnet
+      run: |
+        dotnet restore
+        dotnet build --configuration Release --no-restore
+
+    - name: Publish app
+      run: |
+        dotnet publish -c Release -o ./publish --no-build
+
+    - name: Zip artifacts
+      run: |
+        Compress-Archive -Path "./publish/*" -DestinationPath "./deploy.zip" -Force
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Web App
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: ./deploy.zip
+        resource-group: ${{ env.RESOURCE_GROUP }}
+        slot-name: 'Production'  # Optionnel pour les slots de déploiement
