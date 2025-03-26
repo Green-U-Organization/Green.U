@@ -33,10 +33,13 @@ jobs:
         run: Get-ChildItem "${{ github.workspace }}/published_app" -Recurse
         shell: pwsh
 
+      - name: Vérifier le contenu avant l'upload
+        run: ls -R ${{ github.workspace }}
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
+          name: net-app
           path: ${{ github.workspace }}/published_app ${{ github.workspace }}/published_app.zip
 
       - name: Créer un fichier ZIP propre
