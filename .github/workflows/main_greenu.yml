@@ -1,43 +1,39 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy ASP.Net Core app to Azure Web App - GreenU
-env:
-  AZURE_WEBAPP_NAME: GreenU   # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '9'
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read
+      contents: read #This is required for actions/checkout
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.x'
-      
+
       - name: Build with dotnet
-        run: dotnet build greenUDB/GreenUApi.csproj --configuration Release
-      
+        run: dotnet build --configuration Release
+
       - name: dotnet publish
-        run: dotnet publish greenUDB/GreenUApi.csproj -c Release -o "${{ github.workspace }}/published_app"
-      
-      - name: Créer un fichier ZIP propre
-        run: |
-          Remove-Item -Force published_app.zip -ErrorAction Ignore
-          Compress-Archive -Path "${{ github.workspace }}/published_app/*" -DestinationPath "${{ github.workspace }}/published_app.zip"
-        shell: pwsh
-      
+        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: net-app
-          path: published_app.zip
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: windows-latest
@@ -46,50 +42,27 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write
-      contents: read
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: net-app
-          path: ./artifact
-      
-      - name: Vérifier le fichier ZIP téléchargé
-        run: |
-          Get-ChildItem "./artifact"
-          if (Test-Path "./artifact/published_app.zip") {
-              Write-Host "✅ Le fichier ZIP est présent"
-          } else {
-              Write-Host "❌ Le fichier ZIP est manquant"
-              exit 1
-          }
+          name: .net-app
       
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_011C3F26CC2040A1B6404AC04C50F6FD }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_BE441480952545C6B739805513D0B40A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C4A3CFBA85F549C7A321609D8B9CF832 }}
-      
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_896610E4465F4D63BBB5F64C16A02CC3 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EBDCC9571E9F488CA7F2FC1A6C86B4CD }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9C6D62F514034CFF9C555383D6CB8B0F }}
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'GreenU'
           slot-name: 'Production'
-          package: './artifact/published_app.zip'
-          clean: true
-
-      - name: Detailed Webapp Logs
-        if: failure()
-        run: |
-          # Activer les logs détaillés
-          az webapp log config -n GreenU -g RessourceGroup --web-server-logging true --detailed-error-messages true
+          package: .
           
-          # Afficher les derniers logs de déploiement
-          az webapp deployment list -n GreenU -g RessourceGroup
-          
-          # Récupérer les logs de l'application
-          az webapp log tail -n GreenU -g RessourceGroup
-        shell: pwsh
