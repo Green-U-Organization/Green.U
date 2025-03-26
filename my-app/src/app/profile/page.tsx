@@ -102,10 +102,10 @@ export default function GardenerProfile() {
             </div>
 
             {/* Likes */}
-            <div className="mt-5 flex items-center gap-2">
-                <FaHeart className="text-red-500" />
-                <p className="text-gray-700 font-semibold">{likes} Likes</p>
-            </div>
+                {/* <div className="mt-5 flex items-center gap-2">
+                    <FaHeart className="text-red-500" />
+                    <p className="text-gray-700 font-semibold">{likes} Likes</p>
+                </div> */}
 
             {/* Liste des jardins */}
             <div className="mt-5">

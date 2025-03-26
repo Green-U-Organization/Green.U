@@ -31,14 +31,17 @@ const HashtagInput: React.FC<HashtagInputProps> = ({
     
     //Ajout d'un hashtag
     const handleAddHashtag = () => {
-        if (inputValue.trim() !== "" && !hashtags.includes(`#${inputValue}`)) {
-            // Ajoute avec un #
-            const newHashtags = [...hashtags, inputValue.trim()];
-            setHashtags(newHashtags); 
-            //Réinitialise l'input
-            setInputValue("");
-            //Envoyer la nouvelle liste au parent
-            onHashtagsChange?.(newHashtags); 
+        if (inputValue.trim() !== "") {
+            const formattedTag = `#${inputValue.trim()}`;
+            if(!hashtags.includes(formattedTag)) {
+                // Ajoute avec un #
+                const newHashtags = [...hashtags, formattedTag];
+                setHashtags(newHashtags); 
+                //Réinitialise l'input
+                setInputValue("");
+                //Envoyer la nouvelle liste au parent
+                onHashtagsChange?.(newHashtags); 
+            }
         }
     };
 
@@ -58,9 +61,9 @@ const HashtagInput: React.FC<HashtagInputProps> = ({
     return (
         <div>  
             {/* Input et bouton alignés */}
-            <div className="flex items-center gap-2"> 
+            <div className="flex items-center"> 
                 {/* Input pour ajouter un hashtag */}
-                <TextInput className="w-48"
+                <TextInput className="max-w-none"
                     type="text"
                     label={label}
                     name={name}
@@ -69,17 +72,19 @@ const HashtagInput: React.FC<HashtagInputProps> = ({
                     placeholder={placeHolder}
                     error={error}
                 />
-                {inputValue && !hashtags.includes(inputValue.trim()) && (
+                 {inputValue.trim() !== "" && !hashtags.includes(`#${inputValue.trim()}`) && (
+                    <div className=" flex items-start">
                     <Button type="button" onClick={handleAddHashtag}>
                         {translations.add}
                     </Button>
+                    </div>
                 )}
             </div>
             
             {/* Liste des hashtags */}
             <div className="flex flex-wrap">
                 {hashtags.map((tag) => (
-                    <span key={tag} className="bg-gray-200 px-3 py-1 rounded flex items-center">
+                    <span key={tag} className="px-2 pb-4">
                         {tag}
                             <button onClick={() => handleRemoveHashtag(tag)} className="cursor-pointer pl-3">
                                 ❌

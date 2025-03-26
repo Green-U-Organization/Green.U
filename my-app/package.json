@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "lucide-react": "^0.483.0",
     "next": "15.2.2",
     "next-international": "^1.3.1",

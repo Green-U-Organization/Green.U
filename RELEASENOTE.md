@@ -4,6 +4,14 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 26/03/25 | @Emmanuel | Correction des pixels manquants sur l'image reliant au profile sur la dashboard
+||| Refactorisation du code de la page signin
+||| Ajout d'une page CGU (fr et en) | Politique de confidentialité à ajouter
+||| Ajout d'une possibilité de visualisation du mot de passe
+||| Création d'un favicon et d'une image pour un raccourci bureau
+| 25/03/25 | @Emmanuel | Ajout du composant HashtagInput
+||| Ajout du composant DropDown générique
+||| Travail sur la page 2 du Sign Up
 | 25/03/25 | @Pierre | Ajout CheckBox dans le composant Todo
 ||| Mise en place du sorting sur la page todo
 ||| Ajout d'un event listener pour les bouttons sur smartphone (onTouchStart et onTouchEnd)
