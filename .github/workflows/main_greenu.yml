@@ -78,7 +78,7 @@ jobs:
         with:
           app-name: 'GreenU'
           slot-name: 'Production'
-          password: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8CC0A56830A3408DB06FE98F1666B4E9  }}
+          password: ${{ secrets.AZURE_CLIENT_SECRET }}
           package: './artifact/published_app.zip'
           clean: true
 
