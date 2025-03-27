@@ -50,7 +50,7 @@ const page = () => {
 	const [gender, setGender] = useState("M"); // ajouter bouton radio pour définir sexe
 	const [birthDate, setBirthDate] = useState(new Date());
 	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
-	const [errorEmptyBirthDate, setErrorEmptyBirthDate] = useState<boolean>(false);
+	// const [errorEmptyBirthDate, setErrorEmptyBirthDate] = useState<boolean>(false);
 	const [errorSpecialCharPassword, setErrorSpecialCharPassword] = useState<boolean>(false);
 	const [errorMatchingPassword, setErrorMatchingPassword] = useState<boolean>(false);
 	const [gardenerLevel, setGardenerLevel] = useState<string>('');
@@ -114,7 +114,7 @@ const page = () => {
 	}, [step]);
 
 	//Fonction permettant d'avancer dans les pages
-	const nextStep = () => {
+	const handleNextStep = () => {
 		if (validateStep()) {
 			if(step === 1) {
 				setErrorEmptyInterests(false);
@@ -125,7 +125,7 @@ const page = () => {
 	}
 
 	//Fonction permettant de reculer dans les pages
-	const prevStep = () => {
+	const handlePrevStep = () => {
 		setStep((prevStep) => prevStep - 1);
 	}
 
@@ -414,17 +414,17 @@ const page = () => {
 
 					<div className="flex justify-center pb-5">
 						{step > 1 && (
-							<Button type="action" handleAction={prevStep}>
+							<Button type="action" handleAction={handlePrevStep}>
 								{translations.previous}
 							</Button>
 						)}
 
 						{step < 2 ? (
-							<Button type="action" handleAction={nextStep}>
+							<Button type="action" handleAction={handleNextStep}>
 								{translations.next}
 							</Button>
 						) : (
-							<Button type="submit" handleSubmit={handleSubmit}>
+							<Button type="submit" handleSubmit={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>)}>
 								{translations.sign}
 							</Button>
 						)}
