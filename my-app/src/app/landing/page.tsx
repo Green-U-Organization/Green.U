@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
-import Card from '@/components/Card.jsx'
+import Card from '@/components/Card'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import data from '../data/data.js'
-import Todo from '@/components/Todo.jsx'
+import Todo from '@/components/Todo'
 import Link from 'next/link';
-import CardHeader from '@/components/CardHeader.jsx'
+import CardHeader from '@/components/CardHeader'
 
 const page = () => {
     const [processedData, setProcessedData] = useState(data.todos)
