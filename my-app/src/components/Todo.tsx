@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import React, { FormEvent, useState } from "react";
+import React, {useState} from "react";
 
 type Props = {
 	status: number;
@@ -28,7 +27,6 @@ const Todo = ({
     parcel, 
     line, 
     added, 
-    publishBy, 
     itemKey, 
     id,
     className,

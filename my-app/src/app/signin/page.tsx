@@ -216,7 +216,7 @@ const page = () => {
 			setErrorEmptyLastname(!lastname);
 			setEmptyErrorEmail(!email);
 			setErrorEmptyPostalCode(!postalCode);
-			setErrorEmptyBirthDate(!birthDate);
+			//setErrorEmptyBirthDate(!birthDate);
 
 			checkPassword(password);
 			checkPasswordVerify(password, passwordVerify);

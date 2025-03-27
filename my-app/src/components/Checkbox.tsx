@@ -1,7 +1,12 @@
 "use client"
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 
-const Checkbox = ({checked, onChange}) => {
+type Props = {
+    checked: boolean;
+    onChange: (checked: boolean) => void
+}
+
+const Checkbox = ({checked, onChange} : Props) => {
     const [inside, setInside] = useState(false)
     const [clicked, setClicked] = useState(checked || false)
 
