@@ -5,6 +5,32 @@ using GreenUApi.authentification;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
+
+// Add cors services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:3000")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
+
+// Add other services
+builder.Services.AddControllers();
+
+var app = builder.Build();
+
+// Use cors policy
+app.UseCors("AllowSpecificOrigin");
+
+// Other middlewares
+app.UseRouting();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};" +
@@ -27,11 +53,6 @@ builder.Services.AddOpenApiDocument(config =>
 
 
 var app = builder.Build();
-
-app.UseCors(builder => builder
-    .WithOrigins("http://localhost:3000") // Your frontend URL
-    .AllowAnyMethod()
-    .AllowAnyHeader());
 
 if (app.Environment.IsDevelopment())
 {
