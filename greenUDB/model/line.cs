@@ -1,21 +1,29 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
+using GreenUApi.model;
+
+namespace GreenUApi.model;
 
 public class Line{
-    public int id { get; set; }
+    public int Id { get; set; }
 
-    public float width { get; set; }
+    public float Length { get; set; }
 
-    public short status { get; set; }
+    public short Status { get; set; }
 
-    public DateTime update_at { get; set; }
+    public DateTime Update_at { get; set; }
 
-    public int parcelId { get; set; }
-    [ForeignKey("parcelId")] public Parcel parcel { get; set; } = new();
+    public DateTime Created_at { get; set; }
 
-    public int vegetableId { get; set; }
-    [ForeignKey("vegetableId")] public Vegetable vegetable{ get; set; } = new();
+    public Line()
+    {
+        Created_at = DateTime.Now;
+    }
 
-    public List<Todo> todos { get; set; } = new();
+    public int ParcelId { get; set; }
+    [ForeignKey("ParcelId")] public Parcel Parcel { get; set; } = new();
+
+    public int VegetableId { get; set; }
+    [ForeignKey("VegetableId")] public Vegetable Vegetable{ get; set; } = new();
 
 }

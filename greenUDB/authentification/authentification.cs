@@ -45,10 +45,10 @@ namespace GreenUApi.authentification
 
             if (user.Data[0].Password == hashedPassword)
             {
-                // Générer un JWT avec les informations de l'utilisateur
+                // Generate a JWT with user data
                 var token = Jwt.GenerateJwtToken(user.Data[0]);
 
-                // Retourner le jeton JWT à l'utilisateur
+                // Return the JWT
                 return TypedResults.Ok(new { message = "Mot de passe valide !", token });
             }
 
