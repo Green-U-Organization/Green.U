@@ -1,25 +1,21 @@
 "use client"
 import React, { useState } from 'react'
 
-const Checkbox = () => {
+const Checkbox = ({checked, onChange}) => {
     const [inside, setInside] = useState(false)
-    const [clicked, setClicked] = useState(false)
+    const [clicked, setClicked] = useState(checked || false)
 
-    const handleEnter = () => {
-        setInside(true)
-    }
-    const handleLeave = () => {
-        setInside(false)
-    }
+    const handleEnter = () => setInside(true)
+    const handleLeave = () => setInside(false)
     const handleClick = () => {
-        setClicked(prev => !prev)
+        const newChecked = !clicked
+        setClicked(newChecked)
+        onChange?.(newChecked) //Informe le parent du changement
     }    
-
 
     return (
         <>
-
-            <div className={`h-5 w-5 relative m-5 ${inside ? "bg-bgbutton" : "bg-cardbackground"}`}
+            <div className={`min-h-5 min-w-5 relative my-1.5 align-top ${inside ? "bg-bgbutton" : "bg-cardbackground"}`}
             onMouseEnter={handleEnter}
             onMouseLeave={handleLeave}
             onClick={handleClick}
@@ -57,10 +53,7 @@ const Checkbox = () => {
                     <div className='bg-shadow w-0.5 h-0.5 absolute top-3.5 left-1'></div>
                 </div>
             </div>
-
         </>
-
-
     )
 }
 

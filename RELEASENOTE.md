@@ -4,13 +4,31 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
-
-
-| 19/03/25 | @Emmanuel | Création d'un markdown RELEASENOTE
-|||Création de la page Profile | Il faudra ajuster le code pour pouvoir récupérer les données de la db
-|||Ajout d'une home page avec une navbar | Utile pour le test des pages
-|||Création de 44 images de profile
-| 18/03/25 | @Emmanuel | Ajout d'un espace dans les inputs et la date de naissance pour que le texte ne soit plus collé à la bordure
+| 26/03/25 | @Emmanuel | Correction des pixels manquants sur l'image reliant au profile sur la dashboard
+||| Refactorisation du code de la page signin
+||| Ajout d'une page CGU (fr et en) | Politique de confidentialité à ajouter
+||| Ajout d'une possibilité de visualisation du mot de passe
+||| Création d'un favicon et d'une image pour un raccourci bureau
+| 25/03/25 | @Emmanuel | Ajout du composant HashtagInput
+||| Ajout du composant DropDown générique
+||| Travail sur la page 2 du Sign Up
+| 25/03/25 | @Pierre | Ajout CheckBox dans le composant Todo
+||| Mise en place du sorting sur la page todo
+||| Ajout d'un event listener pour les bouttons sur smartphone (onTouchStart et onTouchEnd)
+| 24/03/25 | @Emmanuel | Correction du css du Login
+||| Ajout de badge en haut du dashboard
+| 24/03/25 | @Pierre | Ajout CardHeader sur landing
+| 21/03/25 | @Emmanuel | Ajout curseur sur composant Button.
+||| Amélioration de la popup de sélection d'un avatar.
+||| Dans Signin - Fermeture du calendar lorsqu'on clique en dehors.
+||| Ajout du choix d'une langue (en-fr).
+||| Mise en place des traductions. | Vérifier le choix de certains verbes.
+| 20/03/25 | @Emmanuel | Ajout d'une popup pour la sélection d'un avatar.
+| 19/03/25 | @Emmanuel | Création d'un markdown RELEASENOTE.
+|||Création de la page Profile | Il faudra ajuster le code pour pouvoir récupérer les données de la db.
+|||Ajout d'une home page avec une navbar | Utile pour le test des pages.
+|||Création de 44 avatars de profile
+| 18/03/25 | @Emmanuel | Ajout d'un espace dans les inputs et la date de naissance pour que le texte ne soit plus collé à la bordure.
 ||| Ajout d'un fichier json avec les codes postaux, les localités et les coordonnées géographiques. 
 ||| Remplacement du code postal pour une combobox avec filtre sur le code postal et la ville. 
 ||| Lorsqu'un champ obligatoire n'est pas rempli, mise en évidence de la bordure au lieu du fond.

@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className="bg-bgbutton">      
+    <html lang="en" className="bg-white">      
       <body className={`pt-15 ${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}>  
         <LanguageProvider>
           <Navbar />

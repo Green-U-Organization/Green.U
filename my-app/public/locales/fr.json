@@ -16,6 +16,7 @@
     "enterlastname": "Entrer votre nom de famille",
     "enteremail": "Entrer votre e-mail",
     "enterpostalcode": "Entrer un code postal ou une ville",
+    "enteryourlevel": "Sélectionner votre niveau",
     "username": "Nom d'utilisateur",
     "password": "Mot de passe",
     "pwdverif": "Vérification du mot de passe",
@@ -25,6 +26,17 @@
     "gender": "Genre:",
     "email": "E-mail",
     "postalcode": "Code Postal:",
+    "yourinterests": "Vos centres d'intérêt",
+    "addahashtag":"Ajouter un hashtag",
+    "selectoption": "Sélectionner une option",
+    "yourlevel": "Votre niveau:",
+    "levelbeginner": "Débutant",
+    "levelintermediate": "Intermédiaire",
+    "leveladvanced": "Avancé",
+    "levelexpert": "Expert",
+    "agree": "J'accepte les ",
+    "cgu": "Conditions Générales d'Utilisation",
+    "newsletter": "Je voudrais m'inscrire à la newsletter (optionnel).",
 
     "__COMMENT_4" : "LOGIN",
 
@@ -47,6 +59,9 @@
     "close": "Fermer",
     "back": "Retour",
     "edit": "Edition",
-    "sign": "S'inscrire"
+    "sign": "S'inscrire",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "add": "Ajouter"
 }
   
