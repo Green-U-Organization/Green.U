@@ -20,7 +20,7 @@ public class TodoController
                 .Where(t => t.Garden_id == GardenId)
                 .ToArrayAsync();
             
-            return new TodoResult<Todo> { IsSuccess = true, Data = response};
+            return new TodoResult<Todo> { IsSuccess = true, Data = response };
         }
         catch (Exception ex)
         {
