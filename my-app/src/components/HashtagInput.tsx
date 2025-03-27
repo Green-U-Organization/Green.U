@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, KeyboardEvent } from "react";
+import { useState, ChangeEvent} from "react";
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';

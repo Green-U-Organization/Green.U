@@ -1,6 +1,7 @@
 "use client"
 import Link from 'next/link';
-import React, { FormEvent, useState, useEffect } from 'react'
+import Image from 'next/image';
+import React from 'react'
 
 type Props = {
     containerName : string;
@@ -17,8 +18,8 @@ const CardHeader = ({containerName, className} : Props) => {
     <h1 className='text-4xl ml-4 mt-2'>
         {containerName}
     </h1>
-        <Link href={`/${pageLink}`}>
-    <img className='object-cover ml-2 h-5' src="/image/divers/expand.png" alt="expand" />
+    <Link href={`/${pageLink}`}>
+    <Image className='object-cover ml-2 h-5' src="/image/divers/expand.png" alt="expand" width={20} height={20} />
         </Link>
 
 

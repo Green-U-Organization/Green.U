@@ -9,14 +9,12 @@ import Calendar from "react-calendar";
 import { CalendarProps } from "react-calendar";
 type Value = CalendarProps["value"];
 import Radio from "@/components/Radio";
-import DropDown from "@/components/DropDownPostalCode";
+import DropDownPostalCode from "@/components/DropDownPostalCode";
 // import postalCodes from "@/data/postalCodesBE.json";
 import DropDown from "@/components/DropDown";
-import postalCodes from "@/data/postalCodesBE.json";
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Checkbox from "@/components/Checkbox";
 import HashtagInput from "@/components/HashtagInput";
-import DropDownPostalCode from "@/components/DropDownPostalCode";
 import Link from "next/link";
 
 const page = () => {
@@ -93,7 +91,7 @@ const page = () => {
 			setErrorEmptyLastname(!lastname);
 			setEmptyErrorEmail(!email);
 			setErrorEmptyPostalCode(!postalCode);
-			setErrorEmptyBirthDate(!birthDate);
+			//setErrorEmptyBirthDate(!birthDate);
 
 			return isValid;
 		} else if (step === 2) {

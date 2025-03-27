@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import { FaHeart, FaMapMarkerAlt, FaInstagram, FaFacebook, FaEnvelope } from 'react-icons/fa'
+import {FaMapMarkerAlt, FaInstagram, FaFacebook, FaEnvelope } from 'react-icons/fa'
 import Card from "@/components/Card"
 import Button from "@/components/Button"
 import { useRouter } from "next/navigation"
@@ -18,7 +18,7 @@ export default function GardenerProfile() {
     // Simuler les données d'XP, de badges et de likes
     const xp = 500 // XP actuel (NE PAS DEPASSER LE maxXp!!!)
     const maxXp = 500 // XP nécessaire pour le niveau max
-    const likes = 120 // Nombre de likes
+    //const likes = 120 // Nombre de likes
 
     // Définition des badges en fonction du niveau d'XP
     const badges = [

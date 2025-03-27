@@ -121,10 +121,12 @@ const page = () => {
                         garden={todo.garden_id}
                         parcel={todo.parcel_id}
                         line={todo.line_id}
-                        id={todo.id} 
+                        id={todo.id}
                         onStatusChange={handleStatusChange}
-                        style={{ display: index > 1 ? "none" : "flex" }}
-                    />
+                        style={{ display: index > 1 ? "none" : "flex" }} 
+                        handleEdit={function (): void {
+                            throw new Error('Function not implemented.')
+                        } }                    />
                 ))}
                 
                     

@@ -31,14 +31,14 @@ export default function CGUPage() {
     const cguContent = {
         fr: (
         <>
-            <h1 className="text-3xl font-bold text-shadow mb-4">Conditions Générales d'Utilisation (CGU)</h1>           
+            <h1 className="text-3xl font-bold text-shadow mb-4">Conditions Générales d&apos;Utilisation (CGU)</h1>           
             <section className="mb-6">
                 <h2 className="text-xl font-semibold text-border">1. Présentation de la plateforme</h2>
                 <p>Green-U est une plateforme de services destinée aux particuliers et professionnels, permettant la création de comptes utilisateurs et la publication de contenu.</p>
             </section>           
             <section className="mb-6">
                 <h2 className="text-xl font-semibold text-border">2. Objet</h2>
-                <p>Les présentes Conditions Générales d'Utilisation (CGU) régissent l'accès et l'utilisation de la plateforme Green-U.</p>
+                <p>Les présentes Conditions Générales d&apos;Utilisation (CGU) régissent l&apos;accès et l&apos;utilisation de la plateforme Green-U.</p>
             </section>           
             <section className="mb-6">
                 <h2 className="text-xl font-semibold text-border">3. Services proposés</h2>
@@ -46,11 +46,11 @@ export default function CGUPage() {
             </section>          
             <section className="mb-6">
                 <h2 className="text-xl font-semibold text-border">4. Création de compte</h2>
-                <p>Les utilisateurs doivent créer un compte pour accéder à certaines fonctionnalités de la plateforme. Lors de l'inscription, des données personnelles seront collectées.</p>
+                <p>Les utilisateurs doivent créer un compte pour accéder à certaines fonctionnalités de la plateforme. Lors de l&apos;inscription, des données personnelles seront collectées.</p>
             </section>           
             <section className="mb-6">
                 <h2 className="text-xl font-semibold text-border">5. Collecte et stockage des données</h2>
-                <p>Les données personnelles collectées lors de l'inscription ou de l'utilisation de la plateforme sont stockées dans une base de données pour les besoins du service. Ces données seront traitées conformément à notre politique de confidentialité.</p>
+                <p>Les données personnelles collectées lors de l&apos;inscription ou de l&apos;utilisation de la plateforme sont stockées dans une base de données pour les besoins du service. Ces données seront traitées conformément à notre politique de confidentialité.</p>
             </section>         
             <section className="mb-6">
                 <h2 className="text-xl font-semibold text-border">6. Politique de confidentialité</h2>
@@ -58,11 +58,11 @@ export default function CGUPage() {
             </section>         
             <section className="mb-6">
                 <h2 className="text-xl font-semibold text-border">7. Responsabilités</h2>
-                <p>L'utilisateur s'engage à respecter les lois en vigueur et à ne pas publier de contenu illégal, diffamatoire ou offensant sur la plateforme.</p>
+                <p>L&apos;utilisateur s&apos;engage à respecter les lois en vigueur et à ne pas publier de contenu illégal, diffamatoire ou offensant sur la plateforme.</p>
             </section>         
             <section className="mb-6">
                 <h2 className="text-xl font-semibold text-border">8. Propriété intellectuelle</h2>
-                <p>Tous les contenus (textes, images, logos, etc.) présents sur la plateforme Green-U sont protégés par le droit d'auteur et autres droits de propriété intellectuelle.</p>
+                <p>Tous les contenus (textes, images, logos, etc.) présents sur la plateforme Green-U sont protégés par le droit d&apos;auteur et autres droits de propriété intellectuelle.</p>
             </section>            
             <section className="mb-6">
                 <h2 className="text-xl font-semibold text-border">9. Modification des CGU</h2>

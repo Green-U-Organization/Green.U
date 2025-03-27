@@ -21,8 +21,8 @@ const TodoPopUp = () => {
 							value={content}
 							name="content"
 							placeholder="what is to do?"
-							onChange={handleContentChange}
-							// error={errorContent}
+							onChange={handleContentChange} 
+							error={false}
 						></TextInput>
 					</div>
                     <Button type={"submit"} >Submit</Button>
