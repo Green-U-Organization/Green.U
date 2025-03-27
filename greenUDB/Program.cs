@@ -18,19 +18,6 @@ builder.Services.AddCors(options =>
 // Add other services
 builder.Services.AddControllers();
 
-var app = builder.Build();
-
-// Use cors policy
-app.UseCors("AllowSpecificOrigin");
-
-// Other middlewares
-app.UseRouting();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
-
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};" +
@@ -53,6 +40,15 @@ builder.Services.AddOpenApiDocument(config =>
 
 
 var app = builder.Build();
+
+// Use cors policy
+app.UseCors("AllowSpecificOrigin");
+
+// Other middlewares
+app.UseRouting();
+app.UseAuthorization();
+
+app.MapControllers();
 
 if (app.Environment.IsDevelopment())
 {
