@@ -28,6 +28,11 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
+app.UseCors(builder => builder
+    .WithOrigins("http://localhost:3000") // Your frontend URL
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
 if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
