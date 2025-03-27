@@ -1,7 +1,7 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-const Checkbox = ({check}) => {
+const Checkbox = () => {
     const [inside, setInside] = useState(false)
     const [clicked, setClicked] = useState(false)
 
@@ -15,9 +15,6 @@ const Checkbox = ({check}) => {
         setClicked(prev => !prev)
     }    
 
-    useEffect(() => {
-        check = clicked
-    }, [clicked])
 
     return (
         <>

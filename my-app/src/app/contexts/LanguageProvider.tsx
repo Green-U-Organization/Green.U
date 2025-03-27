@@ -10,7 +10,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | null>(null);
 
-const translationsCache: Record<string, Record<string, string>> = {}; // Cache en mémoire
+// const translationsCache: Record<string, Record<string, string>> = {}; // Cache en mémoire
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [locale, setLocale] = useState("en"); // Valeur par défaut

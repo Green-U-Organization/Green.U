@@ -48,7 +48,7 @@ const TextInput: FC<InputProps> = ({
       {/* Ajuster les messages d'erreurs pour les passwords >> if (type === password) alors blablabla  */}
       {errorPassMatch && <p className="text-txterror">Your password must be strictly identical!</p>}
       {errorPassChar && <p className="text-txterror">Password must have at least 8 characters and 1 special character!</p>}
-      {error && <p className="text-txterror">Input field can't be empty!</p>}
+      {error && <p className="text-txterror">Input field can&apos;t be empty!</p>}
 
     </div>
   )

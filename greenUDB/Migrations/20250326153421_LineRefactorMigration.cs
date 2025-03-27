@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenUApi.Migrations
 {
     /// <inheritdoc />
-    public partial class NamingConventionMigration : Migration
+    public partial class LineRefactorMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,13 +45,15 @@ namespace GreenUApi.Migrations
                     Salt = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Is_admin = table.Column<int>(type: "int", nullable: false),
-                    Surname = table.Column<string>(type: "longtext", nullable: false)
+                    Firstname = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Lastname = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Postal_code = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Country = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Sexe = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -157,14 +159,19 @@ namespace GreenUApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    latitude = table.Column<float>(type: "float", nullable: false),
-                    longitude = table.Column<float>(type: "float", nullable: false),
-                    length = table.Column<float>(type: "float", nullable: false),
-                    width = table.Column<float>(type: "float", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    update_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Latitude = table.Column<float>(type: "float", nullable: false),
+                    Longitude = table.Column<float>(type: "float", nullable: false),
+                    Length = table.Column<float>(type: "float", nullable: false),
+                    Width = table.Column<float>(type: "float", nullable: false),
+                    Tags = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Update_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -292,26 +299,27 @@ namespace GreenUApi.Migrations
                 name: "Line",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    width = table.Column<float>(type: "float", nullable: false),
-                    status = table.Column<short>(type: "smallint", nullable: false),
-                    update_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    parcelId = table.Column<int>(type: "int", nullable: false),
-                    vegetableId = table.Column<int>(type: "int", nullable: false)
+                    Length = table.Column<float>(type: "float", nullable: false),
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    Update_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ParcelId = table.Column<int>(type: "int", nullable: false),
+                    VegetableId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Line", x => x.id);
+                    table.PrimaryKey("PK_Line", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Line_Parcel_parcelId",
-                        column: x => x.parcelId,
+                        name: "FK_Line_Parcel_ParcelId",
+                        column: x => x.ParcelId,
                         principalTable: "Parcel",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Line_Vegetable_vegetableId",
-                        column: x => x.vegetableId,
+                        name: "FK_Line_Vegetable_VegetableId",
+                        column: x => x.VegetableId,
                         principalTable: "Vegetable",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -322,33 +330,38 @@ namespace GreenUApi.Migrations
                 name: "Todo",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    done = table.Column<short>(type: "smallint", nullable: false),
-                    update_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    garden_id = table.Column<int>(type: "int", nullable: false),
-                    parcel_id = table.Column<int>(type: "int", nullable: false),
-                    line_id = table.Column<int>(type: "int", nullable: false),
-                    lien_id = table.Column<int>(type: "int", nullable: false)
+                    Author = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<byte>(type: "tinyint unsigned", nullable: false),
+                    PreviousStatus = table.Column<byte>(type: "tinyint unsigned", nullable: false),
+                    Update_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Garden_id = table.Column<int>(type: "int", nullable: false),
+                    Parcel_id = table.Column<int>(type: "int", nullable: false),
+                    Line_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Todo", x => x.id);
+                    table.PrimaryKey("PK_Todo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Todo_Garden_garden_id",
-                        column: x => x.garden_id,
+                        name: "FK_Todo_Garden_Garden_id",
+                        column: x => x.Garden_id,
                         principalTable: "Garden",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Todo_Line_lien_id",
-                        column: x => x.lien_id,
+                        name: "FK_Todo_Line_Line_id",
+                        column: x => x.Line_id,
                         principalTable: "Line",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Todo_Parcel_parcel_id",
-                        column: x => x.parcel_id,
+                        name: "FK_Todo_Parcel_Parcel_id",
+                        column: x => x.Parcel_id,
                         principalTable: "Parcel",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -366,14 +379,14 @@ namespace GreenUApi.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Line_parcelId",
+                name: "IX_Line_ParcelId",
                 table: "Line",
-                column: "parcelId");
+                column: "ParcelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Line_vegetableId",
+                name: "IX_Line_VegetableId",
                 table: "Line",
-                column: "vegetableId");
+                column: "VegetableId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Log_UserId",
@@ -396,19 +409,19 @@ namespace GreenUApi.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Todo_garden_id",
+                name: "IX_Todo_Garden_id",
                 table: "Todo",
-                column: "garden_id");
+                column: "Garden_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Todo_lien_id",
+                name: "IX_Todo_Line_id",
                 table: "Todo",
-                column: "lien_id");
+                column: "Line_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Todo_parcel_id",
+                name: "IX_Todo_Parcel_id",
                 table: "Todo",
-                column: "parcel_id");
+                column: "Parcel_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vérification_UserId",

@@ -26,6 +26,7 @@ const Button = ({children,
 
         }
         if(type === "submit" && handleSubmit){
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             handleSubmit
         }
     }

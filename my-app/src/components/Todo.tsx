@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import React, { FormEvent } from "react";
+// import React, { FormEvent } from "react";
 
 type Props = {
 	status: string;
@@ -12,7 +12,7 @@ type Props = {
     key: number
 };
 
-const Todo = ({ status, content, added, publishBy, key,  id }: Props) => {
+const Todo = ({ status, content, added, key,  id }: Props) => {
 	return (
 		<Link href={`/todo/${id}`} style={{display : key > 1 ? "none" : "flex"}}>
             <section

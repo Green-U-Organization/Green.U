@@ -15,13 +15,15 @@ public class User
     
     public int Is_admin { get; set; }
     
-    public string Surname { get; set; } = null!;
+    public string Firstname { get; set; } = null!;
     
     public string Lastname { get; set; } = null!;
     
     public string? Email { get; set; }
     
     public string? Postal_code { get; set; }
+
+    public string Country { get; set; } = null!;
     
     public string Sexe { get; set; } = string.Empty;
     

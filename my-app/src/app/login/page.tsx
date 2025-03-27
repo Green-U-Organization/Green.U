@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
-import React, { ChangeEvent, FormEvent, useEffect } from "react";
+import React, { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import Card from "@/components/Card";
 import TextInput from "@/components/TextInput";

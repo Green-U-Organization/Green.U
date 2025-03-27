@@ -1,6 +1,6 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
-
+using GreenUApi.model;
 public class Vegetable{
     public int id { get; set; }
 

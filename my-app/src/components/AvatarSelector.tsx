@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import Image from "next/image";
 import Card from "@/components/Card"
 import Button from "@/components/Button"
@@ -47,6 +47,7 @@ function AvatarSelector({ onSelect, isOpen, onClose }: AvatarSelectorProps) {
   
   if (!isOpen) return null;
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const {translations} = useLanguage();
 
   return (

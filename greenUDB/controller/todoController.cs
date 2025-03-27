@@ -1,49 +1,31 @@
 using Microsoft.EntityFrameworkCore;
+using GreenUApi.model;
 
 namespace GreenUApi.controller;
+
+public class TodoResult<T>
+{
+    public bool IsSuccess { get; set; }
+    public T[] Data { get; set; } = [];
+    public string ErrorMessage { get; set; } = string.Empty;
+}
+
 public class TodoController
 {
-    public static async Task<IResult> GetAllTodo(greenUDB db)
+    public static async Task<TodoResult<Todo>> GetGardenTodo(int GardenId, greenUDB db)
     {
-        return TypedResults.Ok(await db.Todo.ToArrayAsync());
-    }
-
-    public static async Task<IResult> GetTodo(int id, greenUDB db)
-    {
-        return await db.Todo.FindAsync(id)
-            is Todo Todo
-                ? TypedResults.Ok(Todo)
-                : TypedResults.NotFound();
-    }
-
-    public static async Task<IResult> CreateTodo(Todo Todo, greenUDB db)
-    {
-        db.Todo.Add(Todo);
-        await db.SaveChangesAsync();
-
-        return TypedResults.Created($"/Todoitems/{Todo.id}", Todo);
-    }
-
-    public static async Task<IResult> UpdateTodo(int id, Todo inputTodo, greenUDB db)
-    {
-        var Todo = await db.Todo.FindAsync(id);
-
-        if (Todo is null) return TypedResults.NotFound();
-
-        await db.SaveChangesAsync();
-
-        return TypedResults.NoContent();
-    }
-
-    public static async Task<IResult> DeleteTodo(int id, greenUDB db)
-    {
-        if (await db.Todo.FindAsync(id) is Todo Todo)
+        try
         {
-            db.Todo.Remove(Todo);
-            await db.SaveChangesAsync();
-            return TypedResults.NoContent();
+            var response = await db.Todo
+                .Where(t => t.Garden_id == GardenId)
+                .ToArrayAsync();
+            
+            return new TodoResult<Todo> { IsSuccess = true, Data = response};
         }
-
-        return TypedResults.NotFound();
+        catch (Exception ex)
+        {
+            return new TodoResult<Todo> { IsSuccess = false, ErrorMessage = ex.Message };
+        }
     }
+
 }

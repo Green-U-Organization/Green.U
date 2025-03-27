@@ -10,7 +10,7 @@ interface DropDownProps {
   error?: boolean;
 }
 
-const DropDownPostalCode: React.FC<DropDownProps> = ({ label, value, onChange, error }) => {
+const DropDownPostalCode: React.FC<DropDownProps> = ({value, onChange, error }) => {
   const [search, setSearch] = useState("");
   const {translations} = useLanguage();
 

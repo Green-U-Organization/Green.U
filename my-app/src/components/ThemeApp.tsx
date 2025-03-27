@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ClassName } from "react-calendar/src/shared/types.js";
+// import { ClassName } from "react-calendar/src/shared/types.js";
 
 // Fonction qui définit la saison selon le mois actuel
 const getSeason = () => {
@@ -15,6 +15,7 @@ const getSeason = () => {
 
 const ThemeApp: React.FC<{ children: React.ReactNode , className?: string}> = ({ children, className }) => {
   // Stocke le thème dans l'état (initialisé à une chaîne vide pour éviter SSR)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [theme, setTheme] = useState<string>("");
 
   // État pour savoir si le composant est monté (évite l'hydratation incorrecte)

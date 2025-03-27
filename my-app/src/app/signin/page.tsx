@@ -11,7 +11,7 @@ import { CalendarProps } from "react-calendar";
 type Value = CalendarProps["value"];
 import Radio from "@/components/Radio";
 import DropDown from "@/components/DropDownPostalCode";
-import postalCodes from "@/data/postalCodesBE.json";
+// import postalCodes from "@/data/postalCodesBE.json";
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 const page = () => {
@@ -307,7 +307,7 @@ const page = () => {
 					/>
 */}
 					<div className="flex justify-center pb-5">
-						<Button type="submit" handleSubmit={handleSubmit}>
+						<Button type="submit" handleSubmit={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>)}>
 							{translations.sign}
 						</Button>
 					</div>
