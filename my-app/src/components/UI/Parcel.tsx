@@ -1,25 +1,33 @@
 "use client"
-import React from "react";
+import React, { useState } from "react";
 import Line from "./Line";
 import data from "../../app/data/data";
 
-const Bed = ({parcel, parcelX, parcelY, parcelID}) => {
+type Props = {
+    parcel : object;
+    parcelX : number; 
+    parcelY : number;
+    parcelID : number;
+    scale : number
+}
+
+const Bed = ({parcel, parcelX, parcelY, parcelID, scale} : Props) => {
+
+
 
     const handleClick = (e) => {
         console.log(e)
     }
 
-console.log("width : ", parcelX)
 
-//TODO AJUSTER ECHELLE (100) AVEC UN CURSEUR
 
 // console.log("id: ", parcel.id)
 	return (
 		<div className="flex m-5">
             <div 
             className={`bg-amber-200 flex flex-col justify-around`} 
-            style={{height : parcelX*100, width : parcelY*100}}
-             >
+            style={{height : parcelX*scale, width : parcelY*scale}}
+            >
 
 	{
         data.lines.map((line) => (
@@ -29,7 +37,8 @@ console.log("width : ", parcelX)
                 line={line}
                 lineX={line.length}
                 lineStatus={line.status}
-                handleClick={handleClick}/>                       
+                handleClick={handleClick}
+                scale={scale}/>                       
             ) : null
         
         ))

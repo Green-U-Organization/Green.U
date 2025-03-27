@@ -1,6 +1,8 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import data from "../../app/data/data";
 import Parcel from "./Parcel";
+import ZoomSlider from "./ZoomSlider";
 
 type Props = {
 	gardenId: number;
@@ -8,8 +10,16 @@ type Props = {
 
 
 const Garden: React.FC<Props> = ({ gardenId }) => {
+	const [scale, setScale] =useState(100)
+
+const handleScaleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	setScale(Number(e.target.value));
+	console.log(scale)
+}
+
 	return (
 		<div>
+			<ZoomSlider handleChange={handleScaleChange}></ZoomSlider>
 			{data.parcels.map((parcel: { id: React.Key | null | undefined; width: number; length: number; gardenId: number }) => (
 				parcel.gardenId === gardenId ? (
 					<div key={parcel.id}>
@@ -17,7 +27,8 @@ const Garden: React.FC<Props> = ({ gardenId }) => {
 							parcel={parcel} 
 							parcelX={parcel.width}
 							parcelY={parcel.length}		
-                            parcelID={parcel.id}				
+							parcelID={parcel.id as number}
+							scale={scale}				
 						/>
 					</div>
 				) : null

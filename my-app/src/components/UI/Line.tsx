@@ -3,7 +3,15 @@
 import React, { useState } from "react"; // <DraggableCore>
 // import {garden} from '../data/garden'
 
-const Line = ({ lineX, lineStatus, handleClick, line }) => {
+type Props = {
+	lineX: number;
+	lineStatus: string;
+	line: object;
+	handleClick: () => void;
+	scale : number
+};
+
+const Line = ({ lineX, lineStatus, handleClick, line, scale }: Props) => {
 	const width = lineX * 1;
 	const [displayInfo, SetDisplayInfo] = useState(false);
 
@@ -18,7 +26,7 @@ const Line = ({ lineX, lineStatus, handleClick, line }) => {
 	return (
 		<div
 			className={`bg-amber-900`}
-			style={{ width: lineX * 100, height: "2px" }}
+			style={{ width: lineX * scale, height: 2 * scale/100 }}
 			
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
