@@ -1,7 +1,7 @@
 
 import Image from "next/image";
-import Card from "@/components/Card"
-import Button from "@/components/Button"
+import Card from "@/components/UI/Card"
+import Button from "@/components/UI/Button"
 import { useLanguage } from '../app/contexts/LanguageProvider'
 
 const avatars = [

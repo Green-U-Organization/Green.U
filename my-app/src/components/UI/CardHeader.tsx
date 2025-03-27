@@ -5,10 +5,11 @@ import React from 'react'
 
 type Props = {
     containerName : string;
-    className? : string
+    className? : string;
+    children? : React.ReactNode;
 }
 
-const CardHeader = ({containerName, className} : Props) => {
+const CardHeader = ({containerName, className, children} : Props) => {
 
     const pageLink = containerName.toLocaleLowerCase()
 
@@ -18,6 +19,7 @@ const CardHeader = ({containerName, className} : Props) => {
     <h1 className='text-4xl ml-4 mt-2'>
         {containerName}
     </h1>
+    <p>{children}</p>
     <Link href={`/${pageLink}`}>
     <Image className='object-cover ml-2 h-5' src="/image/divers/expand.png" alt="expand" width={20} height={20} />
         </Link>

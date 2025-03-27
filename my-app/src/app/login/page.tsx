@@ -3,9 +3,9 @@
 
 import React, { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
-import Card from "@/components/Card";
-import TextInput from "@/components/TextInput";
-import Button from "@/components/Button";
+import Card from "@/components/UI/Card";
+import TextInput from "@/components/UI/TextInput";
+import Button from "@/components/UI/Button";
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 const page = () => {
