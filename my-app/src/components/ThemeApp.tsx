@@ -14,10 +14,6 @@ const getSeason = () => {
 };
 
 const ThemeApp: React.FC<{ children: React.ReactNode , className?: string}> = ({ children, className }) => {
-  // Stocke le thème dans l'état (initialisé à une chaîne vide pour éviter SSR)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [theme, setTheme] = useState<string>("");
-
   // État pour savoir si le composant est monté (évite l'hydratation incorrecte)
   const [isMounted, setIsMounted] = useState(false);
 
@@ -34,10 +30,6 @@ const ThemeApp: React.FC<{ children: React.ReactNode , className?: string}> = ({
       // PEUT-ETRE ACTIVE POUR LE TEST DES SAISONS
       //const storedTheme = "theme-summer";
       //-------------------------------------------//
-
-      // Mettre à jour l'état React
-      setTheme(storedTheme);
-
       // Appliquer le thème au `document.documentElement`
       document.documentElement.classList.add(storedTheme);
 
