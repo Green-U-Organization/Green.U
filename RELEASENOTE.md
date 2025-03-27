@@ -4,7 +4,7 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
-| 28/03/25 | @Pierre @Emmanuel | Correction bug SignUp page
+| 27/03/25 | @Pierre @Emmanuel | Correction bug SignUp page
 ||| @Emmanuel | Traduction du CGU avec la méthode globale à l'app 
 ||| @Emmanuel | Sécurisation de la validation du code postal
 | 26/03/25 | @Emmanuel | Correction des pixels manquants sur l'image reliant au profile sur la dashboard
