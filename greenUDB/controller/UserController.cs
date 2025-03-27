@@ -4,7 +4,7 @@ using GreenUApi.model;
 
 namespace GreenUApi.controller;
 
-public class Result<T>
+public class UserResult<T>
 {
     public bool IsSuccess { get; set; }
     public T? Data { get; set; }
@@ -18,7 +18,7 @@ public class UserController
         return TypedResults.Ok(await db.User.ToArrayAsync());
     }
 
-    public static async Task<Result<User[]>> GetUserForLogin(string Username, greenUDB db)
+    public static async Task<UserResult<User[]>> GetUserForLogin(string Username, greenUDB db)
     {
         try
         {
@@ -33,11 +33,11 @@ public class UserController
             })
             .ToArrayAsync();
 
-            return new Result<User[]> { IsSuccess = true, Data = User };
+            return new UserResult<User[]> { IsSuccess = true, Data = User };
 
         }catch (Exception ex)
         {
-            return new Result<User[]> { IsSuccess = false, ErrorMessage = ex.Message };
+            return new UserResult<User[]> { IsSuccess = false, ErrorMessage = ex.Message };
         }
     }
 
