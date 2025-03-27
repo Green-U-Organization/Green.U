@@ -47,6 +47,7 @@ const page = () => {
 	const [errorEmptyEmail, setEmptyErrorEmail] = useState<boolean>(false);
 	const [postalCode, setPostalCode] = useState("");
 	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =	useState<boolean>(false);
+	const [isValidPostalCode, setIsValidPostalCode] = useState(true);
 	const [gender, setGender] = useState("M"); // ajouter bouton radio pour définir sexe
 	const [birthDate, setBirthDate] = useState(new Date());
 	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
@@ -74,15 +75,16 @@ const page = () => {
         setInterests(newHashtags);
     };
     
+	
 	//Fonction de vérification de la validité des champs obligatoires avant de pouvoir changer de page
 	const validateStep = () => {
 		if (step === 1) {
 			console.log("checking step 1 validation")
 			checkPassword(password);
 			checkPasswordVerify(password, passwordVerify);
-			
+
 			const isValid = login && password && passwordVerify && firstname && lastname && email && postalCode && birthDate &&
-                !errorSpecialCharPassword && !errorMatchingPassword;
+                !errorSpecialCharPassword && !errorMatchingPassword && isValidPostalCode;
 
 			setErrorEmptyLogin(!login);
 			setErrorEmptyPassword(!password);
@@ -216,6 +218,8 @@ const page = () => {
 			setErrorEmptyLastname(!lastname);
 			setEmptyErrorEmail(!email);
 			setErrorEmptyPostalCode(!postalCode);
+
+
 			//setErrorEmptyBirthDate(!birthDate);
 
 			checkPassword(password);
@@ -372,6 +376,7 @@ const page = () => {
 							value={postalCode}
 							onChange={handleChange(setPostalCode)}
 							error={errorEmptyPostalCode}
+							setIsValidPostalCode = {setIsValidPostalCode}
 						/>
 					</>
 					)}
