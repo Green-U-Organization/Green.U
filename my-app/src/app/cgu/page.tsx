@@ -1,8 +1,8 @@
 "use client"
 import { useRouter } from "next/navigation"
 import { useLanguage } from '../contexts/LanguageProvider'
-import Card from "@/components/Card";
-import Button from "@/components/Button";
+import Card from "@/components/UI/Card";
+import Button from "@/components/UI/Button";
 
 export default function CGUPage() {
 

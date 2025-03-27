@@ -1,7 +1,7 @@
 import { useState, ChangeEvent} from "react";
 import { useLanguage } from '@/app/contexts/LanguageProvider';
-import Button from '@/components/Button';
-import TextInput from '@/components/TextInput';
+import Button from '@/components/UI/Button';
+import TextInput from '@/components/UI/TextInput';
 
 interface HashtagInputProps {
     //Callback pour remonter les Hashtags au parent

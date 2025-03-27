@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
-import Card from '@/components/Card'
+import Card from '../../components/UI/Card'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import data from '../data/data.js'
-import Todo from '@/components/Todo'
+import Todo from '../../components/UI/Todo'
 import Link from 'next/link';
-import CardHeader from '@/components/CardHeader'
+import CardHeader from '../../components/UI/CardHeader'
 
 const page = () => {
     const [processedData, setProcessedData] = useState(data.todos)
@@ -136,7 +136,7 @@ const page = () => {
             {/* Garden */}
             <Card className='row-start-4 row-end-7 col-start-1 col-end-3 h-full w-full px-3'>
             <CardHeader
-                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Garden'} ></CardHeader>
+                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Garden-manager'} ></CardHeader>
 
 
             </Card>
@@ -144,7 +144,9 @@ const page = () => {
             {/* Message */}
             <Card className='row-start-7 row-end-8 col-start-1 col-end-3 h-full w-full px-3'>
             <CardHeader
-                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Message'} ></CardHeader>
+                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Message'} >
+                        Choose your Garden
+                    </CardHeader>
 
             </Card>
 
