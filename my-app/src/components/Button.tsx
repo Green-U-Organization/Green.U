@@ -31,7 +31,11 @@ const Button = ({
 
 	const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
 		if (type === "submit" && handleSubmit) handleSubmit(e as unknown as FormEvent<HTMLButtonElement>);
-		if (type === "action" && handleAction) handleAction(e as unknown as FormEvent<HTMLButtonElement>);
+		if (type === "action" && handleAction) {
+			e.preventDefault()
+			handleAction(e as unknown as FormEvent<HTMLButtonElement>);
+		}
+
 		if (onClick) onClick(e);
 	};
 

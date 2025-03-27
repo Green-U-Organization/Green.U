@@ -50,7 +50,6 @@ const page = () => {
 	const [gender, setGender] = useState("M"); // ajouter bouton radio pour définir sexe
 	const [birthDate, setBirthDate] = useState(new Date());
 	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
-	// const [errorEmptyBirthDate, setErrorEmptyBirthDate] = useState<boolean>(false);
 	const [errorSpecialCharPassword, setErrorSpecialCharPassword] = useState<boolean>(false);
 	const [errorMatchingPassword, setErrorMatchingPassword] = useState<boolean>(false);
 	const [gardenerLevel, setGardenerLevel] = useState<string>('');
@@ -78,6 +77,7 @@ const page = () => {
 	//Fonction de vérification de la validité des champs obligatoires avant de pouvoir changer de page
 	const validateStep = () => {
 		if (step === 1) {
+			console.log("checking step 1 validation")
 			checkPassword(password);
 			checkPasswordVerify(password, passwordVerify);
 			
@@ -91,15 +91,18 @@ const page = () => {
 			setErrorEmptyLastname(!lastname);
 			setEmptyErrorEmail(!email);
 			setErrorEmptyPostalCode(!postalCode);
-			//setErrorEmptyBirthDate(!birthDate);
 
+			console.log("validation ok")
 			return isValid;
 		} else if (step === 2) {
+
+			console.log("check validation step 2")
 			const isValid = gardenerLevel && interests.length > 0;
 	
 			setErrorEmptyGardenerLevel(!gardenerLevel);
 			setErrorEmptyInterests(!interests.length);
-	
+
+			console.log("validation ok")
 			return isValid;
 		}
 		return false;
@@ -107,11 +110,11 @@ const page = () => {
 
 	//Réinitialisation des erreurs quand on arrive sur la page 2
 	useEffect(() => {
-		if (step === 1) {
-			setErrorEmptyInterests(false);
-			setErrorEmptyGardenerLevel(false);
-		}
-	}, [step]);
+
+			console.log("##", errorEmptyInterests)
+			console.log("garden", errorEmptyGardenerLevel)
+		
+	}, [errorEmptyGardenerLevel, errorEmptyInterests, step]);
 
 	//Fonction permettant d'avancer dans les pages
 	const handleNextStep = () => {
@@ -206,7 +209,6 @@ const page = () => {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		
-		if(step === 1) {
 			setErrorEmptyLogin(!login);
 			setErrorEmptyPassword(!password);
 			setErrorEmptyPasswordVerify(!passwordVerify);
@@ -233,7 +235,9 @@ const page = () => {
 			// ) {
 			// 	console.log("everything is ok on page 1");
 			// }
-		} else if (step === 2) {
+
+
+			console.log("submit???")
 			
 			setErrorEmptyGardenerLevel(!gardenerLevel);
 			setErrorEmptyInterests(!interests.length);
@@ -244,7 +248,7 @@ const page = () => {
 				console.log("FORM OK");
 			};
 			
-		}
+		
 
 	};
 
@@ -413,13 +417,13 @@ const page = () => {
 					)}
 
 					<div className="flex justify-center pb-5">
-						{step > 1 && (
+						{step === 2 && (
 							<Button type="action" handleAction={handlePrevStep}>
 								{translations.previous}
 							</Button>
 						)}
 
-						{step < 2 ? (
+						{step === 1 ? (
 							<Button type="action" handleAction={handleNextStep}>
 								{translations.next}
 							</Button>
@@ -428,9 +432,9 @@ const page = () => {
 								{translations.sign}
 							</Button>
 						)}
-						<Button type="submit" handleSubmit={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>)}>
+						{/* <Button type="submit" handleSubmit={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>)}>
 							{translations.sign}
-						</Button>
+						</Button> */}
 					</div>
 
 				</form>
