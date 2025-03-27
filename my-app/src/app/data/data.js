@@ -1031,7 +1031,7 @@ let data = {
     parcels : [
       {
         "id": 101,
-        "length": 3.2,
+        "length": 32,
         "width": 1.0,
         "nbrOfLines": 3,
         "updateLogs": [
