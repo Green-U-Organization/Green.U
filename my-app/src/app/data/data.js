@@ -1031,7 +1031,7 @@ let data = {
     parcels : [
       {
         "id": 101,
-        "length": 32,
+        "length": 5,
         "width": 1.0,
         "nbrOfLines": 3,
         "updateLogs": [
@@ -1315,7 +1315,7 @@ let data = {
       {
         "id": 1,
         "length": 8.0,
-        "width": 5.0,
+        "width": 8.0,
         "createdAt": "2023-09-15",
         "adminId": "user1",
         "updateLogs": [
@@ -1380,7 +1380,7 @@ let data = {
       },
       {
         "id": 5,
-        "length": 7.2,
+        "length": 10.2,
         "width": 4.8,
         "createdAt": "2023-11-01",
         "adminId": "user4",

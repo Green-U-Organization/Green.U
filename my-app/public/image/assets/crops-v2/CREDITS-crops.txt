@@ -1,0 +1,105 @@
+# ATTRIBUTION STATEMENT
+
+"[LPC] Crops" by bluecarrot16, Daniel Eddeland (daneeklu), Joshua Taylor, Richard Kettering (Jetrel). Commissioned by castelonia. License CC-BY-SA 3.0+ or GPL 3.0+. https://opengameart.org/content/lpc-crops
+
+BASED ON:
+
+[LPC] Farming tilesets, magic animations and UI elements
+DE = Daniel Eddeland
+CC-BY-SA 3.0 / GPL 3.0
+https://opengameart.org/content/rpg-item-set
+
+Fruit and Veggie Inventory
+JT = Joshua Taylor
+CC-BY-SA 3.0 / GPL 3.0 
+https://opengameart.org/content/fruit-and-veggie-inventory
+
+RPG item set
+RK = Richard Kettering (Jetrel)
+CC0
+https://opengameart.org/content/rpg-item-set
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  
+
+# LIST OF ITEMS AND LICENSES
+
+All items edited by bluecarrot16. Original authors listed, otherwise drawn from scratch by bluecarrot16. 
+
+- If you use this entire set, the license is CC-BY-SA 3.0+ or GPL v3.0+. 
+- All individual items can be used under either of those licenses (CC-BY-SA 3.0+ or GPL 3.0+). 
+- Some items can also be used under other licenses, according to the table below.
+- For items with a CC-BY, CC-BY-SA, OGA-BY, or GPL license, you must credit the original author(s) as well as bluecarrot16, link to the original submissions (above) and include a link back to <https://opengameart.org/content/lpc-crops>.
+- For items licensed CC0, credit and link back to this page is appreciated, but not required. 
+
+|                                    Item                                    | Other Authors |              Type             | Other Licenses |
+|----------------------------------------------------------------------------|---------------|-------------------------------|----------------|
+| Russet potatoes                                                            | JT, DE        | Potato root (DE)              |                |
+| Gold potatoes                                                              | DE            | Potato root (DE)              |                |
+| Purple potatoes                                                            | DE            | Potato root (DE)              |                |
+| Sweet potatoes                                                             | DE            | Potato root (DE)              |                |
+| Yuca / Cassava                                                             | DE            | Cassava                       |                |
+| Daikon radish                                                              | DE            | Carrot root (DE)              |                |
+| Carrots                                                                    | DE, JT        | Carrot root (DE)              |                |
+| Parsnips                                                                   | DE, JT        | Carrot root (DE)              |                |
+| Radishes                                                                   | DE, JT        | Carrot root (DE)              |                |
+| Beets                                                                      | JT            | Beet/Turnip/Rutabaga root     |                |
+| Turnips                                                                    | JT            | Beet/Turnip/Rutabaga root     |                |
+| Rutabaga                                                                   | JT            | Beet/Turnip/Rutabaga root     |                |
+| Garlic                                                                     | JT            | Onion/Garlic/Leek root        |                |
+| Yellow onion / Sweet onion                                                 | JT            | Onion/Garlic/Leek             |                |
+| Red onion / Purple onion                                                   | JT            | Onion/Garlic/Leek             |                |
+| White onion                                                                | JT            | Onion/Garlic/Leek             |                |
+| Green onion / Scallion                                                     | JT            | Onion/Garlic/Leek             |                |
+| Hot pepper                                                                 | DE            | Pepper bush (DE)              |                |
+| Green bell pepper                                                          | DE, JT        | Pepper bush (DE)              |                |
+| Red bell pepper                                                            | DE, JT        | Pepper bush (DE)              |                |
+| Orange bell pepper                                                         | DE, JT        | Pepper bush (DE)              |                |
+| Yellow bell pepper                                                         | DE, JT        | Pepper bush (DE)              |                |
+| Chili peppers / Hot peppers / Poblano, Cayanne Serrano, Habanero, Jalapeño | DE            | Pepper bush (DE)              |                |
+| Watermelon                                                                 | JT            | Melon vine                    |                |
+| Honeydew melon                                                             |               | Melon vine                    | CC0            |
+| Cantaloupe melon                                                           |               | Melon vine                    | CC0            |
+| Acorn squash                                                               |               | Gourd vine                    | CC0            |
+| Pumpkin                                                                    | JT            | Gourd vine                    |                |
+| Crookneck squash                                                           | JT            | Gourd vine                    |                |
+| Butternut squash                                                           |               | Gourd vine                    | CC0            |
+| Corn                                                                       | DE            | Corn (DE)                     |                |
+| Corn                                                                       | DE, JT        | Corn (DE)                     |                |
+|----------------------------------------------------------------------------|---------------|-------------------------------|----------------|
+| Asparagus                                                                  |               | Asparagus plant               | CC0            |
+| Rhubarb                                                                    |               | Rhubarb / chard               | CC0            |
+| Romaine lettuce                                                            |               | Romaine lettuce               | CC0            |
+| Iceberg lettuce                                                            | RK            | Iceberg lettuce               |                |
+| Kale                                                                       |               | Kale                          | CC0            |
+| Red cabbage / Purple cabbage                                               |               | Cabbage/Cauliflower/Broccoli  | CC0            |
+| Green cabbage                                                              |               | Cabbage/Cauliflower/Broccoli  | CC0            |
+| Celery                                                                     |               | Celery                        | CC0            |
+| Bok choy                                                                   |               | Bok choy                      | CC0            |
+| Fennel bulb                                                                |               | Fennel plant                  | CC0            |
+| Brussels sprouts                                                           |               | Brussels sprouts              | CC0            |
+| Cauliflower                                                                | JT            | Cabbage/Cauliflower/Broccoli  |                |
+| Broccoli                                                                   | JT            | Cabbage/Cauliflower/Broccoli  |                |
+| Artichoke                                                                  | DE            | Artichoke plant (DE)          |                |
+| Leeks                                                                      |               | Onion/Garlic/leek             | CC0            |
+| Kohlrabi                                                                   |               | Kohlrabi                      | CC0            |
+| Eggplant                                                                   | DE, JT        | Zucchini/Squash/Cucumber vine |                |
+| Zucchini / Green squash                                                    | DE            | Zucchini/Squash/Cucumber vine |                |
+| Yellow squash / Summer squash                                              | DE            | Zucchini/Squash/Cucumber vine |                |
+| Cucumber                                                                   | RK            | Zucchini/Squash/Cucumber vine |                |
+| Strawberry                                                                 | JT            | {Black,Straw,Rasp}berry bush  |                |
+| Blackberries                                                               |               | {Black,Straw,Rasp}berry bush  | CC0            |
+| Raspberries                                                                |               | {Black,Straw,Rasp}berry bush  | CC0            |
+| Blueberries                                                                |               | Blueberry bush                | CC0            |
+| Red grapes                                                                 |               | Grapevine                     | CC0            |
+| Green grapes                                                               |               | Grapevine                     | CC0            |
+| Cherry tomatoes                                                            | DE            | Tomato vine (DE)              |                |
+| Tomatoes                                                                   | DE            | Tomato vine (DE)              |                |
+| Large tomatoes                                                             | JT            | Tomato vine (DE)              |                |
+| Peas / Snap peas / Sugar peas                                              | JT            | Pea / green bean vine         |                |
+| Hops                                                                       |               | Hops vine                     | CC0            |
+| Green beans                                                                |               | Pea / green bean vine         | CC0            |
+|----------------------------------------------------------------------------|---------------|-------------------------------|----------------|
+| Coffee                                                                     |               | Coffee tree                   | CC0            |
+| Pineapple                                                                  |               | Pineapple plant               | CC0            |
+| Kiwi                                                                       |               | Kiwi vine                     | CC0            |

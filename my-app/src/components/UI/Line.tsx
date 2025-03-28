@@ -7,7 +7,7 @@ type Props = {
 	lineX: number;
 	lineStatus: string;
 	line: object;
-	handleClick: () => void;
+	handleClick?: () => void;
 	scale : number
 };
 

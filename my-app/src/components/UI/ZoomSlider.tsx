@@ -1,10 +1,13 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 
 type Props = {
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ZoomSlider = ({handleChange}: Props) => {
+
+
   return (
 <>
 <input type="range"

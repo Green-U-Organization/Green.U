@@ -1,0 +1,66 @@
+.parcelBackground {
+    background-image: url('/image/assets/tilesets/parcel/parcelBG.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderTop {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderTop.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderBottom {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderBottom.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderLeft {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderLeft.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderRight {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderRight.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderTopLeft {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderTopLeft.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderTopRight {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderTopRight.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderBottomLeft {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderBottomLeft.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderBottomRight {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderBottomRight.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.gardenHorizontalFence {
+    background-image: url('/image/assets/tilesets/garden/gardenHorizontalFence.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.gardenVerticalFence {
+    background-image: url('/image/assets/tilesets/garden/gardenVerticalFence.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+

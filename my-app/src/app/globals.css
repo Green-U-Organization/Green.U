@@ -24,6 +24,7 @@
   --bgbutton: #c3e6cb;
   --bginput: #7bf1a8;
   --txterror: #e7000b;
+  --gardenBG : #2f8136;
 }
 
 /* Été */
@@ -72,6 +73,7 @@
   --color-extbutton: var(--extbutton);
   --color-bginput: var(--bginput);
   --color-txterror: var(--txterror);
+  --color-gardenBG: var(--gardenBG)
 }
 
 @media (prefers-color-scheme: dark) {
@@ -103,4 +105,10 @@ body {
 /* TEST DE LA POLICE SUR LA NAVBAR */
 .navbar {
   font-family: var(--font-jersey);
+}
+
+.parcelBackground {
+  background-image: url('/image/assets/tilesets/parcel.png');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
