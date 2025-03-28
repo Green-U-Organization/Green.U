@@ -3,12 +3,20 @@
 import React, { useState } from "react"; // <DraggableCore>
 // import {garden} from '../data/garden'
 
+type LineType = {
+	crop: {
+		vegetable: string;
+		variety: string;
+	};
+	status: string;
+};
+
 type Props = {
 	lineX: number;
 	lineStatus: string;
-	line: object;
+	line: LineType;
 	handleClick?: () => void;
-	scale : number
+	scale: number;
 };
 
 const Line = ({ lineX, lineStatus, handleClick, line, scale }: Props) => {
@@ -25,8 +33,11 @@ const Line = ({ lineX, lineStatus, handleClick, line, scale }: Props) => {
 
 	return (
 		<div
-			className={`bg-amber-900`}
-			style={{ width: lineX * scale, height: 2 * scale/100 }}
+			className={`bg-amber-900 z-40 relative`}
+			style={{ 
+				width: lineX * scale, 
+				height: 2 * scale/100 
+			}}
 			
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
@@ -36,7 +47,7 @@ const Line = ({ lineX, lineStatus, handleClick, line, scale }: Props) => {
 			<div
 				className={`
         ${displayInfo ? "block" : "hidden"} 
-        relative left-20 bg-gray-200 border-2 z-1000 flex flex-col items-start w-40`}
+        relative left-20 bg-gray-200 border-2 z-50 flex flex-col items-start w-40`}
 			>
 				<h3>{line.crop.vegetable}</h3>
 				<h4>{line.crop.variety}</h4>
@@ -48,6 +59,13 @@ const Line = ({ lineX, lineStatus, handleClick, line, scale }: Props) => {
 					<button className="border-2 bg-white ">❓</button>
 				</div>
 			</div>
+
+			<div 
+			className={``}
+			style={{ 
+				width: lineX * scale, 
+				height: 2 * scale/100 
+			}}></div>
 		</div>
 	);
 };

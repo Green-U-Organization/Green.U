@@ -21,7 +21,7 @@ type Props = {
 const Bed = ({ parcel, parcelX, parcelY, parcelID, scale }: Props) => {
 
     return (
-        <section className=" ml-5">
+        <section className=" ml-5 z-10">
             <div className="flex flex-col">
 
 {/* //BorderTopGlobal */}

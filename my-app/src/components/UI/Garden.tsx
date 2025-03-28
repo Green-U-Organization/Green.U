@@ -29,9 +29,48 @@ const Garden: React.FC<Props> = ({ gardenId, scale }) => {
 					width: gardenY * scale,
 				}}>
 
+					{/* //GRASS  */}
+				<div className={`absolute top-0 ${styles.grassBG} z-0`}
+					style={{
+						
+						height: gardenX * scale,
+						width: gardenY * scale,
+					}}></div>
+
+{/* //TOP Fence */}
+				<div
+					className={`absolute top-0 ${styles.gardenHorizontalFence} z-20 `}
+					style={{
+						height: 0.3 * scale,
+						width: gardenY * scale,
+					}}></div>
+{/* //BOTTOM Fence */}
+				<div
+					className={`absolute bottom-0 ${styles.gardenHorizontalFence} z-20 `}
+					style={{
+						height: 0.3 * scale,
+						width: gardenY * scale,
+					}}></div>
+{/* //LEFT Fence */}
+				<div
+					className={`absolute top-0 left-0 ${styles.gardenVerticalFence} z-20 `}
+					style={{
+						height: gardenX * scale,
+						width: 0.2 * scale,
+					}}></div>
+{/* //RIGHT Fence */}
+				<div
+					className={`absolute top-0 right-0 ${styles.gardenVerticalFence} z-20 `}
+					style={{
+						height: gardenX * scale,
+						width: 0.2 * scale,
+					}}></div>
+
 				{data.parcels.map((parcel: { id: React.Key | null | undefined; width: number; length: number; gardenId: number }) => (
 					parcel.gardenId === gardenId ? (
-						<div key={parcel.id}>
+						<div 
+						className="z-10 relative"
+						key={parcel.id}>
 							<Parcel
 								parcel={parcel}
 								parcelX={parcel.width}
@@ -43,37 +82,11 @@ const Garden: React.FC<Props> = ({ gardenId, scale }) => {
 					) : null
 				))}
 
-<div
-				className={`absolute top-0 ${styles.gardenHorizontalFence} `}
-				style={{
-					height: 0.3 * scale,
-					width: gardenY * scale,
-				}}></div>
 
-			<div
-				className={`absolute bottom-0 ${styles.gardenHorizontalFence} `}
-				style={{
-					height: 0.3 * scale,
-					width: gardenY * scale,
-				}}></div>
-
-			<div
-				className={`absolute top-0 left-0 ${styles.gardenVerticalFence} `}
-				style={{
-					height: gardenX * scale,
-					width: 0.2 * scale,
-				}}></div>
-
-			<div
-				className={`absolute top-0 right-0 ${styles.gardenVerticalFence} `}
-				style={{
-					height: gardenX * scale,
-					width: 0.2 * scale,
-				}}></div>
 
 			</div>
 
-			
+
 
 		</section>
 	);

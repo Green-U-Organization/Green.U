@@ -64,3 +64,9 @@
     background-repeat: repeat;
 }
 
+.grassBG {
+    background-image: url('/image/assets/tilesets/garden/grassBG.png');
+    background-size: 5%;
+    background-repeat: repeat;
+}
+
