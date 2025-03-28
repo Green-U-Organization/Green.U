@@ -23,7 +23,7 @@ const Garden: React.FC<Props> = ({ gardenId, scale }) => {
 		<section className="mb-10">
 
 			<div
-				className="bg-gardenBG m-10 relative"
+				className="bg-gardenBG relative"
 				style={{
 					height: gardenX * scale,
 					width: gardenY * scale,

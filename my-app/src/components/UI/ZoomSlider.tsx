@@ -11,9 +11,9 @@ const ZoomSlider = ({handleChange}: Props) => {
   return (
 <>
 <input type="range"
-min="10" 
-max="1000"  
-step="50"
+min="50" 
+max="200"  
+step="10"
 onChange={handleChange} 
 className=' m-5 h-2 bg-border appearance-none cursor-cell' />
 </>

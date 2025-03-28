@@ -10,10 +10,10 @@ const Card: React.FC<CardProps> = ({ children, className }) => {
 
         <div className={`font-(family-name:--font-jersey)  text-2xl relative bg-cardbackground  ${className}`}>
             {/* Bordures */}
-            <div className="absolute top-0 left-0 h-full w-2 bg-border"></div>
-            <div className="absolute top-0 right-0 h-full w-2 bg-border"></div>
-            <div className="absolute top-0 left-0 h-2 w-full bg-border"></div>
-            <div className="absolute bottom-0 left-0 h-2 w-full bg-border"></div>
+            <div className="absolute top-0 left-0 h-full w-2 bg-border z-50"></div>
+            <div className="absolute top-0 right-0 h-full w-2 bg-border z-50"></div>
+            <div className="absolute top-0 left-0 h-2 w-full bg-border z-50"></div>
+            <div className="absolute bottom-0 left-0 h-2 w-full bg-border z-50"></div>
 
             {/* Pixels intérieurs */}
             <div className="absolute top-2 left-2 h-1 w-1 bg-border"></div>
