@@ -5,6 +5,8 @@
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
 | 28/03/25 | @Pierre | ajout assets pour les jardins | https://opengameart.org/content/lpc-crops  https://opengameart.org/content/lpc-farming-tilesets-magic-animations-and-ui-elements
+||| Ajout de 55 image de légumes en png + assets pour garden et parcel
+||| Ajout d'un champs "icon" dans la table "line" afin d'afficher le légume sur la ligne
 | 27/03/25 | @Pierre @Emmanuel | Correction bug SignUp page
 ||| @Emmanuel | Traduction du CGU avec la méthode globale à l'app 
 ||| @Emmanuel | Sécurisation de la validation du code postal
