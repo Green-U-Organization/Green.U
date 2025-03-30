@@ -9,7 +9,7 @@ type Props = {
 	children?: React.ReactNode;
 };
 
-const CardHeader = ({ containerName, className, children }: Props) => {
+const BentoCardHeader = ({ containerName, className, children }: Props) => {
 	const pageLink = containerName.toLocaleLowerCase();
 
 	return (
@@ -33,4 +33,4 @@ const CardHeader = ({ containerName, className, children }: Props) => {
 	);
 };
 
-export default CardHeader;
+export default BentoCardHeader;

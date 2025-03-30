@@ -7,7 +7,7 @@ import Image from 'next/image'
 import data from '../data/data.js'
 import Todo from '../../components/UI/Todo'
 import Link from 'next/link';
-import CardHeader from '../../components/UI/CardHeader'
+import BentoCardHeader from '../../components/UI/BentoCardHeader'
 
 const page = () => {
     const [processedData, setProcessedData] = useState(data.todos)
@@ -106,8 +106,8 @@ const page = () => {
 
                         {/* TodoList */}
                         <Card className={'row-start-2 row-end-4 col-start-1 col-end-5 h-full px-3 grid grid-cols-2 grid-rows-6 gap-2'}>
-                <CardHeader
-                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Todo'} ></CardHeader>
+                <BentoCardHeader
+                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Todo'} ></BentoCardHeader>
                 {processedData.map((todo, index) => (
                     <Todo
                         key={todo.id}
@@ -135,25 +135,25 @@ const page = () => {
 
             {/* Garden */}
             <Card className='row-start-4 row-end-7 col-start-1 col-end-3 h-full w-full px-3'>
-            <CardHeader
-                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Garden-manager'} ></CardHeader>
+            <BentoCardHeader
+                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Garden-manager'} ></BentoCardHeader>
 
 
             </Card>
 
             {/* Message */}
             <Card className='row-start-7 row-end-8 col-start-1 col-end-3 h-full w-full px-3'>
-            <CardHeader
+            <BentoCardHeader
                     className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Message'} >
                         Choose your Garden
-                    </CardHeader>
+                    </BentoCardHeader>
 
             </Card>
 
             {/* Feed */}
             <Card className='row-start-4 row-end-8 col-start-3 col-end-5 h-full w-full px-3'>
-            <CardHeader
-                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Feed'} ></CardHeader>
+            <BentoCardHeader
+                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Feed'} ></BentoCardHeader>
 
             </Card>
 
