@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
   const {locale, setLocale} = useLanguage();
   const {translations} = useLanguage();
   return (
-    <nav className="fixed top-0 left-0 w-full bg-gray-800 text-white p-4 shadow-md z-10">
+    <nav className="fixed top-0 left-0 w-full bg-gray-800 text-white p-4 shadow-md z-100">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold hover:text-gray-600">

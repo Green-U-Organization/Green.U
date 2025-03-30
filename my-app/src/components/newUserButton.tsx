@@ -6,7 +6,7 @@ const NewUserButton = () => {
   const newUser = async () => {
     try {
       // Appel de l'API route locale
-      const response = await fetch("https://greenuapi-heaaa3cqg6h7akgh.westeurope-01.azurewebsites.net/Users", {
+      const response = await fetch(process.env.NEXT_PUBLIC_API + "/Users", {
         mode: "cors"
       });
       if (!response.ok) {

@@ -1,0 +1,431 @@
+.parcelBackground {
+    background-image: url('/image/assets/tilesets/parcel/parcelBG.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderTop {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderTop.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderBottom {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderBottom.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderLeft {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderLeft.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderRight {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderRight.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderTopLeft {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderTopLeft.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderTopRight {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderTopRight.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderBottomLeft {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderBottomLeft.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.parcelBorderBottomRight {
+    background-image: url('/image/assets/tilesets/parcel/parcelBorderBottomRight.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.gardenHorizontalFence {
+    background-image: url('/image/assets/tilesets/garden/gardenHorizontalFence.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.gardenVerticalFence {
+    background-image: url('/image/assets/tilesets/garden/gardenVerticalFence.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.grassBG {
+    background-image: url('/image/assets/tilesets/garden/grassBG.png');
+    background-size: 5%;
+    background-repeat: repeat;
+}
+
+/* Asperges */
+.cropAsperge {
+    background-image: url('/image/assets/vegetables/asperge.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Oignons */
+.cropOignonJaune {
+    background-image: url('/image/assets/vegetables/oignonJaune.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropOignonRouge {
+    background-image: url('/image/assets/vegetables/oignonRouge.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropOignonBlanc {
+    background-image: url('/image/assets/vegetables/oignonBlanc.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Courgettes */
+.cropCourgette1 {
+    background-image: url('/image/assets/vegetables/courgette1.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropCourgette2 {
+    background-image: url('/image/assets/vegetables/courgette2.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropCourgette3 {
+    background-image: url('/image/assets/vegetables/courgette3.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Bettes et légumes feuilles */
+.cropBettes {
+    background-image: url('/image/assets/vegetables/bettes.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropLaitue {
+    background-image: url('/image/assets/vegetables/laitue.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropSalade {
+    background-image: url('/image/assets/vegetables/salade.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Légumes racines */
+.cropCarotte {
+    background-image: url('/image/assets/vegetables/carotte.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropRadis {
+    background-image: url('/image/assets/vegetables/radis.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropBetterave {
+    background-image: url('/image/assets/vegetables/betterave.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropNavet {
+    background-image: url('/image/assets/vegetables/navet.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropRutabaga {
+    background-image: url('/image/assets/vegetables/tutabaga.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPatate {
+    background-image: url('/image/assets/vegetables/patate.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Tomates */
+.cropTomate1 {
+    background-image: url('/image/assets/vegetables/tomate1.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropTomate2 {
+    background-image: url('/image/assets/vegetables/tomate2.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropTomate3 {
+    background-image: url('/image/assets/vegetables/tomate3.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Poivrons */
+.cropPoivronVert {
+    background-image: url('/image/assets/vegetables/poivronVert.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPoivronRouge {
+    background-image: url('/image/assets/vegetables/poivronRouge.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPoivronOrange {
+    background-image: url('/image/assets/vegetables/poivronOrange.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPoivronJaune {
+    background-image: url('/image/assets/vegetables/poivronJaune.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Choux */
+.cropChouxFleur {
+    background-image: url('/image/assets/vegetables/choux-fleur.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropChouxRouge {
+    background-image: url('/image/assets/vegetables/choux-rouge.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropChouxBlanc {
+    background-image: url('/image/assets/vegetables/choux-blanc.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropChouxBruxelle {
+    background-image: url('/image/assets/vegetables/choux-bruxelle.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropChouxRomanesco {
+    background-image: url('/image/assets/vegetables/choux-romanesco.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropChouxRave {
+    background-image: url('/image/assets/vegetables/chouxRave.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Autres légumes */
+.cropCeleri {
+    background-image: url('/image/assets/vegetables/celeri.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPiment {
+    background-image: url('/image/assets/vegetables/piment.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPimentDoux {
+    background-image: url('/image/assets/vegetables/pimentDoux.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPoireaux {
+    background-image: url('/image/assets/vegetables/poireaux.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPoireaux2 {
+    background-image: url('/image/assets/vegetables/poireaux2.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPetitPois {
+    background-image: url('/image/assets/vegetables/petit-pois.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropHaricot {
+    background-image: url('/image/assets/vegetables/haricot.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPasteque {
+    background-image: url('/image/assets/vegetables/pasteque.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropMais {
+    background-image: url('/image/assets/vegetables/mais.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropPanais {
+    background-image: url('/image/assets/vegetables/panais.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropArtichaux {
+    background-image: url('/image/assets/vegetables/artichaux.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropAubergine1 {
+    background-image: url('/image/assets/vegetables/aubergine1.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Courges */
+.cropCourge1 {
+    background-image: url('/image/assets/vegetables/courge1.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropCourge2 {
+    background-image: url('/image/assets/vegetables/courge2.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropCourge3 {
+    background-image: url('/image/assets/vegetables/courge3.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropCourge4 {
+    background-image: url('/image/assets/vegetables/courge4.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropCourge5 {
+    background-image: url('/image/assets/vegetables/courge5.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropCourge6 {
+    background-image: url('/image/assets/vegetables/courge6.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Verdure et divers */
+.cropVerdure1 {
+    background-image: url('/image/assets/vegetables/verdure-1.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropVerdure2 {
+    background-image: url('/image/assets/vegetables/verdure-2.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropVerdure3 {
+    background-image: url('/image/assets/vegetables/verdure-3.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropVerdure4 {
+    background-image: url('/image/assets/vegetables/verdure-4.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropVerdure5 {
+    background-image: url('/image/assets/vegetables/verdure-5.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropRandom1 {
+    background-image: url('/image/assets/vegetables/random1.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+/* Classes générales */
+.cropAll {
+    background-image: url('/image/assets/vegetables/all.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropVegetable1 {
+    background-image: url('/image/assets/vegetables/vegetable1.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropRacine1 {
+    background-image: url('/image/assets/vegetables/racine1.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropRacine2 {
+    background-image: url('/image/assets/vegetables/racine2.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
+
+.cropRacine4 {
+    background-image: url('/image/assets/vegetables/racine4.png');
+    background-size: contain;
+    background-repeat: repeat;
+}
