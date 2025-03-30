@@ -31,8 +31,7 @@ const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   </CardHeader>
 
   <Garden
-  gardenId={gardenId}>
-    
+  gardenId={gardenId}>    
   </Garden>
 
 
