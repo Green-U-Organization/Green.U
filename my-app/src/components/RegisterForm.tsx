@@ -45,6 +45,7 @@ const RegisterForm = () => {
 	const [email, setEmail] = useState("");
 	const [errorEmptyEmail, setEmptyErrorEmail] = useState<boolean>(false);
 	const [postalCode, setPostalCode] = useState("");
+	const [isValidPostalCode, setIsValidPostalCode] = useState(true);
 	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =	useState<boolean>(false);
 	const [gender, setGender] = useState("M"); // ajouter bouton radio pour définir sexe
 	const [birthDate, setBirthDate] = useState(new Date());
@@ -84,7 +85,7 @@ const RegisterForm = () => {
 			checkPasswordVerify(password, passwordVerify);
 			
 			const isValid = login && password && passwordVerify && firstname && lastname && email && postalCode && birthDate &&
-                !errorSpecialCharPassword && !errorMatchingPassword;
+                !errorSpecialCharPassword && !errorMatchingPassword && isValidPostalCode;
 
 			setErrorEmptyLogin(!login);
 			setErrorEmptyPassword(!password);
@@ -334,6 +335,7 @@ return (
 							value={postalCode}
 							onChange={handleChange(setPostalCode)}
 							error={errorEmptyPostalCode}
+							setIsValidPostalCode={setIsValidPostalCode}
 						/>
 					</>
 					)}
