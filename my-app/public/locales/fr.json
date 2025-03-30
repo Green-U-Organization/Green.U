@@ -87,7 +87,17 @@
     "previous": "Précédent",
     "add": "Ajouter",
 
+    "__COMMENT_MAP" : "MAP",
+    "map": "Plan",
+    "youarehere": "Vous êtes ici",
+    "radius": "Sélectionner le rayon (km) :",
+    "distance": "Distance",
+    "errgeo": "Erreur de géolocalisation",
+    "errpos": "Impossible d'obtenir votre position",
+
     "__COMMENT" : "GARDEN",
     "likes" : "Likes:"
+
+
 }
   

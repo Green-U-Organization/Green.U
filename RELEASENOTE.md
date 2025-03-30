@@ -4,6 +4,7 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 28/03/25 | @Emmanuel | Mise en place d'une géolocalisation (page Map) | Pb de menu hamburger...
 | 27/03/25 | @Pierre @Emmanuel | Correction bug SignUp page
 ||| @Emmanuel | Traduction du CGU avec la méthode globale à l'app 
 ||| @Emmanuel | Sécurisation de la validation du code postal

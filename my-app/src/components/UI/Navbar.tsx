@@ -70,6 +70,7 @@ const Navbar: React.FC = () => {
           <Link href="/login" className="hover:text-gray-600">{translations.login}</Link>
           <Link href="/signin" className="hover:text-gray-600">{translations.signup}</Link>
           <Link href="/landing" className="hover:text-gray-600">{translations.landing}</Link>
+          <Link href="/map" className="hover:text-gray-600">{translations.map}</Link>
           <Link href="/profile" className="hover:text-gray-600">{translations.profile}</Link>
         </div>
 
@@ -89,6 +90,7 @@ const Navbar: React.FC = () => {
           <Link href="/login" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>{translations.login}</Link>
           <Link href="/signin" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>{translations.signup}</Link>
           <Link href="/landing" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>{translations.landing}</Link>
+          <Link href="/map" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>{translations.map}</Link>
           <Link href="/profile" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>{translations.profile}</Link>
         </div>
       )}
