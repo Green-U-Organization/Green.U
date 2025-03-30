@@ -76,7 +76,7 @@ const Home = () => {
                 },
                 (error) => {
                     console.error("Erreur de géolocalisation :", error);
-                    let errorMessage = translations('errgeo');//"Impossible d'obtenir votre position.";
+                    let errorMessage = "Impossible d'obtenir votre position.";
                     switch(error.code) {
                         case error.PERMISSION_DENIED:
                             errorMessage = "Permission de géolocalisation refusée.";
