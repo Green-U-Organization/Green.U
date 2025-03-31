@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
 using GreenUApi.model;
+using GreenUApi.authentification;
 
 namespace GreenUApi.controller;
 
@@ -18,28 +19,30 @@ public class UserController
         return TypedResults.Ok(await db.User.ToArrayAsync());
     }
 
-    public static async Task<UserResult<User[]>> GetUserForLogin(string Username, greenUDB db)
-    {
-        try
-        {
-        var User = await db.User
-            .Where(u => u.Username == Username)
-            .Select(u => new User
-            {
-                Id = u.Id,
-                Username = u.Username,
-                Password = u.Password,
-                Salt = u.Salt
-            })
-            .ToArrayAsync();
+    // public static async Task<UserResult<IResult>> GetUserForLogin(string Username, string password, greenUDB db)
+    // {
+    //     try
+    //     {
+    //     var User = await db.User
+    //         .Where(u => u.Username == Username)
+    //         .Select(u => new User
+    //         {
+    //             Id = u.Id,
+    //             Username = u.Username,
+    //             Password = u.Password,
+    //             Salt = u.Salt
+    //         })
+    //         .ToArrayAsync();
 
-            return new UserResult<User[]> { IsSuccess = true, Data = User };
+    //         IResult response = await Authentification.Login(User[0], password);
 
-        }catch (Exception ex)
-        {
-            return new UserResult<User[]> { IsSuccess = false, ErrorMessage = ex.Message };
-        }
-    }
+    //         return new UserResult<IResult> { IsSuccess = true, Data = response};
+
+    //     }catch (Exception ex)
+    //     {
+    //         return new UserResult<IResult> { IsSuccess = false, ErrorMessage = ex.Message  };
+    //     }
+    // }
 
     public static async Task<IResult> GetUser(int id, greenUDB db)
     {
