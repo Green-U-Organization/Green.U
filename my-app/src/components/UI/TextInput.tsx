@@ -1,5 +1,6 @@
 "use client"
 import { ChangeEvent, FC } from 'react'
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 ///https://www.codevertiser.com/reusable-input-component-react/
 
@@ -30,6 +31,7 @@ const TextInput: FC<InputProps> = ({
   disabled,
   onChange,
 }) => {
+  const {translations} = useLanguage();
   return (
     <div className={`input-wrapper mb-5 ${className}`} >
       <label htmlFor={label} className='mr-3 '>
@@ -46,9 +48,9 @@ const TextInput: FC<InputProps> = ({
         className={`w-full pl-3 ${error || errorPassChar || errorPassMatch ? "border border-txterror" : "bg-bginput"}`}
       />
       {/* Ajuster les messages d'erreurs pour les passwords >> if (type === password) alors blablabla  */}
-      {errorPassMatch && <p className="text-txterror">Your password must be strictly identical!</p>}
-      {errorPassChar && <p className="text-txterror">Password must have at least 8 characters and 1 special character!</p>}
-      {error && <p className="text-txterror">Input field can&apos;t be empty!</p>}
+      {errorPassMatch && <p className="text-txterror">{translations.errorPassMatch}</p>}
+      {errorPassChar && <p className="text-txterror">{translations.errorPassChar}</p>}
+      {error && <p className="text-txterror">{translations.errorEmptyInput}</p>}
 
     </div>
   )

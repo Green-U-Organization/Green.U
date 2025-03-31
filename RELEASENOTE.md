@@ -4,6 +4,8 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 31/03/25 | @Emmanuel | Ajout d'une checkbox sur les CGU.
+||| Amélioration de la détermination du thème (utile si thème particulier, ex Noël)
 | 28/03/25 | @Pierre | ajout assets pour les jardins | https://opengameart.org/content/lpc-crops  https://opengameart.org/content/lpc-farming-tilesets-magic-animations-and-ui-elements
 ||| Ajout de 55 image de légumes en png + assets pour garden et parcel
 ||| Ajout d'un champs "icon" dans la table "line" afin d'afficher le légume sur la ligne

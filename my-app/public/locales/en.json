@@ -96,9 +96,22 @@
     "distance": "Distance",
     "errgeo": "Erreur de géolocalisation",
     "errpos": "Impossible d'obtenir votre position",
+    "errUnknown": "Unknown error",
+    "errPosition": "Unable to get your location",
+    "errPositionUnavailable" : "Position unavailable",
+    "errGeoPermissionRefused": "Geolocation permission denied",
+    "errWaitingTime": "Waiting time exceeded",
+    "errCheckPermissions": " Check your permissions and enable GPS",
+    "errGeoNavigator": "Geolocation is not supported by this browser",
+
 
     "__COMMENT" : "GARDEN",
-    "likes" : "Likes:"
+    "likes" : "Likes:",
+
+    "__GLOBAL": "ERRORS",
+    "errorEmptyInput": "Input field can't be empty!",
+    "errorPassMatch": "Your password must be strictly identical!",
+    "errorPassChar": "Password must have at least 8 characters and 1 special character!"
 
 }
 

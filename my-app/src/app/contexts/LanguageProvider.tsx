@@ -29,11 +29,11 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     const loadTranslations = async () => {
       try {
         const response = await fetch(`/locales/${locale}.json`);
-        if (!response.ok) throw new Error("Erreur de chargement");
+        if (!response.ok) throw new Error("Loading error");
         const data = await response.json();
         setTranslations(data);
       } catch (error) {
-        console.error("Erreur lors du chargement des traductions :", error);
+        console.error("Error loading translations :", error);
       }
     };
   

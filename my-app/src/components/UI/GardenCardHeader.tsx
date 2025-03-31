@@ -44,9 +44,9 @@ const GardenCardHeader = ({
 					className="col-start-1 col-end-2 row-start-2 row-end-3"
 				></ZoomSlider>
 
-<div className="col-start-2 col-end-3 row-start-2 row-end-3 flex justify-around mr-2">
+				<div className="col-start-2 col-end-3 row-start-2 row-end-3 flex justify-around mr-2">
 
-				<Image
+					<Image
 					className="object-contain h-8 w-8 p-1 border-1 border-black rounded-md"
 					src="/image/icons/list.png"
 					alt="expand"
@@ -54,7 +54,7 @@ const GardenCardHeader = ({
 					height={20}
                     />
 
-				<Image
+					<Image
 					className="object-contain h-8 w-8 p-1 border-1 border-black rounded-md"
 					src="/image/icons/fence.png"
 					alt="expand"
@@ -62,14 +62,14 @@ const GardenCardHeader = ({
 					height={20}
                     />
 
-				<Image
+					<Image
 					className="object-contain h-8 w-8 p-1 border-1 border-black rounded-md"
 					src="/image/icons/edit.png"
 					alt="expand"
 					width={20}
 					height={20}
                     />
-                    </div>
+                </div>
 
 				<div className="ml-4 mb-5 col-start-1 col-end-3 row-start-3 row-end-4">
 					Please choose your garden :

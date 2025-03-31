@@ -23,7 +23,7 @@ const jersey15 = Jersey_15({
 
 export const metadata: Metadata = {
   title: "Green-U",
-  description: "Welcome to Green-U, a modern and elegant platform.",
+  description: "Welcome to Green-U, the collaborative market gardening platform.",
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
