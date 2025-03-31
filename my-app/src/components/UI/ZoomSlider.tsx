@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React from 'react'
 
 type Props = {
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

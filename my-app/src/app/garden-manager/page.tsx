@@ -6,29 +6,29 @@ import React, { useState } from "react";
 import GardenCardHeader from "@/components/UI/GardenCardHeader";
 import Draggable from 'react-draggable';
 
-const page = () => {
+const Page = () => {
 
-const [currentGardenId, setCurrentGardenId] = useState<number>(1)
-const [currentScale, setCurrentScale] = useState<number>(125)
+	const [currentGardenId, setCurrentGardenId] = useState<number>(1)
+	const [currentScale, setCurrentScale] = useState<number>(125)
 
-const handleGardenIdChange = (gardenId: number) => {
-  setCurrentGardenId(gardenId);
-}
+	const handleGardenIdChange = (gardenId: number) => {
+		setCurrentGardenId(gardenId);
+	}
 
-const handleScaleChange = (scale: number) => {
-  setCurrentScale(scale);
-}
+	const handleScaleChange = (scale: number) => {
+		setCurrentScale(scale);
+	}
 
 	return (
 		<>
 			<section className="flex items-center justify-center">
-				<Card className="min-w-screen overflow-auto">
+				<Card className="overflow-auto overflow-x-auto overflow-y-auto">
 					<GardenCardHeader
-            containerName={"Garden Manager"}
-            className="p-5 flex flex-col items-center" 
-            onGardenIdChange={handleGardenIdChange}
-            onScaleChange={handleScaleChange}>
-            </GardenCardHeader>
+						containerName={"Garden Manager"}
+						className="p-5 flex flex-col items-center"
+						onGardenIdChange={handleGardenIdChange}
+						onScaleChange={handleScaleChange}>
+					</GardenCardHeader>
 
 					<div className="overflow-x-auto max-w-full">
 <Draggable>
@@ -43,4 +43,4 @@ const handleScaleChange = (scale: number) => {
 	);
 };
 
-export default page;
+export default Page;
