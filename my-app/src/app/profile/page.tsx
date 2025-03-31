@@ -1,8 +1,8 @@
 "use client"
 import Image from 'next/image'
 import {FaMapMarkerAlt, FaInstagram, FaFacebook, FaEnvelope } from 'react-icons/fa'
-import Card from "@/components/Card"
-import Button from "@/components/Button"
+import Card from "@/components/UI/Card"
+import Button from "@/components/UI/Button"
 import { useRouter } from "next/navigation"
 import { useState } from "react";
 import AvatarSelector from "@/components/AvatarSelector";

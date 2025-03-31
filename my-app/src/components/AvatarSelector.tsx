@@ -1,7 +1,7 @@
 
 import Image from "next/image";
-import Card from "@/components/Card"
-import Button from "@/components/Button"
+import Card from "@/components/UI/Card"
+import Button from "@/components/UI/Button"
 import { useLanguage } from '../app/contexts/LanguageProvider'
 
 const avatars = [
@@ -35,6 +35,20 @@ const avatars = [
   "/image/avatars/PI_28.png",
   "/image/avatars/PI_29.png",
   "/image/avatars/PI_30.png",
+  "/image/avatars/PI_31.png",
+  "/image/avatars/PI_32.png",
+  "/image/avatars/PI_33.png",
+  "/image/avatars/PI_34.png",
+  "/image/avatars/PI_35.png",
+  "/image/avatars/PI_36.png",
+  "/image/avatars/PI_37.png",
+  "/image/avatars/PI_38.png",
+  "/image/avatars/PI_39.png",
+  "/image/avatars/PI_40.png",
+  "/image/avatars/PI_41.png",
+  "/image/avatars/PI_42.png",  "/image/avatars/PI_30.png",
+  "/image/avatars/PI_43.png",
+  "/image/avatars/PI_44.png"
 ];
 
 interface AvatarSelectorProps {
@@ -56,7 +70,6 @@ function AvatarSelector({ onSelect, isOpen, onClose }: AvatarSelectorProps) {
   
     <Card className="relative w-150 max-w-full bg-cardbackground rounded-xl shadow-lg p-4">
   
-      {/* Titre fixé en haut */}
       <h2 className="text-center text-3xl font-semibold sticky top-0 bg-cardbackground py-2 z-10">
         {translations.chooseanavatar}
       </h2>

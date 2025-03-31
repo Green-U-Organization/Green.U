@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
-import Card from '@/components/Card'
+import Card from '../../components/UI/Card'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import data from '../data/data.js'
-import Todo from '@/components/Todo'
+import Todo from '../../components/UI/Todo'
 import Link from 'next/link';
-import CardHeader from '@/components/CardHeader'
+import BentoCardHeader from '../../components/UI/BentoCardHeader'
 
 const page = () => {
     const [processedData, setProcessedData] = useState(data.todos)
@@ -26,9 +26,7 @@ const page = () => {
         tempData.sort((a, b) => b.status - a.status);
         setProcessedData([...tempData]);
     }, []);
-
-
-
+ 
     return (
         <section className='grid grid-cols-4 grid-rows-7 h-screen w-screen gap-2 p-2'>
 
@@ -36,7 +34,7 @@ const page = () => {
             {/* <Card className='row-start-1 row-end-2 col-start-1 col-end-2 h-full w-full px-0 flex justify-center items-center'>
             <Image src="/image/avatar/test-profile.png" alt="Profile" width={100} height={100} />
             </Card> */}
-
+           
             <div className="row-start-1 row-end-2 col-start-1 col-end-2 h-full w-full flex justify-center">
                 <Link href="/profile">
                     <Image
@@ -108,8 +106,8 @@ const page = () => {
 
                         {/* TodoList */}
                         <Card className={'row-start-2 row-end-4 col-start-1 col-end-5 h-full px-3 grid grid-cols-2 grid-rows-6 gap-2'}>
-                <CardHeader
-                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Todo'} ></CardHeader>
+                <BentoCardHeader
+                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Todo'} ></BentoCardHeader>
                 {processedData.map((todo, index) => (
                     <Todo
                         key={todo.id}
@@ -137,23 +135,25 @@ const page = () => {
 
             {/* Garden */}
             <Card className='row-start-4 row-end-7 col-start-1 col-end-3 h-full w-full px-3'>
-            <CardHeader
-                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Garden'} ></CardHeader>
+            <BentoCardHeader
+                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Garden-manager'} ></BentoCardHeader>
 
 
             </Card>
 
             {/* Message */}
             <Card className='row-start-7 row-end-8 col-start-1 col-end-3 h-full w-full px-3'>
-            <CardHeader
-                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Message'} ></CardHeader>
+            <BentoCardHeader
+                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Message'} >
+                        Choose your Garden
+                    </BentoCardHeader>
 
             </Card>
 
             {/* Feed */}
             <Card className='row-start-4 row-end-8 col-start-3 col-end-5 h-full w-full px-3'>
-            <CardHeader
-                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Feed'} ></CardHeader>
+            <BentoCardHeader
+                    className="row-start-1 row-end-2 col-start-1 col-end-3" containerName={'Feed'} ></BentoCardHeader>
 
             </Card>
 

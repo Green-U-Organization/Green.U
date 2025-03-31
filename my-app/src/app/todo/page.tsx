@@ -3,10 +3,10 @@
 
 import React, { useEffect, useState } from "react";
 import data from "../data/data";
-import Button from "@/components/Button";
-import Todo from "@/components/Todo";
-import Card from "@/components/Card";
-import TodoPopUp from "@/components/TodoPopUp";
+import Button from "@/components/UI/Button";
+import Todo from "@/components/UI/Todo";
+import Card from "@/components/UI/Card";
+import TodoPopUp from "@/components/UI/TodoPopUp";
 
 const page = () => {
 	const [processedData, setProcessedData] = useState(data.todos);
