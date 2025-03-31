@@ -65,7 +65,7 @@ namespace GreenUApi.authentification
                 return TypedResults.Ok(new { message = "Mot de passe valide !", token });
             }
 
-            return Task.FromResult(TypedResults.Unauthorized());
+            return TypedResults.Unauthorized();
         }
 
 

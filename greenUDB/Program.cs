@@ -64,7 +64,7 @@ if (app.Environment.IsDevelopment())
 
 var Auth = app.MapGroup("/");
 
-Auth.MapPost("/login", UserController.GetUserForLogin);
+Auth.MapPost("/login", Authentification.Login);
 Auth.MapPost("/register", UserController.CreateUser);
 
 var UserItems = app.MapGroup("/Users");

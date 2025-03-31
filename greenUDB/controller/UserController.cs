@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
 using GreenUApi.model;
-using GreenUApi.authentification;
 
 namespace GreenUApi.controller;
 
