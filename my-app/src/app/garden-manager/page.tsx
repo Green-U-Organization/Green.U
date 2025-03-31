@@ -21,7 +21,7 @@ const Page = () => {
 	return (
 		<>
 			<section className="flex items-center justify-center">
-				<Card className="overflow-auto">
+				<Card className="overflow-auto overflow-x-auto overflow-y-auto">
 					<GardenCardHeader
 						containerName={"Garden Manager"}
 						className="p-5 flex flex-col items-center"
@@ -30,7 +30,9 @@ const Page = () => {
 					</GardenCardHeader>
 
 					<div className="overflow-x-auto max-w-full">
+
 						<Garden gardenId={currentGardenId} scale={currentScale}></Garden>
+						
 					</div>
 				</Card>
 			</section>
