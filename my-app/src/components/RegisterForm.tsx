@@ -211,6 +211,21 @@ const RegisterForm = () => {
 				return //Empêche la soumission si erreur
 			} else {
 				console.log("FORM OK");
+				const bodyRequest = {
+					"Username": login,
+					"Password": password,
+					"Firstname": firstname,
+					"Lastname": lastname,
+					"Email": email,
+					"Postal_code": postalCode,
+					"Country": "Belgium",
+					"Sexe": gender,
+					"Birthdate": birthDate
+				}
+				fetch (process.env.NEXT_PUBLIC_API + "/Users", {
+					method : "GET"
+					// body : JSON.stringify(bodyRequest)
+				})
 			};
 	};
 
@@ -248,7 +263,7 @@ return (
 							<button
 								type="button"
 								onClick={togglePasswordVisibility}
-								 className="absolute right-2 top-8.5 text-gray-500"
+								className="absolute right-2 top-8.5 text-gray-500"
 							>
 								{showPassword ? (
 									<i className="fa fa-eye-slash"></i> // Icône "œil barré"
@@ -261,7 +276,7 @@ return (
 						<div className="relative">
 
 							<TextInput
-								 type={showPasswordVerify ? "text" : "password"}
+								type={showPasswordVerify ? "text" : "password"}
 								label={translations.pwdverif}
 								value={passwordVerify}
 								name="passwordVerify"

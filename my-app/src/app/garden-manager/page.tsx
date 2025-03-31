@@ -21,7 +21,7 @@ const handleScaleChange = (scale: number) => {
 	return (
 		<>
 			<section className="flex items-center justify-center">
-				<Card className="min-w-screen overflow-auto">
+				<Card className="overflow-auto">
 					<GardenCardHeader
             containerName={"Garden Manager"}
             className="p-5 flex flex-col items-center" 
