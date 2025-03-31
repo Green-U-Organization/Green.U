@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import data from "../../app/data/data";
 import Parcel from "./Parcel";
 import styles from "../../app/Assets.module.css";
@@ -79,7 +79,6 @@ const Garden: React.FC<Props> = ({ gardenId, scale }) => {
 						parcel.gardenId === gardenId ? (
 							<div className="z-10 relative" key={parcel.id}>
 								<Parcel
-									parcel={parcel}
 									parcelX={parcel.width}
 									parcelY={parcel.length}
 									parcelID={parcel.id as number}

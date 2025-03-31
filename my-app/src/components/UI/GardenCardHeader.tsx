@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import ZoomSlider from "./ZoomSlider";
 
 type Props = {
@@ -33,7 +33,7 @@ const GardenCardHeader = ({
 	return (
 		<>
 			<section
-				className={`grid grid-cols-2 grid-rows-3 items-center mt-3`}
+				className={`grid grid-cols-2 grid-rows-3 items-center mt-3 ${className}`}
 			>
 				<h1 className="text-4xl ml-4 mt-2 col-start-1 col-end-3 text-center">
 					{containerName}

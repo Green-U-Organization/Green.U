@@ -21,8 +21,7 @@ type Props = {
 	scale: number;
 };
 
-const Line = ({ lineX, lineStatus, handleClick, line, scale }: Props) => {
-	const width = lineX * 1;
+const Line = ({ lineX, handleClick, line, scale }: Props) => {
 	const [displayInfo, SetDisplayInfo] = useState(false);
 
 	const cropIcon: { [key: string]: string } = {
