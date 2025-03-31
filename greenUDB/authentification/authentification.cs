@@ -5,6 +5,7 @@ using GreenUApi.controller;
 using Token;
 using System.Text;
 using GreenUApi.model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GreenUApi.authentification
 {
@@ -34,22 +35,18 @@ namespace GreenUApi.authentification
 
         }
 
-        public static async Task<IResult> Login(string usernameInput, string password, greenUDB db)
+        public static Task<IResult> Login([FromBody] User user, string InputPassword)
         {
-            var user = await UserController.GetUserForLogin(usernameInput, db);
 
-            if (user.Data[0].Username == null)
-                return TypedResults.NotFound();
+            var hashedPassword = Hasher(InputPassword, Encoding.UTF8.GetBytes(user.Salt))[0];
 
-            var hashedPassword = Hasher(password, Encoding.UTF8.GetBytes(user.Data[0].Salt))[0];
-
-            if (user.Data[0].Password == hashedPassword)
+            if (user.Password == hashedPassword)
             {
                 // Generate a JWT with user data
-                var token = Jwt.GenerateJwtToken(user.Data[0]);
+                var token = Jwt.GenerateJwtToken(user);
 
                 // Return the JWT
-                return TypedResults.Ok(new { message = "Mot de passe valide !", token });
+                return TypedResults.Ok(token);
             }
 
             return TypedResults.Unauthorized();

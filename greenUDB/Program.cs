@@ -64,13 +64,11 @@ if (app.Environment.IsDevelopment())
 
 var Auth = app.MapGroup("/");
 
-Auth.MapGet("/login", Authentification.Login);
+Auth.MapGet("/login", UserController.GetUserForLogin);
 Auth.MapPost("/register", UserController.CreateUser);
 
 var UserItems = app.MapGroup("/Users");
 
-UserItems.MapGet("/", UserController.GetAllUser);
-//UserItems.MapGet("/login", UserController.GetUserForLogin);
 UserItems.MapGet("/{id}", UserController.GetUser);
 UserItems.MapPut("/{id}", UserController.UpdateUser);
 UserItems.MapDelete("/{id}", UserController.DeleteUser);
