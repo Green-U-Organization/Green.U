@@ -4,6 +4,7 @@ import Card from "@/components/UI/Card";
 import Garden from "@/components/UI/Garden";
 import React, { useState } from "react";
 import GardenCardHeader from "@/components/UI/GardenCardHeader";
+import Draggable from 'react-draggable';
 
 const page = () => {
 
@@ -30,7 +31,11 @@ const handleScaleChange = (scale: number) => {
             </GardenCardHeader>
 
 					<div className="overflow-x-auto max-w-full">
+<Draggable>
+
 						<Garden gardenId={currentGardenId} scale={currentScale}></Garden>
+</Draggable>
+
 					</div>
 				</Card>
 			</section>
