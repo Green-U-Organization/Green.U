@@ -29,7 +29,7 @@ const RegisterForm = () => {
 		translations.levelexpert
 	];
 
-	const [step, setStep] = useState(2); //Pour gérer l'affichage des "pages"	
+	const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"	
 	const [login, setLogin] = useState("");
 	const [errorEmptyLogin, setErrorEmptyLogin] = useState<boolean>(false);
 	const [password, setPassword] = useState("");
