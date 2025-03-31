@@ -46,7 +46,7 @@ const avatars = [
   "/image/avatars/PI_39.png",
   "/image/avatars/PI_40.png",
   "/image/avatars/PI_41.png",
-  "/image/avatars/PI_42.png",  "/image/avatars/PI_30.png",
+  "/image/avatars/PI_42.png",
   "/image/avatars/PI_43.png",
   "/image/avatars/PI_44.png"
 ];
