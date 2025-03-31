@@ -29,7 +29,7 @@ const RegisterForm = () => {
 		translations.levelexpert
 	];
 
-	const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"	
+	const [step, setStep] = useState(2); //Pour gérer l'affichage des "pages"	
 	const [login, setLogin] = useState("");
 	const [errorEmptyLogin, setErrorEmptyLogin] = useState<boolean>(false);
 	const [password, setPassword] = useState("");
@@ -55,7 +55,10 @@ const RegisterForm = () => {
 	const [gardenerLevel, setGardenerLevel] = useState<string>('');
 	const [errorEmptyGardenerLevel, setErrorEmptyGardenerLevel] = useState<boolean>(false);
 	const [isChecked, setIsChecked] = useState(false)
-   	const [interests, setInterests] = useState<string[]>([]); //Pour stocker les hashtags
+   	const [isCheckedToU, setIsCheckedToU] = useState(false);
+	const [errorNotCheckedToU, setErrorNotCheckedToU] = useState(false);
+	
+	const [interests, setInterests] = useState<string[]>([]); //Pour stocker les hashtags
 	const [errorEmptyInterests, setErrorEmptyInterests] = useState<boolean>(false);
 
 //#endregion
@@ -100,10 +103,11 @@ const RegisterForm = () => {
 		} else if (step === 2) {
 
 			console.log("check validation step 2")
-			const isValid = gardenerLevel && interests.length > 0;
+			const isValid = gardenerLevel && interests.length > 0 && isCheckedToU;
 	
 			setErrorEmptyGardenerLevel(!gardenerLevel);
 			setErrorEmptyInterests(!interests.length);
+			setErrorNotCheckedToU(!isCheckedToU);
 
 			console.log("validation ok")
 			return isValid;
@@ -117,7 +121,7 @@ const RegisterForm = () => {
 			console.log("##", errorEmptyInterests)
 			console.log("garden", errorEmptyGardenerLevel)
 		
-	}, [errorEmptyGardenerLevel, errorEmptyInterests, step]);
+	}, [errorEmptyGardenerLevel, errorEmptyInterests, errorNotCheckedToU, step]);
 
 	//Fonction permettant d'avancer dans les pages
 	const handleNextStep = () => {
@@ -125,6 +129,7 @@ const RegisterForm = () => {
 			if(step === 1) {
 				setErrorEmptyInterests(false);
 				setErrorEmptyGardenerLevel(false);
+				setErrorNotCheckedToU(false);
 			}
 			setStep((prevStep) => prevStep + 1);
 		}
@@ -206,8 +211,9 @@ const RegisterForm = () => {
 			
 			setErrorEmptyGardenerLevel(!gardenerLevel);
 			setErrorEmptyInterests(!interests.length);
+			setErrorNotCheckedToU(!isCheckedToU);
 
-			if (!gardenerLevel || !interests.length) {
+			if (!gardenerLevel || !interests.length || !isCheckedToU) {
 				return //Empêche la soumission si erreur
 			} else {
 				console.log("FORM OK");
@@ -385,13 +391,15 @@ return (
 							<Checkbox checked={isChecked} onChange={setIsChecked} />
 							<p className="ml-2">{translations.newsletter}</p>
 						</div>
-						<div>
-							<p>{translations.agree}
+						<div className="flex items-start mb-0">
+							<Checkbox checked={isCheckedToU} onChange={setIsCheckedToU}/>
+							<p className="ml-2">{translations.agree}
 								<Link href="/cgu" legacyBehavior className="text-blue-500 underline">
 									<a target="_blank" className="text-blue-500 underline">{translations.cgu}</a>
 								</Link>
 							</p>
 						</div>
+						{errorNotCheckedToU && <p className="text-txterror">{translations.errorNotCheckedToU}</p>}
 					</>
 					)}
 

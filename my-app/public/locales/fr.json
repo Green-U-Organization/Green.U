@@ -38,6 +38,7 @@
     "agree": "J'accepte les ",
     "cgu": "Conditions Générales d'Utilisation",
     "newsletter": "Je voudrais m'inscrire à la newsletter (optionnel).",
+    "errorNotCheckedToU": "Veuillez accepter les CGU",
 
     "__COMMENT_4" : "CGU",
     "cgutitle" : "Conditions Générales d'Utilisation (CGU)",
