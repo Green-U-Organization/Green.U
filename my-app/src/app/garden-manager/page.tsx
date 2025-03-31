@@ -8,7 +8,7 @@ import GardenCardHeader from "@/components/UI/GardenCardHeader";
 const page = () => {
 
 const [currentGardenId, setCurrentGardenId] = useState<number>(1)
-const [currentScale, setCurrentScale] = useState<number>(20)
+const [currentScale, setCurrentScale] = useState<number>(125)
 
 const handleGardenIdChange = (gardenId: number) => {
   setCurrentGardenId(gardenId);
