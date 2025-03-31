@@ -212,18 +212,22 @@ const RegisterForm = () => {
 			} else {
 				console.log("FORM OK");
 				const bodyRequest = {
-					"Username": login,
-					"Password": password,
-					"Firstname": firstname,
-					"Lastname": lastname,
-					"Email": email,
-					"Postal_code": postalCode,
-					"Country": "Belgium",
-					"Sexe": gender,
-					"Birthdate": birthDate
+					Username: login,
+					Password: password,
+					Firstname: firstname,
+					Lastname: lastname,
+					Email: email,
+					Postal_code: postalCode,
+					Country: "Belgium",
+					Sexe: gender,
+					Birthdate: "2025-03-24"
 				}
-				fetch (process.env.NEXT_PUBLIC_API + "/Users", {
-					method : "GET",
+				console.log(bodyRequest)
+				fetch (process.env.NEXT_PUBLIC_API + "/register", {
+					method : "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
 					body : JSON.stringify(bodyRequest)
 				})
 			};

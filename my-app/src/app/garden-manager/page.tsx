@@ -31,10 +31,13 @@ const Page = () => {
 					</GardenCardHeader>
 
 					<div className="overflow-x-auto max-w-full">
-<Draggable>
 
-						<Garden gardenId={currentGardenId} scale={currentScale}></Garden>
-</Draggable>
+	<Draggable>
+
+			<Garden gardenId={currentGardenId} scale={currentScale}></Garden>
+
+	</Draggable>
+
 
 					</div>
 				</Card>
