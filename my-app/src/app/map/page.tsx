@@ -132,7 +132,7 @@ const Home = () => {
 
     return (
         <>
-        <div className="h-screen max-w-screen">
+        <div className="max-w-screen z-1000">
             <div className="p-4 bg-white w-full max-w-md mx-auto mt-4">
                 <label className="block font-semibold">{translations.radius}</label>
                 <div className="flex items-center">
@@ -154,7 +154,7 @@ const Home = () => {
                     />km
                 </div>
             </div>
-            <MapContainer center={position} zoom={13} style={{height: '100vh', width: '100%'}}>
+            <MapContainer center={position} zoom={13} style={{height: '80vh', width: '100%'}}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

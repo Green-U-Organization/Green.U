@@ -16,7 +16,7 @@ export default function Home() {
       <main className="pt-15 px-5 flex justify-center items-center">
         <Image
           src="/image/divers/WorkInProgress.png"
-          alt={altText || translations.workinprogress} // Alternative en attendant la traduction
+          alt={altText || "Work in progress"} // Alternative en attendant la traduction
           width={600}
           height={400}
           style={{ height: "auto" }} // Maintien du ratio
