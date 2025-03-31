@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
-
+using Microsoft.EntityFrameworkCore;
 using GreenUApi.controller;
 using Token;
 using System.Text;
@@ -35,17 +35,34 @@ namespace GreenUApi.authentification
 
         }
 
-        public static Task Login([FromBody] User user, string InputPassword)
+    public static async Task<IResult> Login(string username, string password, greenUDB db)
         {
-            var hashedPassword = Hasher(InputPassword, Encoding.UTF8.GetBytes(user.Salt))[0];
-
-            if (user.Password == hashedPassword)
+            var User = await db.User
+            .Where(u => u.Username == username)
+            .Select(u => new User
             {
-                // Generate a JWT with user data
-                string token = Jwt.GenerateJwtToken(user);
+                Id = u.Id,
+                Username = u.Username,
+                Password = u.Password,
+                Salt = u.Salt
+            })
+            .FirstOrDefaultAsync();
 
-                // Return the JWT
-                return Task.FromResult(token);
+            if (User == null)
+            {
+                return TypedResults.Unauthorized();
+            }
+
+
+            String hashedPassword = "";
+            if(User.Salt != null)
+                hashedPassword = Hasher(password, Convert.FromBase64String(User.Salt))[0];
+
+            if (User.Password == hashedPassword)
+            {
+                var token = Jwt.GenerateJwtToken(User);
+
+                return TypedResults.Ok(new { message = "Mot de passe valide !", token });
             }
 
             return Task.FromResult(TypedResults.Unauthorized());
