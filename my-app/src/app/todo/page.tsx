@@ -77,7 +77,8 @@ const page = () => {
 	};
 
 	return (
-		<Card>
+		<Card
+		className="max-w-screen">
 			<section
 				style={{ display: edit ? "none" : "block" }}
 				className="font-(family-name:--font-jersey) text-lg flex justify-center items-center bg-cardbackground"
