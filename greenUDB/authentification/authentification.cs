@@ -31,26 +31,26 @@ namespace GreenUApi.authentification
             iterationCount: 100000,
             numBytesRequested: 256 / 8));
 
-            return new string[] { hashed, Convert.ToBase64String(salt) };
+            return [hashed, Convert.ToBase64String(salt)];
 
         }
 
-        public static Task<IResult> Login([FromBody] User user, string InputPassword)
+        public static Task Login([FromBody] User user, string InputPassword)
         {
-
             var hashedPassword = Hasher(InputPassword, Encoding.UTF8.GetBytes(user.Salt))[0];
 
             if (user.Password == hashedPassword)
             {
                 // Generate a JWT with user data
-                var token = Jwt.GenerateJwtToken(user);
+                string token = Jwt.GenerateJwtToken(user);
 
                 // Return the JWT
-                return TypedResults.Ok(token);
+                return Task.FromResult(token);
             }
 
-            return TypedResults.Unauthorized();
+            return Task.FromResult(TypedResults.Unauthorized());
         }
+
 
     }
 }

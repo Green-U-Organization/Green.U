@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
 using GreenUApi.model;
-using GreenUApi.authentification;
 
 namespace GreenUApi.controller;
 
@@ -19,7 +18,7 @@ public class UserController
         return TypedResults.Ok(await db.User.ToArrayAsync());
     }
 
-    public static async Task<UserResult<IResult>> GetUserForLogin(string Username, string InputPassword, greenUDB db)
+    public static async Task<UserResult<Task>> GetUserForLogin(string Username, string InputPassword, greenUDB db)
     {
         User[] user = null;
         try
@@ -38,19 +37,19 @@ public class UserController
         }
         catch (Exception ex)
         {
-            return new UserResult<IResult> { IsSuccess = false, ErrorMessage = ex.Message };
+            return new UserResult<Task> { IsSuccess = false, ErrorMessage = ex.Message };
         }
 
         try
         {
-            IResult Response = Authentification.Login(user[0], InputPassword);
+            Task Response = Authentification.Login(user[0], InputPassword);
 
-            return new UserResult<IResult> { IsSuccess = true, Data = Response };
+            return new UserResult<Task> { IsSuccess = true, Data = Response };
 
         }
         catch (Exception ex)
         {
-            return new UserResult<IResult> { IsSuccess = false, ErrorMessage = ex.Message };
+            return new UserResult<Task> { IsSuccess = false, ErrorMessage = ex.Message };
         }
 
         
