@@ -229,8 +229,8 @@ const RegisterForm = () => {
 					"Birthdate": birthDate
 				}
 				fetch (process.env.NEXT_PUBLIC_API + "/Users", {
-					method : "GET"
-					// body : JSON.stringify(bodyRequest)
+					method : "GET",
+					body : JSON.stringify(bodyRequest)
 				})
 			};
 	};

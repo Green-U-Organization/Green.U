@@ -1,24 +1,17 @@
 "use client"
-import React, { useState } from "react";
+import React from "react";
 import Line from "./Line";
 import data from "../../app/data/data";
 import styles from "../../app/Assets.module.css";
 
-type Parcel = {
-    id: number;
-    length: number;
-    width: number;
-};
-
 type Props = {
-    parcel: Parcel;
     parcelX: number;
     parcelY: number;
     parcelID: number;
     scale: number;
 };
 
-const Bed = ({ parcel, parcelX, parcelY, parcelID, scale }: Props) => {
+const Bed = ({ parcelX, parcelY, parcelID, scale }: Props) => {
 
     return (
         <section className=" ml-5 z-10">
