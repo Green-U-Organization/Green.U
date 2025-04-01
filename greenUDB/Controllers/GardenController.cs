@@ -9,7 +9,7 @@ using GreenUApi.Models;
 
 namespace GreenUApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class GardenController : ControllerBase
     {
@@ -20,15 +20,7 @@ namespace GreenUApi.Controllers
             _context = context;
         }
 
-        // GET: api/Garden
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Garden>>> GetGardens()
-        {
-            return await _context.Gardens.ToListAsync();
-        }
-
-        // GET: api/Garden/5
-        [HttpGet("{id}")]
+        [HttpGet()]
         public async Task<ActionResult<Garden>> GetGarden(long id)
         {
             var garden = await _context.Gardens.FindAsync(id);
@@ -39,6 +31,22 @@ namespace GreenUApi.Controllers
             }
 
             return garden;
+        }
+
+        // GET: api/Garden/user/5
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
+        {
+            var gardens = await _context.Gardens
+                                        .Where(g => g.AdminId == userId)
+                                        .ToListAsync();
+
+            if (gardens == null)
+            {
+                return NotFound();
+            }
+
+            return gardens;
         }
 
         // PUT: api/Garden/5
