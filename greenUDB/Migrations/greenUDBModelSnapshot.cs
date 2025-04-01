@@ -17,539 +17,503 @@ namespace GreenUApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .UseCollation("utf8mb4_0900_ai_ci")
                 .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4");
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Account", b =>
+            modelBuilder.Entity("GreenUApi.Models.Contributor", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("Created_at");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("GardenId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Garden_id");
 
-                    b.Property<string>("accesToken")
-                        .HasColumnType("longtext");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("User_id");
 
-                    b.Property<DateTime>("accesToken_expire_at")
-                        .HasColumnType("datetime(6)");
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
 
-                    b.Property<int>("accountId")
-                        .HasColumnType("int");
+                    b.HasIndex(new[] { "GardenId" }, "fk_Contributor_Garden_id");
 
-                    b.Property<DateTime>("create_at")
-                        .HasColumnType("datetime(6)");
+                    b.HasIndex(new[] { "UserId" }, "fk_Contributor_User_id");
 
-                    b.Property<string>("impersonateBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("password")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("providerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("refreshToken")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("refreshToken_expire_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("scope")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("update_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Account");
+                    b.ToTable("Contributor", (string)null);
                 });
 
-            modelBuilder.Entity("Domain", b =>
+            modelBuilder.Entity("GreenUApi.Models.Crop", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("Created_at");
 
-                    b.Property<string>("description")
-                        .HasColumnType("longtext");
+                    b.Property<DateOnly?>("Harvesting")
+                        .HasColumnType("date");
 
-                    b.Property<string>("name")
+                    b.Property<long?>("Icon")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("LineId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Line_id");
+
+                    b.Property<DateOnly?>("Planting")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("Sowing")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Variety")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Vegetable")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
 
-                    b.ToTable("Domain");
+                    b.HasIndex(new[] { "LineId" }, "fk_Crops_Line_id");
+
+                    b.ToTable("Crops");
                 });
 
-            modelBuilder.Entity("GreenUApi.model.Garden", b =>
+            modelBuilder.Entity("GreenUApi.Models.EfmigrationsHistory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("MigrationId")
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("ProductVersion")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)");
+
+                    b.HasKey("MigrationId")
+                        .HasName("PRIMARY");
+
+                    b.ToTable("__EFMigrationsHistory", (string)null);
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.Follower", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<long>("FollowerId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Follower_id");
+
+                    b.Property<long?>("GardenId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Garden_id");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("User_id");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "FollowerId" }, "fk_Follower_Follower_id");
+
+                    b.HasIndex(new[] { "GardenId" }, "fk_Follower_Garden_id");
+
+                    b.HasIndex(new[] { "UserId" }, "fk_Follower_User_id");
+
+                    b.ToTable("Follower", (string)null);
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.Garden", b =>
+                {
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("Created_at")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long>("AdminId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Admin_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("Created_at");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
-                    b.Property<float>("Latitude")
-                        .HasColumnType("float");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double");
 
-                    b.Property<float>("Length")
-                        .HasColumnType("float");
+                    b.Property<double>("Length")
+                        .HasColumnType("double");
 
-                    b.Property<float>("Longitude")
-                        .HasColumnType("float");
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
-                    b.Property<string>("Tags")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("Update_at");
 
-                    b.Property<DateTime>("Update_at")
-                        .HasColumnType("datetime(6)");
+                    b.Property<double>("Width")
+                        .HasColumnType("double");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
 
-                    b.Property<float>("Width")
-                        .HasColumnType("float");
+                    b.HasIndex(new[] { "AdminId" }, "fk_Garden_Admin_id");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Garden");
+                    b.ToTable("Garden", (string)null);
                 });
 
-            modelBuilder.Entity("GreenUApi.model.Line", b =>
+            modelBuilder.Entity("GreenUApi.Models.Line", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("Created_at");
 
-                    b.Property<DateTime>("Created_at")
-                        .HasColumnType("datetime(6)");
+                    b.Property<long?>("Length")
+                        .HasColumnType("bigint");
 
-                    b.Property<float>("Length")
-                        .HasColumnType("float");
+                    b.Property<long?>("ParcelId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Parcel_id");
 
-                    b.Property<int>("ParcelId")
-                        .HasColumnType("int");
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
 
-                    b.Property<short>("Status")
-                        .HasColumnType("smallint");
+                    b.HasIndex(new[] { "ParcelId" }, "fk_Line_Parcel_id");
 
-                    b.Property<DateTime>("Update_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("VegetableId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParcelId");
-
-                    b.HasIndex("VegetableId");
-
-                    b.ToTable("Line");
+                    b.ToTable("Line", (string)null);
                 });
 
-            modelBuilder.Entity("GreenUApi.model.Todo", b =>
+            modelBuilder.Entity("GreenUApi.Models.Log", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Action")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Author")
+                    b.Property<long?>("AuthorId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Author_id");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
+
+                    b.Property<long?>("CreatedAt")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Created_at");
+
+                    b.Property<long?>("CropId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Crop_id");
+
+                    b.Property<long?>("GardenId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Garden_id");
+
+                    b.Property<long?>("LineId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Line_id");
+
+                    b.Property<long?>("ParcelId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Parcel_id");
+
+                    b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime>("Created_at")
-                        .HasColumnType("datetime(6)");
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.HasIndex(new[] { "AuthorId" }, "fk_Logs_Author_id");
 
-                    b.Property<int>("Garden_id")
-                        .HasColumnType("int");
+                    b.HasIndex(new[] { "CropId" }, "fk_Logs_Crop_id");
 
-                    b.Property<int>("Line_id")
-                        .HasColumnType("int");
+                    b.HasIndex(new[] { "GardenId" }, "fk_Logs_Garden_id");
 
-                    b.Property<int>("Parcel_id")
-                        .HasColumnType("int");
+                    b.HasIndex(new[] { "LineId" }, "fk_Logs_Line_id");
 
-                    b.Property<byte>("PreviousStatus")
-                        .HasColumnType("tinyint unsigned");
+                    b.HasIndex(new[] { "ParcelId" }, "fk_Logs_Parcel_id");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint unsigned");
-
-                    b.Property<DateTime>("Update_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Garden_id");
-
-                    b.HasIndex("Line_id");
-
-                    b.HasIndex("Parcel_id");
-
-                    b.ToTable("Todo");
+                    b.ToTable("Logs");
                 });
 
-            modelBuilder.Entity("GreenUApi.model.User", b =>
+            modelBuilder.Entity("GreenUApi.Models.Parcel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("Created_at");
+
+                    b.Property<long?>("GardenId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Garden_id");
+
+                    b.Property<long?>("Length")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("NLine")
+                        .HasColumnType("bigint")
+                        .HasColumnName("N_line");
+
+                    b.Property<long?>("Width")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "GardenId" }, "fk_Parcel_Garden_id");
+
+                    b.ToTable("Parcel", (string)null);
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.TagsInterest", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<long?>("GardenId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("Garden_id");
+
+                    b.Property<string>("Hashtag")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("User_id");
+
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "GardenId" }, "fk_Tags_Garden_id");
+
+                    b.HasIndex(new[] { "UserId" }, "fk_Tags_User_id");
+
+                    b.ToTable("Tags_interest", (string)null);
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.User", b =>
+                {
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateOnly>("Birthdate")
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly>("Birthday")
                         .HasColumnType("date");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("Created_at")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("Created_at");
 
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Firstname")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
-                    b.Property<int>("Is_admin")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("Is_admin");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
+                    b.Property<long>("Level")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
-                    b.Property<string>("Postal_code")
-                        .HasColumnType("longtext");
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Postal_code");
+
+                    b.Property<string>("ProfileImage")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Profile_image");
 
                     b.Property<string>("Salt")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Sexe")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
-                    b.Property<int>("Xp")
-                        .HasColumnType("int");
+                    b.Property<long>("Xp")
+                        .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("PRIMARY");
 
-                    b.ToTable("Users");
+                    b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("Log", b =>
+            modelBuilder.Entity("GreenUApi.Models.Contributor", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("eventType")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ip_adress")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Log");
-                });
-
-            modelBuilder.Entity("Param", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
+                    b.HasOne("GreenUApi.Models.Garden", "Garden")
+                        .WithMany("Contributors")
+                        .HasForeignKey("GardenId")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasConstraintName("fk_Contributor_Garden_id");
 
-                    b.Property<short>("NotActive")
-                        .HasColumnType("smallint");
-
-                    b.Property<int>("domain_id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("domain_id");
-
-                    b.ToTable("Param");
-                });
-
-            modelBuilder.Entity("Parcel", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("Garden")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("create_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("garden_id")
-                        .HasColumnType("int");
-
-                    b.Property<float>("height")
-                        .HasColumnType("float");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("nbLignes")
-                        .HasColumnType("int");
-
-                    b.Property<float>("width")
-                        .HasColumnType("float");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("Garden");
-
-                    b.ToTable("Parcel");
-                });
-
-            modelBuilder.Entity("Session", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Token")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("create_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("eventType")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("expire_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("impersonateBy")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ip_adress")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("update_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("user_agent")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Sessions");
-                });
-
-            modelBuilder.Entity("Vegetable", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("comments")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<short>("cultivationUnderShader")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("directSeeding")
-                        .HasColumnType("smallint");
-
-                    b.Property<DateTime>("end_of_plenting")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("familyId")
-                        .IsRequired()
-                        .HasColumnType("varchar(1)");
-
-                    b.Property<DateTime>("start_of_plenting")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("start_of_sowing")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("variety")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("vegetable")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Vegetable");
-                });
-
-            modelBuilder.Entity("Verification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("create_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("expire_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("update_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Vérification");
-                });
-
-            modelBuilder.Entity("Account", b =>
-                {
-                    b.HasOne("GreenUApi.model.User", "User")
-                        .WithMany("Account")
+                    b.HasOne("GreenUApi.Models.User", "User")
+                        .WithMany("Contributors")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_Contributor_User_id");
+
+                    b.Navigation("Garden");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GreenUApi.model.Garden", b =>
+            modelBuilder.Entity("GreenUApi.Models.Crop", b =>
                 {
-                    b.HasOne("GreenUApi.model.User", "User")
+                    b.HasOne("GreenUApi.Models.Line", "Line")
+                        .WithMany("Crops")
+                        .HasForeignKey("LineId")
+                        .HasConstraintName("fk_Crops_Line_id");
+
+                    b.Navigation("Line");
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.Follower", b =>
+                {
+                    b.HasOne("GreenUApi.Models.User", "FollowerNavigation")
+                        .WithMany("FollowerFollowerNavigations")
+                        .HasForeignKey("FollowerId")
+                        .IsRequired()
+                        .HasConstraintName("fk_Follower_Follower_id");
+
+                    b.HasOne("GreenUApi.Models.Garden", "Garden")
+                        .WithMany("Followers")
+                        .HasForeignKey("GardenId")
+                        .HasConstraintName("fk_Follower_Garden_id");
+
+                    b.HasOne("GreenUApi.Models.User", "User")
+                        .WithMany("FollowerUsers")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("fk_Follower_User_id");
+
+                    b.Navigation("FollowerNavigation");
+
+                    b.Navigation("Garden");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.Garden", b =>
+                {
+                    b.HasOne("GreenUApi.Models.User", "Admin")
                         .WithMany("Gardens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AdminId")
+                        .IsRequired()
+                        .HasConstraintName("fk_Garden_Admin_id");
 
-                    b.Navigation("User");
+                    b.Navigation("Admin");
                 });
 
-            modelBuilder.Entity("GreenUApi.model.Line", b =>
+            modelBuilder.Entity("GreenUApi.Models.Line", b =>
                 {
-                    b.HasOne("Parcel", "Parcel")
-                        .WithMany("lines")
+                    b.HasOne("GreenUApi.Models.Parcel", "Parcel")
+                        .WithMany("Lines")
                         .HasForeignKey("ParcelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Vegetable", "Vegetable")
-                        .WithMany("lines")
-                        .HasForeignKey("VegetableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasConstraintName("fk_Line_Parcel_id");
 
                     b.Navigation("Parcel");
-
-                    b.Navigation("Vegetable");
                 });
 
-            modelBuilder.Entity("GreenUApi.model.Todo", b =>
+            modelBuilder.Entity("GreenUApi.Models.Log", b =>
                 {
-                    b.HasOne("GreenUApi.model.Garden", "Garden")
-                        .WithMany()
-                        .HasForeignKey("Garden_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("GreenUApi.Models.User", "Author")
+                        .WithMany("Logs")
+                        .HasForeignKey("AuthorId")
+                        .HasConstraintName("fk_Logs_Author_id");
 
-                    b.HasOne("GreenUApi.model.Line", "Line")
-                        .WithMany()
-                        .HasForeignKey("Line_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("GreenUApi.Models.Crop", "Crop")
+                        .WithMany("Logs")
+                        .HasForeignKey("CropId")
+                        .HasConstraintName("fk_Logs_Crop_id");
 
-                    b.HasOne("Parcel", "Parcel")
-                        .WithMany("todos")
-                        .HasForeignKey("Parcel_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("GreenUApi.Models.Garden", "Garden")
+                        .WithMany("Logs")
+                        .HasForeignKey("GardenId")
+                        .HasConstraintName("fk_Logs_Garden_id");
+
+                    b.HasOne("GreenUApi.Models.Line", "Line")
+                        .WithMany("Logs")
+                        .HasForeignKey("LineId")
+                        .HasConstraintName("fk_Logs_Line_id");
+
+                    b.HasOne("GreenUApi.Models.Parcel", "Parcel")
+                        .WithMany("Logs")
+                        .HasForeignKey("ParcelId")
+                        .HasConstraintName("fk_Logs_Parcel_id");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Crop");
 
                     b.Navigation("Garden");
 
@@ -558,89 +522,78 @@ namespace GreenUApi.Migrations
                     b.Navigation("Parcel");
                 });
 
-            modelBuilder.Entity("Log", b =>
+            modelBuilder.Entity("GreenUApi.Models.Parcel", b =>
                 {
-                    b.HasOne("GreenUApi.model.User", "User")
-                        .WithMany("Logs")
+                    b.HasOne("GreenUApi.Models.Garden", "Garden")
+                        .WithMany("Parcels")
+                        .HasForeignKey("GardenId")
+                        .HasConstraintName("fk_Parcel_Garden_id");
+
+                    b.Navigation("Garden");
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.TagsInterest", b =>
+                {
+                    b.HasOne("GreenUApi.Models.Garden", "Garden")
+                        .WithMany("TagsInterests")
+                        .HasForeignKey("GardenId")
+                        .HasConstraintName("fk_Tags_Garden_id");
+
+                    b.HasOne("GreenUApi.Models.User", "User")
+                        .WithMany("TagsInterests")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasConstraintName("fk_Tags_User_id");
+
+                    b.Navigation("Garden");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Param", b =>
+            modelBuilder.Entity("GreenUApi.Models.Crop", b =>
                 {
-                    b.HasOne("Domain", "Domain")
-                        .WithMany("Params")
-                        .HasForeignKey("domain_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Domain");
+                    b.Navigation("Logs");
                 });
 
-            modelBuilder.Entity("Parcel", b =>
+            modelBuilder.Entity("GreenUApi.Models.Garden", b =>
                 {
-                    b.HasOne("GreenUApi.model.Garden", "garden")
-                        .WithMany()
-                        .HasForeignKey("Garden")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Contributors");
 
-                    b.Navigation("garden");
+                    b.Navigation("Followers");
+
+                    b.Navigation("Logs");
+
+                    b.Navigation("Parcels");
+
+                    b.Navigation("TagsInterests");
                 });
 
-            modelBuilder.Entity("Session", b =>
+            modelBuilder.Entity("GreenUApi.Models.Line", b =>
                 {
-                    b.HasOne("GreenUApi.model.User", "User")
-                        .WithMany("Session")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Crops");
 
-                    b.Navigation("User");
+                    b.Navigation("Logs");
                 });
 
-            modelBuilder.Entity("Verification", b =>
+            modelBuilder.Entity("GreenUApi.Models.Parcel", b =>
                 {
-                    b.HasOne("GreenUApi.model.User", "User")
-                        .WithMany("Verification")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Lines");
 
-                    b.Navigation("User");
+                    b.Navigation("Logs");
                 });
 
-            modelBuilder.Entity("Domain", b =>
+            modelBuilder.Entity("GreenUApi.Models.User", b =>
                 {
-                    b.Navigation("Params");
-                });
+                    b.Navigation("Contributors");
 
-            modelBuilder.Entity("GreenUApi.model.User", b =>
-                {
-                    b.Navigation("Account");
+                    b.Navigation("FollowerFollowerNavigations");
+
+                    b.Navigation("FollowerUsers");
 
                     b.Navigation("Gardens");
 
                     b.Navigation("Logs");
 
-                    b.Navigation("Session");
-
-                    b.Navigation("Verification");
-                });
-
-            modelBuilder.Entity("Parcel", b =>
-                {
-                    b.Navigation("lines");
-
-                    b.Navigation("todos");
-                });
-
-            modelBuilder.Entity("Vegetable", b =>
-                {
-                    b.Navigation("lines");
+                    b.Navigation("TagsInterests");
                 });
 #pragma warning restore 612, 618
         }
