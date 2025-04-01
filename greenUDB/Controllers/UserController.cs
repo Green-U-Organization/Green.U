@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
-using GreenUApi.model;
-using GreenUApi.authentification;
+using GreenUApi.Models;
 
-namespace GreenUApi.controller;
+namespace GreenUApi.Controllers;
 
 public class UserResult<T>
 {
@@ -16,37 +15,12 @@ public class UserController
 {
     public static async Task<IResult> GetAllUser(greenUDB db)
     {
-        return TypedResults.Ok(await db.User.ToArrayAsync());
+        return TypedResults.Ok(await db.Users.ToArrayAsync());
     }
-
-    // public static async Task<UserResult<IResult>> GetUserForLogin(string Username, string password, greenUDB db)
-    // {
-    //     try
-    //     {
-    //     var User = await db.User
-    //         .Where(u => u.Username == Username)
-    //         .Select(u => new User
-    //         {
-    //             Id = u.Id,
-    //             Username = u.Username,
-    //             Password = u.Password,
-    //             Salt = u.Salt
-    //         })
-    //         .ToArrayAsync();
-
-    //         IResult response = await Authentification.Login(User[0], password);
-
-    //         return new UserResult<IResult> { IsSuccess = true, Data = response};
-
-    //     }catch (Exception ex)
-    //     {
-    //         return new UserResult<IResult> { IsSuccess = false, ErrorMessage = ex.Message  };
-    //     }
-    // }
 
     public static async Task<IResult> GetUser(int id, greenUDB db)
     {
-        return await db.User.FindAsync(id)
+        return await db.Users.FindAsync(id)
             is User User
                 ? TypedResults.Ok(User)
                 : TypedResults.NotFound();
@@ -54,7 +28,7 @@ public class UserController
    
     public static async Task<IResult> CreateUser(User User, greenUDB db)
     { 
-        var UserDbData = await db.User
+        var UserDbData = await db.Users
            .Where(u => u.Username == User.Username)
            .Select(u => new User
            {
@@ -68,7 +42,7 @@ public class UserController
         string[] hashSalt = Authentification.Hasher(User.Password, null);
         User.Password = hashSalt[0];
         User.Salt = hashSalt[1];
-        db.User.Add(User);
+        db.Users.Add(User);
         await db.SaveChangesAsync();
         return TypedResults.Created($"/Useritems/{User.Id}", User);
     }
@@ -76,7 +50,7 @@ public class UserController
     public static async Task<IResult> UpdateUser(int Id, User inputUser, greenUDB db)
     {
         // Ask the team what needs to be changed
-        var User = await db.User.FindAsync(Id);
+        var User = await db.Users.FindAsync(Id);
 
         if (User is null) return TypedResults.NotFound();
 
@@ -89,9 +63,9 @@ public class UserController
 
     public static async Task<IResult> DeleteUser(int id, greenUDB db)
     {
-        if (await db.User.FindAsync(id) is User User)
+        if (await db.Users.FindAsync(id) is User User)
         {
-            db.User.Remove(User);
+            db.Users.Remove(User);
             await db.SaveChangesAsync();
             return TypedResults.NoContent();
         }

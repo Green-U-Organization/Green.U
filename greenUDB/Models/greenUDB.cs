@@ -5,13 +5,13 @@ using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace GreenUApi.Models;
 
-public partial class Hamilton10GreenuContext : DbContext
+public partial class greenUDB : DbContext
 {
-    public Hamilton10GreenuContext()
+    public greenUDB()
     {
     }
 
-    public Hamilton10GreenuContext(DbContextOptions<Hamilton10GreenuContext> options)
+    public greenUDB(DbContextOptions<greenUDB> options)
         : base(options)
     {
     }
