@@ -13,9 +13,9 @@ namespace GreenUApi.Controllers
     [ApiController]
     public class GardenController : ControllerBase
     {
-        private readonly greenUDB _context;
+        private readonly GreenUDB _context;
 
-        public GardenController(greenUDB context)
+        public GardenController(GreenUDB context)
         {
             _context = context;
         }

@@ -35,7 +35,7 @@ namespace GreenUApi.authentification
 
         }
 
-    public static async Task<IResult> Login(string username, string password, greenUDB db)
+    public static async Task<IResult> Login(string username, string password, GreenUDB db)
         {
             var User = await db.Users
             .Where(u => u.Username == username)

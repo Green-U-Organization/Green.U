@@ -2,17 +2,19 @@ using Microsoft.EntityFrameworkCore;
 using GreenUApi.Controllers;
 using GreenUApi.Models;
 using DotNetEnv;
-using GreenUApi.authentification;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};" +
+                        $"port={Environment.GetEnvironmentVariable("PORT")};" +
+                        $"database={Environment.GetEnvironmentVariable("DATABASE")};" +
+                        $"user={Environment.GetEnvironmentVariable("USER")};" +
+                        $"password={Environment.GetEnvironmentVariable("PASSWORD")};" +
+                        $"SslMode={Environment.GetEnvironmentVariable("MODE")};";
 
-builder.Services.AddDbContext<greenUDB>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
-    )
+builder.Services.AddDbContext<GreenUDB>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
 // Add cors services
@@ -26,19 +28,7 @@ builder.Services.AddCors(options =>
 
 // Add other services
 builder.Services.AddControllers();
-
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};" +
-                       $"port={Environment.GetEnvironmentVariable("PORT")};" +
-                       $"database={Environment.GetEnvironmentVariable("DATABASE")};" +
-                       $"user={Environment.GetEnvironmentVariable("USER")};" +
-                       $"password={Environment.GetEnvironmentVariable("PASSWORD")};" +
-                       $"SslMode={Environment.GetEnvironmentVariable("MODE")};";
-
-builder.Services.AddDbContext<greenUDB>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>
 {
@@ -46,7 +36,6 @@ builder.Services.AddOpenApiDocument(config =>
     config.Title = "GrennUAPI v1";
     config.Version = "v1";
 });
-
 
 var app = builder.Build();
 
@@ -71,18 +60,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-var Auth = app.MapGroup("/");
-
-Auth.MapPost("/login", Authentification.Login);
-Auth.MapPost("/register", UserController.CreateUser);
-
 var UserItems = app.MapGroup("/Users");
 
 UserItems.MapGet("/{id}", UserController.GetUser);
 UserItems.MapPut("/{id}", UserController.UpdateUser);
 UserItems.MapDelete("/{id}", UserController.DeleteUser);
 
-var TodoItems = app.MapGroup("/Todos");
-
 app.Run();
-

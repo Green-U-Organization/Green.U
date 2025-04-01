@@ -5,13 +5,13 @@ using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace GreenUApi.Models;
 
-public partial class greenUDB : DbContext
+public partial class GreenUDB : DbContext
 {
-    public greenUDB()
+    public GreenUDB()
     {
     }
 
-    public greenUDB(DbContextOptions<greenUDB> options)
+    public GreenUDB(DbContextOptions<GreenUDB> options)
         : base(options)
     {
     }
@@ -19,8 +19,6 @@ public partial class greenUDB : DbContext
     public virtual DbSet<Contributor> Contributors { get; set; }
 
     public virtual DbSet<Crop> Crops { get; set; }
-
-    public virtual DbSet<EfmigrationsHistory> EfmigrationsHistories { get; set; }
 
     public virtual DbSet<Follower> Followers { get; set; }
 
@@ -95,16 +93,6 @@ public partial class greenUDB : DbContext
             entity.HasOne(d => d.Line).WithMany(p => p.Crops)
                 .HasForeignKey(d => d.LineId)
                 .HasConstraintName("fk_Crops_Line_id");
-        });
-
-        modelBuilder.Entity<EfmigrationsHistory>(entity =>
-        {
-            entity.HasKey(e => e.MigrationId).HasName("PRIMARY");
-
-            entity.ToTable("__EFMigrationsHistory");
-
-            entity.Property(e => e.MigrationId).HasMaxLength(150);
-            entity.Property(e => e.ProductVersion).HasMaxLength(32);
         });
 
         modelBuilder.Entity<Follower>(entity =>
@@ -306,7 +294,7 @@ public partial class greenUDB : DbContext
                 .HasColumnType("text")
                 .HasColumnName("Profile_image");
             entity.Property(e => e.Salt).HasColumnType("text");
-            entity.Property(e => e.Sexe).HasColumnType("text");
+            entity.Property(e => e.Gender).HasColumnType("text");
             entity.Property(e => e.Username).HasColumnType("text");
         });
 

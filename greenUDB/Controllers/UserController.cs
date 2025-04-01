@@ -13,12 +13,12 @@ public class UserResult<T>
 
 public class UserController
 {
-    public static async Task<IResult> GetAllUser(greenUDB db)
+    public static async Task<IResult> GetAllUser(GreenUDB db)
     {
         return TypedResults.Ok(await db.Users.ToArrayAsync());
     }
 
-    public static async Task<IResult> GetUser(int id, greenUDB db)
+    public static async Task<IResult> GetUser(int id, GreenUDB db)
     {
         return await db.Users.FindAsync(id)
             is User User
@@ -26,7 +26,7 @@ public class UserController
                 : TypedResults.NotFound();
     }
    
-    public static async Task<IResult> CreateUser(User User, greenUDB db)
+    public static async Task<IResult> CreateUser(User User, GreenUDB db)
     { 
         var UserDbData = await db.Users
            .Where(u => u.Username == User.Username)
@@ -47,7 +47,7 @@ public class UserController
         return TypedResults.Created($"/Useritems/{User.Id}", User);
     }
 
-    public static async Task<IResult> UpdateUser(int Id, User inputUser, greenUDB db)
+    public static async Task<IResult> UpdateUser(int Id, User inputUser, GreenUDB db)
     {
         // Ask the team what needs to be changed
         var User = await db.Users.FindAsync(Id);
@@ -61,7 +61,7 @@ public class UserController
         return TypedResults.NoContent();
     }
 
-    public static async Task<IResult> DeleteUser(int id, greenUDB db)
+    public static async Task<IResult> DeleteUser(int id, GreenUDB db)
     {
         if (await db.Users.FindAsync(id) is User User)
         {

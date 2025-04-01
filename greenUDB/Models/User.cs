@@ -25,7 +25,7 @@ public partial class User
 
     public string Country { get; set; } = null!;
 
-    public string Sexe { get; set; } = null!;
+    public string Gender { get; set; } = null!;
 
     public DateOnly Birthday { get; set; }
 
