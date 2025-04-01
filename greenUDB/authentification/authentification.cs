@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
-using GreenUApi.controller;
+using GreenUApi.Controllers;
 using Token;
 using System.Text;
-using GreenUApi.model;
+using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GreenUApi.authentification
@@ -37,7 +37,7 @@ namespace GreenUApi.authentification
 
     public static async Task<IResult> Login(string username, string password, greenUDB db)
         {
-            var User = await db.User
+            var User = await db.Users
             .Where(u => u.Username == username)
             .Select(u => new User
             {
