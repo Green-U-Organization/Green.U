@@ -40,8 +40,8 @@
 
 | Method | Route | Body | Description |
 | --- | --- | --- | --- |
-| POST | `/garden/parcel` | `{ "garden_id": 3, "length": 23.34, "width": 32.23, "x_position": 32.2, "y_position": 22.2 }` | Create a new parcel |
-| PATCH | `/garden/parcel` | `{ "length"?: 23.34, "width"?: 32.23, "x_position"?: 32.2, "y_position"?: 22.2 }` | Edit a parcel |
+| POST | `/garden/parcel` | `{ "garden_id": 3, "length": 23.34, "width": 32.23, "x_position": 32.2, "y_position": 22.2, parcel_angle: 75 }` | Create a new parcel |
+| PATCH | `/garden/parcel` | `{ "length"?: 23.34, "width"?: 32.23, "x_position"?: 32.2, "y_position"?: 22.2, parcel_angle: 75  }` | Edit a parcel |
 | GET | `/garden/parcel` | `{ "garden_id": 3 }` | Get all parcels with garden id |
 | DELETE | `/garden/parcel` | `{ "parcel_id": 2 }` | Delete a parcel |
 
