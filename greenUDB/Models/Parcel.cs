@@ -9,11 +9,13 @@ public partial class Parcel
 
     public long? GardenId { get; set; }
 
-    public long? Length { get; set; }
+    public Double? Length { get; set; }
 
     public long? Width { get; set; }
 
     public long? NLine { get; set; }
+
+    public Double? parcel_angle { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

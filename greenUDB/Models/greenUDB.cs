@@ -20,8 +20,6 @@ public partial class greenUDB : DbContext
 
     public virtual DbSet<Crop> Crops { get; set; }
 
-    public virtual DbSet<EfmigrationsHistory> EfmigrationsHistories { get; set; }
-
     public virtual DbSet<Follower> Followers { get; set; }
 
     public virtual DbSet<Garden> Gardens { get; set; }
@@ -95,16 +93,6 @@ public partial class greenUDB : DbContext
             entity.HasOne(d => d.Line).WithMany(p => p.Crops)
                 .HasForeignKey(d => d.LineId)
                 .HasConstraintName("fk_Crops_Line_id");
-        });
-
-        modelBuilder.Entity<EfmigrationsHistory>(entity =>
-        {
-            entity.HasKey(e => e.MigrationId).HasName("PRIMARY");
-
-            entity.ToTable("__EFMigrationsHistory");
-
-            entity.Property(e => e.MigrationId).HasMaxLength(150);
-            entity.Property(e => e.ProductVersion).HasMaxLength(32);
         });
 
         modelBuilder.Entity<Follower>(entity =>

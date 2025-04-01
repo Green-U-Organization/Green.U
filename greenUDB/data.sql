@@ -110,9 +110,9 @@ CREATE TABLE IF NOT EXISTS `Tags_interest` (
 -- Foreign key constraints
 -- Ajout des contraintes dans le bon ordre (tables parentes d'abord)
 
--- ALTER TABLE `Garden`
--- ADD CONSTRAINT `fk_Garden_Admin_id` FOREIGN KEY(`Admin_id`) REFERENCES `User`(`id`)
--- ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE `Garden`
+ADD CONSTRAINT `fk_Garden_Admin_id` FOREIGN KEY(`Admin_id`) REFERENCES `User`(`id`)
+ON UPDATE CASCADE ON DELETE RESTRICT;
 
 ALTER TABLE `Parcel`
 ADD CONSTRAINT `fk_Parcel_Garden_id` FOREIGN KEY(`Garden_id`) REFERENCES `Garden`(`id`)
