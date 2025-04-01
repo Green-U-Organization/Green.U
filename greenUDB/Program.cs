@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using GreenUApi.controller;
+using GreenUApi.Controllers;
+using GreenUApi.Models;
 using DotNetEnv;
 using GreenUApi.authentification;
 
