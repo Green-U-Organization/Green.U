@@ -141,8 +141,10 @@ export default function GardenerProfile() {
             <div className="mt-5">
                 <h2 className="text-2xl font-semibold">📢 {translations.contact}</h2>
                 <div className="flex space-x-4 mt-2 text-border">
+                    {/*
                     <a href="#" target='_blank' className="hover:text-shadow"><FaInstagram /></a>
                     <a href="#" target='_blank' className="hover:text-shadow"><FaFacebook /></a>
+                    */}
                     <a href="mailto:jean.dupont@gmail.com" className="hover:text-shadow"><FaEnvelope /></a>
                 </div>
             </div>
