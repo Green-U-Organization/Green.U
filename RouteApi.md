@@ -31,7 +31,7 @@
 | Method | Route | Body | Description |
 | --- | --- | --- | --- |
 | POST | `/garden` | `{ "author_id": 2, "name": "Manulo", "description": "proutland", "latitude": "894512940.322", "longitude": "1345323.324", "length": 23.3, "width": 32.45, "privacy": "Public", "type": "Professionnal" }` | Create a new garden |
-| PATCH | `/garden` | `{ "author_id"?: 2, "name"?: "Manulo", "description"?: "proutland", "latitude"?: "894512940.322", "longitude"?: "1345323.324", "length"?: 23.3, "width"?: 32.45, "privacy"?: "Public", "type"?: "Professionnal" }` | Edit a garden |
+| PATCH | `/garden` | `{ "garden_id" : 88, "author_id"?: 2, "name"?: "Manulo", "description"?: "proutland", "latitude"?: "894512940.322", "longitude"?: "1345323.324", "length"?: 23.3, "width"?: 32.45, "privacy"?: "Public", "type"?: "Professionnal" }` | Edit a garden |
 | GET | `/garden` | `{ "garden_id": 3 }` | Get one garden and forgein key with id |
 | GET | `/garden/user` | `{ "user_id": 3 }` | Get all gardens used by user |
 | GET | `/garden/tags` | `{ "tag"_list "#prout, #pioche" }` | Get all gardens by hashtags |
