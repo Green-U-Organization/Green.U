@@ -74,7 +74,7 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({ value, onChange, error, s
           <option key={`${code}-${city}`} value={`${code}-${city}`} />
         ))}
       </datalist>
-      {error && <p className="text-txterror">Input field can&apos;t be empty!</p>}
+      {error && <p className="text-txterror">{translations.errorEmptyInput}</p>}
       {!isValidPostalCodeLocal && touched && (
         <p className="text-txterror">{translations.invalidpostalcode}</p>
       )}

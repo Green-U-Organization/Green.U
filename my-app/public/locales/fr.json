@@ -1,8 +1,8 @@
 {
-    "__COMMENT_1" : "PAGE D'ACCUEIL",
+    "__COMMENT_1": "PAGE D'ACCUEIL",
     "workinprogress": "Travaux en cours",
     
-    "__COMMENT_2" : "NAVBAR",
+    "__COMMENT_2": "NAVBAR",
     "login": "Se connecter",
     "signup": "S'inscrire",
     "landing": "Landing",
@@ -38,6 +38,7 @@
     "agree": "J'accepte les ",
     "cgu": "Conditions Générales d'Utilisation",
     "newsletter": "Je voudrais m'inscrire à la newsletter (optionnel).",
+    "errorNotCheckedToU": "Veuillez accepter les CGU",
 
     "__COMMENT_4" : "CGU",
     "cgutitle" : "Conditions Générales d'Utilisation (CGU)",
@@ -94,10 +95,20 @@
     "distance": "Distance",
     "errgeo": "Erreur de géolocalisation",
     "errpos": "Impossible d'obtenir votre position",
+    "errUnknown": "Erreur inconue",
+    "errPosition": "Impossible d'obtenir votre position",
+    "errPositionUnavailable" : "Position indisponible",
+    "errGeoPermissionRefused": "Permission de géolocalisation refusée",
+    "errWaitingTime": "Temps d'attente dépassé",
+    "errCheckPermissions": " Vérifiez vos permissions et activez le GPS",
+    "errGeoNavigator": "La géolocalisation n'est pas supportée par ce navigateur",
 
     "__COMMENT" : "GARDEN",
-    "likes" : "Likes:"
+    "likes" : "Likes:",
 
-
+    "__GLOBAL": "ERRORS",
+    "errorEmptyInput": "Le champ de saisie ne peut pas être vide!",
+    "errorPassMatch": "Votre mot de passe doit être strictement identique!",
+    "errorPassChar": "Le mot de passe doit comporter au moins 8 caractères et 1 caractère spécial!"
 }
   

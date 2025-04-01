@@ -1,16 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// import { ClassName } from "react-calendar/src/shared/types.js";
 
-// Fonction qui définit la saison selon le mois actuel
+// Fonction qui définit le thème selon le mois actuel
 const getSeason = () => {
-  const month = new Date().getMonth() + 1; // Récupère le mois actuel (1-12)
- 
-  // Détermine la saison en fonction du mois
-  if (month >= 3 && month <= 5) return "theme-spring"; // Printemps
-  if (month >= 6 && month <= 8) return "theme-summer"; // Été
-  if (month >= 9 && month <= 11) return "theme-fall";  // Automne
-  return "theme-winter"; // Hiver
+  const month = new Date().getMonth() + 1;
+  const seasonMap = {
+    1: "theme-winter", 2: "theme-winter",
+    3: "theme-spring", 4: "theme-spring", 5: "theme-spring",
+    6: "theme-summer", 7: "theme-summer", 8: "theme-summer",
+    9: "theme-fall", 10: "theme-fall", 11: "theme-fall",
+    12: "theme-winter"
+  };
+  return seasonMap[month as keyof typeof seasonMap];
 };
 
 const ThemeApp: React.FC<{ children: React.ReactNode , className?: string}> = ({ children, className }) => {

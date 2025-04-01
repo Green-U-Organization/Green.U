@@ -65,7 +65,7 @@ const Home = () => {
                 //console.log("Données chargées :", data);
                 setLocations(data as Location[]);
             })
-            .catch((error) => console.error("Erreur de chargement du JSON :", error));
+            .catch((error) => console.error("Error loading JSON :", error));
     }, []);
 
     useEffect(() => {
@@ -75,22 +75,22 @@ const Home = () => {
                     setPosition([position.coords.latitude, position.coords.longitude]);
                 },
                 (error) => {
-                    console.error("Erreur de géolocalisation :", error);
-                    let errorMessage = "Impossible d'obtenir votre position.";
+                    console.error(translations.errgeo , error);
+                    let errorMessage = translations.errPosition;
                     switch(error.code) {
                         case error.PERMISSION_DENIED:
-                            errorMessage = "Permission de géolocalisation refusée.";
+                            errorMessage = translations.errGeoPermissionRefused;
                             break;
                         case error.POSITION_UNAVAILABLE:
-                            errorMessage = "Position indisponible.";
+                            errorMessage = translations.errPositionUnavailable;
                             break;
                         case error.TIMEOUT:
-                            errorMessage = "Temps d'attente dépassé.";
+                            errorMessage = translations.errWaitingTime;
                             break;
                         default:
-                            errorMessage = "Erreur inconnue.";
+                            errorMessage = translations.errUnknown;
                     }
-                    alert(errorMessage + " Vérifiez vos permissions et activez le GPS.");
+                    alert(errorMessage + translations.errCheckPermissions);
                 },
                 {
                     enableHighAccuracy: true,
@@ -99,8 +99,8 @@ const Home = () => {
                 }
             );
         } else {
-            console.error("La géolocalisation n'est pas supportée par ce navigateur.");
-            alert("La géolocalisation n'est pas supportée par ce navigateur.");
+            console.error(translations.errGeoNavigator);
+            alert(translations.errGeoNavigator);
         }
     }, []);
     
@@ -132,7 +132,7 @@ const Home = () => {
 
     return (
         <>
-        <div className="h-screen max-w-screen">
+        <div className="max-w-screen z-1000">
             <div className="p-4 bg-white w-full max-w-md mx-auto mt-4">
                 <label className="block font-semibold">{translations.radius}</label>
                 <div className="flex items-center">
@@ -154,7 +154,7 @@ const Home = () => {
                     />km
                 </div>
             </div>
-            <MapContainer center={position} zoom={13} style={{height: '100vh', width: '100%'}}>
+            <MapContainer center={position} zoom={13} style={{height: '80vh', width: '100%'}}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -186,20 +186,7 @@ const Home = () => {
                     </Marker>
                     );
                 })}
-                
-                
-                
-                
-                
-                
-                
-                {/* Marqueurs des localisations filtrées */}
-                {/* {filteredLocations.map((loc, index) => (
-                    <Marker key={index} position={[loc.lat, loc.lon]} icon={customIcon}>
-                        <Popup>{loc.city} (à {calculateDistance(position, [loc.lat, loc.lon]).toFixed(1)} km)</Popup>
-                    </Marker>
-                ))} */}
-         </MapContainer>
+            </MapContainer>
         </div>
         </>
       );
