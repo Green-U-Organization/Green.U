@@ -6,6 +6,14 @@ using GreenUApi.authentification;
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddDbContext<greenUDB>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+    )
+);
+
 // Add cors services
 builder.Services.AddCors(options =>
 {
