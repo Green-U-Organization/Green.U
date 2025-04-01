@@ -41,7 +41,7 @@
 | Method | Route | Body | Description |
 | --- | --- | --- | --- |
 | POST | `/garden/parcel` | `{ "garden_id": 3, "length": 23.34, "width": 32.23, "x_position": 32.2, "y_position": 22.2, parcel_angle: 75 }` | Create a new parcel |
-| PATCH | `/garden/parcel` | `{ "length"?: 23.34, "width"?: 32.23, "x_position"?: 32.2, "y_position"?: 22.2, parcel_angle: 75  }` | Edit a parcel |
+| PATCH | `/garden/parcel` | `{ "parcel_id": 85, "length"?: 23.34, "width"?: 32.23, "x_position"?: 32.2, "y_position"?: 22.2, parcel_angle: 75  }` | Edit a parcel |
 | GET | `/garden/parcel` | `{ "garden_id": 3 }` | Get all parcels with garden id |
 | DELETE | `/garden/parcel` | `{ "parcel_id": 2 }` | Delete a parcel |
 
@@ -50,7 +50,7 @@
 | Method | Route | Body | Description |
 | --- | --- | --- | --- |
 | POST | `/garden/parcel/line` | `{ "parcel_id": 2, "length": 32.3 }` | Create a new line |
-| PATCH | `/garden/parcel/line` | `{ "length": 30.0 }` | Edit a line |
+| PATCH | `/garden/parcel/line` | `{ "line_id": 0, "parcel_id": 2, "length": 30.0 }` | Edit a line |
 | GET | `/garden/parcel/line` | `{ "parcel_id": 2 }` | Get a parcel line |
 | DELETE | `/garden/parcel/line` | `{ "line_id": 2 }` | Delete a line |
 
@@ -59,7 +59,7 @@
 | Method | Route | Body | Description |
 | --- | --- | --- | --- |
 | POST | `/crops` | `{ "line_id"?: 3, "plant_nursery_id"?: 2, "vegetable": "Pomme", "variety": "tigre", "icon": "apple.jpg" }` | Create a new crop |
-| PATCH | `/crops` | `{ "line_id"?: 3, "plant_nursery_id"?: 2 }` | Edit a crop |
+| PATCH | `/crops` | `{ "crops_id": 5, "line_id"?: 3, "plant_nursery_id"?: 2 }` | Edit a crop |
 | GET | `/crops` | `{ "vegetable": "courgette" }` | Get all vegetables with vegetable |
 | DELETE | `/crops` | `{ "id": 2 }` | Delete a crop |
 
