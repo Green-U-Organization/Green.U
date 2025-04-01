@@ -42,6 +42,6 @@ export const createNewGarden = async (
         throw new Error("Failed to edit the parcel");
     }
 
-    const newParcel: parcelType = await response.json();
-    return newParcel;
+    const editParcel: parcelType = await response.json();
+    return editParcel;
 };

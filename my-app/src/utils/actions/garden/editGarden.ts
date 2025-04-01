@@ -50,6 +50,6 @@ export const createNewGarden = async (
         throw new Error("Failed to edit the garden");
     }
 
-    const newGarden: gardenType = await response.json();
-    return newGarden;
+    const editGarden: gardenType = await response.json();
+    return editGarden;
 };
