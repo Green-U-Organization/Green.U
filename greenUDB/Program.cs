@@ -63,9 +63,5 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// var UserItems = app.MapGroup("/Users");
-// UserItems.MapGet("/{id}", UserController.GetUser);
-// UserItems.MapPut("/{id}", UserController.UpdateUser);
-// UserItems.MapDelete("/{id}", UserController.DeleteUser);
 
 app.Run();

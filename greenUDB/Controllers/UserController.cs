@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
 using Microsoft.AspNetCore.Mvc;
 using GreenUApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GreenUApi.Controllers;
 
