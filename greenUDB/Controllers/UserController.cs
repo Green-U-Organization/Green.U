@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GreenUApi.Controllers;
 
-public class UserResult<T>
-{
-    public bool IsSuccess { get; set; }
-    public T? Data { get; set; }
-    public string? ErrorMessage { get; set; }
-}
+    public class UserResult<T>
+    {
+        public bool IsSuccess { get; set; }
+        public T? Data { get; set; }
+        public string? ErrorMessage { get; set; }
+    }
 
 [Route("user")]
 [ApiController]
@@ -72,7 +72,5 @@ public class UserController : ControllerBase
             await db.SaveChangesAsync();
             return TypedResults.NoContent();
         }
-
-        return TypedResults.NotFound();
     }
 }
