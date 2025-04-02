@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
-
-using GreenUApi.controller;
+using Microsoft.EntityFrameworkCore;
+using GreenUApi.Controllers;
 using Token;
 using System.Text;
-using GreenUApi.model;
+using GreenUApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GreenUApi.authentification
 {
@@ -30,30 +31,43 @@ namespace GreenUApi.authentification
             iterationCount: 100000,
             numBytesRequested: 256 / 8));
 
-            return new string[] { hashed, Convert.ToBase64String(salt) };
+            return [hashed, Convert.ToBase64String(salt)];
 
         }
 
-        public static async Task<IResult> Login(string usernameInput, string password, greenUDB db)
+    public static async Task<IResult> Login(string username, string password, GreenUDB db)
         {
-            var user = await UserController.GetUserForLogin(usernameInput, db);
-
-            if (user.Data[0].Username == null)
-                return TypedResults.NotFound();
-
-            var hashedPassword = Hasher(password, Encoding.UTF8.GetBytes(user.Data[0].Salt))[0];
-
-            if (user.Data[0].Password == hashedPassword)
+            var User = await db.Users
+            .Where(u => u.Username == username)
+            .Select(u => new User
             {
-                // Generate a JWT with user data
-                var token = Jwt.GenerateJwtToken(user.Data[0]);
+                Id = u.Id,
+                Username = u.Username,
+                Password = u.Password,
+                Salt = u.Salt
+            })
+            .FirstOrDefaultAsync();
 
-                // Return the JWT
+            if (User == null)
+            {
+                return TypedResults.Unauthorized();
+            }
+
+
+            String hashedPassword = "";
+            if(User.Salt != null)
+                hashedPassword = Hasher(password, Convert.FromBase64String(User.Salt))[0];
+
+            if (User.Password == hashedPassword)
+            {
+                var token = Jwt.GenerateJwtToken(User);
+
                 return TypedResults.Ok(new { message = "Mot de passe valide !", token });
             }
 
             return TypedResults.Unauthorized();
         }
+
 
     }
 }
