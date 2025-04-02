@@ -4,6 +4,9 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 02/04/25 | @Pierre @Emmanuel | Ajout des actions
+| 01/04/25 | @Pierre @Emmanuel @Mehdi | Définition d'une grosse partie des tables
+||| @Pierre @Emmanuel | Ajout des actions
 | 31/03/25 | @Emmanuel | Ajout d'une checkbox sur les CGU.
 ||| Amélioration de la détermination du thème (utile si thème particulier, ex Noël)
 ||| Vérification et ajout de traductions
