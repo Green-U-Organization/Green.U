@@ -38,7 +38,7 @@ namespace GreenUApi.Controllers
         public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
         {
             var gardens = await _context.Gardens
-                                        .Where(g => g.AdminId == userId)
+                                        .Where(g => g.AuthorId == userId)
                                         .ToListAsync();
 
             if (gardens == null)
@@ -92,8 +92,7 @@ namespace GreenUApi.Controllers
             }
 
             garden.CreatedAt = DateTime.UtcNow;
-            garden.UpdateAt = DateTime.UtcNow;
-
+            
             _context.Gardens.Add(garden);
             await _context.SaveChangesAsync();
 

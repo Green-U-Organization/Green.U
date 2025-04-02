@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace GreenUApi.Models;
 
+
 public partial class Log
 {
     public long Id { get; set; }
@@ -16,6 +17,8 @@ public partial class Log
     public long? LineId { get; set; }
 
     public long? CropId { get; set; }
+
+    public long? PlantNurseryId { get; set; }
 
     public string? Action { get; set; }
 

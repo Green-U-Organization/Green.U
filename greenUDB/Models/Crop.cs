@@ -9,6 +9,8 @@ public partial class Crop
 
     public long? LineId { get; set; }
 
+    public long? PlantNurseryId { get; set;}
+
     public string Vegetable { get; set; } = null!;
 
     public string? Variety { get; set; }

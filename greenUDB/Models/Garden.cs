@@ -17,7 +17,7 @@ public partial class Garden
 {
     public long Id { get; set; }
 
-    public long AdminId { get; set; }
+    public long AuthorId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -30,8 +30,6 @@ public partial class Garden
     public long Length { get; set; }
 
     public long Width { get; set; }
-
-    public DateTime UpdateAt { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
