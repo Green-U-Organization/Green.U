@@ -63,9 +63,10 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-var UserItems = app.MapGroup("/Users");
-UserItems.MapGet("/{id}", UserController.GetUser);
-UserItems.MapPut("/{id}", UserController.UpdateUser);
-UserItems.MapDelete("/{id}", UserController.DeleteUser);
+var UserRoute = app.MapGroup("user");
+UserRoute.MapGet("/", UserController.GetAllUser);
+//UserRoute.MapPost("/", UserController.CreateUser);
+//UserRoute.MapPatch("/", UserController.UpdateUser);
+//UserRoute.MapDelete("/", UserController.DeleteUser);
 
 app.Run();
