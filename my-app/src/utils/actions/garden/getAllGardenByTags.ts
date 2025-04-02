@@ -1,19 +1,26 @@
+type tagsType = {
+    tag_list: string
+}
 
-export const getAllGardenByTags = async (tags: Array<string>) => {
+export const getAllGardenByTags = async (tags : tagsType) => {
 
-const tagList = tags.join()
+    try {
+        const response =
+            await fetch(process.env.NEXT_PUBLIC_API + "/garden/tags", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(tags)
+            })
 
-    const bodyRequest = {
-        tag_list : tagList
+        if (!response.ok) {
+            throw new Error(`Failed to get gardens:  ${response.statusText}`);
+        }
+        return response.json();
+
+    } catch (error) {
+        console.error("Error in getAllGardenByTags: ", error);
+        throw error;
     }
-    const allGardenByTags =
-    fetch (process.env.NEXT_PUBLIC_API + "/garden/tags", {
-        method : "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body : JSON.stringify(bodyRequest)
-    })
-
-    return allGardenByTags
 }

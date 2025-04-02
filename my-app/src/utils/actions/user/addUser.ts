@@ -15,7 +15,8 @@ type UserType = {
 export const createUser = async (user: UserType): Promise<UserType> => {
     
     try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + "/user", {
+        const response = 
+        await fetch(process.env.NEXT_PUBLIC_API + "/user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

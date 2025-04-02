@@ -1,17 +1,27 @@
+type parcelType = {
+    parcel_id : number
+}
 
-export const deleteOneParcelByGardenId = async (gardenId : number) => {
+export const deleteOneParcelByParcelId = async (parcel : parcelType) => {
     
-    const bodyRequest = {
-        garden_id : gardenId
-    }
-    const oneParcelByGardenId =
-    fetch (process.env.NEXT_PUBLIC_API + "/garden/parcel", {
+    try {
+        const response =
+    await fetch (process.env.NEXT_PUBLIC_API + "/garden/parcel", {
         method : "DELETE",
         headers: {
             "Content-Type": "application/json",
         },
-        body : JSON.stringify(bodyRequest)
+        body : JSON.stringify(parcel)
     })
 
-    return oneParcelByGardenId
+    if (!response.ok) {
+        throw new Error(`Failed to delete parcel: ${response.statusText}`);
+    }
+
+    return response.json();
+
+} catch (error) {
+    console.error("Error in deleteOneParcelByParcelId: ", error);
+    throw error;
 }
+};

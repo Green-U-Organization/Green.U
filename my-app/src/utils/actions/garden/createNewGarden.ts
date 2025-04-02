@@ -1,53 +1,36 @@
-
 type gardenType = {
-    userId: number,
-    gardenName: string,
-    gardenDescription: string,
-    gardenLatitude: number,
-    gardenLongitude: number,
-    gardenWidth: number,
-    gardenLength: number,
-    gardenType: "individual" | "collective" | "professionnal",
-    gardenPrivacy: "private" | "public"
+    author_id: number,
+    name: string,
+    description: string,
+    latitude: number,
+    longitude: number,
+    length: number,
+    width: number,
+    privacy: "private" | "public"
+    type: "individual" | "collective" | "professionnal",
 };
 
 export const createNewGarden = async (
-    userId: number, 
-    gardenName: string, 
-    gardenDescription: string, 
-    gardenLatitude: number, 
-    gardenLongitude: number,
-    gardenLength: number,
-    gardenWidth: number,
-    gardenPrivacy: "private" | "public",
-    gardenType: "individual" | "collective" | "professionnal"
+    garden: gardenType
 ): Promise<gardenType> => {
 
-    const bodyRequest = {
-        author_id: userId,
-        name: gardenName,
-        description: gardenDescription,
-        latitude: gardenLatitude,
-        longitude: gardenLongitude,
-        length: gardenLength,
-        width: gardenWidth,
-        privacy: gardenPrivacy,
-        type: gardenType
-    };
+    try {
+        const response =
+            await fetch(process.env.NEXT_PUBLIC_API + "/garden", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(garden)
+            });
 
-    const response = 
-    await fetch(process.env.NEXT_PUBLIC_API + "/garden", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyRequest)
-    });
+        if (!response.ok) {
+            throw new Error(`Failed to create a new garden:  ${response.statusText}`);
+        }
+        return response.json();
 
-    if (!response.ok) {
-        throw new Error("Failed to create a new garden");
+    } catch (error) {
+        console.error("Error in createNewGarden: ", error)
+        throw error
     }
-
-    const newGarden: gardenType = await response.json();
-    return newGarden;
 };

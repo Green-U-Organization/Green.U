@@ -17,7 +17,7 @@ export const getUserById = async (userId: number) => {
             throw new Error(`Failed to get user data: ${response.statusText}`);
         }
 
-        return await response.json();
+        return response.json();
       
     } catch (error) {
         console.error("Error in getUserById: ", error);
