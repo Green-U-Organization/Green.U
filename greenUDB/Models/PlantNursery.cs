@@ -6,5 +6,5 @@ namespace GreenUApi.Models;
 public partial class PlantNursery
 {
     public long? Id { get; set; }
-    public long? gardenId { get; set; }
+    public long? GardenId { get; set; }
 }

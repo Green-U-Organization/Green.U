@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenUApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class NewMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,7 @@ namespace GreenUApi.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    gardenId = table.Column<long>(type: "bigint", nullable: true)
+                    GardenId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -40,7 +40,7 @@ namespace GreenUApi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Salt = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Salt = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Is_admin = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Firstname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
