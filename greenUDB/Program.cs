@@ -15,7 +15,7 @@ var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};
                        $"SslMode={Environment.GetEnvironmentVariable("MODE")};";
 
 // Enregistrement de DbContext avec la chaîne de connexion chargée dynamiquement
-builder.Services.AddDbContext<greenUDB>(options =>
+builder.Services.AddDbContext<GreenUDB>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 

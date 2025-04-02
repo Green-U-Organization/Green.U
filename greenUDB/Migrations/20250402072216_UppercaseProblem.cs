@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenUApi.Migrations
 {
     /// <inheritdoc />
-    public partial class RenameSexeToGender : Migration
+    public partial class UppercaseProblem : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,7 +72,9 @@ namespace GreenUApi.Migrations
                     Length = table.Column<long>(type: "bigint", nullable: false),
                     Width = table.Column<long>(type: "bigint", nullable: false),
                     Update_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false)
+                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Privacy = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,9 +151,10 @@ namespace GreenUApi.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false),
                     Garden_id = table.Column<long>(type: "bigint", nullable: true),
-                    Length = table.Column<long>(type: "bigint", nullable: true),
+                    Length = table.Column<double>(type: "double", nullable: true),
                     Width = table.Column<long>(type: "bigint", nullable: true),
                     N_line = table.Column<long>(type: "bigint", nullable: true),
+                    parcel_angle = table.Column<double>(type: "double", nullable: true),
                     Created_at = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>

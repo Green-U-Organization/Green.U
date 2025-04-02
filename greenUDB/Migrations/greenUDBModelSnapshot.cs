@@ -157,7 +157,10 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Policy")
+                    b.Property<int>("Privacy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateAt")
@@ -166,9 +169,6 @@ namespace GreenUApi.Migrations
 
                     b.Property<long>("Width")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("type")
-                        .HasColumnType("int");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
@@ -355,6 +355,10 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("Is_admin");
@@ -381,10 +385,6 @@ namespace GreenUApi.Migrations
                         .HasColumnName("Profile_image");
 
                     b.Property<string>("Salt")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Sexe")
                         .IsRequired()
                         .HasColumnType("text");
 

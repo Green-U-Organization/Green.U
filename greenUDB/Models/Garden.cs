@@ -37,9 +37,9 @@ public partial class Garden
 
     public virtual User Admin { get; set; } = null!;
 
-    public GardenPrivacy Policy { get; set; } = GardenPrivacy.Public;
+    public GardenPrivacy Privacy { get; set; } = GardenPrivacy.Public;
 
-    public GardenType type { get; set; } = GardenType.Personnal;
+    public GardenType Type { get; set; } = GardenType.Personnal;
 
     public virtual ICollection<Contributor> Contributors { get; set; } = new List<Contributor>();
 

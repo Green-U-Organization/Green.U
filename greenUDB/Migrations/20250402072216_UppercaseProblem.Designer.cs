@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenUApi.Migrations
 {
     [DbContext(typeof(GreenUDB))]
-    [Migration("20250401144732_RenameSexeToGender")]
-    partial class RenameSexeToGender
+    [Migration("20250402072216_UppercaseProblem")]
+    partial class UppercaseProblem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,6 +160,12 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Privacy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Update_at");
@@ -271,8 +277,8 @@ namespace GreenUApi.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("Garden_id");
 
-                    b.Property<long?>("Length")
-                        .HasColumnType("bigint");
+                    b.Property<double?>("Length")
+                        .HasColumnType("double");
 
                     b.Property<long?>("NLine")
                         .HasColumnType("bigint")
@@ -280,6 +286,9 @@ namespace GreenUApi.Migrations
 
                     b.Property<long?>("Width")
                         .HasColumnType("bigint");
+
+                    b.Property<double?>("parcel_angle")
+                        .HasColumnType("double");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
