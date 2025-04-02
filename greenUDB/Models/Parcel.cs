@@ -15,7 +15,7 @@ public partial class Parcel
 
     public long? NLine { get; set; }
 
-    public Double? parcel_angle { get; set; }
+    public Double? ParcelAngle { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

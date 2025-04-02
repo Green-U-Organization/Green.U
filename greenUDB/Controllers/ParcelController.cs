@@ -13,9 +13,9 @@ namespace GreenUApi.Controllers
     [ApiController]
     public class ParcelController : ControllerBase
     {
-        private readonly greenUDB _context;
+        private readonly GreenUDB _context;
 
-        public ParcelController(greenUDB context)
+        public ParcelController(GreenUDB context)
         {
             _context = context;
         }

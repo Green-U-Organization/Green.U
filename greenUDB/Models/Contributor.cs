@@ -11,6 +11,8 @@ public partial class Contributor
 
     public long GardenId { get; set; }
 
+    public bool Admin { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public virtual Garden Garden { get; set; } = null!;

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenUApi.Migrations
 {
     [DbContext(typeof(GreenUDB))]
-    [Migration("20250401144732_RenameSexeToGender")]
-    partial class RenameSexeToGender
+    [Migration("20250402075509_verificationModels")]
+    partial class verificationModels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace GreenUApi.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
                         .HasColumnName("id");
+
+                    b.Property<bool>("Admin")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
@@ -74,6 +77,9 @@ namespace GreenUApi.Migrations
                     b.Property<long?>("LineId")
                         .HasColumnType("bigint")
                         .HasColumnName("Line_id");
+
+                    b.Property<long?>("PlantNurseryId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateOnly?>("Planting")
                         .HasColumnType("date");
@@ -135,7 +141,7 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("AdminId")
+                    b.Property<long>("AuthorId")
                         .HasColumnType("bigint")
                         .HasColumnName("Admin_id");
 
@@ -160,9 +166,11 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("Update_at");
+                    b.Property<int>("Privacy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.Property<long>("Width")
                         .HasColumnType("bigint");
@@ -170,7 +178,7 @@ namespace GreenUApi.Migrations
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
-                    b.HasIndex(new[] { "AdminId" }, "fk_Garden_Admin_id");
+                    b.HasIndex(new[] { "AuthorId" }, "fk_Garden_Admin_id");
 
                     b.ToTable("Garden", (string)null);
                 });
@@ -236,6 +244,9 @@ namespace GreenUApi.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("Parcel_id");
 
+                    b.Property<long?>("PlantNurseryId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -271,12 +282,15 @@ namespace GreenUApi.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("Garden_id");
 
-                    b.Property<long?>("Length")
-                        .HasColumnType("bigint");
+                    b.Property<double?>("Length")
+                        .HasColumnType("double");
 
                     b.Property<long?>("NLine")
                         .HasColumnType("bigint")
                         .HasColumnName("N_line");
+
+                    b.Property<double?>("ParcelAngle")
+                        .HasColumnType("double");
 
                     b.Property<long?>("Width")
                         .HasColumnType("bigint");
@@ -287,6 +301,22 @@ namespace GreenUApi.Migrations
                     b.HasIndex(new[] { "GardenId" }, "fk_Parcel_Garden_id");
 
                     b.ToTable("Parcel", (string)null);
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.PlantNursery", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("gardenId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlantNursery");
                 });
 
             modelBuilder.Entity("GreenUApi.Models.TagsInterest", b =>
@@ -453,7 +483,7 @@ namespace GreenUApi.Migrations
                 {
                     b.HasOne("GreenUApi.Models.User", "Admin")
                         .WithMany("Gardens")
-                        .HasForeignKey("AdminId")
+                        .HasForeignKey("AuthorId")
                         .IsRequired()
                         .HasConstraintName("fk_Garden_Admin_id");
 

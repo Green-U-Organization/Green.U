@@ -30,6 +30,8 @@ public partial class GreenUDB : DbContext
 
     public virtual DbSet<Parcel> Parcels { get; set; }
 
+    public virtual DbSet<PlantNursery> PlantNursery { get; set;}
+
     public virtual DbSet<TagsInterest> TagsInterests { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -134,21 +136,18 @@ public partial class GreenUDB : DbContext
 
             entity.ToTable("Garden");
 
-            entity.HasIndex(e => e.AdminId, "fk_Garden_Admin_id");
+            entity.HasIndex(e => e.AuthorId, "fk_Garden_Admin_id");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AdminId).HasColumnName("Admin_id");
+            entity.Property(e => e.AuthorId).HasColumnName("Admin_id");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("Created_at");
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.Name).HasColumnType("text");
-            entity.Property(e => e.UpdateAt)
-                .HasColumnType("datetime")
-                .HasColumnName("Update_at");
 
             entity.HasOne(d => d.Admin).WithMany(p => p.Gardens)
-                .HasForeignKey(d => d.AdminId)
+                .HasForeignKey(d => d.AuthorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Garden_Admin_id");
         });

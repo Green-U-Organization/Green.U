@@ -30,6 +30,9 @@ namespace GreenUApi.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
+                    b.Property<bool>("Admin")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
@@ -71,6 +74,9 @@ namespace GreenUApi.Migrations
                     b.Property<long?>("LineId")
                         .HasColumnType("bigint")
                         .HasColumnName("Line_id");
+
+                    b.Property<long?>("PlantNurseryId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateOnly?>("Planting")
                         .HasColumnType("date");
@@ -132,7 +138,7 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("AdminId")
+                    b.Property<long>("AuthorId")
                         .HasColumnType("bigint")
                         .HasColumnName("Admin_id");
 
@@ -157,23 +163,19 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Policy")
+                    b.Property<int>("Privacy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("Update_at");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.Property<long>("Width")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
-                    b.HasIndex(new[] { "AdminId" }, "fk_Garden_Admin_id");
+                    b.HasIndex(new[] { "AuthorId" }, "fk_Garden_Admin_id");
 
                     b.ToTable("Garden", (string)null);
                 });
@@ -239,6 +241,9 @@ namespace GreenUApi.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("Parcel_id");
 
+                    b.Property<long?>("PlantNurseryId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -281,11 +286,11 @@ namespace GreenUApi.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("N_line");
 
+                    b.Property<double?>("ParcelAngle")
+                        .HasColumnType("double");
+
                     b.Property<long?>("Width")
                         .HasColumnType("bigint");
-
-                    b.Property<double?>("parcel_angle")
-                        .HasColumnType("double");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
@@ -293,6 +298,22 @@ namespace GreenUApi.Migrations
                     b.HasIndex(new[] { "GardenId" }, "fk_Parcel_Garden_id");
 
                     b.ToTable("Parcel", (string)null);
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.PlantNursery", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("gardenId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlantNursery");
                 });
 
             modelBuilder.Entity("GreenUApi.Models.TagsInterest", b =>
@@ -355,6 +376,10 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("Is_admin");
@@ -381,10 +406,6 @@ namespace GreenUApi.Migrations
                         .HasColumnName("Profile_image");
 
                     b.Property<string>("Salt")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Sexe")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -459,7 +480,7 @@ namespace GreenUApi.Migrations
                 {
                     b.HasOne("GreenUApi.Models.User", "Admin")
                         .WithMany("Gardens")
-                        .HasForeignKey("AdminId")
+                        .HasForeignKey("AuthorId")
                         .IsRequired()
                         .HasConstraintName("fk_Garden_Admin_id");
 
