@@ -1,47 +1,34 @@
-
 type parcelType = {
-    parcelId: number,
-    gardenId: number,
-    parcelLength: number,
-    parcelWidth: number,
-    parcelXPosition: number,
-    parcelYposition: number,
-    parcelAngle : number    
+    parcel_id: number,
+    garden_id?: number,
+    length?: number,
+    width?: number,
+    x_position?: number,
+    y_position?: number,
+    parcel_angle?: number
 };
 
 export const createNewGarden = async (
-    parcelId: number,
-    gardenId: number,
-    parcelLength: number,
-    parcelWidth: number,
-    parcelXPosition: number,
-    parcelYposition: number,
-    parcelAngle : number
+    parcel: parcelType
 ): Promise<parcelType> => {
 
-    const bodyRequest = {
-        parcel_id: parcelId,
-        garden_id: gardenId,
-        length: parcelLength,
-        width: parcelWidth,
-        x_position: parcelXPosition,
-        y_position: parcelYposition,
-        parcel_angle: parcelAngle
-    };
+    try {
+        const response =
+            await fetch(process.env.NEXT_PUBLIC_API + "/garden/parcel", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(parcel)
+            });
 
-    const response = 
-    await fetch(process.env.NEXT_PUBLIC_API + "/garden/parcel", {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyRequest)
-    });
+        if (!response.ok) {
+            throw new Error(`Failed to edit parcel:  ${response.statusText}`);
+        }
+        return response.json();
 
-    if (!response.ok) {
-        throw new Error("Failed to edit the parcel");
+    } catch (error) {
+        console.error("Error in editParcel: ", error)
+        throw error
     }
-
-    const editParcel: parcelType = await response.json();
-    return editParcel;
 };

@@ -1,32 +1,29 @@
-
 type lineType = {
-    parcelId: number,
-    lineLength: number,
+    parcel_id: number,
+    length: number
 };
 
 export const createNewLine = async (
-    parcelId: number,
-    lineLength: number,
+    line: lineType
 ): Promise<lineType> => {
 
-    const bodyRequest = {
-        parcel_id: parcelId,
-        length: lineLength
-    };
+    try {
+        const response =
+            await fetch(process.env.NEXT_PUBLIC_API + "/garden/parcel/line", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(line)
+            });
 
-    const response =
-        await fetch(process.env.NEXT_PUBLIC_API + "/garden/parcel/line", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bodyRequest)
-        });
+        if (!response.ok) {
+            throw new Error(`Failed to create new line:  ${response.statusText}`);
+        }
+        return response.json();
 
-    if (!response.ok) {
-        throw new Error("Failed to create a new line");
+    } catch (error) {
+        console.error("Error in createNewLine: ", error);
+        throw error;
     }
-
-    const newLine: lineType = await response.json();
-    return newLine;
-};
+}

@@ -1,44 +1,33 @@
-
 type parcelType = {
-    gardenId: number,
-    parcelLength: number,
-    parcelWidth: number,
-    parcelXPosition: number,
-    parcelYposition: number,
-    parcelAngle : number    
+    garden_id: number,
+    length: number,
+    width: number,
+    x_position: number,
+    y_position: number,
+    parcel_angle: number
 };
 
 export const createNewGarden = async (
-    gardenId: number,
-    parcelLength: number,
-    parcelWidth: number,
-    parcelXPosition: number,
-    parcelYposition: number,
-    parcelAngle : number
+    parcel: parcelType
 ): Promise<parcelType> => {
 
-    const bodyRequest = {
-        garden_id: gardenId,
-        length: parcelLength,
-        width: parcelWidth,
-        x_position: parcelXPosition,
-        y_position: parcelYposition,
-        parcel_angle: parcelAngle
-    };
+    try {
+        const response =
+            await fetch(process.env.NEXT_PUBLIC_API + "/garden/parcel", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(parcel)
+            });
 
-    const response = 
-    await fetch(process.env.NEXT_PUBLIC_API + "/garden/parcel", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyRequest)
-    });
+        if (!response.ok) {
+            throw new Error(`Failed to create a new pacel:  ${response.statusText}`);
+        }
+        return response.json();
 
-    if (!response.ok) {
-        throw new Error("Failed to create a new parcel");
+    } catch (error) {
+        console.error("Error in createNewParcel: ", error)
+        throw error
     }
-
-    const newParcel: parcelType = await response.json();
-    return newParcel;
 };
