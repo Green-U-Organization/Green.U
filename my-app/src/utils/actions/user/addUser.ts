@@ -27,7 +27,7 @@ export const createUser = async (user: UserType): Promise<UserType> => {
             throw new Error(`Failed to add user: ${response.statusText}`);
         }
 
-        return await response.json();
+        return response.json();
 
     } catch (error) {
         console.error("Error in addUser: ", error);

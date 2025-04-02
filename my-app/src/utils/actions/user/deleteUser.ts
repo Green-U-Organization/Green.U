@@ -1,8 +1,8 @@
-export const deleteUserById = async (userId: number) => {
-    
-    const bodyRequest = {
-        user_id: userId
-    };
+type UserType = {
+    user_id: number
+}
+
+export const deleteUser = async (user: UserType): Promise<UserType> => {
 
     try {
         const response = await fetch(process.env.NEXT_PUBLIC_API + "/user", {
@@ -10,7 +10,7 @@ export const deleteUserById = async (userId: number) => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(bodyRequest)
+            body: JSON.stringify(user)
         });
 
         if (!response.ok) {

@@ -1,23 +1,23 @@
-export const getUserById = async (userId: number) => {
-    
-    const bodyRequest = {
-        user_id: userId
-    };
+type UserType = {
+    user_id: number
+}
 
+export const getUserById = async (user: UserType): Promise<UserType> => {
+    
     try {
         const response = await fetch(process.env.NEXT_PUBLIC_API + "/user", {
-            method: "POST", // Utilisation de POST pour envoyer des données dans le body
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(bodyRequest)
+            body: JSON.stringify(user)
         });
 
         if (!response.ok) {
             throw new Error(`Failed to get user data: ${response.statusText}`);
         }
 
-        return await response.json();
+        return response.json();
       
     } catch (error) {
         console.error("Error in getUserById: ", error);

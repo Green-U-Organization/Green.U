@@ -1,10 +1,10 @@
-export const deleteUserById = async (userId: number, gardenId: number, tag: string) => {
-    
-    const bodyRequest = {
-        user_id: userId,
-        garden_id: gardenId,
-        tag: tag
-    };
+type TagType = {
+    user_id: number,
+    garden_id?: number,
+    tag: string
+}
+
+export const deleteTag = async (user : TagType): Promise<TagType> => {
 
     try {
         const response = await fetch(process.env.NEXT_PUBLIC_API + "/tags", {
@@ -12,7 +12,7 @@ export const deleteUserById = async (userId: number, gardenId: number, tag: stri
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(bodyRequest)
+            body: JSON.stringify(user)
         });
 
         if (!response.ok) {
@@ -22,7 +22,7 @@ export const deleteUserById = async (userId: number, gardenId: number, tag: stri
         return response.json();
 
     } catch (error) {
-        console.error("Error deleting tag: ", error);
+        console.error("Error in deleteUser: ", error);
         throw error;
     }
 };

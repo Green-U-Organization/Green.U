@@ -1,20 +1,21 @@
 type UserType = {
     user_id: number,
-    username: string,
-    password: string,
-    is_admin: boolean,
-    firstname: string,
-    lastname: string,
-    email: string,
-    postal_code: string,
-    gender: string,
-    birthday: string,
-    bio: string,
-    profile_image: string
+    username?: string,
+    password?: string,
+    is_admin?: boolean,
+    firstname?: string,
+    lastname?: string,
+    email?: string,
+    postal_code?: string,
+    gender?: string,
+    birthday?: string,
+    bio?: string,
+    profile_image?: string,
+    level?: number,
+    xp?: number
 }
 
-export const updateUser = async (
-    user: Partial<UserType> & {user_id: number}): Promise<UserType>  => {
+export const editUser = async (user: UserType): Promise<UserType>  => {
 
     try {
         const response =
@@ -30,7 +31,7 @@ export const updateUser = async (
             throw new Error(`Failed to update user: ${response.statusText}`);
         }
 
-        return await response.json();
+        return response.json();
   
     } catch (error) {
         console.error("Error in updateUser:", error);

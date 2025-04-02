@@ -215,9 +215,8 @@ const RegisterForm = () => {
 
 			if (!gardenerLevel || !interests.length || !isCheckedToU) {
 				return //Empêche la soumission si erreur
-			} else 
-
-// Fetchinf data
+			} else {
+				console.log("FORM OK");
 				const bodyRequest = {
 					Username: login,
 					Password: password,

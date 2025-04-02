@@ -1,9 +1,9 @@
-export const getUserById = async (userId: number, gardenId: number) => {
-    
-    const bodyRequest = {
-        user_id: userId,
-        garden_id: gardenId
-    };
+type TagType = {
+    user_id?: number,
+    garden_id?: number
+}
+
+export const getTag = async (tag: TagType): Promise<TagType> => {
     
     try {
         const response = await fetch(process.env.NEXT_PUBLIC_API + "/tags", {
@@ -11,17 +11,17 @@ export const getUserById = async (userId: number, gardenId: number) => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(bodyRequest)
+            body: JSON.stringify(tag)
         });
 
         if (!response.ok) {
             throw new Error(`Failed to get tag data: ${response.statusText}`);
         }
 
-        return await response.json();
+        return response.json();
 
     } catch (error) {
-        console.error("Error in getUserTags:", error);
+        console.error("Error in getTag: ", error);
         throw error;
     }
 };
