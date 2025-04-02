@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
 
 namespace GreenUApi.Controllers
 {
-    [Route("/garden")]
+    [Route("garden")]
     [ApiController]
     public class GardenController : ControllerBase
     {
@@ -20,7 +15,7 @@ namespace GreenUApi.Controllers
             _context = context;
         }
 
-        [HttpGet()]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Garden>> GetGarden(long id)
         {
             var garden = await _context.Gardens.FindAsync(id);
@@ -34,7 +29,7 @@ namespace GreenUApi.Controllers
         }
 
         // GET: api/Garden/user
-        [HttpGet("/user")]
+        [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
         {
             var gardens = await _context.Gardens
@@ -51,14 +46,10 @@ namespace GreenUApi.Controllers
 
         // PUT: api/Garden/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut()]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> PutGarden(long id, Garden garden)
         {
-            if (id != garden.Id)
-            {
-                return BadRequest();
-            }
-
+            garden.Id = id;
             _context.Entry(garden).State = EntityState.Modified;
 
             try
@@ -92,7 +83,7 @@ namespace GreenUApi.Controllers
             }
 
             garden.CreatedAt = DateTime.UtcNow;
-            
+
             _context.Gardens.Add(garden);
             await _context.SaveChangesAsync();
 
@@ -101,7 +92,7 @@ namespace GreenUApi.Controllers
 
 
         // DELETE: api/Garden/5
-        [HttpDelete()]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGarden(long id)
         {
             var garden = await _context.Gardens.FindAsync(id);

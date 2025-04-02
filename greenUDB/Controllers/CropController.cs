@@ -9,42 +9,35 @@ using GreenUApi.Models;
 
 namespace GreenUApi.Controllers
 {
-    [Route("/garden/parcel/line")]
+    [Route("crops")]
     [ApiController]
-    public class LineController : ControllerBase
+    public class CropController : ControllerBase
     {
         private readonly GreenUDB _context;
 
-        public LineController(GreenUDB context)
+        public CropController(GreenUDB context)
         {
             _context = context;
         }
 
-        // GET: api/Line/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Line>> GetLine(long id)
+        // GET: api/Crop
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Crop>>> GetCrops()
         {
-            var line = await _context.Lines.FindAsync(id);
-
-            if (line == null)
-            {
-                return NotFound();
-            }
-
-            return line;
+            return await _context.Crops.ToListAsync();
         }
 
-        // PUT: api/Line/5
+        // PUT: api/Crop/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchLine(long id, Line line)
+        [HttpPatch]
+        public async Task<IActionResult> PatchCrop(long id, Crop crop)
         {
-            if (id != line.Id)
+            if (id != crop.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(line).State = EntityState.Modified;
+            _context.Entry(crop).State = EntityState.Modified;
 
             try
             {
@@ -52,7 +45,7 @@ namespace GreenUApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LineExists(id))
+                if (!CropExists(id))
                 {
                     return NotFound();
                 }
@@ -65,19 +58,19 @@ namespace GreenUApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Line
+        // POST: api/Crop
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Line>> PostLine(Line line)
+        public async Task<ActionResult<Crop>> PostCrop(Crop crop)
         {
-            _context.Lines.Add(line);
+            _context.Crops.Add(crop);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (LineExists(line.Id))
+                if (CropExists(crop.Id))
                 {
                     return Conflict();
                 }
@@ -87,28 +80,28 @@ namespace GreenUApi.Controllers
                 }
             }
 
-            return CreatedAtAction("GetLine", new { id = line.Id }, line);
+            return CreatedAtAction("GetCrop", new { id = crop.Id }, crop);
         }
 
-        // DELETE: api/Line/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLine(long id)
+        // DELETE: api/Crop/5
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCrop(long id)
         {
-            var line = await _context.Lines.FindAsync(id);
-            if (line == null)
+            var crop = await _context.Crops.FindAsync(id);
+            if (crop == null)
             {
                 return NotFound();
             }
 
-            _context.Lines.Remove(line);
+            _context.Crops.Remove(crop);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool LineExists(long id)
+        private bool CropExists(long id)
         {
-            return _context.Lines.Any(e => e.Id == id);
+            return _context.Crops.Any(e => e.Id == id);
         }
     }
 }

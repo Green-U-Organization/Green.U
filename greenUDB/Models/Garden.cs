@@ -33,8 +33,6 @@ public partial class Garden
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual User Admin { get; set; } = null!;
-
     public GardenPrivacy Privacy { get; set; } = GardenPrivacy.Public;
 
     public GardenType Type { get; set; } = GardenType.Personnal;

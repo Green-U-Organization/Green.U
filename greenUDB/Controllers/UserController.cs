@@ -1,75 +1,86 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
+using Microsoft.AspNetCore.Mvc;
 using GreenUApi.Models;
 
 namespace GreenUApi.Controllers;
 
-public class UserResult<T>
+[Route("api/[controller]")]
+[ApiController]
+public class UserController : ControllerBase
 {
-    public bool IsSuccess { get; set; }
-    public T? Data { get; set; }
-    public string? ErrorMessage { get; set; }
-}
+    private readonly GreenUDB _db;
 
-public class UserController
-{
-    public static async Task<IResult> GetAllUser(GreenUDB db)
+    public UserController(GreenUDB db)
     {
-        return TypedResults.Ok(await db.Users.ToArrayAsync());
+        _db = db;
     }
 
-    public static async Task<IResult> GetUser(int id, GreenUDB db)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<User>> GetUser(int id)
     {
-        return await db.Users.FindAsync(id)
-            is User User
-                ? TypedResults.Ok(User)
-                : TypedResults.NotFound();
+        var user = await _db.Users.FindAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(user);
     }
-   
-    public static async Task<IResult> CreateUser(User User, GreenUDB db)
-    { 
-        var UserDbData = await db.Users
-           .Where(u => u.Username == User.Username)
-           .Select(u => new User
-           {
-               Username = u.Username
-           })
+
+    [HttpPost]
+    public async Task<ActionResult<User>> CreateUser(User user)
+    {
+        var userDbData = await _db.Users
+           .Where(u => u.Username == user.Username)
+           .Select(u => new User { Username = u.Username })
            .ToArrayAsync();
-        if (UserDbData.Length != 0)
+
+        if (userDbData.Length != 0)
         {
-            return TypedResults.Conflict(new { message = "This username is already exist" });
-        }
-        string[] hashSalt = Authentification.Hasher(User.Password, null);
-        User.Password = hashSalt[0];
-        User.Salt = hashSalt[1];
-        db.Users.Add(User);
-        await db.SaveChangesAsync();
-        return TypedResults.Created($"/Useritems/{User.Id}", User);
-    }
-
-    public static async Task<IResult> UpdateUser(int Id, User inputUser, GreenUDB db)
-    {
-        // Ask the team what needs to be changed
-        var User = await db.Users.FindAsync(Id);
-
-        if (User is null) return TypedResults.NotFound();
-
-        User.Firstname = inputUser.Firstname;
-
-        await db.SaveChangesAsync();
-
-        return TypedResults.NoContent();
-    }
-
-    public static async Task<IResult> DeleteUser(int id, GreenUDB db)
-    {
-        if (await db.Users.FindAsync(id) is User User)
-        {
-            db.Users.Remove(User);
-            await db.SaveChangesAsync();
-            return TypedResults.NoContent();
+            return Conflict(new { message = "This username already exists" });
         }
 
-        return TypedResults.NotFound();
+        string[] hashSalt = Authentification.Hasher(user.Password, null);
+        user.Password = hashSalt[0];
+        user.Salt = hashSalt[1];
+
+        _db.Users.Add(user);
+        await _db.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> UpdateUser(int id, User inputUser)
+    {
+        var user = await _db.Users.FindAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        user.Firstname = inputUser.Firstname;
+        await _db.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(int id)
+    {
+        var user = await _db.Users.FindAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        _db.Users.Remove(user);
+        await _db.SaveChangesAsync();
+
+        return NoContent();
     }
 }
