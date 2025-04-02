@@ -3,6 +3,16 @@ using System.Collections.Generic;
 
 namespace GreenUApi.Models;
 
+public enum GardenPrivacy{
+    Public,
+    Private
+}
+
+public enum GardenType{
+    Personnal,
+    Professionnal
+}
+
 public partial class Garden
 {
     public long Id { get; set; }
@@ -26,6 +36,10 @@ public partial class Garden
     public DateTime CreatedAt { get; set; }
 
     public virtual User Admin { get; set; } = null!;
+
+    public GardenPrivacy Policy { get; set; } = GardenPrivacy.Public;
+
+    public GardenType type { get; set; } = GardenType.Personnal;
 
     public virtual ICollection<Contributor> Contributors { get; set; } = new List<Contributor>();
 

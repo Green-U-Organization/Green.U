@@ -9,7 +9,7 @@ using GreenUApi.Models;
 
 namespace GreenUApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/garden")]
     [ApiController]
     public class GardenController : ControllerBase
     {
@@ -20,15 +20,7 @@ namespace GreenUApi.Controllers
             _context = context;
         }
 
-        // GET: api/Garden
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Garden>>> GetGardens()
-        {
-            return await _context.Gardens.ToListAsync();
-        }
-
-        // GET: api/Garden/5
-        [HttpGet("{id}")]
+        [HttpGet()]
         public async Task<ActionResult<Garden>> GetGarden(long id)
         {
             var garden = await _context.Gardens.FindAsync(id);
@@ -41,9 +33,25 @@ namespace GreenUApi.Controllers
             return garden;
         }
 
+        // GET: api/Garden/user
+        [HttpGet("/user")]
+        public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
+        {
+            var gardens = await _context.Gardens
+                                        .Where(g => g.AdminId == userId)
+                                        .ToListAsync();
+
+            if (gardens == null)
+            {
+                return NotFound();
+            }
+
+            return gardens;
+        }
+
         // PUT: api/Garden/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut()]
         public async Task<IActionResult> PutGarden(long id, Garden garden)
         {
             if (id != garden.Id)
@@ -74,17 +82,27 @@ namespace GreenUApi.Controllers
 
         // POST: api/Garden
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Garden
         [HttpPost]
-        public async Task<ActionResult<Garden>> PostGarden(Garden garden)
+        public async Task<ActionResult<Garden>> PostGarden([FromBody] Garden garden)
         {
+            if (garden == null)
+            {
+                return BadRequest("Invalid garden data.");
+            }
+
+            garden.CreatedAt = DateTime.UtcNow;
+            garden.UpdateAt = DateTime.UtcNow;
+
             _context.Gardens.Add(garden);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGarden", new { id = garden.Id }, garden);
+            return CreatedAtAction(nameof(GetGarden), new { id = garden.Id }, garden);
         }
 
+
         // DELETE: api/Garden/5
-        [HttpDelete("{id}")]
+        [HttpDelete()]
         public async Task<IActionResult> DeleteGarden(long id)
         {
             var garden = await _context.Gardens.FindAsync(id);
