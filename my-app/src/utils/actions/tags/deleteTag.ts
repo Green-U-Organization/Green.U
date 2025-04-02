@@ -22,7 +22,7 @@ export const deleteTag = async (user : TagType): Promise<TagType> => {
         return response.json();
 
     } catch (error) {
-        console.error("Error in deleteUser: ", error);
+        console.error("Error in deleteTag: ", error);
         throw error;
     }
 };

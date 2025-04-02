@@ -1,17 +1,11 @@
-type TagType = {
-    user_id?: number,
-    garden_id?: number
-}
-
-export const getTag = async (tag: TagType): Promise<TagType> => {
+export const getTagByGardenId = async (gardenId: number) => {
     
     try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + "/tags", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API}/tags/garden/${gardenId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify(tag)
+            }
         });
 
         if (!response.ok) {
@@ -21,7 +15,7 @@ export const getTag = async (tag: TagType): Promise<TagType> => {
         return response.json();
 
     } catch (error) {
-        console.error("Error in getTag: ", error);
+        console.error("Error in getTagByGardenId: ", error);
         throw error;
     }
 };

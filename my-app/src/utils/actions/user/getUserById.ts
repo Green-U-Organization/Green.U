@@ -1,16 +1,10 @@
-type UserType = {
-    user_id: number
-}
-
-export const getUserById = async (user: UserType): Promise<UserType> => {
-    
+export const getUserById = async (userId: number): Promise<any> => {
     try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + "/user", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/user/${userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
+            }
         });
 
         if (!response.ok) {
@@ -18,7 +12,6 @@ export const getUserById = async (user: UserType): Promise<UserType> => {
         }
 
         return response.json();
-      
     } catch (error) {
         console.error("Error in getUserById: ", error);
         throw error;
