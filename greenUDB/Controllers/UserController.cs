@@ -18,7 +18,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public async Task<ActionResult<User>> GetUser(long id)
     {
         var user = await _db.Users.FindAsync(id);
 
