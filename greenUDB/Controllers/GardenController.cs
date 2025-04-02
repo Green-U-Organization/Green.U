@@ -34,7 +34,7 @@ namespace GreenUApi.Controllers
         }
 
         // GET: api/Garden/user
-        [HttpGet("/user")]
+        [HttpGet("/userd")]
         public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
         {
             var gardens = await _context.Gardens
