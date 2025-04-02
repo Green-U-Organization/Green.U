@@ -28,7 +28,7 @@ namespace GreenUApi.Migrations
                     table.PrimaryKey("PK_PlantNursery", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateTable(
                 name: "User",
@@ -36,29 +36,29 @@ namespace GreenUApi.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Username = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Username = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Password = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Salt = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
+                    Salt = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Is_admin = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Firstname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Firstname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Lastname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Lastname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Email = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Postal_code = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Postal_code = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Country = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Country = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Gender = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Gender = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Birthday = table.Column<DateOnly>(type: "date", nullable: false),
-                    Profile_image = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Profile_image = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Bio = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Bio = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Level = table.Column<long>(type: "bigint", nullable: false),
                     Xp = table.Column<long>(type: "bigint", nullable: false),
@@ -69,7 +69,7 @@ namespace GreenUApi.Migrations
                     table.PrimaryKey("PRIMARY", x => x.id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateTable(
                 name: "Garden",
@@ -78,9 +78,9 @@ namespace GreenUApi.Migrations
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Admin_id = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Name = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Description = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Latitude = table.Column<long>(type: "bigint", nullable: false),
                     Longitude = table.Column<long>(type: "bigint", nullable: false),
@@ -101,7 +101,7 @@ namespace GreenUApi.Migrations
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateTable(
                 name: "Contributor",
@@ -128,7 +128,7 @@ namespace GreenUApi.Migrations
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateTable(
                 name: "Follower",
@@ -159,7 +159,7 @@ namespace GreenUApi.Migrations
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateTable(
                 name: "Parcel",
@@ -183,7 +183,7 @@ namespace GreenUApi.Migrations
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateTable(
                 name: "Tags_interest",
@@ -192,7 +192,7 @@ namespace GreenUApi.Migrations
                     id = table.Column<long>(type: "bigint", nullable: false),
                     User_id = table.Column<long>(type: "bigint", nullable: true),
                     Garden_id = table.Column<long>(type: "bigint", nullable: true),
-                    Hashtag = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Hashtag = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -210,7 +210,7 @@ namespace GreenUApi.Migrations
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateTable(
                 name: "Line",
@@ -231,7 +231,7 @@ namespace GreenUApi.Migrations
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateTable(
                 name: "Crops",
@@ -240,9 +240,9 @@ namespace GreenUApi.Migrations
                     id = table.Column<long>(type: "bigint", nullable: false),
                     Line_id = table.Column<long>(type: "bigint", nullable: true),
                     PlantNurseryId = table.Column<long>(type: "bigint", nullable: true),
-                    Vegetable = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Vegetable = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Variety = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
+                    Variety = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Icon = table.Column<long>(type: "bigint", nullable: true),
                     Sowing = table.Column<DateOnly>(type: "date", nullable: true),
@@ -260,7 +260,7 @@ namespace GreenUApi.Migrations
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateTable(
                 name: "Logs",
@@ -273,11 +273,11 @@ namespace GreenUApi.Migrations
                     Line_id = table.Column<long>(type: "bigint", nullable: true),
                     Crop_id = table.Column<long>(type: "bigint", nullable: true),
                     PlantNurseryId = table.Column<long>(type: "bigint", nullable: true),
-                    Action = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
+                    Action = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Comment = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
+                    Comment = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Status = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Status = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Created_at = table.Column<long>(type: "bigint", nullable: true)
                 },
@@ -311,7 +311,7 @@ namespace GreenUApi.Migrations
                         principalColumn: "id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
-                .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
+                .Annotation("Relational:Collation", "utf8mb4_unicode_ci");
 
             migrationBuilder.CreateIndex(
                 name: "fk_Contributor_Garden_id",
