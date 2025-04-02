@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenUApi.Migrations
 {
     [DbContext(typeof(GreenUDB))]
-    [Migration("20250402075509_verificationModels")]
-    partial class verificationModels
+    [Migration("20250402084330_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,16 +167,23 @@ namespace GreenUApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Privacy")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("privacy");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("type");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("Width")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex(new[] { "AuthorId" }, "fk_Garden_Admin_id");
 
@@ -481,13 +488,9 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Garden", b =>
                 {
-                    b.HasOne("GreenUApi.Models.User", "Admin")
+                    b.HasOne("GreenUApi.Models.User", null)
                         .WithMany("Gardens")
-                        .HasForeignKey("AuthorId")
-                        .IsRequired()
-                        .HasConstraintName("fk_Garden_Admin_id");
-
-                    b.Navigation("Admin");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("GreenUApi.Models.Line", b =>

@@ -164,16 +164,23 @@ namespace GreenUApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Privacy")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("privacy");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("type");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("Width")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex(new[] { "AuthorId" }, "fk_Garden_Admin_id");
 
@@ -478,13 +485,9 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Garden", b =>
                 {
-                    b.HasOne("GreenUApi.Models.User", "Admin")
+                    b.HasOne("GreenUApi.Models.User", null)
                         .WithMany("Gardens")
-                        .HasForeignKey("AuthorId")
-                        .IsRequired()
-                        .HasConstraintName("fk_Garden_Admin_id");
-
-                    b.Navigation("Admin");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("GreenUApi.Models.Line", b =>

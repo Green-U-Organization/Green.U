@@ -145,11 +145,9 @@ public partial class GreenUDB : DbContext
                 .HasColumnName("Created_at");
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.Name).HasColumnType("text");
+            entity.Property(e => e.Privacy).HasColumnName("privacy");
+            entity.Property(e => e.Type).HasColumnName("type");
 
-            entity.HasOne(d => d.Admin).WithMany(p => p.Gardens)
-                .HasForeignKey(d => d.AuthorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_Garden_Admin_id");
         });
 
         modelBuilder.Entity<Line>(entity =>

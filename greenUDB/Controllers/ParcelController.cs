@@ -9,7 +9,7 @@ using GreenUApi.Models;
 
 namespace GreenUApi.Controllers
 {
-    [Route("/garden/[controller]")]
+    [Route("garden/parcel")]
     [ApiController]
     public class ParcelController : ControllerBase
     {
@@ -21,10 +21,11 @@ namespace GreenUApi.Controllers
         }
 
         // GET: api/Parcel/5
-        [HttpGet()]
-        public async Task<ActionResult<Parcel>> GetParcel(long id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<Parcel>>> GetParcel(long id)
         {
-            var parcel = await _context.Parcels.FindAsync(id);
+            var parcel = await _context.Parcels.Where(g => g.GardenId == id)
+                                        .ToListAsync();;
 
             if (parcel == null)
             {
@@ -36,7 +37,7 @@ namespace GreenUApi.Controllers
 
         // PUT: api/Parcel/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut()]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> PutParcel(long id, Parcel parcel)
         {
             if (id != parcel.Id)
@@ -91,7 +92,7 @@ namespace GreenUApi.Controllers
         }
 
         // DELETE: api/Parcel/5
-        [HttpDelete()]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParcel(long id)
         {
             var parcel = await _context.Parcels.FindAsync(id);
