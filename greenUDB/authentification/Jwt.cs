@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using DotNetEnv;
-using GreenUApi.model;
+using GreenUApi.Models;
 
 namespace Token;
 public class Jwt
@@ -12,7 +12,7 @@ public class Jwt
     {
         Env.Load();
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Convert.FromBase64String(Environment.GetEnvironmentVariable("SECRET_JWT"));
+        var key = Convert.FromBase64String($"secret_jwt = {Environment.GetEnvironmentVariable("SECRET_JWT")}");
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
