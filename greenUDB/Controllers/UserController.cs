@@ -35,7 +35,7 @@ public class UserModification
     public string?   Bio { get; set; }
 }
 
-[Route("api/user")]
+[Route("user")]
 [ApiController]
 public class UserController : ControllerBase
 {
