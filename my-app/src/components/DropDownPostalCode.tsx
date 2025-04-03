@@ -14,19 +14,17 @@ interface DropDownProps {
 const DropDownPostalCode: React.FC<DropDownProps> = ({ value, onChange, error, setIsValidPostalCode }) => {
   const [search, setSearch] = useState("");
   const [isValidPostalCodeLocal, setIsValidPostalCodeLocal] = useState(true);
-  const [touched, setTouched] = useState(false); // Pour savoir si l'utilisateur a modifié le champ
+  const [touched, setTouched] = useState(false);
   const { translations } = useLanguage();
 
-  // Vérification si l'entrée est valide
   const validatePostalCode = (inputValue: string) => {
     if (!inputValue) {
       setIsValidPostalCodeLocal(true);
-      setIsValidPostalCode(true); // Met à jour l'état dans le composant parent
+      setIsValidPostalCode(true);
       return;
     }
 
-    // Vérifier le format et si la combinaison code-localité existe
-    const regex = /^\d{4}-[a-zA-ZÀ-ÿ\s]+$/; // Format "code-localité"
+    const regex = /^\d{4}-[a-zA-ZÀ-ÿ\s]+$/;
     if (regex.test(inputValue)) {
       const [postalCode, city] = inputValue.split("-");
       const isValid = postalCodes.some(
@@ -41,11 +39,10 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({ value, onChange, error, s
     }
   };
 
-  // Filtrage des options en fonction de la recherche
-  const filteredOptions = useMemo(() => 
+  const filteredOptions = useMemo(() =>
     postalCodes.filter(({ code, city }) =>
       code.startsWith(search) || city.toLowerCase().includes(search.toLowerCase())
-    ),[search]
+    ), [search]
   );
 
   return (
@@ -56,12 +53,13 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({ value, onChange, error, s
       <input
         id="postal-search"
         type="text"
+        name="postalCode" // Ajoutez cet attribut pour inclure le champ dans FormData
         list="postal-options"
         value={value}
         onChange={(e) => {
-          onChange(e); // Met à jour la valeur de l'input
-          setTouched(true); // L'utilisateur a interagi
-          validatePostalCode(e.target.value); // Valide la donnée
+          onChange(e);
+          setTouched(true);
+          validatePostalCode(e.target.value);
         }}
         onInput={(e) => setSearch(e.currentTarget.value)}
         placeholder={translations.enterpostalcode}
