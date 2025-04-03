@@ -21,7 +21,7 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public string PostalCode { get; set; } = null!;
+    public string? PostalCode { get; set; }
 
     public string Country { get; set; } = null!;
 
@@ -29,9 +29,9 @@ public partial class User
 
     public DateOnly Birthday { get; set; }
 
-    public string ProfileImage { get; set; } = null!;
+    public string? ProfileImage { get; set; }
 
-    public string Bio { get; set; } = null!;
+    public string? Bio { get; set; }
 
     public long Level { get; set; }
 
