@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenUApi.Migrations
 {
     [DbContext(typeof(GreenUDB))]
-    [Migration("20250402140401_NewMigration")]
+    [Migration("20250403122102_NewMigration")]
     partial class NewMigration
     {
         /// <inheritdoc />
@@ -364,7 +364,6 @@ namespace GreenUApi.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Bio")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateOnly>("Birthday")
@@ -406,12 +405,10 @@ namespace GreenUApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PostalCode")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Postal_code");
 
                     b.Property<string>("ProfileImage")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Profile_image");
 
