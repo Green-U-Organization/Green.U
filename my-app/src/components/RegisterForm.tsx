@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useState, useRef, useEffect, ChangeEvent, FormEvent} from "react";
+import { useState, useRef, useEffect, ChangeEvent, FormEvent } from "react";
 import Card from "@/components/UI/Card";
 import TextInput from "@/components/UI/TextInput";
 import Button from "@/components/UI/Button";
@@ -13,425 +13,457 @@ import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Checkbox from "@/components/UI/Checkbox";
 import HashtagInput from "@/components/HashtagInput";
 import Link from "next/link";
+import { LogIn } from "lucide-react";
 
 type Value = CalendarProps["value"];
 
+type FormData = {
+	login: string;
+	password: string;
+	passwordVerify: string;
+	firstname: string;
+	lastname: string;
+	email: string;
+	postalCode: string;
+	gender: string;
+	birthDate: string;
+	gardenerLevel: string;
+	interests: string[];
+}
+
+type ErrorForm = {
+	errorEmptyLogin: boolean,
+	errorEmptyEmail: boolean,
+	errorEmptyFirstname: boolean,
+	errorEmptyGardenerLevel: boolean,
+	errorEmptyInterests: boolean,
+	errorEmptyLastname: boolean,
+	errorEmptyPassword: boolean,
+	errorEmptyPasswordVerify: boolean,
+	errorEmptyPostalCode: boolean,
+	errorMatchingPassword: boolean,
+	errorNotCheckedToU: boolean,
+	errorEmptyBirthDate: boolean,
+	errorSpecialCharPassword: boolean,
+}
+
 const RegisterForm = () => {
 
-//#region 	VARIABLES
-	const {translations} = useLanguage();
+	//#region 	VARIABLES
+	const { translations } = useLanguage();
+	const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+	const calendarRef = useRef<HTMLDivElement>(null);
 
 	//Les niveaux possible du jardinier	
 	const gardenerLevels = [
-		translations.levelbeginner, 
-		translations.levelintermediate, 
-		translations.leveladvanced, 
+		translations.levelbeginner,
+		translations.levelintermediate,
+		translations.leveladvanced,
 		translations.levelexpert
 	];
 
-	const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"	
-	const [login, setLogin] = useState("");
-	const [errorEmptyLogin, setErrorEmptyLogin] = useState<boolean>(false);
-	const [password, setPassword] = useState("");
-	const [errorEmptyPassword, setErrorEmptyPassword] = useState<boolean>(false);
-	const [passwordVerify, setPasswordVerify] = useState("");
-	const [showPassword, setShowPassword] = useState(false);
-    const [showPasswordVerify, setShowPasswordVerify] = useState(false);
-	const [errorEmptyPasswordVerify, setErrorEmptyPasswordVerify] = useState<boolean>(false);
-	const [firstname, setFirstname] = useState("");
-	const [errorEmptyFirstname, setErrorEmptyFirstname] = useState<boolean>(false);
-	const [lastname, setLastname] = useState("");
-	const [errorEmptyLastname, setErrorEmptyLastname] =	useState<boolean>(false);
-	const [email, setEmail] = useState("");
-	const [errorEmptyEmail, setEmptyErrorEmail] = useState<boolean>(false);
-	const [postalCode, setPostalCode] = useState("");
+	//	https://blog.logrocket.com/using-react-usestate-object/
+	const [formData, setFormData] = useState({
+		login: "",
+		password: "",
+		passwordVerify: "",
+		firstname: "",
+		lastname: "",
+		email: "",
+		postalCode: "",
+		gender: "",
+		birthDate: "",
+		gardenerLevel: "",
+		interests: [],
+	})
+
+	const [errorForm, setErrorForm] = useState({
+		errorEmptyLogin: false,
+		errorEmptyEmail: false,
+		errorEmptyFirstname: false,
+		errorEmptyBirthDate: false,
+		errorEmptyGardenerLevel: false,
+		errorEmptyInterests: false,
+		errorEmptyLastname: false,
+		errorEmptyPassword: false,
+		errorEmptyPasswordVerify: false,
+		errorEmptyPostalCode: false,
+		errorMatchingPassword: false,
+		errorNotCheckedToU: false,
+		errorSpecialCharPassword: false,
+	})
+
 	const [isValidPostalCode, setIsValidPostalCode] = useState(true);
-	const [errorEmptyPostalCode, setErrorEmptyPostalCode] =	useState<boolean>(false);
-	const [gender, setGender] = useState("M"); // ajouter bouton radio pour définir sexe
-	const [birthDate, setBirthDate] = useState(new Date());
+	const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"	
+	const [showPassword, setShowPassword] = useState(false);
+	const [showPasswordVerify, setShowPasswordVerify] = useState(false);
 	const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false)
-	const [errorSpecialCharPassword, setErrorSpecialCharPassword] = useState<boolean>(false);
-	const [errorMatchingPassword, setErrorMatchingPassword] = useState<boolean>(false);
-	const [gardenerLevel, setGardenerLevel] = useState<string>('');
-	const [errorEmptyGardenerLevel, setErrorEmptyGardenerLevel] = useState<boolean>(false);
 	const [isChecked, setIsChecked] = useState(false)
-   	const [isCheckedToU, setIsCheckedToU] = useState(false);
-	const [errorNotCheckedToU, setErrorNotCheckedToU] = useState(false);
+	const [isCheckedToU, setIsCheckedToU] = useState(false);
+
+
+	//#endregion
+
+	//#region	VALIDITY FUCTIONS
+	const step1Validation = () => {
+
+		// setFormData(prevFormData => ({...prevFormData , 
+		// 	login : formData.login
+		// }))
+
+		const hasEmptyFields =
+			!formData.login ||
+			!formData.password ||
+			!formData.passwordVerify ||
+			!formData.firstname ||
+			!formData.lastname ||
+			!formData.email ||
+			!formData.postalCode ||
+			!formData.birthDate;
+
+			console.log("emptyfields? ",hasEmptyFields)
 	
-	const [interests, setInterests] = useState<string[]>([]); //Pour stocker les hashtags
-	const [errorEmptyInterests, setErrorEmptyInterests] = useState<boolean>(false);
+		const passwordValid =
+			formData.password.length > 8 &&
+			specialCharRegex.test(formData.password);
 
-//#endregion
+		const passwordsMatch = formData.password === formData.passwordVerify;
 
-//#region	VALIDITY FUCTIONS
+		const postalCodeValid = isValidPostalCode;
 
-	//Set si le password est visible ou pas
-	const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+		return !hasEmptyFields && passwordValid && passwordsMatch && postalCodeValid;
+	};
 
-	//Set si le password de confirmation est visible ou pas
-    const togglePasswordVerifyVisibility = () => {
-        setShowPasswordVerify(!showPasswordVerify);
-    };
+	const step2Validation = () => {
+		console.log("check validation step 2")
+		const isValid = formData.gardenerLevel && formData.interests.length > 0 && isCheckedToU;
 
-    // Fonction callback pour mettre à jour l'état des hashtags
-    const handleInterestsHashtagsChange = (newHashtags: string[]) => {
-        setInterests(newHashtags);
-    };
-    
-	//Fonction de vérification de la validité des champs obligatoires avant de pouvoir changer de page
-	const validateStep = () => {
-		if (step === 1) {
-			console.log("checking step 1 validation")
-			checkPassword(password);
-			checkPasswordVerify(password, passwordVerify);
-			
-			const isValid = login && password && passwordVerify && firstname && lastname && email && postalCode && birthDate &&
-                !errorSpecialCharPassword && !errorMatchingPassword && isValidPostalCode;
+		setErrorForm(prevErrorForm => ({
+			...prevErrorForm,
+			errorEmptyGardenerLevel: !formData.gardenerLevel,
+			errorEmptyInterests: !formData.interests.length,
+			errorNotCheckedToU: !isCheckedToU,
+		}))
 
-			setErrorEmptyLogin(!login);
-			setErrorEmptyPassword(!password);
-			setErrorEmptyPasswordVerify(!passwordVerify);
-			setErrorEmptyFirstname(!firstname);
-			setErrorEmptyLastname(!lastname);
-			setEmptyErrorEmail(!email);
-			setErrorEmptyPostalCode(!postalCode);
+		console.log("validation ok")
+		return isValid;
+	}
 
-			console.log("validation ok")
-			return isValid;
-		} else if (step === 2) {
+	const checkPassword = (password: string) => {
 
-			console.log("check validation step 2")
-			const isValid = gardenerLevel && interests.length > 0 && isCheckedToU;
-	
-			setErrorEmptyGardenerLevel(!gardenerLevel);
-			setErrorEmptyInterests(!interests.length);
-			setErrorNotCheckedToU(!isCheckedToU);
+		if (password.length <= 8) {
+			setErrorForm(prevErrorForm => ({ ...prevErrorForm, errorSpecialCharPassword: true }))
 
-			console.log("validation ok")
-			return isValid;
+			return;
 		}
-		return false;
+		setErrorForm(prevErrorForm => ({ ...prevErrorForm, errorSpecialCharPassword: (!specialCharRegex.test(password)) }))
+	};
+
+	const checkPasswordVerify = (password: string, passwordVerify: string) => {
+		setErrorForm(prevErrorForm => ({ ...prevErrorForm, errorMatchingPassword: (password != passwordVerify) }))
 	};
 
 	//Réinitialisation des erreurs quand on arrive sur la page 2
 	useEffect(() => {
+		console.log("##", errorForm.errorEmptyInterests)
+		console.log("garden", errorForm.errorEmptyGardenerLevel)
 
-			console.log("##", errorEmptyInterests)
-			console.log("garden", errorEmptyGardenerLevel)
-		
-	}, [errorEmptyGardenerLevel, errorEmptyInterests, errorNotCheckedToU, step]);
+	}, [errorForm.errorEmptyGardenerLevel, errorForm.errorEmptyInterests, errorForm.errorNotCheckedToU, step]);
+	//#endregion
 
-	//Fonction permettant d'avancer dans les pages
-	const handleNextStep = () => {
-		if (validateStep()) {
-			if(step === 1) {
-				setErrorEmptyInterests(false);
-				setErrorEmptyGardenerLevel(false);
-				setErrorNotCheckedToU(false);
+	//#region NAVIGATION FUNCTION
+	// Fonction permettant d'avancer dans les pages
+	const handleNextStep = (e: React.FormEvent) => {
+		e.preventDefault();
+
+		if (step === 1) {
+			const isValid = step1Validation();
+			console.log('Validation step 1 result:', isValid);
+
+			if (!isValid) {
+				setErrorForm(prev => ({
+					...prev,
+					errorEmptyLogin: !formData.login,
+					errorEmptyPassword: !formData.password,
+					errorEmptyPasswordVerify: !formData.passwordVerify,
+					errorEmptyFirstname: !formData.firstname,
+					errorEmptyLastname: !formData.lastname,
+					errorEmptyEmail: !formData.email,
+					errorEmptyPostalCode: !formData.postalCode,
+					errorEmptyBirthDate: !formData.birthDate
+				}));
+				return;
 			}
-			setStep((prevStep) => prevStep + 1);
 		}
-	}
 
-	//Fonction permettant de reculer dans les pages
+		setStep(prev => prev + 1);
+	};
+
+	// Fonction permettant de reculer dans les pages
 	const handlePrevStep = () => {
-		setStep((prevStep) => prevStep - 1);
+		setStep(prev => prev - 1);
 	}
+	//#endregion
 
-	const calendarRef = useRef<HTMLDivElement>(null);
+	// Fonction callback pour mettre à jour l'état des hashtags
+	// const handleInterestsHashtagsChange = (newHashtags: string[]) => {
 
-	//Gérer le clic en dehors du calendrier
+	// 	setFormData
+	// .interests(newHashtags);
+	// };
+
+
+	//#region PASSWORD VISIBILITY
+	//Set si le password est visible ou pas
+	const togglePasswordVisibility = () => {
+		setShowPassword(!showPassword);
+	};
+
+	//Set si le password de confirmation est visible ou pas
+	const togglePasswordVerifyVisibility = () => {
+		setShowPasswordVerify(!showPasswordVerify);
+	};
+
+	//#endregion
+
+	//#region  Gérer le clic en dehors du calendrier
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if(calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
+			if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
 				setBirthDateDisplay(false)
 			}
 		}
-
 		if (birthDateDisplay) {
 			document.addEventListener("mousedown", handleClickOutside)
 		} else {
-			document.removeEventListener("mousedown",handleClickOutside)
+			document.removeEventListener("mousedown", handleClickOutside)
 		}
 
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside)
 		}
 	}, [birthDateDisplay])
-
 	const handleClick = () => {
 		setBirthDateDisplay((prev) => !prev)
 	}
 
-	const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
-
-	//Fonction générique pour setter les changements dans les TextInput
-	const handleChange = (setter: React.Dispatch<React.SetStateAction<string>>) => 
-		(e: ChangeEvent<HTMLInputElement>) => setter(e.target.value);
+	//#endregion
 
 	const handleDateChange = (value: Value) => {
 		if (value instanceof Date) {
-			setBirthDate(value);
+			setFormData(prevFormData => ({ ...prevFormData, birthDate: value.toString() }))
 			setBirthDateDisplay(false);
 		}
-	};	  
-
-	const checkPassword = (password: string) => {
-		//console.log("checking password...");
-		if (password.length <= 8) {
-			setErrorSpecialCharPassword(true);
-			//console.log("password too short");
-			return;
-		}
-		setErrorSpecialCharPassword(!specialCharRegex.test(password));
 	};
 
-	const checkPasswordVerify = (password: string, passwordVerify: string) => {
-		setErrorMatchingPassword(password != passwordVerify);
-	};
+	const handleChange = (setter: React.Dispatch<React.SetStateAction<string>>) =>
+		(e: ChangeEvent<HTMLInputElement>) => setter(e.target.value);
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		
-			setErrorEmptyLogin(!login);
-			setErrorEmptyPassword(!password);
-			setErrorEmptyPasswordVerify(!passwordVerify);
-			setErrorEmptyFirstname(!firstname);
-			setErrorEmptyLastname(!lastname);
-			setEmptyErrorEmail(!email);
-			setErrorEmptyPostalCode(!postalCode);
-			//setErrorEmptyBirthDate(!birthDate);
-
-			checkPassword(password);
-			checkPasswordVerify(password, passwordVerify);
-
-			console.log("submit???")
-			
-			setErrorEmptyGardenerLevel(!gardenerLevel);
-			setErrorEmptyInterests(!interests.length);
-			setErrorNotCheckedToU(!isCheckedToU);
-
-			if (!gardenerLevel || !interests.length || !isCheckedToU) {
-				return //Empêche la soumission si erreur
-			} else 
-
-// Fetchinf data
-				const bodyRequest = {
-					Username: login,
-					Password: password,
-					Firstname: firstname,
-					Lastname: lastname,
-					Email: email,
-					Postal_code: postalCode,
-					Country: "Belgium",
-					Sexe: gender,
-					Birthdate: "2025-03-24"
-				}
-				console.log(bodyRequest)
-				fetch (process.env.NEXT_PUBLIC_API + "/register", {
-					method : "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body : JSON.stringify(bodyRequest)
-				})
-			};
+		if (!formData.gardenerLevel || !formData.interests.length || !isCheckedToU) {
+			return 
+		} else {
+			console.log("FORM OK");
+			const bodyRequest = {
+				"Username": formData.login,
+				"Password": formData.password,
+				"Firstname": formData.firstname,
+				"Lastname": formData.lastname,
+				"Email": formData.email,
+				"Postal_code": formData.postalCode,
+				"Country": "Belgium",
+				"Sexe": formData.gender,
+				"Birthdate": formData.birthDate
+			}
+			fetch(process.env.NEXT_PUBLIC_API + "/Users", {
+				method: "GET",
+				body: JSON.stringify(bodyRequest)
+			})
+		};
 	};
+	//#endregion
 
-//#endregion
+	return (
+		<Card className={"max-w-screen h-full px-8 pt-5"}>
+			<h1 className="text-4xl mb-5">{translations.signup}: </h1>
 
-return (
-    <Card className={"max-w-screen h-full px-8 pt-5"}>
-				<h1 className="text-4xl mb-5">{translations.signup}: </h1>
+			<form
+				onSubmit={handleNextStep}
+				className="flex flex-col"
+				style={{ display: step === 1 ? "block" : "none" }}
+			>
 
-				<form onSubmit={handleSubmit} className="flex flex-col">
-					{step === 1 && (
-						<>
-						<TextInput
-							type="text"
-							label={translations.username}
-							value={login}
-							name="login"
-							placeholder={translations.enterusername}
-							error={errorEmptyLogin}
-							onChange={handleChange(setLogin)}
-						/>
+				<TextInput
+					type="text"
+					label={translations.username}
+					name="login"
+					placeholder={translations.enterusername}
+					error={errorForm.errorEmptyLogin}
+				/>
 
-						<div className="relative">
-							<TextInput
-								type={showPassword ? "text" : "password"}
-								label={translations.password}
-								value={password}
-								name="password"
-								placeholder={translations.enterpassword}
-								error={errorEmptyPassword}
-								errorPassChar={errorSpecialCharPassword}
-								onChange={handleChange(setPassword)}
-							/>
+				<div className="relative">
+					<TextInput
+						type={showPassword ? "text" : "password"}
+						label={translations.password}
+						name="password"
+						placeholder={translations.enterpassword}
+						error={errorForm.errorEmptyPassword}
+						errorPassChar={errorForm.errorSpecialCharPassword}
+					/>
 
-							<button
-								type="button"
-								onClick={togglePasswordVisibility}
-								className="absolute right-2 top-8.5 text-gray-500"
-							>
-								{showPassword ? (
-									<i className="fa fa-eye-slash"></i> // Icône "œil barré"
-								) : (
-									<i className="fa fa-eye"></i> // Icône "œil"
-								)}
-							</button>
-						</div>
-
-						<div className="relative">
-
-							<TextInput
-								type={showPasswordVerify ? "text" : "password"}
-								label={translations.pwdverif}
-								value={passwordVerify}
-								name="passwordVerify"
-								placeholder={translations.enterpasswordagain}
-								error={errorEmptyPasswordVerify}
-								errorPassMatch={errorMatchingPassword}
-								onChange={handleChange(setPasswordVerify)}
-							/>
-
-							<button
-								type="button"
-								onClick={togglePasswordVerifyVisibility}
-								className="absolute right-2 top-8.5 text-gray-500"
-							>
-								{showPasswordVerify ? (
-									<i className="fa fa-eye-slash"></i> // Icône "œil barré"
-								) : (
-									<i className="fa fa-eye"></i> // Icône "œil"
-								)}
-							</button>
-						</div>
-						
-						<p onClick={handleClick}>{translations.birthdate} </p>
-						<p onClick={handleClick} className="bg-bginput pl-3 mb-5">{birthDate.toDateString()}</p>
-
-						{birthDateDisplay && (
-							<div ref={calendarRef}>
-								<Calendar onChange={handleDateChange} value={birthDate} />
-							</div>
+					<button
+						type="button"
+						onClick={togglePasswordVisibility}
+						className="absolute right-2 top-8.5 text-gray-500"
+					>
+						{showPassword ? (
+							<i className="fa fa-eye-slash"></i> // Icône "œil barré"
+						) : (
+							<i className="fa fa-eye"></i> // Icône "œil"
 						)}
+					</button>
+				</div>
 
-						<TextInput
-							type="text"
-							label={translations.firstname}
-							value={firstname}
-							name="firstname"
-							placeholder={translations.enterfirstname}
-							error={errorEmptyFirstname}
-							onChange={handleChange(setFirstname)}
+				<div className="relative">
+					<TextInput
+						type={showPasswordVerify ? "text" : "password"}
+						label={translations.pwdverif}
+						name="passwordVerify"
+						placeholder={translations.enterpasswordagain}
+						error={errorForm.errorEmptyPasswordVerify}
+						errorPassMatch={errorForm.errorMatchingPassword}
+					/>
+
+					<button
+						type="button"
+						onClick={togglePasswordVerifyVisibility}
+						className="absolute right-2 top-8.5 text-gray-500"
+					>
+						{showPasswordVerify ? (
+							<i className="fa fa-eye-slash"></i> // Icône "œil barré"
+						) : (
+							<i className="fa fa-eye"></i> // Icône "œil"
+						)}
+					</button>
+				</div>
+
+				<p onClick={handleClick}>{translations.birthdate} </p>
+				<p onClick={handleClick} className="bg-bginput pl-3 mb-5">{formData.birthDate.toString()}</p>
+
+				{birthDateDisplay && (
+					<div ref={calendarRef}>
+						<Calendar
+							onChange={handleDateChange}
+							value={formData.birthDate ? new Date(formData.birthDate) : new Date()}
 						/>
+					</div>
+				)}
+				{errorForm.errorEmptyBirthDate && (
+					<p className="text-txterror">{translations.errorEmptyInput}</p>
+				)}
 
-						<TextInput
-							type="text"
-							label={translations.lastname}
-							value={lastname}
-							name="lastname"
-							placeholder={translations.enterlastname}
-							error={errorEmptyLastname}
-							onChange={handleChange(setLastname)}
-						/>
+				<TextInput
+					type="text"
+					label={translations.firstname}
+					name="firstname"
+					placeholder={translations.enterfirstname}
+					error={errorForm.errorEmptyFirstname}
+				/>
+				<TextInput
+					type="text"
+					label={translations.lastname}
+					name="lastname"
+					placeholder={translations.enterlastname}
+					error={errorForm.errorEmptyLastname}
+				/>
+				<p>{translations.gender} </p>
+				<div className="flex items-center gap-4">
+					<Radio id="M" name="gender" value="M" checked={formData.gender === "M"} onChange={(value) => setFormData(prevFormData => ({ ...prevFormData, gender: value }))} />
+					<Radio id="F" name="gender" value="F" checked={formData.gender === "F"} onChange={(value) => setFormData(prevFormData => ({ ...prevFormData, gender: value }))} />
+					<Radio id="X" name="gender" value="X" checked={formData.gender === "X"} onChange={(value) => setFormData(prevFormData => ({ ...prevFormData, gender: value }))} />
+				</div>
+				<TextInput
+					type="email"
+					label={translations.email}
+					name="email"
+					placeholder={translations.enteremail}
+					error={errorForm.errorEmptyEmail}
+				/>
+				<DropDownPostalCode
+					label={translations.postalcode}
+					value={formData.postalCode}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+						setFormData(prev => ({ ...prev, postalCode: e.target.value }));
+					}}
+					error={errorForm.errorEmptyPostalCode}
+					setIsValidPostalCode={setIsValidPostalCode}
+				/>
+				<Button type="submit">
+					{translations.next}
+				</Button>
+			</form>
 
-						<p>{translations.gender} </p>
-						<div className="flex items-center gap-4">
-							<Radio id="M" name="gender" value="M" checked={gender === "M"} onChange={() => setGender("M")}/>
-							<Radio id="F" name="gender" value="F" checked={gender === "F"} onChange={() => setGender("F")}/>
-							<Radio id="X" name="gender" value="X" checked={gender === "X"} onChange={() => setGender("X")}/>
-						</div>
-											
-						<TextInput
-							type="email"
-							label={translations.email}
-							value={email}
-							name="email"
-							placeholder={translations.enteremail}
-							error={errorEmptyEmail}
-							onChange={handleChange(setEmail)}
-						/>
 
-						<DropDownPostalCode
-							label={translations.postalcode}
-							value={postalCode}
-							onChange={handleChange(setPostalCode)}
-							error={errorEmptyPostalCode}
-							setIsValidPostalCode={setIsValidPostalCode}
-						/>
-					</>
-					)}
+			<form
+				onSubmit={handleSubmit}
+				className="flex flex-col"
+				style={{ display: step === 2 ? "block" : "none" }}
+			>
 
-					{step === 2 && (
-					<>
-			            {/* Vos intérêts */}	
-						<HashtagInput 
+
+				{/* Vos intérêts */}
+				{/* <HashtagInput
 							label={translations.yourinterests}
 							name="interests"
 							placeHolder={translations.addahashtag}
 							onHashtagsChange={handleInterestsHashtagsChange}
-							error={errorEmptyInterests}
-						/>
+							error={errorForm.errorEmptyInterests}
+						/> */}
 
-						{/* Affichage des hashtags pour vérifier 
+				{/* Affichage des hashtags pour vérifier 
 						<p>Hashtags sélectionnés : {interests.join(", ")}</p>
 						*/}
-						
-						{/* Niveau du jardinier */}
-						<DropDown
+
+				{/* Niveau du jardinier */}
+				{/* <DropDown
 							label={translations.yourlevel}
 							placeholder={translations.enteryourlevel}
 							options={gardenerLevels}
-							selectedValue={gardenerLevel}
+							selectedValue={formData.gardenerLevel}
 							setSelectedValue={setGardenerLevel}
-							error={errorEmptyGardenerLevel}
-						/>
+							error={errorForm.errorEmptyGardenerLevel}
+						/> */}
 
-						{/* Newsletter & Condition Générale d'Utilisation */}
-						<div className="flex items-start mb-2">
-							<Checkbox checked={isChecked} onChange={setIsChecked} />
-							<p className="ml-2">{translations.newsletter}</p>
-						</div>
-						<div className="flex items-start mb-0">
-							<Checkbox checked={isCheckedToU} onChange={setIsCheckedToU}/>
-							<p className="ml-2">{translations.agree}
-								<Link href="/cgu" legacyBehavior className="text-blue-500 underline">
-									<a target="_blank" className="text-blue-500 underline">{translations.cgu}</a>
-								</Link>
-							</p>
-						</div>
-						{errorNotCheckedToU && <p className="text-txterror">{translations.errorNotCheckedToU}</p>}
-					</>
-					)}
 
-					<div className="flex justify-center pb-5">
-						{step === 2 && (
-							<Button type="action" handleAction={handlePrevStep}>
-								{translations.previous}
-							</Button>
-						)}
+				{/* Newsletter & Condition Générale d'Utilisation */}
+				<div className="flex items-start mb-2">
+					<Checkbox checked={isChecked} onChange={setIsChecked} />
+					<p className="ml-2">{translations.newsletter}</p>
+				</div>
+				<div className="flex items-start mb-0">
+					<Checkbox checked={isCheckedToU} onChange={setIsCheckedToU} />
+					<p className="ml-2">{translations.agree}
+						<Link href="/cgu" legacyBehavior className="text-blue-500 underline">
+							<a target="_blank" className="text-blue-500 underline">{translations.cgu}</a>
+						</Link>
+					</p>
+				</div>
+				{errorForm.errorNotCheckedToU && <p className="text-txterror">{translations.errorNotCheckedToU}</p>}
+				<div className="flex justify-center pb-5">
 
-						{step === 1 ? (
-							<Button type="action" handleAction={handleNextStep}>
-								{translations.next}
-							</Button>
-						) : (
-							<Button type="submit" handleSubmit={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>)}>
-								{translations.sign}
-							</Button>
-						)}
-						{/* <Button type="submit" handleSubmit={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>)}>
-							{translations.sign}
-						</Button> */}
-					</div>
+					<Button type="action" handleAction={handlePrevStep}>
+						{translations.previous}
+					</Button>
 
-				</form>
-			</Card>
-)
+					<Button type="submit" handleSubmit={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>)}>
+						{translations.sign}
+					</Button>
+
+				</div>
+			</form>
+		</Card >
+	)
 }
 
 export default RegisterForm
