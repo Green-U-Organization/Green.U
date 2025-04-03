@@ -63,7 +63,7 @@ const RegisterForm = () => {
 	];
 
 	//	https://blog.logrocket.com/using-react-usestate-object/
-	const [formData, setFormData] = useState({
+	const [formDataRegister, setFormDataRegister] = useState({
 		login: "",
 		password: "",
 		passwordVerify: "",
@@ -112,39 +112,42 @@ const RegisterForm = () => {
 		// }))
 
 		const hasEmptyFields =
-			!formData.login ||
-			!formData.password ||
-			!formData.passwordVerify ||
-			!formData.firstname ||
-			!formData.lastname ||
-			!formData.email ||
-			!formData.postalCode ||
-			!formData.birthDate;
+			!formDataRegister.login ||
+			!formDataRegister.password ||
+			!formDataRegister.passwordVerify ||
+			!formDataRegister.firstname ||
+			!formDataRegister.lastname ||
+			!formDataRegister.email ||
+			!formDataRegister.postalCode ||
+			!formDataRegister.birthDate;
 
-			console.log("emptyfields? ",hasEmptyFields)
-	
+		console.log("emptyfields? ", hasEmptyFields)
+
 		const passwordValid =
-			formData.password.length > 8 &&
-			specialCharRegex.test(formData.password);
+			formDataRegister.password.length > 8 &&
+			specialCharRegex.test(formDataRegister.password);
 
-	const calendarRef = useRef<HTMLDivElement>(null);
-
-//#endregion
-		const passwordsMatch = formData.password === formData.passwordVerify;
+		console.log("passwordValid ? : ", passwordValid)
+		//AJOUTER MESSAGE D ERREUR SPECIFIQUE
+		const passwordsMatch = formDataRegister.password === formDataRegister.passwordVerify;
+		console.log("passwordMatch ? ", passwordsMatch)
+		//AJOUTER MESSAGE D ERREUR SPECIFIQUE
 
 		const postalCodeValid = isValidPostalCode;
 
 		return !hasEmptyFields && passwordValid && passwordsMatch && postalCodeValid;
 	};
+	//#endregion
+	//const calendarRef = useRef<HTMLDivElement>(null);
 
 	const step2Validation = () => {
 		console.log("check validation step 2")
-		const isValid = formData.gardenerLevel && formData.interests.length > 0 && isCheckedToU;
+		const isValid = formDataRegister.gardenerLevel && formDataRegister.interests.length > 0 && isCheckedToU;
 
 		setErrorForm(prevErrorForm => ({
 			...prevErrorForm,
-			errorEmptyGardenerLevel: !formData.gardenerLevel,
-			errorEmptyInterests: !formData.interests.length,
+			errorEmptyGardenerLevel: !formDataRegister.gardenerLevel,
+			errorEmptyInterests: !formDataRegister.interests.length,
 			errorNotCheckedToU: !isCheckedToU,
 		}))
 
@@ -175,9 +178,58 @@ const RegisterForm = () => {
 	//#endregion
 
 	//#region NAVIGATION FUNCTION
+
+	useEffect(() => {
+		if (step === 1) {
+			const isValid = step1Validation();
+			if (!isValid) {
+				setErrorForm(prev => ({
+					...prev,
+					errorEmptyLogin: !formDataRegister.login,
+					errorEmptyPassword: !formDataRegister.password,
+					errorEmptyPasswordVerify: !formDataRegister.passwordVerify,
+					errorEmptyFirstname: !formDataRegister.firstname,
+					errorEmptyLastname: !formDataRegister.lastname,
+					errorEmptyEmail: !formDataRegister.email,
+					errorEmptyPostalCode: !formDataRegister.postalCode,
+					errorEmptyBirthDate: !formDataRegister.birthDate,
+				}));
+			} else {
+				setStep(prev => prev + 1);
+			}
+		}
+	}, [formDataRegister]);
+
 	// Fonction permettant d'avancer dans les pages
 	const handleNextStep = (e: React.FormEvent) => {
 		e.preventDefault();
+
+		//https://fr.react.dev/reference/react-dom/components/input#reading-the-input-values-when-submitting-a-form
+		const form = e.target as HTMLFormElement;
+		const formData = new FormData(form);
+		const formJson = Object.fromEntries(formData.entries());
+		console.log(formJson);
+
+		setFormDataRegister(prevFormData => ({
+			...prevFormData,
+			login: formJson.login as string,
+			password: formJson.password as string,
+			passwordVerify: formJson.passwordVerify as string,
+			firstname: formJson.firstname as string,
+			lastname: formJson.lastname as string,
+			email: formJson.email as string,
+			gender: formJson.gender as string,
+			postalCode: formJson.postalCode as string
+		}))
+
+		console.log("login: ", formDataRegister.login)
+		console.log("password: ", formDataRegister.password)
+		console.log("verifyPassword: ", formDataRegister.passwordVerify)
+		console.log("firstname: ", formDataRegister.firstname)
+		console.log("lastname: ", formDataRegister.lastname)
+		console.log("email: ", formDataRegister.email)
+		console.log("postalCode: ", formDataRegister.postalCode)
+		console.log("gender: ", formDataRegister.gender)
 
 		if (step === 1) {
 			const isValid = step1Validation();
@@ -186,14 +238,14 @@ const RegisterForm = () => {
 			if (!isValid) {
 				setErrorForm(prev => ({
 					...prev,
-					errorEmptyLogin: !formData.login,
-					errorEmptyPassword: !formData.password,
-					errorEmptyPasswordVerify: !formData.passwordVerify,
-					errorEmptyFirstname: !formData.firstname,
-					errorEmptyLastname: !formData.lastname,
-					errorEmptyEmail: !formData.email,
-					errorEmptyPostalCode: !formData.postalCode,
-					errorEmptyBirthDate: !formData.birthDate
+					errorEmptyLogin: !formDataRegister.login,
+					errorEmptyPassword: !formDataRegister.password,
+					errorEmptyPasswordVerify: !formDataRegister.passwordVerify,
+					errorEmptyFirstname: !formDataRegister.firstname,
+					errorEmptyLastname: !formDataRegister.lastname,
+					errorEmptyEmail: !formDataRegister.email,
+					errorEmptyPostalCode: !formDataRegister.postalCode,
+					errorEmptyBirthDate: !formDataRegister.birthDate
 				}));
 				return;
 			}
@@ -254,7 +306,7 @@ const RegisterForm = () => {
 
 	const handleDateChange = (value: Value) => {
 		if (value instanceof Date) {
-			setFormData(prevFormData => ({ ...prevFormData, birthDate: value.toString() }))
+			setFormDataRegister(prevFormData => ({ ...prevFormData, birthDate: value.toString() }))
 			setBirthDateDisplay(false);
 		}
 	};
@@ -264,20 +316,20 @@ const RegisterForm = () => {
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!formData.gardenerLevel || !formData.interests.length || !isCheckedToU) {
-			return 
+		if (!formDataRegister.gardenerLevel || !formDataRegister.interests.length || !isCheckedToU) {
+			return
 		} else {
 			console.log("FORM OK");
 			const bodyRequest = {
-				"Username": formData.login,
-				"Password": formData.password,
-				"Firstname": formData.firstname,
-				"Lastname": formData.lastname,
-				"Email": formData.email,
-				"Postal_code": formData.postalCode,
+				"Username": formDataRegister.login,
+				"Password": formDataRegister.password,
+				"Firstname": formDataRegister.firstname,
+				"Lastname": formDataRegister.lastname,
+				"Email": formDataRegister.email,
+				"Postal_code": formDataRegister.postalCode,
 				"Country": "Belgium",
-				"Sexe": formData.gender,
-				"Birthdate": formData.birthDate
+				"Sexe": formDataRegister.gender,
+				"Birthdate": formDataRegister.birthDate
 			}
 			fetch(process.env.NEXT_PUBLIC_API + "/Users", {
 				method: "GET",
@@ -352,13 +404,13 @@ const RegisterForm = () => {
 				</div>
 
 				<p onClick={handleClick}>{translations.birthdate} </p>
-				<p onClick={handleClick} className="bg-bginput pl-3 mb-5">{formData.birthDate.toString()}</p>
+				<p onClick={handleClick} className="bg-bginput pl-3 mb-5">{formDataRegister.birthDate.toString()}</p>
 
 				{birthDateDisplay && (
 					<div ref={calendarRef}>
 						<Calendar
 							onChange={handleDateChange}
-							value={formData.birthDate ? new Date(formData.birthDate) : new Date()}
+							value={formDataRegister.birthDate ? new Date(formDataRegister.birthDate) : new Date()}
 						/>
 					</div>
 				)}
@@ -382,9 +434,9 @@ const RegisterForm = () => {
 				/>
 				<p>{translations.gender} </p>
 				<div className="flex items-center gap-4">
-					<Radio id="M" name="gender" value="M" checked={formData.gender === "M"} onChange={(value) => setFormData(prevFormData => ({ ...prevFormData, gender: value }))} />
-					<Radio id="F" name="gender" value="F" checked={formData.gender === "F"} onChange={(value) => setFormData(prevFormData => ({ ...prevFormData, gender: value }))} />
-					<Radio id="X" name="gender" value="X" checked={formData.gender === "X"} onChange={(value) => setFormData(prevFormData => ({ ...prevFormData, gender: value }))} />
+					<Radio id="M" name="gender" value="M" checked={formDataRegister.gender === "M"} onChange={(value) => setFormDataRegister(prevFormData => ({ ...prevFormData, gender: value }))} />
+					<Radio id="F" name="gender" value="F" checked={formDataRegister.gender === "F"} onChange={(value) => setFormDataRegister(prevFormData => ({ ...prevFormData, gender: value }))} />
+					<Radio id="X" name="gender" value="X" checked={formDataRegister.gender === "X"} onChange={(value) => setFormDataRegister(prevFormData => ({ ...prevFormData, gender: value }))} />
 				</div>
 				<TextInput
 					type="email"
@@ -395,9 +447,9 @@ const RegisterForm = () => {
 				/>
 				<DropDownPostalCode
 					label={translations.postalcode}
-					value={formData.postalCode}
+					value={formDataRegister.postalCode}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setFormData(prev => ({ ...prev, postalCode: e.target.value }));
+						setFormDataRegister(prev => ({ ...prev, postalCode: e.target.value }));
 					}}
 					error={errorForm.errorEmptyPostalCode}
 					setIsValidPostalCode={setIsValidPostalCode}
