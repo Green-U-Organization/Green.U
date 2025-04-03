@@ -168,7 +168,27 @@ public class UserController(GreenUDB db) : ControllerBase
             return NotFound("Incorrect ID");
         }
 
-        _db.Users.Remove(user);
+        if ( user.Deleted == true )
+        {
+            return BadRequest("The user it's already deleted");
+        }
+
+        user.Username = null;
+        user.Password = null;
+        user.Salt = null;
+        user.IsAdmin = null;
+        user.Firstname = null;
+        user.Lastname = null;
+        user.Email = null;
+        user.PostalCode = null;
+        user.Country = null;
+        user.Gender = null;
+        user.Birthday = null;
+        user.ProfileImage = null;
+        user.Bio = null;
+        user.Deleted = true;
+
+        _db.Users.Update(user);
         await _db.SaveChangesAsync();
 
         return Ok("DELETE SUCCES");
