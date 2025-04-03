@@ -4,6 +4,7 @@ using GreenUApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,17 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenUApi.Migrations
 {
     [DbContext(typeof(GreenUDB))]
-    partial class GreenUDBModelSnapshot : ModelSnapshot
+    [Migration("20250403121149_NullableUserModel")]
+    partial class NullableUserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-<<<<<<< HEAD
-                .UseCollation("utf8mb4_unicode_ci")
-=======
                 .UseCollation("utf8mb4_0900_ai_ci")
->>>>>>> backend-dev
                 .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
@@ -319,11 +318,7 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-<<<<<<< HEAD
-                    b.Property<long?>("GardenId")
-=======
                     b.Property<long?>("gardenId")
->>>>>>> backend-dev
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -369,10 +364,6 @@ namespace GreenUApi.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Bio")
-<<<<<<< HEAD
-                        .IsRequired()
-=======
->>>>>>> backend-dev
                         .HasColumnType("text");
 
                     b.Property<DateOnly>("Birthday")
@@ -414,18 +405,10 @@ namespace GreenUApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PostalCode")
-<<<<<<< HEAD
-                        .IsRequired()
-=======
->>>>>>> backend-dev
                         .HasColumnType("text")
                         .HasColumnName("Postal_code");
 
                     b.Property<string>("ProfileImage")
-<<<<<<< HEAD
-                        .IsRequired()
-=======
->>>>>>> backend-dev
                         .HasColumnType("text")
                         .HasColumnName("Profile_image");
 

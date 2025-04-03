@@ -37,14 +37,9 @@ public class UserModification
 
 [Route("user")]
 [ApiController]
-public class UserController : ControllerBase
+public class UserController(GreenUDB db) : ControllerBase
 {
-    private readonly GreenUDB _db;
-
-    public UserController(GreenUDB db)
-    {
-        _db = db;
-    }
+    private readonly GreenUDB _db = db;
 
     [HttpGet("{id}")]
     public async Task<ActionResult<User>> GetUser(long id)
@@ -55,7 +50,7 @@ public class UserController : ControllerBase
         {
             return NotFound();
         }
-
+        
         return Ok(user);
     }
 
