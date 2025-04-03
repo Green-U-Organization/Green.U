@@ -35,7 +35,7 @@ public class UserModification
     public string?   Bio { get; set; }
 }
 
-[Route("api/user")]
+[Route("user")]
 [ApiController]
 public class UserController(GreenUDB db) : ControllerBase
 {
@@ -50,7 +50,7 @@ public class UserController(GreenUDB db) : ControllerBase
         {
             return NotFound();
         }
-
+        
         return Ok(user);
     }
 
