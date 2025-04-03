@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenUApi.Migrations
 {
     /// <inheritdoc />
-    public partial class NullableUserModel : Migration
+    public partial class UserEdit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,32 +36,33 @@ namespace GreenUApi.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Username = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Username = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Password = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Salt = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Is_admin = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Firstname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Is_admin = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    Firstname = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Lastname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Lastname = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Email = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Postal_code = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Country = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Country = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Gender = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Gender = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Birthday = table.Column<DateOnly>(type: "date", nullable: false),
+                    Birthday = table.Column<DateOnly>(type: "date", nullable: true),
                     Profile_image = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Bio = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Level = table.Column<long>(type: "bigint", nullable: false),
                     Xp = table.Column<long>(type: "bigint", nullable: false),
+                    Deleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Created_at = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>

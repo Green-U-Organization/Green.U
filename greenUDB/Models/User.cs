@@ -7,35 +7,37 @@ public partial class User
 {
     public long Id { get; set; }
 
-    public string Username { get; set; } = null!;
+    public string? Username { get; set; }
 
-    public string Password { get; set; } = null!;
+    public string? Password { get; set; }
 
     public string? Salt { get; set; } 
 
-    public bool IsAdmin { get; set; }
+    public bool? IsAdmin { get; set; }
 
-    public string Firstname { get; set; } = null!;
+    public string? Firstname { get; set; }
 
-    public string Lastname { get; set; } = null!;
+    public string? Lastname { get; set; }
 
-    public string Email { get; set; } = null!;
+    public string? Email { get; set; }
 
     public string? PostalCode { get; set; }
 
-    public string Country { get; set; } = null!;
+    public string? Country { get; set; }
 
-    public string Gender { get; set; } = null!;
+    public string? Gender { get; set; }
 
-    public DateOnly Birthday { get; set; }
+    public DateOnly? Birthday { get; set; }
 
     public string? ProfileImage { get; set; }
 
     public string? Bio { get; set; }
 
-    public long Level { get; set; }
+    public long Level { get; set; } = 0!;
 
-    public long Xp { get; set; }
+    public long Xp { get; set; } = 0!;
+
+    public bool Deleted { get; set; } = false;
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
