@@ -363,42 +363,39 @@ namespace GreenUApi.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("text");
 
-                    b.Property<DateOnly>("Birthday")
+                    b.Property<DateOnly?>("Birthday")
                         .HasColumnType("date");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Firstname")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsAdmin")
+                    b.Property<bool?>("IsAdmin")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("Is_admin");
 
                     b.Property<string>("Lastname")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("Level")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PostalCode")
@@ -413,7 +410,6 @@ namespace GreenUApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("Xp")
