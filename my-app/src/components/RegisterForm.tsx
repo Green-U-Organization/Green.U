@@ -127,13 +127,10 @@ const RegisterForm = () => {
 			formData.password.length > 8 &&
 			specialCharRegex.test(formData.password);
 
-<<<<<<< HEAD
 	const calendarRef = useRef<HTMLDivElement>(null);
 
 //#endregion
-=======
 		const passwordsMatch = formData.password === formData.passwordVerify;
->>>>>>> 8507cdf0e4c6fcbb2a23f0d1d9202833c5492eb0
 
 		const postalCodeValid = isValidPostalCode;
 
@@ -211,11 +208,8 @@ const RegisterForm = () => {
 	}
 	//#endregion
 
-<<<<<<< HEAD
-=======
 	// Fonction callback pour mettre à jour l'état des hashtags
 	// const handleInterestsHashtagsChange = (newHashtags: string[]) => {
->>>>>>> 8507cdf0e4c6fcbb2a23f0d1d9202833c5492eb0
 
 	// 	setFormData
 	// .interests(newHashtags);
