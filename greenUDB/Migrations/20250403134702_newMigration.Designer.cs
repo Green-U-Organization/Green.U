@@ -12,13 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenUApi.Migrations
 {
     [DbContext(typeof(GreenUDB))]
-<<<<<<<< HEAD:greenUDB/Migrations/20250403122102_NewMigration.Designer.cs
-    [Migration("20250403122102_NewMigration")]
-    partial class NewMigration
-========
-    [Migration("20250403124458_UserEdit")]
-    partial class UserEdit
->>>>>>>> backend-dev:greenUDB/Migrations/20250403124458_UserEdit.Designer.cs
+    [Migration("20250403134702_newMigration")]
+    partial class newMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

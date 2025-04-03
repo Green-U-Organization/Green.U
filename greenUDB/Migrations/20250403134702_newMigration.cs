@@ -7,11 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenUApi.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:greenUDB/Migrations/20250403122102_NewMigration.cs
-    public partial class NewMigration : Migration
-========
-    public partial class UserEdit : Migration
->>>>>>>> backend-dev:greenUDB/Migrations/20250403124458_UserEdit.cs
+    public partial class newMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,51 +36,27 @@ namespace GreenUApi.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-<<<<<<<< HEAD:greenUDB/Migrations/20250403122102_NewMigration.cs
-                    Username = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
+                    Username = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
-========
-                    Username = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
->>>>>>>> backend-dev:greenUDB/Migrations/20250403124458_UserEdit.cs
+                    Password = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Salt = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-<<<<<<<< HEAD:greenUDB/Migrations/20250403122102_NewMigration.cs
-                    Is_admin = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Firstname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Lastname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
-========
                     Is_admin = table.Column<bool>(type: "tinyint(1)", nullable: true),
-                    Firstname = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
+                    Firstname = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Lastname = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
+                    Lastname = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
->>>>>>>> backend-dev:greenUDB/Migrations/20250403124458_UserEdit.cs
+                    Email = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Postal_code = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-<<<<<<<< HEAD:greenUDB/Migrations/20250403122102_NewMigration.cs
-                    Country = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
+                    Country = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Gender = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Birthday = table.Column<DateOnly>(type: "date", nullable: false),
-                    Profile_image = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
-========
-                    Country = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Gender = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
+                    Gender = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Birthday = table.Column<DateOnly>(type: "date", nullable: true),
-                    Profile_image = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
->>>>>>>> backend-dev:greenUDB/Migrations/20250403124458_UserEdit.cs
+                    Profile_image = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Bio = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
