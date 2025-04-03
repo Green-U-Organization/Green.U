@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenUApi.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class NullableUserModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,7 +40,7 @@ namespace GreenUApi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Salt = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Salt = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Is_admin = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Firstname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
@@ -49,16 +49,16 @@ namespace GreenUApi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Postal_code = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Postal_code = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Country = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Gender = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Birthday = table.Column<DateOnly>(type: "date", nullable: false),
-                    Profile_image = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Profile_image = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Bio = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Bio = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Level = table.Column<long>(type: "bigint", nullable: false),
                     Xp = table.Column<long>(type: "bigint", nullable: false),
