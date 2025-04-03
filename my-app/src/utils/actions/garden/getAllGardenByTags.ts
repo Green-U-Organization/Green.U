@@ -1,17 +1,12 @@
-type tagsType = {
-    tag_list: string
-}
-
-export const getAllGardenByTags = async (tags : tagsType) => {
+export const getAllGardenByTags = async (tags : string) => {
 
     try {
         const response =
-            await fetch(process.env.NEXT_PUBLIC_API + "/garden/tags", {
+            await fetch(`${process.env.NEXT_PUBLIC_API}/garden/tags/${tags}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                },
-                body: JSON.stringify(tags)
+                }
             })
 
         if (!response.ok) {

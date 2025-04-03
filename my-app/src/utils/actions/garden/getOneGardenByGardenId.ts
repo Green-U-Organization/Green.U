@@ -1,17 +1,12 @@
-type gardenType = {
-    garden_id: number
-}
-
-export const getOneGardenByGardenId = async (garden : gardenType) => {
+export const getOneGardenByGardenId = async (gardenId : number) => {
 
     try {
         const response =
-            await fetch(process.env.NEXT_PUBLIC_API + "/garden", {
+            await fetch(`${process.env.NEXT_PUBLIC_API}/${gardenId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                },
-                body: JSON.stringify(garden)
+                }
             })
 
         if (!response.ok) {
