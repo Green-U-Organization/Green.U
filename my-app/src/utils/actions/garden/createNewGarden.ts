@@ -1,5 +1,5 @@
 type gardenType = {
-    author_id: number,
+    authorId: number,
     name: string,
     description: string,
     latitude: number,

@@ -1,13 +1,13 @@
 type FollowerType = {
-    garden_id: number,
-    follower_id: number
+    gardenId: number,
+    followerId: number
 }
 
-export const deleteFollowerByGardenId = async (follower: FollowerType): Promise<FollowerType> => {
-
+export const addFollowerToGarden = async (follower: FollowerType): Promise<FollowerType> => {
+    
     try {
         const response = await fetch(process.env.NEXT_PUBLIC_API + "/follower/garden", {
-            method: "DELETE",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -15,13 +15,14 @@ export const deleteFollowerByGardenId = async (follower: FollowerType): Promise<
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to delete garden follower: ${response.statusText}`);
+            throw new Error(`Failed to add garden follower: ${response.statusText}`);
         }
 
         return response.json();
 
     } catch (error) {
-        console.error("Error in deleteFollowerByGardenId: ", error);
+        console.error("Error in addFollowerToGarden: ", error);
         throw error;
     }
+
 };

@@ -1,6 +1,6 @@
 type parcelType = {
-    parcel_id: number,
-    garden_id?: number,
+    parcelId: number,
+    gardenId?: number,
     length?: number,
     width?: number,
     x_position?: number,

@@ -127,18 +127,15 @@ const RegisterForm = () => {
 			formData.password.length > 8 &&
 			specialCharRegex.test(formData.password);
 
-<<<<<<< HEAD
-	const calendarRef = useRef<HTMLDivElement>(null);
+	//const calendarRef = useRef<HTMLDivElement>(null);
 
+	const passwordsMatch = formData.password === formData.passwordVerify;
+	
+	const postalCodeValid = isValidPostalCode;
+	
+	return !hasEmptyFields && passwordValid && passwordsMatch && postalCodeValid;
+};
 //#endregion
-=======
-		const passwordsMatch = formData.password === formData.passwordVerify;
->>>>>>> 8507cdf0e4c6fcbb2a23f0d1d9202833c5492eb0
-
-		const postalCodeValid = isValidPostalCode;
-
-		return !hasEmptyFields && passwordValid && passwordsMatch && postalCodeValid;
-	};
 
 	const step2Validation = () => {
 		console.log("check validation step 2")
@@ -211,11 +208,6 @@ const RegisterForm = () => {
 	}
 	//#endregion
 
-<<<<<<< HEAD
-=======
-	// Fonction callback pour mettre à jour l'état des hashtags
-	// const handleInterestsHashtagsChange = (newHashtags: string[]) => {
->>>>>>> 8507cdf0e4c6fcbb2a23f0d1d9202833c5492eb0
 
 	// 	setFormData
 	// .interests(newHashtags);
@@ -297,7 +289,7 @@ const RegisterForm = () => {
 		<Card className={"max-w-screen h-full px-8 pt-5"}>
 			<h1 className="text-4xl mb-5">{translations.signup}: </h1>
 
-			<form
+			<form method="post"
 				onSubmit={handleNextStep}
 				className="flex flex-col"
 				style={{ display: step === 1 ? "block" : "none" }}

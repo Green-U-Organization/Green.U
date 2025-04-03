@@ -1,18 +1,15 @@
-type cropType = {
-    line_id?: number,
-    plant_nursery_id?: number,
+type CropType = {
+    plantNurseryId: number,
     vegetable: string,
     variety: string,
     icon: string,
 };
 
-export const createNewCrop = async (
-    crop: cropType
-): Promise<cropType> => {
+export const addCropPlantNursery = async (crop: CropType): Promise<CropType> => {
 
     try {
         const response =
-            await fetch(process.env.NEXT_PUBLIC_API + "/crops", {
+            await fetch(process.env.NEXT_PUBLIC_API + "/crops/plantNursery", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -21,7 +18,7 @@ export const createNewCrop = async (
             });
 
         if (!response.ok) {
-            throw new Error(`Failed to create new crop:  ${response.statusText}`);
+            throw new Error(`Failed to add crop plant nursery :  ${response.statusText}`);
         }
         return response.json();
 

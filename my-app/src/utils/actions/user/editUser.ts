@@ -1,25 +1,24 @@
 type UserType = {
-    user_id: number,
     username?: string,
     password?: string,
-    is_admin?: boolean,
+    isAdmin?: boolean,
     firstname?: string,
     lastname?: string,
     email?: string,
-    postal_code?: string,
+    postalCode?: string,
     gender?: string,
     birthday?: string,
     bio?: string,
-    profile_image?: string,
+    profileImage?: string,
     level?: number,
-    xp?: number
+    xp?: number,
+    country?: string
 }
 
-export const editUser = async (user: UserType): Promise<UserType>  => {
+export const editUser = async (user: UserType, userId: number): Promise<UserType>  => {
 
     try {
-        const response =
-        await fetch(`${process.env.NEXT_PUBLIC_API}/user`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/user/${userId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"

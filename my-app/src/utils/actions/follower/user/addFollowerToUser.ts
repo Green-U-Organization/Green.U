@@ -1,13 +1,13 @@
 type FollowerType = {
-    user_id: number,
-    follower_id: number
+    userId: number,
+    followerId: number
 }
 
-export const deleteFollowerByUserId = async (follower: FollowerType): Promise<FollowerType> => {
-
+export const addFollowerToUser = async (follower: FollowerType): Promise<FollowerType> => {
+    
     try {
         const response = await fetch(process.env.NEXT_PUBLIC_API + "/follower/user", {
-            method: "DELETE",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -15,13 +15,14 @@ export const deleteFollowerByUserId = async (follower: FollowerType): Promise<Fo
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to delete user follower: ${response.statusText}`);
+            throw new Error(`Failed to add user follower: ${response.statusText}`);
         }
 
         return response.json();
 
     } catch (error) {
-        console.error("Error in deleteFollowerByUserId: ", error);
+        console.error("Error in addFollowerToUser: ", error);
         throw error;
     }
+
 };

@@ -1,18 +1,16 @@
 type TagType = {
-    user_id: number,
-    garden_id?: number,
     tag: string
 }
 
-export const deleteTag = async (user : TagType): Promise<TagType> => {
+export const deleteGardenTag = async (tag : TagType, gardenId: number): Promise<TagType> => {
 
     try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + "/tags", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/tags/garden/${gardenId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify(tag)
         });
 
         if (!response.ok) {
@@ -22,7 +20,7 @@ export const deleteTag = async (user : TagType): Promise<TagType> => {
         return response.json();
 
     } catch (error) {
-        console.error("Error in deleteTag: ", error);
+        console.error("Error in deleteGardenTag: ", error);
         throw error;
     }
 };

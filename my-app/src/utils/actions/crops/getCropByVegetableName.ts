@@ -1,8 +1,8 @@
-type vegetableType = {
+type VegetableType = {
     vegetable : string
 }
 
-export const getCropByVegetableNAame = async (vegetable : vegetableType) => {
+export const getCropByVegetableNAame = async (vegetable : VegetableType) => {
 
     try {
         const response =
