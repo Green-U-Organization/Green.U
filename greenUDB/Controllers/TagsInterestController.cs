@@ -15,19 +15,15 @@ namespace GreenUApi.Controllers
         {
             var User = await _db.Users.FindAsync(id);
 
-            var TagDb = await _db.TagsInterests
-                .Where(t => t.UserId == id && t.Hashtag == Tag.Hashtag)
-                .ToArrayAsync();
-
             if (User == null)
             {
                 return NotFound("User not found");
             }
 
-            Console.WriteLine(TagDb[0]?.Hashtag + Tag.Hashtag);
+            bool tagExists = await _db.TagsInterests
+                .AnyAsync(t => t.UserId == id && t.Hashtag == Tag.Hashtag);
 
-            
-            if (TagDb[0]?.Hashtag != Tag.Hashtag)
+            if (!tagExists)
             {
 
                 Tag.UserId = id;
