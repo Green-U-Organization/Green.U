@@ -1,17 +1,12 @@
-type userType = {
-    user_id: number
-}
-
-export const getAllGardenByUserId = async (user : userType) => {
+export const getAllGardenByUserId = async (userId : number) => {
 
     try {
         const response =
-            await fetch(process.env.NEXT_PUBLIC_API + "/garden/user", {
+            await fetch(`${process.env.NEXT_PUBLIC_API}/garden/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                },
-                body: JSON.stringify(user)
+                }
             })
 
         if (!response.ok) {

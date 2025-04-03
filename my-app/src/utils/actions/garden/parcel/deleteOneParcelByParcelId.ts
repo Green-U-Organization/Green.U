@@ -1,17 +1,12 @@
-type parcelType = {
-    parcel_id : number
-}
-
-export const deleteOneParcelByParcelId = async (parcel : parcelType) => {
+export const deleteOneParcelByParcelId = async (gardenId: number) => {
     
     try {
         const response =
-    await fetch (process.env.NEXT_PUBLIC_API + "/garden/parcel", {
+    await fetch (`${process.env.NEXT_PUBLIC_API}/garden/tags/${gardenId}`, {
         method : "DELETE",
         headers: {
             "Content-Type": "application/json",
-        },
-        body : JSON.stringify(parcel)
+        }
     })
 
     if (!response.ok) {

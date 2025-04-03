@@ -1,10 +1,10 @@
 import React from "react";
-import RegisterForm from "@/components/RegisterForm";
+import RegisterForm from "../../components/RegisterForm";
 
 const page = () => {
 //#region FETCH FUNCTION
 
-
+console.log("registerForm : ", RegisterForm);
 //#endregion
 
 // DISPLAY
