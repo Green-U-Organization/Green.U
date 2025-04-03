@@ -1,18 +1,19 @@
 type UserType = {
     username: string,
     password: string,
-    is_admin: boolean,
+    isAdmin: boolean,
     firstname: string,
     lastname: string,
     email: string,
-    postal_code: string,
+    postalCode: string,
     gender: string,
     birthday: string,
     bio?: string,
-    profile_image?: string,
+    profileImage?: string,
+    country: string
 }
 
-export const createUser = async (user: UserType): Promise<UserType> => {
+export const addUser = async (user: UserType): Promise<UserType> => {
     
     try {
         const response = 

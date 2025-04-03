@@ -61,6 +61,8 @@ const RegisterForm = () => {
 	const [interests, setInterests] = useState<string[]>([]); //Pour stocker les hashtags
 	const [errorEmptyInterests, setErrorEmptyInterests] = useState<boolean>(false);
 
+	const calendarRef = useRef<HTMLDivElement>(null);
+
 //#endregion
 
 //#region	VALIDITY FUCTIONS
@@ -140,7 +142,6 @@ const RegisterForm = () => {
 		setStep((prevStep) => prevStep - 1);
 	}
 
-	const calendarRef = useRef<HTMLDivElement>(null);
 
 	//Gérer le clic en dehors du calendrier
 	useEffect(() => {
