@@ -1,16 +1,11 @@
-export const deleteUserById = async (userId: number) => {
-    
-    const bodyRequest = {
-        user_id: userId
-    };
+export const deleteUser = async (userId: number) => {
 
     try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + "/user", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/user/${userId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(bodyRequest)
         });
 
         if (!response.ok) {

@@ -1,16 +1,10 @@
-export const getUserById = async (userId: number) => {
-    
-    const bodyRequest = {
-        user_id: userId
-    };
-
+export const getUserById = async (userId: number): Promise<any> => {
     try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + "/user", {
-            method: "POST", // Utilisation de POST pour envoyer des données dans le body
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/user/${userId}`, {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify(bodyRequest)
+            }
         });
 
         if (!response.ok) {
@@ -18,7 +12,6 @@ export const getUserById = async (userId: number) => {
         }
 
         return response.json();
-      
     } catch (error) {
         console.error("Error in getUserById: ", error);
         throw error;

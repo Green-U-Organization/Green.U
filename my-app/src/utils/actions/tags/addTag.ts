@@ -1,10 +1,10 @@
-type TagData = {
-    user_id: number;
-    garden_id: number;
+type TagType = {
+    user_id?: number;
+    garden_id?: number;
     tag: string;
 }
 
-export const createTag = async (tag: TagData): Promise<TagData> => {
+export const addTag = async (tag: TagType): Promise<TagType> => {
 
     try {
         const response = await fetch(process.env.NEXT_PUBLIC_API + "/tags", {
@@ -19,7 +19,7 @@ export const createTag = async (tag: TagData): Promise<TagData> => {
             throw new Error(`Failed to add tag: ${response.statusText}`);
         }
 
-        return await response.json();
+        return response.json();
     
     } catch (error) {
         console.error("Error in addTag: ", error);
