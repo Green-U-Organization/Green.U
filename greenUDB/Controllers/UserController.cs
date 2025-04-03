@@ -48,7 +48,7 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (user == null)
         {
-            return NotFound();
+            return NotFound(new { message = "User not found" });
         }
         
         return Ok(user);
@@ -74,7 +74,7 @@ public class UserController(GreenUDB db) : ControllerBase
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        return Ok("User are created !");
+        return Ok(new { message = "User created !" });
     }
 
     [HttpPatch("{id}")]
@@ -84,22 +84,33 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (user == null)
         {
-            return NotFound();
+            return NotFound(new { message = "This user no longer exists" });
         }
+
+        if (user.Deleted == true)
+        {
+            return BadRequest(new {message = "The user is deleted"});
+        }
+        Console.WriteLine($"Salt value: {modification.Salt ?? "NULL"}");
 
         if (!string.IsNullOrEmpty(modification.Username))
         {
             user.Username = modification.Username;
         }
 
-        if (!string.IsNullOrEmpty(modification.Password))
-        {
-            user.Password = modification.Password;
-        }
 
         if (!string.IsNullOrEmpty(modification.Salt))
         {
-            user.Salt = modification.Salt;
+            return BadRequest(new {message = "You can't modify SALT !! Modify password ! La bise fieux"});
+        }
+
+        if (!string.IsNullOrEmpty(modification.Password))
+        {
+            string[] hashSalt = Authentification.Hasher(modification.Password, null);
+            modification.Password = hashSalt[0];
+            modification.Salt = hashSalt[1];
+            user.Password = modification.Password;
+            user.Salt = hashSalt[1];
         }
 
         if (modification.IsAdmin.HasValue)
@@ -155,7 +166,7 @@ public class UserController(GreenUDB db) : ControllerBase
         _db.Users.Update(user);
         await _db.SaveChangesAsync();
 
-        return Ok("User is modified");
+        return Ok(new { message = "User is modified" });
     }
 
     [HttpDelete("{id}")]
@@ -165,12 +176,12 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (user == null)
         {
-            return NotFound("Incorrect ID");
+            return NotFound(new { message = "Incorrect ID" });
         }
 
         if ( user.Deleted == true )
         {
-            return BadRequest("The user it's already deleted");
+            return BadRequest(new { message = "The user it's already deleted" });
         }
 
         user.Username = null;
@@ -191,6 +202,6 @@ public class UserController(GreenUDB db) : ControllerBase
         _db.Users.Update(user);
         await _db.SaveChangesAsync();
 
-        return Ok("DELETE SUCCES");
+        return Ok(new { message = "DELETE SUCCES" });
     }
 }
