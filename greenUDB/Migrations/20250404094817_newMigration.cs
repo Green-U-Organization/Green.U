@@ -83,8 +83,8 @@ namespace GreenUApi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_unicode_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Latitude = table.Column<long>(type: "bigint", nullable: false),
-                    Longitude = table.Column<long>(type: "bigint", nullable: false),
+                    Latitude = table.Column<double>(type: "double", nullable: false),
+                    Longitude = table.Column<double>(type: "double", nullable: false),
                     Length = table.Column<long>(type: "bigint", nullable: false),
                     Width = table.Column<long>(type: "bigint", nullable: false),
                     Created_at = table.Column<DateTime>(type: "datetime", nullable: false),

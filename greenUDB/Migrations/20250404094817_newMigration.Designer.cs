@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenUApi.Migrations
 {
     [DbContext(typeof(GreenUDB))]
-    [Migration("20250403134702_newMigration")]
+    [Migration("20250404094817_newMigration")]
     partial class newMigration
     {
         /// <inheritdoc />
@@ -153,14 +153,14 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("Latitude")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double");
 
                     b.Property<long>("Length")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("Longitude")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double");
 
                     b.Property<string>("Name")
                         .IsRequired()
