@@ -13,8 +13,6 @@ import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Checkbox from "@/components/UI/Checkbox";
 import HashtagInput from "@/components/HashtagInput";
 import Link from "next/link";
-import { LogIn } from "lucide-react";
-
 type Value = CalendarProps["value"];
 
 type FormData = {
@@ -137,46 +135,45 @@ const RegisterForm = () => {
 
 		return !hasEmptyFields && passwordValid && passwordsMatch && postalCodeValid;
 	};
-	//#endregion
 	//const calendarRef = useRef<HTMLDivElement>(null);
-
+	
 	const step2Validation = () => {
 		console.log("check validation step 2")
 		const isValid = formDataRegister.gardenerLevel && formDataRegister.interests.length > 0 && isCheckedToU;
-
+		
 		setErrorForm(prevErrorForm => ({
 			...prevErrorForm,
 			errorEmptyGardenerLevel: !formDataRegister.gardenerLevel,
 			errorEmptyInterests: !formDataRegister.interests.length,
 			errorNotCheckedToU: !isCheckedToU,
 		}))
-
+		
 		console.log("validation ok")
 		return isValid;
 	}
-
+	
 	const checkPassword = (password: string) => {
-
+		
 		if (password.length <= 8) {
 			setErrorForm(prevErrorForm => ({ ...prevErrorForm, errorSpecialCharPassword: true }))
-
+			
 			return;
 		}
 		setErrorForm(prevErrorForm => ({ ...prevErrorForm, errorSpecialCharPassword: (!specialCharRegex.test(password)) }))
 	};
-
+	
 	const checkPasswordVerify = (password: string, passwordVerify: string) => {
 		setErrorForm(prevErrorForm => ({ ...prevErrorForm, errorMatchingPassword: (password != passwordVerify) }))
 	};
-
+	
 	//Réinitialisation des erreurs quand on arrive sur la page 2
 	useEffect(() => {
 		console.log("##", errorForm.errorEmptyInterests)
 		console.log("garden", errorForm.errorEmptyGardenerLevel)
-
+		
 	}, [errorForm.errorEmptyGardenerLevel, errorForm.errorEmptyInterests, errorForm.errorNotCheckedToU, step]);
 	//#endregion
-
+	
 	//#region NAVIGATION FUNCTION
 
 	useEffect(() => {
@@ -250,7 +247,6 @@ const RegisterForm = () => {
 				return;
 			}
 		}
-
 		setStep(prev => prev + 1);
 	};
 
@@ -261,11 +257,11 @@ const RegisterForm = () => {
 	//#endregion
 
 	// Fonction callback pour mettre à jour l'état des hashtags
-	// const handleInterestsHashtagsChange = (newHashtags: string[]) => {
+	const handleInterestsHashtagsChange = (newHashtags: string[]) => {
 
-	// 	setFormData
-	// .interests(newHashtags);
-	// };
+		setFormData
+			.interests(newHashtags);
+	};
 
 
 	//#region PASSWORD VISIBILITY
@@ -468,13 +464,13 @@ const RegisterForm = () => {
 
 
 				{/* Vos intérêts */}
-				{/* <HashtagInput
-							label={translations.yourinterests}
-							name="interests"
-							placeHolder={translations.addahashtag}
-							onHashtagsChange={handleInterestsHashtagsChange}
-							error={errorForm.errorEmptyInterests}
-						/> */}
+				<HashtagInput
+					label={translations.yourinterests}
+					name="interests"
+					placeHolder={translations.addahashtag}
+					onHashtagsChange={handleInterestsHashtagsChange}
+					error={errorForm.errorEmptyInterests}
+				/>
 
 				{/* Affichage des hashtags pour vérifier 
 						<p>Hashtags sélectionnés : {interests.join(", ")}</p>
