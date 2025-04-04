@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 interface InputFields {
   // Define the expected structure of inputFields here
@@ -6,12 +6,7 @@ interface InputFields {
 }
 
 const RegisterForm1 = ({ inputFields }: { inputFields: InputFields }) => {
-  return (
-    <>
-    inputField
-    </>
-    
-  )
-}
+  return <>inputField</>;
+};
 
-export default RegisterForm-1
+export default RegisterForm - 1;

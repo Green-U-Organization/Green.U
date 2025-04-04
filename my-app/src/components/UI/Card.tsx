@@ -1,58 +1,70 @@
-import React from "react";
+import React from 'react';
 
 type CardProps = {
-	children: React.ReactNode;
-	className?: string;
+  children: React.ReactNode;
+  className?: string;
 };
 
 const Card: React.FC<CardProps> = ({ children, className }) => {
-	return (
-        <div className={`font-(family-name:--font-jersey)  text-2xl relative bg-cardbackground w-4xl m-auto ${className}`}>
-        {/* Bordures */}
-        <div className="absolute top-0 left-0 h-full w-2 bg-border z-50"></div>
-        <div className="absolute top-0 right-0 h-full w-2 bg-border z-50"></div>
-        <div className="absolute top-0 left-0 h-2 w-full bg-border z-50"></div>
-        <div className="absolute bottom-0 left-0 h-2 w-full bg-border z-50"></div>
+  return (
+    <section
+      className={`bg-cardbackground relative m-auto w-4xl font-(family-name:--font-jersey) text-2xl ${className}`}
+    >
+      {/* Bordures */}
+      <div className="bg-border absolute top-0 left-0 z-10 h-full w-2"></div>
+      <div className="bg-border absolute top-0 right-0 z-10 h-full w-2"></div>
+      <div className="bg-border absolute top-0 left-0 z-10 h-2 w-full"></div>
+      <div className="bg-border absolute bottom-0 left-0 z-10 h-2 w-full"></div>
 
-			{/* Pixels intérieurs */}
-			<div className="absolute top-2 left-2 h-1 w-1 bg-border"></div>
-			<div className="absolute top-2 right-2 h-1 w-1 bg-border"></div>
-			<div className="absolute bottom-2 left-2 h-1 w-1 bg-border"></div>
-			<div className="absolute bottom-2 right-2 h-1 w-1 bg-border"></div>
+      {/* Pixels intérieurs */}
+      <div className="bg-border absolute top-2 left-2 h-1 w-1"></div>
+      <div className="bg-border absolute top-2 right-2 h-1 w-1"></div>
+      <div className="bg-border absolute bottom-2 left-2 h-1 w-1"></div>
+      <div className="bg-border absolute right-2 bottom-2 h-1 w-1"></div>
 
-			{/* Pixels extérieur corner */}
-			{/* <div className="absolute top-0 left-1 h-1 w-1 bg-white"></div>
-            <div className="absolute top-0 right-1 h-1 w-1 bg-white"></div>
-            <div className="absolute bottom-0 left-1 h-1 w-1 bg-white"></div>
-            <div className="absolute bottom-0 right-1 h-1 w-1 bg-white"></div> */}
+      {/* Pixels extérieur */}
+      <div className="absolute top-0 left-0 h-1 w-1 bg-white"></div>
+      <div className="absolute top-0 right-0 h-1 w-1 bg-white"></div>
+      <div className="absolute bottom-0 left-0 h-1 w-1 bg-white"></div>
+      <div className="absolute right-0 bottom-0 h-1 w-1 bg-white"></div>
 
-			{/* Pixels extérieur */}
-			<div className="absolute top-0 left-0 h-1 w-1 bg-white"></div>
-			<div className="absolute top-0 right-0 h-1 w-1 bg-white"></div>
-			<div className="absolute bottom-0 left-0 h-1 w-1 bg-white"></div>
-			<div className="absolute bottom-0 right-0 h-1 w-1 bg-white"></div>
+      {/* Pixels extérieur */}
+      <div className="absolute top-1 left-0 h-1 w-1 bg-white"></div>
+      <div className="absolute top-1 right-0 h-1 w-1 bg-white"></div>
+      <div className="absolute bottom-1 left-0 h-1 w-1 bg-white"></div>
+      <div className="absolute right-0 bottom-1 h-1 w-1 bg-white"></div>
 
-			{/* Pixels extérieur */}
-			<div className="absolute top-1 left-0 h-1 w-1 bg-white"></div>
-			<div className="absolute top-1 right-0 h-1 w-1 bg-white"></div>
-			<div className="absolute bottom-1 left-0 h-1 w-1 bg-white"></div>
-			<div className="absolute bottom-1 right-0 h-1 w-1 bg-white"></div>
+      {/* Pixels extérieur */}
+      <div className="absolute top-0 left-1 h-1 w-1 bg-white"></div>
+      <div className="absolute top-0 right-1 h-1 w-1 bg-white"></div>
+      <div className="absolute bottom-0 left-1 h-1 w-1 bg-white"></div>
+      <div className="absolute right-1 bottom-0 h-1 w-1 bg-white"></div>
 
-			{/* Pixels extérieur */}
-			<div className="absolute top-0 left-1 h-1 w-1 bg-white"></div>
-			<div className="absolute top-0 right-1 h-1 w-1 bg-white"></div>
-			<div className="absolute bottom-0 left-1 h-1 w-1 bg-white"></div>
-			<div className="absolute bottom-0 right-1 h-1 w-1 bg-white"></div>
+      <div className="absolute top-0 left-0 h-1 w-1 bg-white"></div>
+      <div className="absolute top-0 right-0 h-1 w-1 bg-white"></div>
+      <div className="absolute bottom-0 left-0 h-1 w-1 bg-white"></div>
+      <div className="absolute right-0 bottom-0 h-1 w-1 bg-white"></div>
 
-			{/* <div className="absolute top-0 left-0 h-1 w-1 bg-white"></div>
-            <div className="absolute top-0 right-0 h-1 w-1 bg-white"></div>
-            <div className="absolute bottom-0 left-0 h-1 w-1 bg-white"></div>
-            <div className="absolute bottom-0 right-0 h-1 w-1 bg-white"></div> */}
+      {/* Pixels extérieur corner */}
+      <div className="absolute top-0 left-0 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute top-0 right-0 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute top-1 left-0 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute top-0 left-1 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute top-0 right-0 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute top-1 right-0 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute top-0 right-1 z-10 h-1 w-1 bg-white"></div>
 
-			{/* Contenu */}
-			{children}
-		</div>
-	);
+      <div className="absolute bottom-0 left-0 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute right-0 bottom-0 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute bottom-1 left-0 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute bottom-0 left-1 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute right-0 bottom-0 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute right-0 bottom-1 z-10 h-1 w-1 bg-white"></div>
+      <div className="absolute right-1 bottom-0 z-10 h-1 w-1 bg-white"></div>
+      {/* Contenu */}
+      {children}
+    </section>
+  );
 };
 
 export default Card;

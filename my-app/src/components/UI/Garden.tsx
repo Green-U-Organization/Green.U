@@ -1,95 +1,110 @@
-"use client";
-import React from "react";
-import data from "../../app/data/data";
-import Parcel from "./Parcel";
-import styles from "../../app/Assets.module.css";
+import React, { FC, useEffect, useState } from 'react';
+import data from '../../app/data/data';
+import Parcel from './Parcel';
+import styles from '../../app/Assets.module.css';
 
-type Props = {
-	gardenId: number;
-	scale: number;
+type GardenProps = {
+  garden: Garden;
+  scale: number;
 };
 
-const Garden: React.FC<Props> = ({ gardenId, scale }) => {
-	//selection du bon jardin
-	const garden = data.garden.filter(
-		(garden: { id: number }) => garden.id === gardenId
-	);
-	console.log(garden);
-	const gardenX = garden[0].length;
-	const gardenY = garden[0].width;
+type Garden = {
+  id: number;
+  authorId: number;
+  name: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  privacy: 'private' | 'public';
+  type: 'individual' | 'collective' | 'professionnal';
+};
 
-	return (
-		<section className="mb-10 ml-10 flex ">
-			<div
-				className="bg-gardenBG relative rounded-xl"
-				style={{
-					height: gardenX * scale,
-					width: gardenY * scale,
-				}}
-			>
-				{/* //GRASS  */}
-				<div
-					className={`absolute top-0 ${styles.grassBG} z-0 rounded-xl`}
-					style={{
-						height: gardenX * scale,
-						width: gardenY * scale,
-					}}
-				></div>
+const Garden: FC<GardenProps> = ({ garden, scale }) => {
+  const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-				{/* //TOP Fence */}
-				<div
-					className={`absolute top-0 ${styles.gardenHorizontalFence} z-20 rounded-xl`}
-					style={{
-						height: 0.3 * scale,
-						width: gardenY * scale,
-					}}
-				></div>
-				{/* //BOTTOM Fence */}
-				<div
-					className={`absolute bottom-0 ${styles.gardenHorizontalFence} z-20 rounded-xl`}
-					style={{
-						height: 0.3 * scale,
-						width: gardenY * scale,
-					}}
-				></div>
-				{/* //LEFT Fence */}
-				<div
-					className={`absolute top-0 left-0 ${styles.gardenVerticalFence} z-20 rounded-xl`}
-					style={{
-						height: gardenX * scale,
-						width: 0.2 * scale,
-					}}
-				></div>
-				{/* //RIGHT Fence */}
-				<div
-					className={`absolute top-0 right-0 ${styles.gardenVerticalFence} z-20 rounded-xl`}
-					style={{
-						height: gardenX * scale,
-						width: 0.2 * scale,
-					}}
-				></div>
+  // Calcul des dimensions du jardin
+  const gardenX = currentGarden?.length;
+  const gardenY = currentGarden?.width;
 
-				{data.parcels.map(
-					(parcel: {
-						id: React.Key | null | undefined;
-						width: number;
-						length: number;
-						gardenId: number;
-					}) =>
-						parcel.gardenId === gardenId ? (
-							<div className="z-10 relative" key={parcel.id}>
-								<Parcel
-									parcelX={parcel.width}
-									parcelY={parcel.length}
-									parcelID={parcel.id as number}
-									scale={scale}
-								/>
-							</div>
-						) : null
-				)}
-			</div>
-		</section>
-	);
+  useEffect(() => {
+    // Mettre à jour le jardin actuel lorsque les props changent
+    setCurrentGarden(garden);
+    setIsLoading(false);
+  }, [garden]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <section className="mb-10 ml-10 flex">
+      <div
+        className="bg-gardenBG relative rounded-xl"
+        style={{
+          height: gardenX * scale,
+          width: gardenY * scale,
+        }}
+      >
+        {/* GRASS */}
+        <div
+          className={`absolute top-0 ${styles.grassBG} z-0 rounded-xl`}
+          style={{
+            height: gardenX * scale,
+            width: gardenY * scale,
+          }}
+        ></div>
+
+        {/* TOP Fence */}
+        <div
+          className={`absolute top-0 ${styles.gardenHorizontalFence} z-20 rounded-xl`}
+          style={{
+            height: 0.3 * scale,
+            width: gardenY * scale,
+          }}
+        ></div>
+        {/* BOTTOM Fence */}
+        <div
+          className={`absolute bottom-0 ${styles.gardenHorizontalFence} z-20 rounded-xl`}
+          style={{
+            height: 0.3 * scale,
+            width: gardenY * scale,
+          }}
+        ></div>
+        {/* LEFT Fence */}
+        <div
+          className={`absolute top-0 left-0 ${styles.gardenVerticalFence} z-20 rounded-xl`}
+          style={{
+            height: gardenX * scale,
+            width: 0.2 * scale,
+          }}
+        ></div>
+        {/* RIGHT Fence */}
+        <div
+          className={`absolute top-0 right-0 ${styles.gardenVerticalFence} z-20 rounded-xl`}
+          style={{
+            height: gardenX * scale,
+            width: 0.2 * scale,
+          }}
+        ></div>
+
+        {data.parcels.map((parcel) =>
+          parcel.gardenId === currentGarden?.id ? (
+            <div className="relative z-10" key={parcel.id}>
+              <Parcel
+                parcelX={parcel.width}
+                parcelY={parcel.length}
+                parcelID={parcel.id}
+                scale={scale}
+              />
+            </div>
+          ) : null
+        )}
+      </div>
+    </section>
+  );
 };
 
 export default Garden;

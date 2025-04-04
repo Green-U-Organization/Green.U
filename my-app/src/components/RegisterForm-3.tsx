@@ -6,12 +6,12 @@ const RegisterForm = () => {
     <>
       {/* Input natif */}
       <input type="text" />
-      
+
       {/* Votre TextInput avec le même comportement */}
       <TextInput type="text" />
-      
+
       {/* Version avec label et gestion d'erreur */}
-      <TextInput 
+      <TextInput
         type="text"
         label="Email"
         name="email"

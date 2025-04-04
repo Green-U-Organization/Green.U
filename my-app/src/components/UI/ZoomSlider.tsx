@@ -1,22 +1,22 @@
-"use client"
-import React from 'react'
+'use client';
+import React from 'react';
 
 type Props = {
-    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    className?: string;
-}
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
+};
 
-const ZoomSlider = ({handleChange, className}: Props) => {
-
-
+const ZoomSlider = ({ handleChange, className }: Props) => {
   return (
-<input type="range"
-min="50" 
-max="200"  
-step="10"
-onChange={handleChange} 
-className={`mt-5 mr-5 mb-5 ml-5 h-2 bg-border appearance-none cursor-cell ${className}`} />
-  )
-}
+    <input
+      type="range"
+      min="10"
+      max="200"
+      step="10"
+      onChange={handleChange}
+      className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none ${className}`}
+    />
+  );
+};
 
-export default ZoomSlider
+export default ZoomSlider;
