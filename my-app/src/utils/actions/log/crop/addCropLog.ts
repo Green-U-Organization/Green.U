@@ -1,20 +1,15 @@
 type LogType = {
-    author_id?: number,
-    garden_id?: number,
-    parcel_id?: number,
-    line_id?: number,
-    crop_id?: number,
-    plant_nursery_id?: number,
+    cropId: number,
     action: string,
     comment: string,
     status: string,
     auto: boolean
 }
 
-export const addLog = async (log: LogType): Promise<LogType> => {
+export const addCropLog = async (log: LogType): Promise<LogType> => {
     
     try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API + "/log", {
+        const response = await fetch(`${process.env.NEXT_PUBLI_API}/log/crop`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -23,13 +18,13 @@ export const addLog = async (log: LogType): Promise<LogType> => {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to add log: ${response.statusText}`);
+            throw new Error(`Failed to add crop log: ${response.statusText}`);
         }
 
         return response.json();
 
     } catch (error) {
-        console.error("Error in addLog: ", error);
+        console.error("Error in addCropLog: ", error);
         throw error;
     }
 

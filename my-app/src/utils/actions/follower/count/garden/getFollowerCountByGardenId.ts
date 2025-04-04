@@ -9,7 +9,7 @@ export const getFollowerCountByGardenId = async (gardenId: number) => {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to get follower by garden count: ${response.statusText}`);
+            throw new Error(`Failed to get count follower by garden: ${response.statusText}`);
         }
 
         return response.json();

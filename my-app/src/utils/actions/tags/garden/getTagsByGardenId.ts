@@ -1,7 +1,7 @@
-export const getTagByUserId = async (userId: number) => {
+export const getTagsByGardenId = async (gardenId: number) => {
     
     try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API}/tags/user/${userId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API}/tags/garden/${gardenId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -15,7 +15,7 @@ export const getTagByUserId = async (userId: number) => {
         return response.json();
 
     } catch (error) {
-        console.error("Error in getTagByUserId: ", error);
+        console.error("Error in getTagByGardenId: ", error);
         throw error;
     }
 };

@@ -1,6 +1,5 @@
 type cropType = {
-    line_id?: number,
-    plant_nursery_id?: number,
+    plantNurseryId?: number,
     icon?: string,
 };
 
@@ -10,7 +9,7 @@ export const createNewCrop = async (
 
     try {
         const response =
-            await fetch(process.env.NEXT_PUBLIC_API + "/crops", {
+            await fetch(process.env.NEXT_PUBLIC_API + "/crops/plantNursery", {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

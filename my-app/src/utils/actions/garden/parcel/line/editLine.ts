@@ -1,6 +1,6 @@
 type lineType = {
-    line_id: number,
-    parcel_id: number,
+    lineId: number,
+    parcelId: number,
     length: number
 };
 

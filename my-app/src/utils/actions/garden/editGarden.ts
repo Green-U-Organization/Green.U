@@ -1,6 +1,6 @@
 type gardenType = {
-    garden_id: number,
-    author_id?: number,
+    gardenId: number,
+    authorId?: number,
     name?: string,
     description?: string,
     latitude?: number,
@@ -12,7 +12,7 @@ type gardenType = {
 };
 
 export const createNewGarden = async (
-    garden: Partial<gardenType> & {garden_id: number}
+    garden: Partial<gardenType> & {gardenId: number}
 ): Promise<gardenType> => {
 
     try {

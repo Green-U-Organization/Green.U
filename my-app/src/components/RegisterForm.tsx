@@ -339,7 +339,7 @@ const RegisterForm = () => {
 		<Card className={"max-w-screen h-full px-8 pt-5"}>
 			<h1 className="text-4xl mb-5">{translations.signup}: </h1>
 
-			<form
+			<form method="post"
 				onSubmit={handleNextStep}
 				className="flex flex-col"
 				style={{ display: step === 1 ? "block" : "none" }}

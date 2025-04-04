@@ -4,6 +4,7 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 03/04/25 | @Emmanuel | Adaptation des actions
 | 02/04/25 | @Pierre @Emmanuel | Ajout des actions
 | 01/04/25 | @Pierre @Emmanuel @Mehdi | Définition d'une grosse partie des tables
 ||| @Pierre @Emmanuel | Ajout des actions

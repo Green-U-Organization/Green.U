@@ -10,7 +10,7 @@ export const getFollowerCountByUserId = async (userId: number) => {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to get follower by user count: ${response.statusText}`);
+            throw new Error(`Failed to get count follower by user: ${response.statusText}`);
         }
 
         return response.json();

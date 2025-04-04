@@ -1,5 +1,5 @@
 type lineType = {
-    parcel_id: number,
+    parcelId: number,
     length: number
 };
 
