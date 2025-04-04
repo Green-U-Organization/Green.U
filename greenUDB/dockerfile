@@ -1,27 +1,15 @@
-# Utiliser l'image de base officielle de .NET
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-WORKDIR /app
-EXPOSE 80
+FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:3fcf6f1e809c0553f9feb222369f58749af314af6f063f389cbd2f913b4ad556 AS build
+WORKDIR /App
 
-# Utiliser l'image SDK pour construire l'application
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-WORKDIR /src
-COPY ["GreenUDB/GreenUDB.csproj", "GreenUDB/"]
-COPY ["GreenUApi/GreenUApi.csproj", "GreenUApi/"]
-COPY ["Migrations/Migrations.csproj", "Migrations/"]
-COPY ["model/model.csproj", "model/"]
-COPY ["obj/obj.csproj", "obj/"]
-COPY ["Properties/Properties.csproj", "Properties/"]
-RUN dotnet restore "GreenUApi/GreenUApi.csproj"
-COPY . .
-WORKDIR "/src/GreenUApi"
-RUN dotnet build "GreenUApi.csproj" -c Release -o /app/build
+# Copy everything
+COPY . ./
+# Restore as distinct layers
+RUN dotnet restore
+# Build and publish a release
+RUN dotnet publish -o out
 
-FROM build AS publish
-RUN dotnet publish "GreenUApi.csproj" -c Release -o /app/publish
-
-# Final stage
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "GreenUApi.dll"]
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:9.0@sha256:b4bea3a52a0a77317fa93c5bbdb076623f81e3e2f201078d89914da71318b5d8
+WORKDIR /App
+COPY --from=build /App/out .
+ENTRYPOINT ["dotnet", "DotNet.Docker.dll"]  

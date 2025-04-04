@@ -6,6 +6,7 @@ using DotNetEnv;
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
+// Db connection
 var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};" +
                        $"port={Environment.GetEnvironmentVariable("PORT")};" +
                        $"database={Environment.GetEnvironmentVariable("DATABASE")};" +
@@ -13,10 +14,12 @@ var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};
                        $"password={Environment.GetEnvironmentVariable("PASSWORD")};" +
                        $"SslMode={Environment.GetEnvironmentVariable("MODE")};";
 
+// Load the DB context 
 builder.Services.AddDbContext<GreenUDB>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
+// Use Cors with .env
 var allowedOrigin = Environment.GetEnvironmentVariable("API") ?? "http://localhost:3000";
 builder.Services.AddCors(options =>
 {
@@ -27,7 +30,7 @@ builder.Services.AddCors(options =>
                     .AllowCredentials());
 });
 
-// Ajouter d'autres services
+// Add other services
 builder.Services.AddControllers();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +43,7 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
+// Use cors
 app.UseCors("AllowSpecificOrigin");
 
 app.UseRouting();
@@ -58,5 +62,6 @@ if (app.Environment.IsDevelopment())
         config.DocExpansion = "list";
     });
 }
+
 
 app.Run();
