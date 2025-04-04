@@ -150,14 +150,14 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("Latitude")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double");
 
                     b.Property<long>("Length")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("Longitude")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double");
 
                     b.Property<string>("Name")
                         .IsRequired()

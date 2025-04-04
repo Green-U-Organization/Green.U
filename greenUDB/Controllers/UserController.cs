@@ -50,6 +50,11 @@ public class UserController(GreenUDB db) : ControllerBase
         {
             return NotFound(new { message = "User not found" });
         }
+
+        if (user.Deleted)
+        {
+            return NotFound(new { message = "This user is deleted" });
+        }
         
         return Ok(user);
     }
