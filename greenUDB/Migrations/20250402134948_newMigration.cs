@@ -7,11 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GreenUApi.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:greenUDB/Migrations/20250402084330_InitialCreate.cs
-    public partial class InitialCreate : Migration
-========
-    public partial class UppercaseProblem : Migration
->>>>>>>> backend-dev:greenUDB/Migrations/20250402072216_UppercaseProblem.cs
+    public partial class newMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +21,7 @@ namespace GreenUApi.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    gardenId = table.Column<long>(type: "bigint", nullable: true)
+                    GardenId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,7 +40,7 @@ namespace GreenUApi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Salt = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
+                    Salt = table.Column<string>(type: "text", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Is_admin = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Firstname = table.Column<string>(type: "text", nullable: false, collation: "utf8mb4_0900_ai_ci")
@@ -90,17 +86,10 @@ namespace GreenUApi.Migrations
                     Longitude = table.Column<long>(type: "bigint", nullable: false),
                     Length = table.Column<long>(type: "bigint", nullable: false),
                     Width = table.Column<long>(type: "bigint", nullable: false),
-<<<<<<<< HEAD:greenUDB/Migrations/20250402084330_InitialCreate.cs
                     Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
                     privacy = table.Column<int>(type: "int", nullable: false),
                     type = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: true)
-========
-                    Update_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Privacy = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false)
->>>>>>>> backend-dev:greenUDB/Migrations/20250402072216_UppercaseProblem.cs
                 },
                 constraints: table =>
                 {
@@ -181,11 +170,7 @@ namespace GreenUApi.Migrations
                     Length = table.Column<double>(type: "double", nullable: true),
                     Width = table.Column<long>(type: "bigint", nullable: true),
                     N_line = table.Column<long>(type: "bigint", nullable: true),
-<<<<<<<< HEAD:greenUDB/Migrations/20250402084330_InitialCreate.cs
                     ParcelAngle = table.Column<double>(type: "double", nullable: true),
-========
-                    parcel_angle = table.Column<double>(type: "double", nullable: true),
->>>>>>>> backend-dev:greenUDB/Migrations/20250402072216_UppercaseProblem.cs
                     Created_at = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>

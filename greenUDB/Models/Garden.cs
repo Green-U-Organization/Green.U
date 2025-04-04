@@ -35,6 +35,11 @@ public partial class Garden
 
     public GardenPrivacy Privacy { get; set; } = GardenPrivacy.Public;
 
+<<<<<<< HEAD
+=======
+    public GardenPrivacy Privacy { get; set; } = GardenPrivacy.Public;
+
+>>>>>>> backend-dev
     public GardenType Type { get; set; } = GardenType.Personnal;
 
     public virtual ICollection<Contributor> Contributors { get; set; } = new List<Contributor>();

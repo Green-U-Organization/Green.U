@@ -6,7 +6,6 @@ using DotNetEnv;
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
-// Charger la chaîne de connexion depuis les variables d'environnement
 var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};" +
                        $"port={Environment.GetEnvironmentVariable("PORT")};" +
                        $"database={Environment.GetEnvironmentVariable("DATABASE")};" +
@@ -14,19 +13,18 @@ var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};
                        $"password={Environment.GetEnvironmentVariable("PASSWORD")};" +
                        $"SslMode={Environment.GetEnvironmentVariable("MODE")};";
 
-// Enregistrement de DbContext avec la chaîne de connexion chargée dynamiquement
 builder.Services.AddDbContext<GreenUDB>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
-// Ajouter CORS (en utilisant la variable d'environnement pour l'URL)
 var allowedOrigin = Environment.GetEnvironmentVariable("API") ?? "http://localhost:3000";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
     policy => policy.WithOrigins(allowedOrigin)
                     .AllowAnyHeader()
-                    .AllowAnyMethod());
+                    .AllowAnyMethod()
+                    .AllowCredentials());
 });
 
 // Ajouter d'autres services
@@ -42,10 +40,8 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
-// Utiliser CORS
 app.UseCors("AllowSpecificOrigin");
 
-// Middleware
 app.UseRouting();
 app.UseAuthorization();
 
@@ -62,10 +58,5 @@ if (app.Environment.IsDevelopment())
         config.DocExpansion = "list";
     });
 }
-
-// var UserItems = app.MapGroup("/Users");
-// UserItems.MapGet("/{id}", UserController.GetUser);
-// UserItems.MapPut("/{id}", UserController.UpdateUser);
-// UserItems.MapDelete("/{id}", UserController.DeleteUser);
 
 app.Run();

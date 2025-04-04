@@ -164,8 +164,15 @@ namespace GreenUApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Privacy")
+<<<<<<< HEAD
                         .HasColumnType("int")
                         .HasColumnName("privacy");
+=======
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+>>>>>>> backend-dev
 
                     b.Property<int>("Type")
                         .HasColumnType("int")

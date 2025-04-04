@@ -16,6 +16,9 @@ namespace GreenUApi.Controllers
         }
 
         [HttpGet("{id}")]
+        /// <summary>
+        /// Permet de récupérer un garden.
+        ///</summary>
         public async Task<ActionResult<Garden>> GetGarden(long id)
         {
             var garden = await _context.Gardens.FindAsync(id);
@@ -71,9 +74,16 @@ namespace GreenUApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Garden
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // POST: api/Garden
+        /// <summary>
+        /// Structure acceptée par la route :
+        /// {
+        ///   "name": "string",
+        ///   "email": "string",
+        ///   "password": "string"
+        /// }
+        /// </summary>
+        /// <param name="garden"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Garden>> PostGarden([FromBody] Garden garden)
         {

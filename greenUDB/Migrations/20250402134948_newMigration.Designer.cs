@@ -12,13 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenUApi.Migrations
 {
     [DbContext(typeof(GreenUDB))]
-<<<<<<<< HEAD:greenUDB/Migrations/20250402084330_InitialCreate.Designer.cs
-    [Migration("20250402084330_InitialCreate")]
-    partial class InitialCreate
-========
-    [Migration("20250402072216_UppercaseProblem")]
-    partial class UppercaseProblem
->>>>>>>> backend-dev:greenUDB/Migrations/20250402072216_UppercaseProblem.Designer.cs
+    [Migration("20250402134948_newMigration")]
+    partial class newMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,15 +167,8 @@ namespace GreenUApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Privacy")
-<<<<<<<< HEAD:greenUDB/Migrations/20250402084330_InitialCreate.Designer.cs
                         .HasColumnType("int")
                         .HasColumnName("privacy");
-========
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
->>>>>>>> backend-dev:greenUDB/Migrations/20250402072216_UppercaseProblem.Designer.cs
 
                     b.Property<int>("Type")
                         .HasColumnType("int")
@@ -330,7 +318,7 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("gardenId")
+                    b.Property<long?>("GardenId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -428,7 +416,6 @@ namespace GreenUApi.Migrations
                         .HasColumnName("Profile_image");
 
                     b.Property<string>("Salt")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Username")
