@@ -8,9 +8,17 @@ import data from '../data/data.js'
 import Todo from '../../components/UI/Todo'
 import Link from 'next/link';
 import BentoCardHeader from '../../components/UI/BentoCardHeader'
+import Cookies from "js-cookie";
 
 const page = () => {
     const [processedData, setProcessedData] = useState(data.todos)
+    const [imgProfile, setImgProfile] = useState("/image/divers/profile.png");
+
+    //POUR LE TEST DE LA RECUPERATION DU COOKIE
+    useEffect(() => {
+        const userId = Cookies.get("userId"); 
+        setImgProfile(userId ? "/image/avatars/PI_39.png" : "/image/divers/profile.png");
+    }, []);
 
 
 //TODO AJOUTER RERENDER QUAND ON CHECK UN TODO
@@ -34,7 +42,7 @@ const page = () => {
             <div className="row-start-1 row-end-2 col-start-1 col-end-2 h-full w-full flex justify-center mt-5">
                 <Link href="/profile">
                     <Image
-                        src={"/image/divers/profile.png"}
+                        src={imgProfile}
                         alt="Profile page"
                         width={72}
                         height={72}

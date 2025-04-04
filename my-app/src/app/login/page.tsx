@@ -7,13 +7,23 @@ import Card from "@/components/UI/Card";
 import TextInput from "@/components/UI/TextInput";
 import Button from "@/components/UI/Button";
 import { useLanguage } from '@/app/contexts/LanguageProvider';
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+
+//LIGNE A SUPPRIMER UNE FOIS QUE LA ROUTE AURA ETE MISE EN PLACE
+import { getUserById } from "@/utils/actions/user/getUserById";
 
 const page = () => {
+	const [userId, setUserId] = useState<string | null>(null);
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
+	const [error, setError] = useState<string | null>(null);
 	const [errorEmail, setErrorEmail] = useState<boolean>(false);
     const [errorPassword, setErrorPassword] = useState<boolean>(false);
 	const {translations} = useLanguage();
+	
+	const router = useRouter();
+	
 	// const [checkPass, setCheckPass] = useState<Boolean>(false);
 
 	// const specialChar = [
@@ -67,16 +77,22 @@ const page = () => {
 
 	const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setEmail(e.target.value);
+		setErrorEmail(false);
+		setUserId(null);
 	};
 
 	const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setErrorPassword(false);
 		const newPassword = e.target.value;
 		setPassword(newPassword);
+		setUserId(null); 
 		// checkPassword(newPassword);
 	};
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setError(null);
+
 		// checkPassword(password);
 		if (!email) {
 			setErrorEmail(true)
@@ -94,6 +110,39 @@ const page = () => {
 			// ça fonctionne. Prévoir la route pour log in!
 			console.log(email);
 			console.log(password);
+
+			//A REMPLACER PAR L'OBJET USER
+			try {
+				const response = await getUserById(1);
+
+				if (!response) {
+					throw new Error("User not found");
+				}
+				
+				const userId = response.id;
+
+				// Définir la date d'expiration du cookie (10 minutes)
+				const minutes = 10; //Délais d'expiration du cookie
+				const expirationInDays = minutes / (60 * 24); // Conversion des minutes en jours (obligatoire)
+
+				/* Définition du cookie
+				expires  : la période d'expiration du cookie (en jours)
+				secure   : le cookie ne sera envoyé qu'en https (si true)
+				sameSite : le cookie ne sera pas envoyé si la requête vient d'un autre site (si Strict)
+				*/
+				Cookies.set("userId", userId, { expires: expirationInDays, secure: true, sameSite: "Strict" });
+
+				// Mettre à jour l'ID utilisateur dans l'état
+				setUserId(userId);
+				setError(null);
+
+				//Redirige vers la page du dashboard
+				router.push("/landing");
+
+			} catch (error) {
+				console.error("Erreur lors du chargement de l'utilisateur :", error);
+					setError(error instanceof Error ? error.message : "Une erreur est survenue");
+			}
 		}
 	};
 
@@ -126,14 +175,19 @@ const page = () => {
 								error={errorPassword}
 							/>
 						</div>
+
+						<div>
+							{error && <p className="text-red-500">{error}</p>}
+							
+							{/*POUR TEST 
+							{userId && <p>ID utilisateur : {userId}</p>}
+							*/}
+						</div>
+
 						<br />
 						<div className="flex flex-row justify-between pb-5">
-							<Button type="submit">
-								{translations.login}
-							</Button>
-							<Button type="link" href="/signin">
-								{translations.signup}
-							</Button>
+							<Button type="submit">{translations.login}</Button>
+							<Button type="link" href="/signin">{translations.signup}</Button>
 						</div>
 					</div>
 				</form>
