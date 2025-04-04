@@ -2,7 +2,7 @@ export const getAllGardenByUserId = async (userId : number) => {
 
     try {
         const response =
-            await fetch(`${process.env.NEXT_PUBLIC_API}/garden/${userId}`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API}/garden/user/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
