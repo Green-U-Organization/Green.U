@@ -1,7 +1,7 @@
-"use client";
-import { useState, useMemo } from "react";
-import postalCodes from "@/data/postalCodesBE.json";
-import { useLanguage } from "@/app/contexts/LanguageProvider";
+'use client';
+import { useState, useMemo } from 'react';
+import postalCodes from '@/data/postalCodesBE.json';
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 interface DropDownProps {
   label: string;
@@ -11,8 +11,13 @@ interface DropDownProps {
   setIsValidPostalCode: (isValid: boolean) => void;
 }
 
-const DropDownPostalCode: React.FC<DropDownProps> = ({ value, onChange, error, setIsValidPostalCode }) => {
-  const [search, setSearch] = useState("");
+const DropDownPostalCode: React.FC<DropDownProps> = ({
+  value,
+  onChange,
+  error,
+  setIsValidPostalCode,
+}) => {
+  const [search, setSearch] = useState('');
   const [isValidPostalCodeLocal, setIsValidPostalCodeLocal] = useState(true);
   const [touched, setTouched] = useState(false);
   const { translations } = useLanguage();
@@ -26,10 +31,11 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({ value, onChange, error, s
 
     const regex = /^\d{4}-[a-zA-ZÀ-ÿ\s]+$/;
     if (regex.test(inputValue)) {
-      const [postalCode, city] = inputValue.split("-");
+      const [postalCode, city] = inputValue.split('-');
       const isValid = postalCodes.some(
         ({ code, city: dataCity }) =>
-          code === postalCode && dataCity.toLowerCase() === city.trim().toLowerCase()
+          code === postalCode &&
+          dataCity.toLowerCase() === city.trim().toLowerCase()
       );
       setIsValidPostalCodeLocal(isValid);
       setIsValidPostalCode(isValid);
@@ -39,14 +45,18 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({ value, onChange, error, s
     }
   };
 
-  const filteredOptions = useMemo(() =>
-    postalCodes.filter(({ code, city }) =>
-      code.startsWith(search) || city.toLowerCase().includes(search.toLowerCase())
-    ), [search]
+  const filteredOptions = useMemo(
+    () =>
+      postalCodes.filter(
+        ({ code, city }) =>
+          code.startsWith(search) ||
+          city.toLowerCase().includes(search.toLowerCase())
+      ),
+    [search]
   );
 
   return (
-    <div className="flex flex-col mb-4">
+    <div className="mb-4 flex flex-col">
       <label htmlFor="postal-search" className="mb-1 font-medium">
         {translations.postalcode}
       </label>
@@ -64,7 +74,9 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({ value, onChange, error, s
         onInput={(e) => setSearch(e.currentTarget.value)}
         placeholder={translations.enterpostalcode}
         className={`w-full pl-3 ${
-          !isValidPostalCodeLocal && touched ? "border border-txterror" : "bg-bginput"
+          !isValidPostalCodeLocal && touched
+            ? 'border-txterror border'
+            : 'bg-bginput'
         }`}
       />
       <datalist id="postal-options">

@@ -1,117 +1,125 @@
-"use client"
-import React from "react";
-import Line from "./Line";
-import data from "../../app/data/data";
-import styles from "../../app/Assets.module.css";
+'use client';
+import React, { FC } from 'react';
+import Line from './Line';
+import data from '../../app/data/data';
+import styles from '../../app/Assets.module.css';
 
-type Props = {
-    parcelX: number;
-    parcelY: number;
-    parcelID: number;
-    scale: number;
+type ParcelProps = {
+  parcelX: number;
+  parcelY: number;
+  parcelID: number;
+  scale: number;
 };
 
-const Bed = ({ parcelX, parcelY, parcelID, scale }: Props) => {
+const Bed: FC<ParcelProps> = ({ parcelX, parcelY, parcelID, scale }) => {
+  return (
+    <section className="z-10 ml-5">
+      <div className="flex flex-col">
+        {/* //BorderTopGlobal */}
+        <div className="mt-5 flex">
+          {/* //BorderTopLeft */}
+          <div
+            className={`${styles.parcelBorderTopLeft} `}
+            style={{
+              width: scale * 0.1,
+              height: scale * 0.1,
+            }}
+          ></div>
 
-    return (
-        <section className=" ml-5 z-10">
-            <div className="flex flex-col">
+          {/* //BorderTop */}
+          <div
+            className={`${styles.parcelBorderTop} `}
+            style={{
+              width: parcelY * scale,
+              height: scale * 0.1,
+            }}
+          ></div>
 
-{/* //BorderTopGlobal */}
-                <div className="flex mt-5">
-{/* //BorderTopLeft */}
-                    <div className={`${styles.parcelBorderTopLeft} `}
-                        style={{
-                            width: scale * 0.1,
-                            height: scale * 0.1
-                        }}></div>
+          {/* //BorderTopRight */}
+          <div
+            className={`${styles.parcelBorderTopRight} `}
+            style={{
+              width: scale * 0.1,
+              height: scale * 0.1,
+            }}
+          ></div>
+        </div>
 
-{/* //BorderTop */}
-<div className={`${styles.parcelBorderTop} `}
-                        style={{
-                            width: parcelY * scale,
-                            height: scale * 0.1
-                        }}></div>
+        <div className="flex">
+          {/* //BorderLeft */}
+          <div
+            className={`${styles.parcelBorderLeft} `}
+            style={{
+              width: 0.1 * scale,
+              height: parcelX * scale,
+            }}
+          ></div>
 
-{/* //BorderTopRight */}
-<div className={`${styles.parcelBorderTopRight} `}
-                        style={{
-                            width: scale * 0.1,
-                            height: scale * 0.1
-                        }}></div>
-                </div>
+          {/* //MainCore */}
 
-                        <div className="flex">
+          <div
+            className={`${styles.parcelBackground} flex flex-col justify-around`}
+            style={{
+              height: parcelX * scale,
+              width: parcelY * scale,
+            }}
+          >
+            {data.lines.map((line) =>
+              line.parcelId === parcelID ? (
+                <Line
+                  key={line.id}
+                  line={line}
+                  lineX={line.length}
+                  lineStatus={line.status}
+                  // handleClick={handleClick}
+                  scale={scale}
+                />
+              ) : null
+            )}
+            {/* <p>id : {parcel.id} length : {parcel.length} width : {parcel.width}</p> */}
+          </div>
 
-{/* //BorderLeft */}
-<div className={`${styles.parcelBorderLeft} `}
-                        style={{
-                            width: 0.1 * scale,
-                            height: parcelX * scale
-                        }}></div>
+          {/* //BorderRight */}
+          <div
+            className={`${styles.parcelBorderRight} `}
+            style={{
+              width: 0.1 * scale,
+              height: parcelX * scale,
+            }}
+          ></div>
+        </div>
+        {/* //BorderBottomGlobal */}
+        <div className="flex">
+          {/* //BorderBottomLeft */}
+          <div
+            className={`${styles.parcelBorderBottomLeft} `}
+            style={{
+              width: scale * 0.1,
+              height: scale * 0.1,
+            }}
+          ></div>
 
+          {/* //BorderBottom */}
+          <div
+            className={`${styles.parcelBorderBottom} `}
+            style={{
+              width: parcelY * scale,
+              height: scale * 0.1,
+            }}
+          ></div>
 
-{/* //MainCore */}
-
-                <div
-                    className={`${styles.parcelBackground} flex flex-col justify-around`}
-                    style={{
-                        height: parcelX * scale,
-                        width: parcelY * scale,
-                    }}
-                    >
-                    {
-                        data.lines.map((line) => (
-                            line.parcelId === parcelID ? (
-                                <Line
-                                    key={line.id}
-                                    line={line}
-                                    lineX={line.length}
-                                    lineStatus={line.status}
-                                    // handleClick={handleClick}
-                                    scale={scale} />
-                                ) : null
-                            ))
-                        }
-                    {/* <p>id : {parcel.id} length : {parcel.length} width : {parcel.width}</p> */}
-                </div>
-
-{/* //BorderRight */}
-<div className={`${styles.parcelBorderRight} `}
-                        style={{
-                            width: 0.1 * scale,
-                            height: parcelX * scale
-                        }}></div>
-
-                        </div>
-{/* //BorderBottomGlobal */}
-                <div className="flex">
-
-{/* //BorderBottomLeft */}
-<div className={`${styles.parcelBorderBottomLeft} `}
-                        style={{
-                            width: scale * 0.1,
-                            height: scale * 0.1
-                        }}></div>
-
-{/* //BorderBottom */}
-<div className={`${styles.parcelBorderBottom} `}
-                        style={{
-                            width: parcelY * scale,
-                            height: scale * 0.1
-                        }}></div>
-
-{/* //BorderBottomRight */}
-<div className={`${styles.parcelBorderBottomRight} `}
-                        style={{
-                            width: scale * 0.1,
-                            height: scale * 0.1
-                        }}></div>
-
-                </div>
-            </div>
-        </section>
-    );
+          {/* //BorderBottomRight */}
+          <div
+            className={`${styles.parcelBorderBottomRight} `}
+            style={{
+              width: scale * 0.1,
+              height: scale * 0.1,
+            }}
+          ></div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Bed;
