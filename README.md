@@ -70,6 +70,30 @@ Listes disponibles :
 ------------------
 FAMILY, LINE_STATUS
 
+## Génération de la documentation
+- Assurez-vous que Doxygen est installé sur votre système.
+- Si ce n'est pas le cas, suiver ce lien [Doxygen](https://www.doxygen.nl/manual/docblocks.html)
+
+### Étapes pour générer la documentation
+
+1. Clonez le projet ou ouvrez votre projet existant.
+2. Ouvrez un terminal et placez-vous dans le répertoire racine du projet.
+3. Exécutez la commande suivante pour générer le fichier de configuration Doxygen :
+   ```bash
+   doxygen -g
+   ```
+4. Modifiez le fichier Doxyfile si nécessaire pour définir les fichiers et répertoires à inclure dans la documentation.
+
+5. Ajoutez des commentaires Doxygen dans votre code.
+   ```cs
+   /// <summary> Ceci est un commentaire xml. </summary>
+   ```
+
+7. Exécutez la commande suivante pour générer la documentation :
+    ```bash
+    doxygen Doxyfile
+    ```
+
 
 
         
