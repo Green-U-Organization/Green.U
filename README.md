@@ -87,9 +87,12 @@ FAMILY, LINE_STATUS
 5. Ajoutez des commentaires Doxygen dans votre code.
    ```cs
    /// <summary> Ceci est un commentaire xml. </summary>
-   /*
+   /**
    * Ceci est aussi un commentaire xml.
    */
+   /!
+       Ceci est aussi un commentaire xml.
+   !/
    ```
 
 7. Exécutez la commande suivante pour générer la documentation :
