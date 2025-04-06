@@ -86,13 +86,9 @@ FAMILY, LINE_STATUS
 
 5. Ajoutez des commentaires XML dans votre code.
    ```cs
-   /// <summary> Ceci est un commentaire xml. (Pour le C# et le Java)</summary>
-   /**
-   * Ceci est aussi un commentaire xml.(Pour le C et le C++)
-   */
-   /*!
-       Ceci est aussi un commentaire xml. (Pour le C)
-   */
+   /// <summary>
+   /// Ceci est un commentaire xml. (Pour le C# et le Java)
+   /// </summary>
    ```
 
 7. Exécutez la commande suivante pour générer la documentation :
