@@ -72,7 +72,7 @@ FAMILY, LINE_STATUS
 
 ## Génération de la documentation
 - Assurez-vous que Doxygen est installé sur votre système.
-- Si ce n'est pas le cas, suivez ce lien [Doxygen](https://www.doxygen.nl/manual/docblocks.html)
+- Si ce n'est pas le cas, suivez ce lien [Doxygen](https://www.doxygen.nl)
 
 ### Étapes pour générer la documentation
 
@@ -87,6 +87,9 @@ FAMILY, LINE_STATUS
 5. Ajoutez des commentaires Doxygen dans votre code.
    ```cs
    /// <summary> Ceci est un commentaire xml. </summary>
+   /*
+   * Ceci est aussi un commentaire xml.
+   */
    ```
 
 7. Exécutez la commande suivante pour générer la documentation :
