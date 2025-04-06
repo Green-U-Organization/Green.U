@@ -86,7 +86,7 @@ FAMILY, LINE_STATUS
 
 5. Ajoutez des commentaires Doxygen dans votre code.
    ```cs
-   /// <summary> Ceci est un commentaire xml. (Pour le c# et le java)</summary>
+   /// <summary> Ceci est un commentaire xml. (Pour le C# et le java)</summary>
    /**
    * Ceci est aussi un commentaire xml.(Pour le C et le C++)
    */
