@@ -3,6 +3,8 @@ import Image from "next/image";
 import Card from "@/components/UI/Card"
 import Button from "@/components/UI/Button"
 import { useLanguage } from '../app/contexts/LanguageProvider'
+import AvatarUpload from "./AvatarUpload";
+//import { useState } from "react";
 
 const avatars = [
   "/image/avatars/PI_01.png",
@@ -58,23 +60,24 @@ interface AvatarSelectorProps {
 }
 
 function AvatarSelector({ onSelect, isOpen, onClose }: AvatarSelectorProps) {
-  
+
   if (!isOpen) return null;
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const {translations} = useLanguage();
 
+
   return (
  
-  <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-50 z-50">
+  <div className="max-w-screen flex justify-center items-center bg-white bg-opacity-50 z-50">
   
-    <Card className="relative w-150 max-w-full bg-cardbackground rounded-xl shadow-lg p-4">
-  
-      <h2 className="text-center text-3xl font-semibold sticky top-0 bg-cardbackground py-2 z-10">
+    <Card className="relative w-150 max-w-full bg-cardbackground rounded-xl p-4">
+
+      <h2 className="text-center text-3xl font-semibold sticky bg-cardbackground py-2 z-10">
         {translations.chooseanavatar}
       </h2>
       
-      <div className="max-h-90 overflow-y-auto p-2 grid grid-cols-4 gap-2">
+      <div className="max-h-55 overflow-y-auto p-1 grid grid-cols-4 gap-2">
         {avatars.map((avatar) => (
           <div
             key={avatar}
@@ -94,8 +97,10 @@ function AvatarSelector({ onSelect, isOpen, onClose }: AvatarSelectorProps) {
           </div>
         ))}
       </div>
-          
-      <div className="flex justify-center sticky">
+
+      <AvatarUpload/>
+
+      <div className="flex justify-center">
         <Button type="submit" onClick={onClose}>
           {translations.close}
         </Button>

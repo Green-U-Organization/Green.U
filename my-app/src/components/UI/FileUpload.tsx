@@ -1,0 +1,53 @@
+import React, { useRef, useState } from 'react';
+import { useLanguage } from '@/app/contexts/LanguageProvider';
+import Button from './Button';
+
+interface FileUploadProps {
+  onFileChange: (file: File) => void;
+}
+
+const FileUpload: React.FC<FileUploadProps> = ({ onFileChange }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { translations } = useLanguage();
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      onFileChange(event.target.files[0]);
+    }
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+  
+  return (
+    <div className="flex flex-col items-center">
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+        ref={fileInputRef}
+      />
+
+      <div className="relative group">
+        
+        <Button
+          type="button"
+          onClick={handleButtonClick}
+        >
+          {translations.chooseanimage}
+        </Button>
+        
+        <div className="absolute border-shadow border-2 rounded-xl bottom-full hidden group-hover:block bg-bginput text-black text-m p-2">
+          {translations.authorizedformats} :<br />- 50Ko<br />- *.png, *.jpg, *.jpeg<br />- 96x96px
+        </div>
+
+      </div>
+
+    </div>
+  );
+};
+
+export default FileUpload;

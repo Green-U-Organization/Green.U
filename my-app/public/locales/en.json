@@ -40,7 +40,6 @@
     "newsletter": "I would like to sign up for the newsletter (optional).",
     "errorNotCheckedToU": "Please accept the ToU",
 
-
     "__COMMENT_4" : "CGU",
     "cgutitle" : "Terms of Use (ToU)",
     "cgutitle1" : "1. Platform Overview",
@@ -78,7 +77,20 @@
     "level4": "Master",
 
     "__COMMENT_xx" : "PROFILE POPUP",
-    "chooseanavatar" : "Choose an avatar",
+    "chooseanavatar": "Choose an avatar",
+    "uploadyouravatar": "or upload yours",
+    "chooseanimage": "Choose an image",
+    "selectedfile": "Selected file: ",
+    "avataruploaded": "Avatar uploaded successfully!",
+    "uploaderror": "Upload error: ",
+    "uploading": "Uploading...",
+    "upload": "Upload",
+    "fileisnotanimage": "The selected file is not an image",
+    "formatnotallowed": "The file format is not allowed. Please upload an image in PNG, JPEG, or JPG format.",
+    "sizeexceed": "The file size exceeds the allowed limit of 50 Ko.",
+    "dimensionsexceed": "The image dimensions exceed the allowed limit of ",
+    "authorizedformats": "Authorized formats",
+    
     
     "__COMMENT_xxx" : "BUTTONS",
     "close": "Close",

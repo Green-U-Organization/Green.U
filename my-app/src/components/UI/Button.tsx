@@ -10,6 +10,8 @@ type ButtonProps = {
 	handleSubmit?: (e: FormEvent<HTMLButtonElement>) => void;
 	handleAction?: (e: FormEvent<HTMLButtonElement>) => void;
 	onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+	disabled?: boolean;
+	title?: string;
 };
 
 const Button = ({
@@ -19,6 +21,8 @@ const Button = ({
 	handleSubmit,
 	handleAction,
 	onClick,
+	disabled,
+	title
 }: ButtonProps) => {
 	const [buttonPush, setButtonPush] = useState(false);
 	const [inside, setInside] = useState(false);
@@ -49,9 +53,10 @@ const Button = ({
 	return type === "link" && href ? (
 		<Link href={href}>
 			<button
-				className={`select-none text-2xl py-2 px-6 relative bg-button m-5 ${
-					inside ? "bg-bgbutton" : "bg-cardbackground"
-				}`}
+				className={`select-none text-2xl py-2 px-6 relative bg-button m-5 
+					disabled:opacity-50 disabled:cursor-not-allowed
+					${inside ? "bg-bgbutton" : "bg-cardbackground"}`
+				}
 				onMouseDown={handleDown}
 				onMouseUp={handleUp}
 				onMouseLeave={handleLeave}
@@ -59,6 +64,8 @@ const Button = ({
 				onClick={handleClick}
 				onTouchStart={handleDown}
 				onTouchEnd={handleUp}
+				disabled={disabled}
+				title={title}
 			>
 				<div
 					className={`absolute -top-0 left-0 h-2 w-full bg-extbutton`}
@@ -224,9 +231,10 @@ const Button = ({
 		</Link>
 	) : (
 		<button
-			className={`select-none text-2xl py-2 px-6 relative bg-button m-5 ${
-				inside ? "bg-bgbutton" : "bg-cardbackground"
-			} cursor-pointer`}
+			className={`select-none text-2xl py-2 px-6 relative bg-button m-5 cursor-pointer
+				disabled:opacity-50 disabled:cursor-not-allowed
+				${inside ? "bg-bgbutton" : "bg-cardbackground"}`
+			}
 			onMouseDown={handleDown}
 			onMouseUp={handleUp}
 			onMouseLeave={handleLeave}
@@ -234,6 +242,8 @@ const Button = ({
 			onClick={handleClick}
 			onTouchStart={handleDown}
 			onTouchEnd={handleUp}
+			disabled={disabled}
+			title={title}
 		>
 			<div
 				className={`absolute top-0 left-0 h-2 w-full bg-extbutton`}

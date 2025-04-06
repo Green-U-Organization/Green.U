@@ -4,22 +4,25 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 06/04/25 | @Emmanuel | Ajout de la prop disable et title au composant Button
+||| Création d'un bucket Supabase pour le stockage des avatars
+||| Ajout de la fonctionnalité de téléversement d'image | Voir pour la suppression de l'ancienne image si changement  
 | 04/04/25 | @Emmanuel | Ajout d'un cookie dans le login et test dans le landing
 | 03/04/25 | @Emmanuel | Adaptation des actions
 | 02/04/25 | @Pierre @Emmanuel | Ajout des actions
 | 01/04/25 | @Pierre @Emmanuel @Mehdi | Définition d'une grosse partie des tables
-||| @Pierre @Emmanuel | Ajout des actions
+|| @Pierre @Emmanuel | Ajout des actions
 | 31/03/25 | @Emmanuel | Ajout d'une checkbox sur les CGU.
 ||| Amélioration de la détermination du thème (utile si thème particulier, ex Noël)
 ||| Vérification et ajout de traductions
 | 28/03/25 | @Pierre | ajout assets pour les jardins | https://opengameart.org/content/lpc-crops  https://opengameart.org/content/lpc-farming-tilesets-magic-animations-and-ui-elements
 ||| Ajout de 55 image de légumes en png + assets pour garden et parcel
 ||| Ajout d'un champs "icon" dans la table "line" afin d'afficher le légume sur la ligne
-||| @Emmanuel | Mise en place d'une géolocalisation (page Map) | Pb de menu hamburger...
+|| @Emmanuel | Mise en place d'une géolocalisation (page Map) | Pb de menu hamburger...
 | 27/03/25 | @Pierre @Emmanuel | Correction bug SignUp page
-||| @Emmanuel | Traduction du CGU avec la méthode globale à l'app 
-||| @Emmanuel | Sécurisation de la validation du code postal
-||| @Pierre | Mise en place de garden / Parcel / Line de manière basique
+|| @Emmanuel | Traduction du CGU avec la méthode globale à l'app 
+||| Sécurisation de la validation du code postal
+|| @Pierre | Mise en place de garden / Parcel / Line de manière basique
 | 26/03/25 | @Emmanuel | Correction des pixels manquants sur l'image reliant au profile sur la dashboard
 ||| Refactorisation du code de la page signin
 ||| Ajout d'une page CGU (fr et en) | Politique de confidentialité à ajouter
