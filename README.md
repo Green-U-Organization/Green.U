@@ -72,7 +72,7 @@ FAMILY, LINE_STATUS
 
 ## Génération de la documentation
 - Assurez-vous que Doxygen est installé sur votre système.
-- Si ce n'est pas le cas, suiver ce lien [Doxygen](https://www.doxygen.nl/manual/docblocks.html)
+- Si ce n'est pas le cas, suivez ce lien [Doxygen](https://www.doxygen.nl/manual/docblocks.html)
 
 ### Étapes pour générer la documentation
 
