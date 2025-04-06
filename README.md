@@ -90,9 +90,9 @@ FAMILY, LINE_STATUS
    /**
    * Ceci est aussi un commentaire xml.
    */
-   /!
+   /*!
        Ceci est aussi un commentaire xml.
-   !/
+   */
    ```
 
 7. Exécutez la commande suivante pour générer la documentation :
