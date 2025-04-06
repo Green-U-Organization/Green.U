@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GreenUApi.Models;
 
@@ -15,7 +17,9 @@ public enum GardenType{
 
 public partial class Garden
 {
-    public long Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public long? Id { get; set; }
 
     public long AuthorId { get; set; }
 
@@ -23,9 +27,9 @@ public partial class Garden
 
     public string Description { get; set; } = null!;
 
-    public long Latitude { get; set; }
+    public Double Latitude { get; set; }
 
-    public long Longitude { get; set; }
+    public Double Longitude { get; set; }
 
     public long Length { get; set; }
 

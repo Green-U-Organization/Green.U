@@ -15,10 +15,17 @@ namespace GreenUApi.Controllers
             _context = context;
         }
 
-        [HttpGet("{id}")]
         /// <summary>
-        /// Permet de récupérer un garden.
-        ///</summary>
+        /// Récupère les informations d'un jardin par son ID.
+        /// </summary>
+        /// <param name="id">L'ID du jardin à récupérer.</param>
+        /// <returns>Retourne un jardin correspondant à l'ID spécifié, ou HTTP 404 Not Found si le jardin n'existe pas.</returns>
+        /// <remarks>
+        /// Exemple de requête GET pour obtenir un jardin :
+        ///
+        /// GET /api/gardens/{id}
+        /// </remarks>
+        [HttpGet("{id}")]
         public async Task<ActionResult<Garden>> GetGarden(long id)
         {
             var garden = await _context.Gardens.FindAsync(id);
@@ -31,12 +38,27 @@ namespace GreenUApi.Controllers
             return garden;
         }
 
-        // GET: api/Garden/user
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
+        /// <summary>
+        /// Récupère tous les jardins associés à un utilisateur par son nom d'utilisateur.
+        /// </summary>
+        /// <param name="author">Le nom d'utilisateur de l'auteur des jardins.</param>
+        /// <returns>Retourne une liste de jardins associés à l'utilisateur, ou HTTP 404 Not Found si l'utilisateur ou les jardins n'existent pas.</returns>
+        /// <remarks>
+        /// Exemple de requête GET pour obtenir les jardins d'un utilisateur :
+        ///
+        /// GET /api/gardens/user/{author}
+        /// </remarks>
+        [HttpGet("user/{author}")]
+        public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByName(string author)
         {
+            var user = await _context.Users.Where(u => u.Username == author).ToListAsync();
+
+            if(user == null){
+                return NotFound();
+            }
+
             var gardens = await _context.Gardens
-                                        .Where(g => g.AuthorId == userId)
+                                        .Where(g => g.AuthorId == user[0].Id)
                                         .ToListAsync();
 
             if (gardens == null)
@@ -47,10 +69,23 @@ namespace GreenUApi.Controllers
             return gardens;
         }
 
-        // PUT: api/Garden/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Met à jour les informations d'un jardin existant.
+        /// </summary>
+        /// <param name="id">L'ID du jardin à mettre à jour.</param>
+        /// <param name="garden">L'objet jardin avec les nouvelles informations.</param>
+        /// <returns>Retourne HTTP 204 No Content si la mise à jour est réussie, ou HTTP 404 Not Found si le jardin n'existe pas.</returns>
+        /// <remarks>
+        /// Exemple de requête PATCH pour mettre à jour un jardin :
+        ///
+        /// PATCH /api/gardens/{id}
+        /// Body:
+        /// {
+        ///     "name": "New Garden Name",
+        ///     "location": "New Location"
+        /// }
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PutGarden(long id, Garden garden)
+        public async Task<IActionResult> PatchGarden(long id, Garden garden)
         {
             garden.Id = id;
             _context.Entry(garden).State = EntityState.Modified;
@@ -74,22 +109,40 @@ namespace GreenUApi.Controllers
             return NoContent();
         }
 
+
         /// <summary>
-        /// Structure acceptée par la route :
-        /// {
-        ///   "name": "string",
-        ///   "email": "string",
-        ///   "password": "string"
-        /// }
+        /// Crée un nouveau jardin.
         /// </summary>
-        /// <param name="garden"></param>
-        /// <returns></returns>
+        /// <param name="garden">L'objet jardin à ajouter.</param>
+        /// <returns>Retourne HTTP 201 Created avec l'objet jardin créé et un lien vers la ressource créée.</returns>
+        /// <remarks>
+        /// Exemple de requête POST pour ajouter un jardin :
+        ///
+        /// POST /api/gardens
+        /// Body:
+        /// {
+        ///     "id": 0,
+        ///     "authorId": 0,
+        ///     "name": "string",
+        ///     "description": "string",
+        ///     "latitude": 0,
+        ///     "longitude": 0,
+        ///     "length": 0,
+        ///     "width": 0
+        /// }
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<Garden>> PostGarden([FromBody] Garden garden)
         {
             if (garden == null)
             {
                 return BadRequest("Invalid garden data.");
+            }
+
+            var userExists = await _context.Users.AnyAsync(u => u.Id == garden.AuthorId);
+            if (!userExists)
+            {
+                return BadRequest("The specified authorId does not exist.");
             }
 
             garden.CreatedAt = DateTime.UtcNow;
@@ -101,7 +154,16 @@ namespace GreenUApi.Controllers
         }
 
 
-        // DELETE: api/Garden/5
+        /// <summary>
+        /// Supprime un jardin par son ID.
+        /// </summary>
+        /// <param name="id">L'ID du jardin à supprimer.</param>
+        /// <returns>Retourne HTTP 204 No Content si la suppression est réussie, ou HTTP 404 Not Found si le jardin n'existe pas.</returns>
+        /// <remarks>
+        /// Exemple de requête DELETE pour supprimer un jardin :
+        ///
+        /// DELETE /api/gardens/{id}
+        /// </remarks>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGarden(long id)
         {
@@ -117,6 +179,14 @@ namespace GreenUApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Vérifie si un jardin existe dans la base de données.
+        /// </summary>
+        /// <param name="id">L'ID du jardin à vérifier.</param>
+        /// <returns>Retourne true si le jardin existe, sinon false.</returns>
+        /// <remarks>
+        /// Cette méthode est utilisée pour vérifier la présence d'un jardin avant de tenter une mise à jour ou une suppression.
+        /// </remarks>
         private bool GardenExists(long id)
         {
             return _context.Gardens.Any(e => e.Id == id);
