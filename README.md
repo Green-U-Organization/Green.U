@@ -84,9 +84,9 @@ FAMILY, LINE_STATUS
    ```
 4. Modifiez le fichier Doxyfile si nécessaire pour définir les fichiers et répertoires à inclure dans la documentation.
 
-5. Ajoutez des commentaires Doxygen dans votre code.
+5. Ajoutez des commentaires XML dans votre code.
    ```cs
-   /// <summary> Ceci est un commentaire xml. (Pour le C# et le java)</summary>
+   /// <summary> Ceci est un commentaire xml. (Pour le C# et le Java)</summary>
    /**
    * Ceci est aussi un commentaire xml.(Pour le C et le C++)
    */
