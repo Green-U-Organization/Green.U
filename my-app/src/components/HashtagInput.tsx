@@ -75,9 +75,7 @@ const HashtagInput: React.FC<HashtagInputProps> = ({
         {inputValue.trim() !== '' &&
           !hashtags.includes(`#${inputValue.trim()}`) && (
             <div className="flex items-start">
-              <Button type="button" onClick={handleAddHashtag}>
-                {translations.add}
-              </Button>
+              <Button onClick={handleAddHashtag}>{translations.add}</Button>
             </div>
           )}
       </div>

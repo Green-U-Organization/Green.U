@@ -10,25 +10,41 @@ import { useRouter } from 'next/navigation';
 
 type ButtonProps = {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
 };
 
-const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, onClick }) => {
+const Button: FC<PropsWithChildren<ButtonProps>> = ({
+  children,
+  onClick,
+  disabled = false,
+}) => {
   const [buttonPush, setButtonPush] = useState(false);
   const [inside, setInside] = useState(false);
 
   const handleDown = () => {
+    if (disabled) return;
     setButtonPush(true);
     new Event('action') as unknown as FormEvent<HTMLButtonElement>;
   };
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    if (disabled) return;
     e.preventDefault();
     onClick(e);
   };
 
-  const handleUp = () => setButtonPush(false);
-  const handleEnter = () => setInside(true);
+  const handleUp = () => {
+    if (disabled) return;
+    setButtonPush(false);
+  };
+
+  const handleEnter = () => {
+    if (disabled) return;
+    setInside(true);
+  };
+
   const handleLeave = () => {
+    if (disabled) return;
     setInside(false);
     setButtonPush(false);
   };
@@ -43,8 +59,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, onClick }) => {
       onClick={handleClick}
       onTouchStart={handleDown}
       onTouchEnd={handleUp}
-      // disabled={disabled}
-      // title={title}
+      disabled={disabled}
     >
       <div
         className={`bg-extbutton absolute top-0 left-0 h-2 w-full`}
