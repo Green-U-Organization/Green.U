@@ -1,15 +1,14 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
+using GreenUApi.Controllers;
 using GreenUApi.Models;
+using DotNetEnv;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
+Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
-// Charger les variables d'environnement
-Env.Load();
-
-// Ajouter l'authentification JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -30,15 +29,62 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<GreenUDB>();
 
+// Db connection
+var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};" +
+                       $"port={Environment.GetEnvironmentVariable("PORT")};" +
+                       $"database={Environment.GetEnvironmentVariable("DATABASE")};" +
+                       $"user={Environment.GetEnvironmentVariable("USER")};" +
+                       $"password={Environment.GetEnvironmentVariable("PASSWORD")};" +
+                       $"SslMode={Environment.GetEnvironmentVariable("MODE")};";
+
+// Load the DB context 
+builder.Services.AddDbContext<GreenUDB>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+);
+
+// Use Cors with .env
+var allowedOrigin = Environment.GetEnvironmentVariable("API") ?? "http://localhost:3000";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+    policy => policy.WithOrigins(allowedOrigin)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials());
+});
+
+// Add other services
+builder.Services.AddControllers();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.DocumentName = "GreenUAPI";
+    config.Title = "GreenUAPI v1";
+    config.Version = "v1";
+});
+
 var app = builder.Build();
 
-// Configurer le pipeline HTTP
-app.UseHttpsRedirection();
+// Use cors
+app.UseCors("AllowSpecificOrigin");
 
-// Ces deux middlewares sont ESSENTIELS pour l'authentification
-app.UseAuthentication(); // Doit être avant UseAuthorization
+app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseOpenApi();
+    app.UseSwaggerUi(config =>
+    {
+        config.DocumentTitle = "GreenUAPI";
+        config.Path = "/swagger";
+        config.DocumentPath = "/swagger/{documentName}/swagger.json";
+        config.DocExpansion = "list";
+    });
+}
+
 
 app.Run();
