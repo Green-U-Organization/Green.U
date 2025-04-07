@@ -11,14 +11,14 @@ import React, {
 import { useRouter } from 'next/navigation';
 
 type ButtonProps = {
-	children: React.ReactNode;
-	href?: string;
-	type: "link" | "submit" | "button" | "action";
-	handleSubmit?: (e: FormEvent<HTMLButtonElement>) => void;
-	handleAction?: (e: FormEvent<HTMLButtonElement>) => void;
-	onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  children: React.ReactNode;
+  href?: string;
+  type: 'link' | 'submit' | 'button' | 'action';
+  handleSubmit?: (e: FormEvent<HTMLButtonElement>) => void;
+  handleAction?: (e: FormEvent<HTMLButtonElement>) => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
-	title?: string;
+  title?: string;
 };
 
 const Button: FC<PropsWithChildren<ButtonProps>> = ({
@@ -29,17 +29,17 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   handleAction,
   onClick,
   disabled,
-	title
+  title,
 }) => {
   const [buttonPush, setButtonPush] = useState(false);
   const [inside, setInside] = useState(false);
 
   const handleDown = () => {
     setButtonPush(true);
-    if (type === 'submit' && handleSubmit)
-      new Event('submit') as unknown as FormEvent<HTMLButtonElement>;
-    if (type === 'action' && handleAction)
-      new Event('action') as unknown as FormEvent<HTMLButtonElement>;
+    // if (type === 'submit' && handleSubmit)
+    //   new Event('submit') as unknown as FormEvent<HTMLButtonElement>;
+    // if (type === 'action' && handleAction)
+    //   new Event('action') as unknown as FormEvent<HTMLButtonElement>;
   };
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -71,8 +71,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
   return (
     <ButtonWrapper>
       <button
-        className={`bg-button relative m-5 px-6 py-2 text-2xl select-none ${inside ? 'bg-bgbutton' : 'bg-cardbackground'}
-          disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer`}
+        className={`bg-button relative m-5 px-6 py-2 text-2xl select-none ${inside ? 'bg-bgbutton' : 'bg-cardbackground'} cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
         onMouseDown={handleDown}
         onMouseUp={handleUp}
         onMouseLeave={handleLeave}
@@ -81,7 +80,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
         onTouchStart={handleDown}
         onTouchEnd={handleUp}
         disabled={disabled}
-				title={title}
+        title={title}
       >
         <div
           className={`bg-extbutton absolute top-0 left-0 h-2 w-full`}
