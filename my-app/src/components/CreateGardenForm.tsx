@@ -168,10 +168,10 @@ const CreateGardenForm = () => {
             </div>
           )} */}
           <div className="flex justify-between">
+            <Button onClick={() => router.push('/garden-manager')}>Back</Button>
             <Button onClick={() => router.push('/garden-manager/create')}>
-              Back
+              Create !
             </Button>
-            <Button onClick={handleSubmit}>Create !</Button>
           </div>
         </form>
       </Card>

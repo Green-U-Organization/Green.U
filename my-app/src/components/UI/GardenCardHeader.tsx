@@ -102,7 +102,9 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
         </h1>
 
         <div className="col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center">
-          <Button onClick={handleEditGarden}>Edit actual Garden</Button>
+          <Button onClick={() => router.push('/garden-manager/edit')}>
+            Edit actual Garden
+          </Button>
         </div>
 
         <div className="col-start-2 col-end-3 row-start-2 row-end-3 flex justify-center">
