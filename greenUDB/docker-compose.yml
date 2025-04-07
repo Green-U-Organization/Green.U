@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+      - "8443:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      # Variables d'environnement pour la connexion DB
+      - SERVEUR=${SERVEUR}
+      - PORT=${PORT}
+      - DATABASE=${DATABASE}
+      - USER=${USER}
+      - PASSWORD=${PASSWORD}
+      - MODE=${MODE}
+    # Si vous avez besoin de volumes pour la persistance
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    # Pour charger les variables depuis un fichier .env
+    env_file:
+      - .env

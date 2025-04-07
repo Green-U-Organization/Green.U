@@ -26,7 +26,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
     policy => policy.WithOrigins(allowedOrigin)
                     .AllowAnyHeader()
-                    .AllowAnyMethod());
+                    .AllowAnyMethod()
+                    .AllowCredentials());
 });
 
 // Add other services
@@ -45,7 +46,6 @@ var app = builder.Build();
 // Use cors
 app.UseCors("AllowSpecificOrigin");
 
-// Middleware
 app.UseRouting();
 app.UseAuthorization();
 

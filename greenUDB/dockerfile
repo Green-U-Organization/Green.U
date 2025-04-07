@@ -1,27 +1,21 @@
-# Utiliser l'image de base officielle de .NET
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-WORKDIR /app
-EXPOSE 80
-
-# Utiliser l'image SDK pour construire l'application
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
-COPY ["GreenUDB/GreenUDB.csproj", "GreenUDB/"]
-COPY ["GreenUApi/GreenUApi.csproj", "GreenUApi/"]
-COPY ["Migrations/Migrations.csproj", "Migrations/"]
-COPY ["model/model.csproj", "model/"]
-COPY ["obj/obj.csproj", "obj/"]
-COPY ["Properties/Properties.csproj", "Properties/"]
-RUN dotnet restore "GreenUApi/GreenUApi.csproj"
+
+# Copiez les fichiers .csproj et restaurez les dépendances
+COPY ["GreenUApi.csproj", "./"]
+RUN dotnet restore
+
+# Copiez le reste des fichiers et construisez l'application
 COPY . .
-WORKDIR "/src/GreenUApi"
-RUN dotnet build "GreenUApi.csproj" -c Release -o /app/build
+RUN dotnet build -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "GreenUApi.csproj" -c Release -o /app/publish
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
-# Final stage
-FROM base AS final
+# Image finale
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+EXPOSE 80
+EXPOSE 443
 ENTRYPOINT ["dotnet", "GreenUApi.dll"]
