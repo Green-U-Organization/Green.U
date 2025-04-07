@@ -7,7 +7,7 @@ namespace GreenUApi.Controllers
 {
     [Route("garden")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class GardenController : ControllerBase
     {
         private readonly GreenUDB _context;

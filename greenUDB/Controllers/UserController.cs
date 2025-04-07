@@ -38,7 +38,7 @@ public class UserModification
 
 [Route("user")]
 [ApiController]
-[Authorize]
+// [Authorize]
 public class UserController(GreenUDB db) : ControllerBase
 {
     private readonly GreenUDB _db = db;
