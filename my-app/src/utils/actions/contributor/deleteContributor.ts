@@ -1,4 +1,4 @@
-// DELETE 
+// DELETE
 // /contributor
 // {
 // user_id: 3,

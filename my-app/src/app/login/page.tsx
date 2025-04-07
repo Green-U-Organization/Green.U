@@ -151,8 +151,6 @@ const page = () => {
     }
   };
 
-
-
   return (
     <section className="flex max-h-[calc(100vh-15px)] items-center justify-center overflow-auto">
       <Card className={'max-w-screen px-8 pt-7'}>
