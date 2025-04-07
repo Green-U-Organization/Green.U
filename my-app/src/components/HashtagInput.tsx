@@ -6,10 +6,10 @@ import TextInput from '@/components/UI/TextInput';
 interface HashtagInputProps {
   //Callback pour remonter les Hashtags au parent
   onHashtagsChange?: (hashtags: string[]) => void;
-  label: string;
-  name: string;
-  placeHolder: string;
-  error: boolean;
+  label?: string;
+  name?: string;
+  placeHolder?: string;
+  error?: boolean;
 }
 
 const HashtagInput: React.FC<HashtagInputProps> = ({

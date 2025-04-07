@@ -4,17 +4,20 @@ import Card from './UI/Card';
 import TextInput from './UI/TextInput';
 import MapComponent from './UI/MapComponent';
 import Button from './UI/Button';
+import HashtagInput from './HashtagInput';
+import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
 
-// gardenId: 3,
-// authorId?: 2,
-// name?: "Manulo",
-// description?: "proutland",
-// latitude?: "894512940.322",
-// longitude?: "1345323.324",
-// length?: 23.3,
-// width?: 32.45,
-// privacy?: "Public",
-// type?: "Professionnal"
+type gardenType = {
+  authorId: number;
+  name: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  privacy: 'private' | 'public';
+  type: 'individual' | 'collective' | 'professionnal';
+};
 
 const CreateGardenForm = () => {
   const [location, setLocation] = useState<{
@@ -24,6 +27,17 @@ const CreateGardenForm = () => {
 
   const [gardenLength, setGardenLength] = useState<number>(10);
   const [gardenWidth, setGardenWidth] = useState<number>(10);
+  const [garden, setGarden] = useState<gardenType>({
+    authorId: 1,
+    name: '',
+    description: '',
+    latitude: 50,
+    longitude: 50,
+    length: gardenLength,
+    width: gardenWidth,
+    privacy: 'public',
+    type: 'individual',
+  });
 
   const rows = 5;
   const cols = 33;
@@ -50,7 +64,19 @@ const CreateGardenForm = () => {
     if (form) {
       form.submit();
       console.log(form);
-      alert(form);
+      setGarden({
+        ...garden,
+        authorId: 1,
+        name: form.gardenName,
+        description: form.gardenDescription,
+        latitude: 50,
+        longitude: 50,
+        length: gardenLength,
+        width: gardenWidth,
+        privacy: form.gardenPrivacy,
+        type: form.gardenType,
+      });
+      createNewGarden(garden);
     } else {
       console.error('Form nor found');
     }
@@ -59,7 +85,7 @@ const CreateGardenForm = () => {
   return (
     <>
       <Card className="h-full max-w-screen px-8 pt-5 pb-10">
-        <h1>Garden Creator</h1>
+        <h1 className="text-center text-4xl">Garden Creator</h1>
 
         <form method="post" id="createGarden" className="flex flex-col">
           <TextInput
@@ -76,6 +102,13 @@ const CreateGardenForm = () => {
             cols={Number(cols)}
             className="rounded-md border-1"
           ></textarea>
+
+          <HashtagInput
+            label={'Add some Hashtags to caracterize your garden'}
+            name="gardenHashtag"
+            placeHolder="#Permaculture"
+            error={false}
+          ></HashtagInput>
 
           <label htmlFor="gardenLength">
             Your garden is <span>{gardenLength}</span> meters long
