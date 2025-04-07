@@ -29,7 +29,7 @@ const TextInput: FC<TextInputProps> = ({
       )}
       <input
         {...props} // Toutes les props natives passées directement
-        className={`w-full pl-3 ${error || errorPassChar || errorPassMatch ? 'border-txterror border' : 'bg-bginput'} ${props.className || ''}`}
+        className={`w-full pl-3 ${error || errorPassChar || errorPassMatch ? 'border-txterror border' : 'bg-bginput'} `}
       />
       {errorPassMatch && (
         <p className="text-txterror">{translations.errorPassMatch}</p>

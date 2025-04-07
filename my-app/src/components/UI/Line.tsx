@@ -139,3 +139,87 @@ const Line: FC<LineProps> = ({ lineX, handleClick, line, scale }) => {
 };
 
 export default Line;
+
+//VERSION P5JS
+
+// import React, { useState } from 'react';
+// import Sketch from 'react-p5';
+// import cropIcon from '../../app/contexts/cropIcon';
+
+// type LineType = {
+//   crop: {
+//     icon: string;
+//     vegetable: string;
+//     variety: string;
+//   };
+//   status: string;
+// };
+
+// type LineProps = {
+//   lineX: number;
+//   lineStatus: string;
+//   line: LineType;
+//   handleClick?: () => void;
+//   scale: number;
+// };
+
+// const Line: React.FC<LineProps> = ({ lineX, handleClick, line, scale }) => {
+//   const [displayInfo, setDisplayInfo] = useState(false);
+//   const [images, setImages] = useState<{ [key: string]: HTMLImageElement }>({});
+
+//   const selectedCrop = line.crop.icon;
+
+//   const preload = (p5: any) => {
+//     const cropImages = {};
+//     for (const key in cropIcon) {
+//       const img = p5.loadImage(cropIcon[key], (img) => {
+//         cropImages[key] = img;
+//       });
+//     }
+//     setImages(cropImages);
+//   };
+
+//   const setup = (p5: any, canvasParentRef: any) => {
+//     p5.createCanvas(lineX * scale, (2 * scale) / 100).parent(canvasParentRef);
+//   };
+
+//   const draw = (p5: any) => {
+//     p5.background(220);
+
+//     // Draw crop icon
+//     if (images[selectedCrop]) {
+//       p5.image(images[selectedCrop], 0, 0, lineX * scale, (2 * scale) / 100);
+//     }
+
+//     // Draw info popup
+//     if (displayInfo) {
+//       p5.fill(200);
+//       p5.rect(0, -50, 150, 100);
+//       p5.textSize(12);
+//       p5.text(line.crop.vegetable, 10, -30);
+//       p5.textSize(10);
+//       p5.text(line.crop.variety, 10, -15);
+//       p5.text(line.status, 10, 0);
+//     }
+//   };
+
+//   const handleMouseEnter = () => {
+//     setDisplayInfo(true);
+//   };
+
+//   const handleMouseLeave = () => {
+//     setDisplayInfo(false);
+//   };
+
+//   return (
+//     <div
+//       onMouseEnter={handleMouseEnter}
+//       onMouseLeave={handleMouseLeave}
+//       onClick={handleClick}
+//     >
+//       <Sketch preload={preload} setup={setup} draw={draw} />
+//     </div>
+//   );
+// };
+
+// export default Line;

@@ -108,3 +108,94 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
 };
 
 export default Garden;
+
+//VERSION P5JS
+
+// import React, { useEffect, useState } from 'react';
+// import Sketch from 'react-p5';
+// import data from '../../app/data/data';
+
+// type GardenProps = {
+//   garden: Garden;
+//   scale: number;
+// };
+
+// type Garden = {
+//   id: number;
+//   authorId: number;
+//   name: string;
+//   description: string;
+//   latitude: number;
+//   longitude: number;
+//   length: number;
+//   width: number;
+//   privacy: 'private' | 'public';
+//   type: 'individual' | 'collective' | 'professionnal';
+// };
+
+// const Garden: React.FC<GardenProps> = ({ garden, scale }) => {
+//   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
+//   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+//   useEffect(() => {
+//     setCurrentGarden(garden);
+//     setIsLoading(false);
+//   }, [garden]);
+
+//   if (isLoading) {
+//     return <div>Loading...</div>;
+//   }
+
+//   const setup = (p5: any, canvasParentRef: any) => {
+//     p5.createCanvas(
+//       currentGarden.width * scale,
+//       currentGarden.length * scale
+//     ).parent(canvasParentRef);
+//   };
+
+//   const draw = (p5: any) => {
+//     p5.background(220);
+
+//     // Draw grass
+//     p5.fill(139, 69, 19);
+//     p5.rect(0, 0, currentGarden.width * scale, currentGarden.length * scale);
+
+//     // Draw fences
+//     p5.fill(139, 69, 19);
+//     p5.rect(0, 0, currentGarden.width * scale, 0.3 * scale); // Top
+//     p5.rect(
+//       0,
+//       currentGarden.length * scale - 0.3 * scale,
+//       currentGarden.width * scale,
+//       0.3 * scale
+//     ); // Bottom
+//     p5.rect(0, 0, 0.2 * scale, currentGarden.length * scale); // Left
+//     p5.rect(
+//       currentGarden.width * scale - 0.2 * scale,
+//       0,
+//       0.2 * scale,
+//       currentGarden.length * scale
+//     ); // Right
+
+//     // Draw parcels
+//     data.parcels.forEach((parcel: any) => {
+//       if (parcel.gardenId === currentGarden.id) {
+//         p5.fill(107, 142, 35);
+//         p5.rect(
+//           parcel.x * scale,
+//           parcel.y * scale,
+//           parcel.width * scale,
+//           parcel.length * scale
+//         );
+//       }
+//     });
+//   };
+
+//   return (
+//     <section className="mb-10 ml-10 flex">
+//       <Sketch setup={setup} draw={draw} />
+//     </section>
+//   );
+// };
+
+// export default Garden;

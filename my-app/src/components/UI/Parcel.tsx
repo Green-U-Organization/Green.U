@@ -123,3 +123,74 @@ const Bed: FC<ParcelProps> = ({ parcelX, parcelY, parcelID, scale }) => {
 };
 
 export default Bed;
+
+//VERSION P5JS
+
+// import React from 'react';
+// import Sketch from 'react-p5';
+// import data from '../../app/data/data';
+
+// type ParcelProps = {
+//   parcelX: number;
+//   parcelY: number;
+//   parcelID: number;
+//   scale: number;
+// };
+
+// const Bed: React.FC<ParcelProps> = ({ parcelX, parcelY, parcelID, scale }) => {
+//   const setup = (p5: any, canvasParentRef: any) => {
+//     p5.createCanvas(parcelY * scale, parcelX * scale).parent(canvasParentRef);
+//   };
+
+//   const draw = (p5: any) => {
+//     p5.background(220);
+
+//     // Draw borders
+//     p5.fill(169, 169, 169);
+//     p5.rect(0, 0, parcelY * scale, 0.1 * scale); // Top border
+//     p5.rect(0, parcelX * scale - 0.1 * scale, parcelY * scale, 0.1 * scale); // Bottom border
+//     p5.rect(0, 0, 0.1 * scale, parcelX * scale); // Left border
+//     p5.rect(parcelY * scale - 0.1 * scale, 0, 0.1 * scale, parcelX * scale); // Right border
+
+//     // Draw corners
+//     p5.rect(0, 0, 0.1 * scale, 0.1 * scale); // Top left
+//     p5.rect(parcelY * scale - 0.1 * scale, 0, 0.1 * scale, 0.1 * scale); // Top right
+//     p5.rect(0, parcelX * scale - 0.1 * scale, 0.1 * scale, 0.1 * scale); // Bottom left
+//     p5.rect(
+//       parcelY * scale - 0.1 * scale,
+//       parcelX * scale - 0.1 * scale,
+//       0.1 * scale,
+//       0.1 * scale
+//     ); // Bottom right
+
+//     // Draw main area
+//     p5.fill(204, 255, 204);
+//     p5.rect(
+//       0.1 * scale,
+//       0.1 * scale,
+//       parcelY * scale - 0.2 * scale,
+//       parcelX * scale - 0.2 * scale
+//     );
+
+//     // Draw lines
+//     data.lines.forEach((line: any) => {
+//       if (line.parcelId === parcelID) {
+//         p5.fill(102, 204, 0);
+//         p5.rect(
+//           (line.x || 0) * scale,
+//           (line.y || 0) * scale,
+//           line.length * scale,
+//           line.width * scale
+//         );
+//       }
+//     });
+//   };
+
+//   return (
+//     <section className="z-10 ml-5">
+//       <Sketch setup={setup} draw={draw} />
+//     </section>
+//   );
+// };
+
+// export default Bed;

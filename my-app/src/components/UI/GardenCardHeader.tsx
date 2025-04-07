@@ -3,6 +3,8 @@ import Image from 'next/image';
 import React, { FC, useEffect, useState } from 'react';
 import ZoomSlider from './ZoomSlider';
 import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
+import Button from './Button';
+import { useRouter } from 'next/navigation';
 
 type GardenCardHeaderProps = {
   containerName: string;
@@ -35,6 +37,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   const [gardenId, setGardenId] = useState<number | null>(null);
   const [selectedGarden, setSelectedGarden] = useState<Garden>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
 
   //#region FETCHING GARDEN DATA
   const fetchGardens = async () => {
@@ -75,6 +78,14 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
       onGardenIdChange(selectedGarden);
     }
   };
+
+  const handleEditGarden = () => {
+    console.log('edit garden');
+  };
+
+  const handleCreateGarden = () => {
+    console.log('create garden');
+  };
   //#endregion
 
   if (isLoading) {
@@ -84,18 +95,32 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   return (
     <>
       <section
-        className={`mt-3 grid grid-cols-2 grid-rows-3 items-center ${className}`}
+        className={`grid-rows-auto mt-3 grid auto-cols-auto items-center ${className}`}
       >
         <h1 className="col-start-1 col-end-3 mt-2 ml-4 text-center text-4xl">
           {containerName}
         </h1>
 
-        <ZoomSlider
-          handleChange={handleScaleChange}
-          className="col-start-1 col-end-2 row-start-2 row-end-3"
-        ></ZoomSlider>
+        <div className="col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center">
+          <Button onClick={() => router.push('/garden-manager/edit')}>
+            Edit actual Garden
+          </Button>
+        </div>
 
-        <div className="col-start-2 col-end-3 row-start-2 row-end-3 mr-2 flex justify-around">
+        <div className="col-start-2 col-end-3 row-start-2 row-end-3 flex justify-center">
+          <Button onClick={() => router.push('/garden-manager/create')}>
+            Create new Garden
+          </Button>
+        </div>
+
+        <div className="col-start-1 col-end-2 row-start-4 row-end-5 flex justify-center">
+          <ZoomSlider
+            handleChange={handleScaleChange}
+            className=""
+          ></ZoomSlider>
+        </div>
+
+        <div className="col-start-2 col-end-3 row-start-4 row-end-5 mr-2 flex justify-around">
           <Image
             className="h-8 w-8 rounded-md border-1 border-black object-contain p-1"
             src="/image/icons/list.png"
