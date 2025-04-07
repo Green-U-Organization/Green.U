@@ -9,46 +9,16 @@ import React, {
 import { useRouter } from 'next/navigation';
 
 type ButtonProps = {
-<<<<<<< HEAD
-  children: React.ReactNode;
-  href?: string;
-  type: 'link' | 'submit' | 'button' | 'action';
-  handleSubmit?: (e: FormEvent<HTMLButtonElement>) => void;
-  handleAction?: (e: FormEvent<HTMLButtonElement>) => void;
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
-  disabled?: boolean;
-  title?: string;
-};
-
-const Button: FC<PropsWithChildren<ButtonProps>> = ({
-  children,
-  href,
-  type,
-  handleSubmit,
-  handleAction,
-  onClick,
-  disabled,
-  title,
-}) => {
-=======
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
 const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, onClick }) => {
->>>>>>> f4127f1daf37b7f02d7b6b13c6a06d379d1a5e1e
   const [buttonPush, setButtonPush] = useState(false);
   const [inside, setInside] = useState(false);
 
   const handleDown = () => {
     setButtonPush(true);
-<<<<<<< HEAD
-    // if (type === 'submit' && handleSubmit)
-    //   new Event('submit') as unknown as FormEvent<HTMLButtonElement>;
-    // if (type === 'action' && handleAction)
-    //   new Event('action') as unknown as FormEvent<HTMLButtonElement>;
-=======
     new Event('action') as unknown as FormEvent<HTMLButtonElement>;
->>>>>>> f4127f1daf37b7f02d7b6b13c6a06d379d1a5e1e
   };
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -64,25 +34,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, onClick }) => {
   };
 
   return (
-<<<<<<< HEAD
-    <ButtonWrapper>
-      <button
-        className={`bg-button relative m-5 px-6 py-2 text-2xl select-none ${inside ? 'bg-bgbutton' : 'bg-cardbackground'} cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
-        onMouseDown={handleDown}
-        onMouseUp={handleUp}
-        onMouseLeave={handleLeave}
-        onMouseEnter={handleEnter}
-        onClick={handleClick}
-        onTouchStart={handleDown}
-        onTouchEnd={handleUp}
-        disabled={disabled}
-        title={title}
-      >
-        <div
-          className={`bg-extbutton absolute top-0 left-0 h-2 w-full`}
-          style={{ display: buttonPush ? 'block' : 'none' }}
-        />
-=======
     <button
       className={`bg-button relative m-5 px-6 py-2 text-2xl select-none ${inside ? 'bg-bgbutton' : 'bg-cardbackground'} cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
       onMouseDown={handleDown}
@@ -99,7 +50,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, onClick }) => {
         className={`bg-extbutton absolute top-0 left-0 h-2 w-full`}
         style={{ display: buttonPush ? 'block' : 'none' }}
       />
->>>>>>> f4127f1daf37b7f02d7b6b13c6a06d379d1a5e1e
 
       {/* bordure de base */}
       <div
