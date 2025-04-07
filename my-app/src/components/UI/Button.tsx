@@ -1,7 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import React, { FormEvent, MouseEvent, useState } from 'react';
+import React, {
+  FC,
+  FormEvent,
+  MouseEvent,
+  PropsWithChildren,
+  useState,
+} from 'react';
 
 type ButtonProps = {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
