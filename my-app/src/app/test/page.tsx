@@ -39,7 +39,7 @@ export default function Page() {
 
   return (
     <form onSubmit={handleSubmit} className="ml-10">
-      <Button type="submit">Créer l'utilisateur</Button>
+      <Button onClick={handleSubmit}>Créer l'utilisateur</Button>
       {success && <p className="text-green-500">{success}</p>}
       {error && <p className="text-red-500">{error}</p>}
     </form>

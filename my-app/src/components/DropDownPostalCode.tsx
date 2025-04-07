@@ -74,7 +74,7 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({
         onInput={(e) => setSearch(e.currentTarget.value)}
         placeholder={translations.enterpostalcode}
         className={`w-full pl-3 ${
-          !isValidPostalCodeLocal && touched
+          error || (!isValidPostalCodeLocal && touched)
             ? 'border-txterror border'
             : 'bg-bginput'
         }`}

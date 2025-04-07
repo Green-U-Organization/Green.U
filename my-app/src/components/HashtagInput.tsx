@@ -53,8 +53,9 @@ const HashtagInput: React.FC<HashtagInputProps> = ({
 
   //Mise à jour de l'input
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    //Suppression des espaces
-    setInputValue(e.target.value.replace(/\s+/g, ''));
+    //Suppression des espaces et des #
+    const sanitizedValue = e.target.value.replace(/#/g, '').replace(/\s+/g, '');
+    setInputValue(sanitizedValue);
   };
 
   return (

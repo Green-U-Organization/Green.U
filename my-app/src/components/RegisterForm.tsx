@@ -50,7 +50,6 @@ const RegisterForm = () => {
   const { translations } = useLanguage();
   const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
   const calendarRef = useRef<HTMLDivElement>(null);
-  const loginRef = useRef<HTMLInputElement>(null);
 
   //Les niveaux possible du jardinier
   const gardenerLevels = [
@@ -92,7 +91,7 @@ const RegisterForm = () => {
   });
 
   const [isValidPostalCode, setIsValidPostalCode] = useState(true);
-  const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"
+  const [step, setStep] = useState(2); //Pour gérer l'affichage des "pages"
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVerify, setShowPasswordVerify] = useState(false);
   const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
@@ -124,20 +123,22 @@ const RegisterForm = () => {
     console.log('passwordMatch ? ', passwordsMatch);
     //AJOUTER MESSAGE D ERREUR SPECIFIQUE
 
+    checkPassword(data.password);
+    checkPasswordVerify(data.password, data.passwordVerify);
+
     const postalCodeValid = isValidPostalCode;
 
     return (
       !hasEmptyFields && passwordValid && passwordsMatch && postalCodeValid
     );
   };
-  //const calendarRef = useRef<HTMLDivElement>(null);
 
   const step2Validation = () => {
     console.log('check validation step 2');
+
     const isValid =
-      formDataRegister.gardenerLevel &&
-      formDataRegister.interests.length > 0 &&
-      isCheckedToU;
+      //formDataRegister.gardenerLevel &&
+      formDataRegister.interests.length > 0 && isCheckedToU;
 
     setErrorForm((prevErrorForm) => ({
       ...prevErrorForm,
@@ -146,12 +147,12 @@ const RegisterForm = () => {
       errorNotCheckedToU: !isCheckedToU,
     }));
 
-    console.log('validation ok');
+    console.log('validation ok: ', isValid);
     return isValid;
   };
 
   const checkPassword = (password: string) => {
-    if (password.length <= 8) {
+    if (password.length < 8) {
       setErrorForm((prevErrorForm) => ({
         ...prevErrorForm,
         errorSpecialCharPassword: true,
@@ -201,6 +202,10 @@ const RegisterForm = () => {
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
     const formJson = Object.fromEntries(formData.entries());
+
+    //Ajout manuel du champ birthdate (car géré par Calendar et non par un input)
+    formJson.birthDate = formDataRegister.birthDate;
+
     console.log(formJson);
 
     setFormDataRegister((prevFormData) => ({
@@ -239,7 +244,7 @@ const RegisterForm = () => {
           errorEmptyLastname: !formJson.lastname,
           errorEmptyEmail: !formJson.email,
           errorEmptyPostalCode: !formJson.postalCode,
-          errorEmptyBirthDate: !formDataRegister.birthDate,
+          errorEmptyBirthDate: !formJson.birthDate,
         }));
         return;
       } else {
@@ -338,6 +343,7 @@ const RegisterForm = () => {
 
   const handleSubmit = () => {
     const isValid = step2Validation();
+    console.log('Submit -> is valid: ', isValid);
     if (!isValid) {
       return;
     }
@@ -358,7 +364,7 @@ const RegisterForm = () => {
       Sexe: formDataRegister.gender,
       Birthdate: formDataRegister.birthDate,
     };
-    fetch(process.env.NEXT_PUBLIC_API + '/Users', {
+    fetch(process.env.NEXT_PUBLIC_API + '/users', {
       method: 'POST',
       body: JSON.stringify(bodyRequest),
     });
@@ -393,6 +399,7 @@ const RegisterForm = () => {
             placeholder={translations.enterpassword}
             error={errorForm.errorEmptyPassword}
             errorPassChar={errorForm.errorSpecialCharPassword}
+            autoComplete="new-password"
           />
 
           <button
@@ -416,6 +423,7 @@ const RegisterForm = () => {
             placeholder={translations.enterpasswordagain}
             error={errorForm.errorEmptyPasswordVerify}
             errorPassMatch={errorForm.errorMatchingPassword}
+            autoComplete="new-password"
           />
 
           <button
@@ -435,7 +443,7 @@ const RegisterForm = () => {
           <p onClick={handleClick}>{translations.birthdate} </p>
           <p
             onClick={handleClick}
-            className={` ${formDataRegister.birthDate ? 'bg-bginput text-black' : 'bg-bginput text-gray-500'} ${errorForm.errorEmptyBirthDate ? 'border border-red-500 bg-transparent' : ''} cursor-pointer pl-3`}
+            className={` ${formDataRegister.birthDate ? 'bg-bginput text-black' : 'bg-bginput text-gray-500'} ${errorForm.errorEmptyBirthDate ? 'border-txterror border bg-transparent' : ''} cursor-pointer pl-3`}
           >
             {formDataRegister.birthDate
               ? new Date(formDataRegister.birthDate).toLocaleDateString()
@@ -590,7 +598,6 @@ const RegisterForm = () => {
         )}
         <div className="flex justify-center pb-5">
           <Button onClick={handlePrevStep}>{translations.previous}</Button>
-
           <Button onClick={handleSubmit}>{translations.sign}</Button>
         </div>
       </form>
