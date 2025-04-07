@@ -9,6 +9,7 @@ services:
       - "8443:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
       # Variables d'environnement pour la connexion DB
       - SERVEUR=${SERVEUR}
       - PORT=${PORT}
