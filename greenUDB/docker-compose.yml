@@ -6,10 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8443:443"
+      - "8443:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=http://+:443
       # Variables d'environnement pour la connexion DB
       - SERVEUR=${SERVEUR}
       - PORT=${PORT}
