@@ -6,12 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp3.1\GreenUApi.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
-    <PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.69.0" />
-    <PackageReference Include="Google.Apis.Calendar.v3" Version="1.69.0.3667" />
-    <PackageReference Include="Google.Apis.Drive.v3" Version="1.69.0.3703" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
