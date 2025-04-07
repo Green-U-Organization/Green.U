@@ -36,15 +36,25 @@ public partial class GreenUDB : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=188.166.24.55;database=hamilton-10-greenu;user=greenu;password=sPkXf7xfT8!yCfAV", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.21-mysql"));
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .UseCollation("utf8mb4_0900_ai_ci")
+            .UseCollation("utf8mb4_unicode_ci")
             .HasCharSet("utf8mb4");
+
+
+        modelBuilder.Entity<PlantNursery>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("PlantNursery");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("id");
+
+        });
+
 
         modelBuilder.Entity<Contributor>(entity =>
         {
@@ -57,7 +67,7 @@ public partial class GreenUDB : DbContext
             entity.HasIndex(e => e.UserId, "fk_Contributor_User_id");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
@@ -83,19 +93,29 @@ public partial class GreenUDB : DbContext
             entity.HasIndex(e => e.LineId, "fk_Crops_Line_id");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
+                
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("Created_at");
+                
             entity.Property(e => e.LineId).HasColumnName("Line_id");
+            
             entity.Property(e => e.Variety).HasColumnType("text");
             entity.Property(e => e.Vegetable).HasColumnType("text");
 
-            entity.HasOne(d => d.Line).WithMany(p => p.Crops)
+            entity.HasOne(d => d.Line)
+                .WithMany(p => p.Crops)
                 .HasForeignKey(d => d.LineId)
                 .HasConstraintName("fk_Crops_Line_id");
+
+            entity.HasOne(d => d.PlantNursery)
+                .WithMany(pn => pn.Crops)
+                .HasForeignKey(d => d.PlantNurseryId)
+                .HasConstraintName("fk_Crops_PlantNursery_id");
         });
+
 
         modelBuilder.Entity<Follower>(entity =>
         {
@@ -110,7 +130,7 @@ public partial class GreenUDB : DbContext
             entity.HasIndex(e => e.UserId, "fk_Follower_User_id");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.FollowerId).HasColumnName("Follower_id");
             entity.Property(e => e.GardenId).HasColumnName("Garden_id");
@@ -138,7 +158,7 @@ public partial class GreenUDB : DbContext
 
             entity.HasIndex(e => e.AuthorId, "fk_Garden_Admin_id");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.AuthorId).HasColumnName("Admin_id");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
@@ -159,7 +179,7 @@ public partial class GreenUDB : DbContext
             entity.HasIndex(e => e.ParcelId, "fk_Line_Parcel_id");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
@@ -169,6 +189,7 @@ public partial class GreenUDB : DbContext
             entity.HasOne(d => d.Parcel).WithMany(p => p.Lines)
                 .HasForeignKey(d => d.ParcelId)
                 .HasConstraintName("fk_Line_Parcel_id");
+                
         });
 
         modelBuilder.Entity<Log>(entity =>
@@ -186,7 +207,7 @@ public partial class GreenUDB : DbContext
             entity.HasIndex(e => e.ParcelId, "fk_Logs_Parcel_id");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.Action).HasColumnType("text");
             entity.Property(e => e.AuthorId).HasColumnName("Author_id");
@@ -228,7 +249,7 @@ public partial class GreenUDB : DbContext
             entity.HasIndex(e => e.GardenId, "fk_Parcel_Garden_id");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
@@ -252,7 +273,7 @@ public partial class GreenUDB : DbContext
             entity.HasIndex(e => e.UserId, "fk_Tags_User_id");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.GardenId).HasColumnName("Garden_id");
             entity.Property(e => e.Hashtag).HasColumnType("text");
@@ -273,7 +294,7 @@ public partial class GreenUDB : DbContext
 
             entity.ToTable("User");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.Bio).HasColumnType("text");
             entity.Property(e => e.Country).HasColumnType("text");
             entity.Property(e => e.CreatedAt)

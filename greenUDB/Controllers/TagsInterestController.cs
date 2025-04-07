@@ -1,4 +1,5 @@
 ﻿using GreenUApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ namespace GreenUApi.Controllers
 {
     [Route("tags")]
     [ApiController]
+    // [Authorize]
     public class TagsInterestController(GreenUDB db)  : ControllerBase
     {
         private readonly GreenUDB _db = db;
@@ -31,13 +33,29 @@ namespace GreenUApi.Controllers
                 _db.TagsInterests.Add(Tag);
                 await _db.SaveChangesAsync();
 
-                return Ok("Tag created !");
+                return Ok(new { message = "Tag created !"});
             }
             else
             {
-                return BadRequest("The tag with this user is already exist");
+                return BadRequest(new { message = "The tag with this user is already exist" });
             }
           
+        }
+
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<TagsInterest>> GetUserTag(long id)
+        {
+            var UserTags = await _db.TagsInterests
+           .Where(t => t.UserId == id)
+           .Select(t => t.Hashtag)
+           .ToArrayAsync();
+
+            if (UserTags.Length == 0)
+            {
+                return NotFound(new { message = "This user tag not exist" });
+            }
+
+            return Ok(UserTags);
         }
     }
 }

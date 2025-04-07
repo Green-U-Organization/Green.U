@@ -1,73 +1,57 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore;
-using GreenUApi.Controllers;
-using Token;
-using System.Text;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using DotNetEnv;
 using GreenUApi.Models;
-using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
-namespace GreenUApi.authentification
+namespace Token;
+public class Jwt
 {
-    public class Authentification
+    public static string GenerateJwtToken(User user)
     {
-        public static string[] Hasher(string password, byte[]? salty)
+        Env.Load();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "");
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            // Generate a 128-bit salt using a sequence of
-            // cryptographically strong random bytes.
-            byte[] salt;
-            if(salty != null){
-                salt = salty;
-            }
-            else{
-                salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
-            }
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("userId", user.Id.ToString())
+            }),
+            Expires = DateTime.UtcNow.AddHours(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
 
-            // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: password!,
-            salt: salt,
-            prf: KeyDerivationPrf.HMACSHA256,
-            iterationCount: 100000,
-            numBytesRequested: 256 / 8));
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
 
-            return [hashed, Convert.ToBase64String(salt)];
+    public bool VerifyJwtToken(string token)
+    {
+        Env.Load();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "");
 
-        }
-
-    public static async Task<IResult> Login(string username, string password, GreenUDB db)
+        var validationParameters = new TokenValidationParameters
         {
-            var User = await db.Users
-            .Where(u => u.Username == username)
-            .Select(u => new User
-            {
-                Id = u.Id,
-                Username = u.Username,
-                Password = u.Password,
-                Salt = u.Salt
-            })
-            .FirstOrDefaultAsync();
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
 
-            if (User == null)
-            {
-                return TypedResults.Unauthorized();
-            }
+        try{
+            SecurityToken validatedToken;
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
 
-
-            String hashedPassword = "";
-            if(User.Salt != null)
-                hashedPassword = Hasher(password, Convert.FromBase64String(User.Salt))[0];
-
-            if (User.Password == hashedPassword)
-            {
-                var token = Jwt.GenerateJwtToken(User);
-
-                return TypedResults.Ok(new { message = "Mot de passe valide !", token });
-            }
-
-            return TypedResults.Unauthorized();
+            return true;
+        }catch{
+            return false;
         }
-
-
     }
 }
