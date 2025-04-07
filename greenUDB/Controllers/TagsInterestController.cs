@@ -31,13 +31,29 @@ namespace GreenUApi.Controllers
                 _db.TagsInterests.Add(Tag);
                 await _db.SaveChangesAsync();
 
-                return Ok("Tag created !");
+                return Ok(new { message = "Tag created !"});
             }
             else
             {
-                return BadRequest("The tag with this user is already exist");
+                return BadRequest(new { message = "The tag with this user is already exist" });
             }
           
+        }
+
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<TagsInterest>> GetUserTag(long id)
+        {
+            var UserTags = await _db.TagsInterests
+           .Where(t => t.UserId == id)
+           .Select(t => t.Hashtag)
+           .ToArrayAsync();
+
+            if (UserTags.Length == 0)
+            {
+                return NotFound(new { message = "This user tag not exist" });
+            }
+
+            return Ok(UserTags);
         }
     }
 }
