@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import ZoomSlider from './ZoomSlider';
 import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
 import Button from './Button';
+import { useRouter } from 'next/navigation';
 
 type GardenCardHeaderProps = {
   containerName: string;
@@ -36,6 +37,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   const [gardenId, setGardenId] = useState<number | null>(null);
   const [selectedGarden, setSelectedGarden] = useState<Garden>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
 
   //#region FETCHING GARDEN DATA
   const fetchGardens = async () => {
@@ -98,11 +100,15 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
         <h1 className="col-start-1 col-end-3 mt-2 ml-4 text-center text-4xl">
           {containerName}
         </h1>
+
         <div className="col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center">
           <Button onClick={handleEditGarden}>Edit actual Garden</Button>
         </div>
+
         <div className="col-start-2 col-end-3 row-start-2 row-end-3 flex justify-center">
-          <Button onClick={handleCreateGarden}>Create new Garden</Button>
+          <Button onClick={() => router.push('/garden-manager/create')}>
+            Create new Garden
+          </Button>
         </div>
 
         <div className="col-start-1 col-end-2 row-start-4 row-end-5 flex justify-center">

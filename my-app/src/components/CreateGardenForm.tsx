@@ -6,6 +6,7 @@ import MapComponent from './UI/MapComponent';
 import Button from './UI/Button';
 import HashtagInput from './HashtagInput';
 import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
+import { useRouter } from 'next/navigation';
 
 type gardenType = {
   authorId: number;
@@ -41,6 +42,7 @@ const CreateGardenForm = () => {
 
   const rows = 5;
   const cols = 33;
+  const router = useRouter();
 
   const handleLocationSelect = (selectedLocation: {
     latitude: number;
@@ -165,8 +167,12 @@ const CreateGardenForm = () => {
               <p>Longitude: {location.longitude}</p>
             </div>
           )} */}
-
-          <Button onClick={handleSubmit}>Create !</Button>
+          <div className="flex justify-between">
+            <Button onClick={() => router.push('/garden-manager/create')}>
+              Back
+            </Button>
+            <Button onClick={handleSubmit}>Create !</Button>
+          </div>
         </form>
       </Card>
     </>
