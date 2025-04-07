@@ -11,21 +11,10 @@ import React, {
 import { useRouter } from 'next/navigation';
 
 type ButtonProps = {
-  href?: string;
-  type: 'link' | 'submit' | 'button' | 'action';
-  handleSubmit?: (e: FormEvent<HTMLButtonElement>) => void;
-  handleAction?: (e: FormEvent<HTMLButtonElement>) => void;
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-const Button: FC<PropsWithChildren<ButtonProps>> = ({
-  children,
-  href,
-  type,
-  handleSubmit,
-  handleAction,
-  onClick,
-}) => {
+const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, onClick }) => {
   const [buttonPush, setButtonPush] = useState(false);
   const [inside, setInside] = useState(false);
 
@@ -54,11 +43,6 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
     setInside(false);
     setButtonPush(false);
   };
-
-  const ButtonWrapper = ({ children }: { children: React.ReactNode }) => {
-    if (type === 'link' && href) {
-      return <Link href={href}>{children}</Link>;
-    }
 
     return children;
   };
