@@ -156,7 +156,7 @@ namespace GreenUApi.Controllers
         /// <param name="id">L'ID de la pépinière à vérifier.</param>
         /// <returns>Retourne true si la pépinière existe, sinon false.</returns>
         /// <remarks>
-        /// Cette méthode est utilisée pour vérifier la présence d'une pépinière avant de tenter une mise à jour ou une suppression.
+        /// /// Cette méthode est utilisée pour vérifier la présence d'une pépinière avant de tenter une mise à jour ou une suppression.
         /// </remarks>
         private bool PlantNurseryExists(long? id)
         {
