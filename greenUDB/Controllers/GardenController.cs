@@ -50,7 +50,7 @@ namespace GreenUApi.Controllers
         ///
         /// GET /api/gardens/user/{author}
         /// </remarks>
-        [HttpGet("user/{author}")]
+        [HttpGet("username/{author}")]
         public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByName(string author)
         {
             var user = await _context.Users.Where(u => u.Username == author).ToListAsync();
@@ -71,7 +71,7 @@ namespace GreenUApi.Controllers
             return gardens;
         }
 
-        [HttpGet("user/name/{userId}")]
+        [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
         {
             var gardens = await _context.Gardens
