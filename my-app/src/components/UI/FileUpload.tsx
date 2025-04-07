@@ -20,7 +20,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileChange }) => {
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
-  
+
   return (
     <div className="flex flex-col items-center">
       <input
@@ -31,21 +31,17 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileChange }) => {
         ref={fileInputRef}
       />
 
-      <div className="relative group">
-        
-        <Button
-          type="button"
-          onClick={handleButtonClick}
-        >
+      <div className="group relative">
+        <Button onClick={handleButtonClick}>
           {translations.chooseanimage}
         </Button>
-        
-        <div className="absolute border-shadow border-2 rounded-xl bottom-full hidden group-hover:block bg-bginput text-black text-m p-2">
-          {translations.authorizedformats} :<br />- 50Ko<br />- *.png, *.jpg, *.jpeg<br />- 96x96px
+
+        <div className="border-shadow bg-bginput text-m absolute bottom-full hidden rounded-xl border-2 p-2 text-black group-hover:block">
+          {translations.authorizedformats} :<br />- 50Ko
+          <br />- *.png, *.jpg, *.jpeg
+          <br />- 96x96px
         </div>
-
       </div>
-
     </div>
   );
 };
