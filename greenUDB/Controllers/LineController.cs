@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GreenUApi.Controllers
 {
     [Route("/garden/parcel/line")]
     [ApiController]
+    [Authorize]
     public class LineController : ControllerBase
     {
         private readonly GreenUDB _context;

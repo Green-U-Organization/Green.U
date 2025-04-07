@@ -2,9 +2,32 @@ using Microsoft.EntityFrameworkCore;
 using GreenUApi.Controllers;
 using GreenUApi.Models;
 using DotNetEnv;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "")),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+// Autres services
+builder.Services.AddControllers();
+builder.Services.AddDbContext<GreenUDB>();
 
 // Db connection
 var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};" +
