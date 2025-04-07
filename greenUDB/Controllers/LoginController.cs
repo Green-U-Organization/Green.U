@@ -1,7 +1,6 @@
 using GreenUApi.authentification;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 
 namespace GreenUApi.Controllers
@@ -49,10 +48,6 @@ namespace GreenUApi.Controllers
             {
                 return Conflict(new { message = "This username already exists" });
             }
-
-            // if(userDbData[0].Password == ""){
-            //     return BadRequest(new {"message" : "Le password est vide."});
-            // }
 
             string[] hashSalt = Authentification.Hasher(user.Password, null);
             user.Password = hashSalt[0];

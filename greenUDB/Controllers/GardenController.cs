@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GreenUApi.Controllers
 {
     [Route("garden")]
     [ApiController]
+    [Authorize]
     public class GardenController : ControllerBase
     {
         private readonly GreenUDB _context;

@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GreenUApi.Controllers
 {
     [Route("plantnursery")]
     [ApiController]
+    [Authorize]
     public class PlantNurseryController : ControllerBase
     {
         private readonly GreenUDB _context;
