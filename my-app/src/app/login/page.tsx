@@ -1,199 +1,208 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-"use client";
+'use client';
 
-import React, { ChangeEvent, FormEvent } from "react";
-import { useState } from "react";
-import Card from "@/components/UI/Card";
-import TextInput from "@/components/UI/TextInput";
-import Button from "@/components/UI/Button";
+import React, { ChangeEvent, FormEvent } from 'react';
+import { useState } from 'react';
+import Card from '@/components/UI/Card';
+import TextInput from '@/components/UI/TextInput';
+import Button from '@/components/UI/Button';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 //LIGNE A SUPPRIMER UNE FOIS QUE LA ROUTE AURA ETE MISE EN PLACE
-import { getUserById } from "@/utils/actions/user/getUserById";
+import { getUserById } from '@/utils/actions/user/getUserById';
 
 const page = () => {
-	const [userId, setUserId] = useState<string | null>(null);
-	const [email, setEmail] = useState<string>("");
-	const [password, setPassword] = useState<string>("");
-	const [error, setError] = useState<string | null>(null);
-	const [errorEmail, setErrorEmail] = useState<boolean>(false);
-    const [errorPassword, setErrorPassword] = useState<boolean>(false);
-	const {translations} = useLanguage();
-	
-	const router = useRouter();
-	
-	// const [checkPass, setCheckPass] = useState<Boolean>(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
+  const [errorEmail, setErrorEmail] = useState<boolean>(false);
+  const [errorPassword, setErrorPassword] = useState<boolean>(false);
+  const { translations } = useLanguage();
 
-	// const specialChar = [
-	// 	"²",
-	// 	"&",
-	// 	"~",
-	// 	"'",
-	// 	"#",
-	// 	"{",
-	// 	"(",
-	// 	"[",
-	// 	"-",
-	// 	"|",
-	// 	"`",
-	// 	"_",
-	// 	"^",
-	// 	"@",
-	// 	")",
-	// 	"]",
-	// 	"=",
-	// 	"}",
-	// 	"+",
-	// 	"°",
-	// 	"^",
-	// 	"¨",
-	// 	"¤",
-	// 	"$",
-	// 	"£",
-	// 	"%",
-	// 	"!",
-	// 	"§",
-	// 	":",
-	// 	"/",
-	// 	";",
-	// 	".",
-	// 	"?",
-	// ];
+  const router = useRouter();
 
-	// const checkPassword = (password: string) => {
-	// 	console.log("checking password...");
-	// 	if (password.length <= 8) {
-	// 		setCheckPass(false);
-	// 		console.log("password too short");
-	// 		return;
-	// 	}
-	// 	const hasSpecialChar = specialChar.some((char) =>
-	// 		password.includes(char)
-	// 	);
-	// 	setCheckPass(hasSpecialChar);
-	// };
+  // const [checkPass, setCheckPass] = useState<Boolean>(false);
 
-	const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setEmail(e.target.value);
-		setErrorEmail(false);
-		setUserId(null);
-	};
+  // const specialChar = [
+  // 	"²",
+  // 	"&",
+  // 	"~",
+  // 	"'",
+  // 	"#",
+  // 	"{",
+  // 	"(",
+  // 	"[",
+  // 	"-",
+  // 	"|",
+  // 	"`",
+  // 	"_",
+  // 	"^",
+  // 	"@",
+  // 	")",
+  // 	"]",
+  // 	"=",
+  // 	"}",
+  // 	"+",
+  // 	"°",
+  // 	"^",
+  // 	"¨",
+  // 	"¤",
+  // 	"$",
+  // 	"£",
+  // 	"%",
+  // 	"!",
+  // 	"§",
+  // 	":",
+  // 	"/",
+  // 	";",
+  // 	".",
+  // 	"?",
+  // ];
 
-	const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setErrorPassword(false);
-		const newPassword = e.target.value;
-		setPassword(newPassword);
-		setUserId(null); 
-		// checkPassword(newPassword);
-	};
+  // const checkPassword = (password: string) => {
+  // 	console.log("checking password...");
+  // 	if (password.length <= 8) {
+  // 		setCheckPass(false);
+  // 		console.log("password too short");
+  // 		return;
+  // 	}
+  // 	const hasSpecialChar = specialChar.some((char) =>
+  // 		password.includes(char)
+  // 	);
+  // 	setCheckPass(hasSpecialChar);
+  // };
 
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		setError(null);
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setErrorEmail(false);
+    setUserId(null);
+  };
 
-		// checkPassword(password);
-		if (!email) {
-			setErrorEmail(true)
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setErrorPassword(false);
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setUserId(null);
+    // checkPassword(newPassword);
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    // checkPassword(password);
+    if (!email) {
+      setErrorEmail(true);
+    }
+    if (!password) {
+      setErrorPassword(true);
+    }
+    // } else if (!checkPass) {
+    // 	setError(true)
+    // }
+    else {
+      setErrorEmail(false);
+      setErrorPassword(false);
+
+      // ça fonctionne. Prévoir la route pour log in!
+      console.log(email);
+      console.log(password);
+
+      //A REMPLACER PAR L'OBJET USER
+      try {
+        const response = await getUserById(1);
+
+        if (!response) {
+          throw new Error('User not found');
         }
-        if (!password) {
-            setErrorPassword(true)
-        }
-		// } else if (!checkPass) {
-		// 	setError(true)
-		// } 
-        else {
-			setErrorEmail(false);
-            setErrorPassword(false)
 
-			// ça fonctionne. Prévoir la route pour log in!
-			console.log(email);
-			console.log(password);
+        const userId = response.id;
 
-			//A REMPLACER PAR L'OBJET USER
-			try {
-				const response = await getUserById(1);
+        // Définir la date d'expiration du cookie (10 minutes)
+        const minutes = 10; //Délais d'expiration du cookie
+        const expirationInDays = minutes / (60 * 24); // Conversion des minutes en jours (obligatoire)
 
-				if (!response) {
-					throw new Error("User not found");
-				}
-				
-				const userId = response.id;
-
-				// Définir la date d'expiration du cookie (10 minutes)
-				const minutes = 10; //Délais d'expiration du cookie
-				const expirationInDays = minutes / (60 * 24); // Conversion des minutes en jours (obligatoire)
-
-				/* Définition du cookie
+        /* Définition du cookie
 				expires  : la période d'expiration du cookie (en jours)
 				secure   : le cookie ne sera envoyé qu'en https (si true)
 				sameSite : le cookie ne sera pas envoyé si la requête vient d'un autre site (si Strict)
 				*/
-				Cookies.set("userId", userId, { expires: expirationInDays, secure: true, sameSite: "Strict" });
+        Cookies.set('userId', userId, {
+          expires: expirationInDays,
+          secure: true,
+          sameSite: 'Strict',
+        });
 
-				// Mettre à jour l'ID utilisateur dans l'état
-				setUserId(userId);
-				setError(null);
+        // Mettre à jour l'ID utilisateur dans l'état
+        setUserId(userId);
+        setError(null);
 
-				//Redirige vers la page du dashboard
-				router.push("/landing");
+        //Redirige vers la page du dashboard
+        router.push('/landing');
+      } catch (error) {
+        console.error("Erreur lors du chargement de l'utilisateur :", error);
+        setError(
+          error instanceof Error ? error.message : 'Une erreur est survenue'
+        );
+      }
+    }
+  };
 
-			} catch (error) {
-				console.error("Erreur lors du chargement de l'utilisateur :", error);
-					setError(error instanceof Error ? error.message : "Une erreur est survenue");
-			}
-		}
-	};
 
-	return (
-		<section className="flex items-center justify-center max-h-[calc(100vh-15px)] overflow-auto">
-			<Card className={"max-w-screen px-8 pt-7"}>
-			{/*}flex flex-col p-5 max-w-150*/}
-				<form onSubmit={handleSubmit}>
-					<div className="flex flex-col items-center justify-center">
-						<h2 className="text-7xl mb-10">*Green-U*</h2>
 
-						<div className="flex flex-col justify-center">
-							<TextInput
-								type="email"
-								label={translations.email}
-								value={email}
-								name="email"
-								placeholder={translations.enteremail}
-								onChange={handleEmailChange}
-								error={errorEmail}
-							/>
-							<br />
-							<TextInput
-								type="password"
-								label={translations.password}
-								value={password}
-								name="password"
-								placeholder={translations.enterpassword}
-								onChange={handlePasswordChange}
-								error={errorPassword}
-							/>
-						</div>
+  return (
+    <section className="flex max-h-[calc(100vh-15px)] items-center justify-center overflow-auto">
+      <Card className={'max-w-screen px-8 pt-7'}>
+        {/*}flex flex-col p-5 max-w-150*/}
+        <form id="loginForm" onSubmit={handleSubmit}>
+          <div className="flex flex-col items-center justify-center">
+            <h2 className="mb-10 text-7xl">*Green-U*</h2>
 
-						<div>
-							{error && <p className="text-red-500">{error}</p>}
-							
-							{/*POUR TEST 
+            <div className="flex flex-col justify-center">
+              <TextInput
+                type="email"
+                label={translations.email}
+                value={email}
+                name="email"
+                placeholder={translations.enteremail}
+                onChange={handleEmailChange}
+                error={errorEmail}
+              />
+              <br />
+              <TextInput
+                type="password"
+                label={translations.password}
+                value={password}
+                name="password"
+                placeholder={translations.enterpassword}
+                onChange={handlePasswordChange}
+                error={errorPassword}
+              />
+            </div>
+
+            <div>
+              {error && <p className="text-red-500">{error}</p>}
+
+              {/*POUR TEST 
 							{userId && <p>ID utilisateur : {userId}</p>}
 							*/}
-						</div>
+            </div>
 
-						<br />
-						<div className="flex flex-row justify-between pb-5">
-							<Button type="submit">{translations.login}</Button>
-							<Button type="link" href="/signin">{translations.signup}</Button>
-						</div>
-					</div>
-				</form>
-			</Card>
-		</section>
-	);
+            <br />
+            <div className="flex flex-row justify-between pb-5">
+              <Button onClick={handleSubmit}>{translations.login}</Button>
+              <Button onClick={() => router.push('/signin')}>
+                {translations.signup}
+              </Button>
+            </div>
+          </div>
+        </form>
+      </Card>
+    </section>
+  );
 };
 
 export default page;

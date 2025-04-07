@@ -10,10 +10,19 @@ const TodoPopUp = () => {
     setContent(e.target.value);
   };
 
+  const handleSubmit = () => {
+    const form = document.getElementById('todoPopup') as HTMLFormElement;
+    if (form) {
+      form.submit();
+    } else {
+      console.error('Form nor found');
+    }
+  };
+
   return (
     <section className="flex min-h-[calc(100vh-15px)] items-center justify-center overflow-auto">
       <Card className={'max-w-5xl px-8 pt-5'}>
-        <form>
+        <form id="todoPopup">
           <div>
             <TextInput
               type="text"
@@ -25,7 +34,7 @@ const TodoPopUp = () => {
               error={false}
             ></TextInput>
           </div>
-          <Button type={'submit'}>Submit</Button>
+          <Button onClick={handleSubmit}>Submit</Button>
         </form>
       </Card>
     </section>
