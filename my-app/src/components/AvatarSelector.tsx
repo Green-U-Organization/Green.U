@@ -1,7 +1,10 @@
+
 import Image from 'next/image';
-import Card from '@/components/UI/Card';
-import Button from '@/components/UI/Button';
-import { useLanguage } from '../app/contexts/LanguageProvider';
+import Card from '@/components/UI/Card'
+import Button from '@/components/UI/Button'
+import { useLanguage } from '../app/contexts/LanguageProvider'
+import AvatarUpload from './AvatarUpload';
+//import { useState } from "react";
 
 const avatars = [
   '/image/avatars/PI_01.png',
@@ -57,47 +60,55 @@ interface AvatarSelectorProps {
 }
 
 function AvatarSelector({ onSelect, isOpen, onClose }: AvatarSelectorProps) {
+  
   if (!isOpen) return null;
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { translations } = useLanguage();
+  const {translations} = useLanguage();
 
   return (
-    <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-white">
-      <Card className="bg-cardbackground relative w-150 max-w-full rounded-xl p-4 shadow-lg">
-        <h2 className="bg-cardbackground sticky top-0 z-10 py-2 text-center text-3xl font-semibold">
-          {translations.chooseanavatar}
-        </h2>
+ 
+  <div className="flex justify-center items-center bg-white bg-opacity-50 z-50">
+  
+    <Card className="relative w-150 max-w-screen max-h-screen bg-cardbackground rounded-xl shadow-lg p-4">
+  
+      <h2 className="text-center text-3xl font-semibold sticky top-0 bg-cardbackground py-2 z-10">
+        {translations.chooseanavatar}
+      </h2>
+      
+      <div className="max-h-55 overflow-y-auto p-2 grid grid-cols-4 gap-2">
+        {avatars.map((avatar) => (
+          <div
+            key={avatar}
+            className="p-2 rounded-lg cursor-pointer"
+            onClick={() => {
+              onSelect(avatar);
+              onClose();
+            }}
+          >
+            <Image 
+              src={avatar} 
+              alt="Avatar" 
+              width={96} 
+              height={96}  
+              className="relative rounded-full border-2 border-border hover:border-4"
+          />
+          </div>
+        ))}
+      </div>
+          
+      <AvatarUpload/>
 
-        <div className="grid max-h-90 grid-cols-4 gap-2 overflow-y-auto p-2">
-          {avatars.map((avatar) => (
-            <div
-              key={avatar}
-              className="cursor-pointer rounded-lg p-2"
-              onClick={() => {
-                onSelect(avatar);
-                onClose();
-              }}
-            >
-              <Image
-                src={avatar}
-                alt="Avatar"
-                width={96}
-                height={96}
-                className="border-border relative rounded-full border-2 hover:border-4"
-              />
-            </div>
-          ))}
-        </div>
+      <div className="flex justify-center sticky">
+        <Button type="submit" onClick={onClose}>
+          {translations.close}
+        </Button>
+      </div>
 
-        <div className="sticky flex justify-center">
-          <Button type="submit" onClick={onClose}>
-            {translations.close}
-          </Button>
-        </div>
-      </Card>
-    </div>
-  );
+    </Card>
+
+  </div>
+  )
 }
 
 export default AvatarSelector;

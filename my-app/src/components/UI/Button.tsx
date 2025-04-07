@@ -50,7 +50,8 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, onClick }) => {
   return (
     <ButtonWrapper>
       <button
-        className={`bg-button relative m-5 px-6 py-2 text-2xl select-none ${inside ? 'bg-bgbutton' : 'bg-cardbackground'} cursor-pointer`}
+        className={`bg-button relative m-5 px-6 py-2 text-2xl select-none ${inside ? 'bg-bgbutton' : 'bg-cardbackground'}
+          disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer`}
         onMouseDown={handleDown}
         onMouseUp={handleUp}
         onMouseLeave={handleLeave}
@@ -58,6 +59,8 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, onClick }) => {
         onClick={handleClick}
         onTouchStart={handleDown}
         onTouchEnd={handleUp}
+        disabled={disabled}
+				title={title}
       >
         <div
           className={`bg-extbutton absolute top-0 left-0 h-2 w-full`}

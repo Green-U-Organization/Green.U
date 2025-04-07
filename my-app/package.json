@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
     "font-awesome": "^4.7.0",
     "js-cookie": "^3.0.5",
     "leaflet": "^1.9.4",

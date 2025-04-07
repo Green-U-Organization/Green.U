@@ -4,14 +4,16 @@ import {FaMapMarkerAlt, FaInstagram, FaFacebook, FaEnvelope } from 'react-icons/
 import Card from "@/components/UI/Card"
 import Button from "@/components/UI/Button"
 import { useRouter } from "next/navigation"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AvatarSelector from "@/components/AvatarSelector";
 import { useLanguage } from '../contexts/LanguageProvider'
+import { supabase } from "@/lib/supabaseClient";
 
 export default function GardenerProfile() {
     
     const router = useRouter()
     const [avatar, setAvatar] = useState<string | null>(null);
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
     const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
     const {translations} = useLanguage();
 
@@ -38,24 +40,36 @@ export default function GardenerProfile() {
         { name: "Urban Rooftop Garden", role: "Consultant"}
     ];
 
+    //IL FAUDRA RECUPERER L'URL DE L'AVATAR DANS LA TABLE USER
+    // Permet de récupérer l'image dans le storage supabase
+    useEffect(() => {
+        const filePath = "avatars/1743969461173_profile.png";
+        if(filePath) {
+            const { publicUrl } = supabase.storage.from("avatars").getPublicUrl(filePath).data;
+            setAvatarUrl(publicUrl);
+        }
+    },[]);
+
+
     return (
     <div className="flex justify-center items-center">
      
-        {/* Sélecteur d'avatar */}
-       
+       {/* Sélecteur d'avatar */}
        {isAvatarSelectorOpen ? (
+        <>
         <AvatarSelector
             onSelect={setAvatar}
             isOpen={isAvatarSelectorOpen}
             onClose={() => setIsAvatarSelectorOpen(false)}
-        />
+        />        
+        </>
        ):(
         <Card className="flex flex-col p-5 max-w-5xl">
         <div id="profilePage">
             {/* Image du profil */}
             <div className="relative flex items-center space-x-4">
                 <Image
-                    src={avatar || "/image/avatars/PI_01.png"}
+                    src={avatarUrl || "/image/avatars/PI_01.png"} //ou avatar pour les avatars prédéfinis
                     alt="Profile picture"
                     width={96}
                     height={96}
@@ -141,8 +155,8 @@ export default function GardenerProfile() {
             <div className="mt-5">
                 <h2 className="text-2xl font-semibold">📢 {translations.contact}</h2>
                 <div className="flex space-x-4 mt-2 text-border">
-                    <a href="#" target='_blank' className="hover:text-shadow"><FaInstagram /></a>
-                    <a href="#" target='_blank' className="hover:text-shadow"><FaFacebook /></a>
+                    {/* <a href="#" target='_blank' className="hover:text-shadow"><FaInstagram /></a>
+                    <a href="#" target='_blank' className="hover:text-shadow"><FaFacebook /></a> */}
                     <a href="mailto:jean.dupont@gmail.com" className="hover:text-shadow"><FaEnvelope /></a>
                 </div>
             </div>
