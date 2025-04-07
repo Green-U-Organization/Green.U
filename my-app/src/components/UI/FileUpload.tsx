@@ -32,7 +32,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileChange }) => {
       />
 
       <div className="group relative">
+<<<<<<< HEAD
+        <Button type="button" onClick={handleButtonClick}>
+=======
         <Button onClick={handleButtonClick}>
+>>>>>>> f4127f1daf37b7f02d7b6b13c6a06d379d1a5e1e
           {translations.chooseanimage}
         </Button>
 
