@@ -4,22 +4,12 @@ import React, { FC, useState } from 'react'; // <DraggableCore>
 // import {garden} from '../data/garden'
 import styles from '../../app/Assets.module.css';
 
-type LineType = {
-  crop: {
-    icon: string;
-    vegetable: string;
-    variety: string;
-  };
-  status: string;
-};
-
 type LineProps = {
   lineX: number;
-  handleClick?: () => void;
   scale: number;
 };
 
-const Line: FC<LineProps> = ({ lineX, handleClick, scale }) => {
+const Line: FC<LineProps> = ({ lineX, scale }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);
 
   const cropIcon: { [key: string]: string } = {

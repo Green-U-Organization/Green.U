@@ -33,7 +33,7 @@ type LinesType = {
 
 const Parcel: FC<Parcel> = ({ parcel, scale }) => {
   const [currentParcel, setCurrentParcel] = useState<Parcels>(parcel);
-  const [lines, setLines] = useState<LinesType[]>();
+  const [lines, setLines] = useState<LinesType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const parcelY = currentParcel?.length;
@@ -44,7 +44,11 @@ const Parcel: FC<Parcel> = ({ parcel, scale }) => {
     setIsLoading(false);
 
     getAllLinesByParcelId(parcel.id).then((result) => {
-      setLines(result);
+      if (Array.isArray(result)) {
+        setLines(result);
+      } else {
+        console.error('Expected an array but got:', result);
+      }
     });
   }, [parcel]);
 
@@ -101,13 +105,9 @@ const Parcel: FC<Parcel> = ({ parcel, scale }) => {
             }}
           >
             {lines?.map((line) => (
-              <Line
-                key={line.id}
-                // line={line}
-                lineX={line.length}
-                // handleClick={handleClick}
-                scale={scale}
-              />
+              <div className="h-5 w-20 bg-amber-100">
+                {/* <Line key={line.id} lineX={line.length} scale={scale} /> */}
+              </div>
             ))}
             {/* <p>id : {parcel.id} length : {parcel.length} width : {parcel.width}</p> */}
           </div>
