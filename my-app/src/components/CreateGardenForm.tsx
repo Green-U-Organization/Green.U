@@ -5,20 +5,20 @@ import TextInput from './UI/TextInput';
 // import MapComponent from './UI/MapComponent';
 import Button from './UI/Button';
 import HashtagInput from './HashtagInput';
-// import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
+import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
 import { useRouter } from 'next/navigation';
 
-// type gardenType = {
-//   authorId: number;
-//   name: string;
-//   description: string;
-//   latitude: number;
-//   longitude: number;
-//   length: number;
-//   width: number;
-//   privacy: 'private' | 'public';
-//   type: 'individual' | 'collective' | 'professionnal';
-// };
+type gardenType = {
+  authorId: number;
+  name: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  privacy: number;
+  type: number;
+};
 
 const CreateGardenForm = () => {
   // const [location, setLocation] = useState<{
@@ -36,8 +36,8 @@ const CreateGardenForm = () => {
   //   longitude: 50,
   //   length: gardenLength,
   //   width: gardenWidth,
-  //   privacy: 'public',
-  //   type: 'individual',
+  //   privacy: 0,
+  //   type: 0,
   // });
 
   const rows = 5;
@@ -61,26 +61,64 @@ const CreateGardenForm = () => {
     setGardenWidth(Number(e.target.value));
   };
 
+  // const handleSubmit = () => {
+  //   const form = document.getElementById('createGarden') as HTMLFormElement;
+  //   if (form) {
+  //     const formData = new FormData(form);
+  //     console.log('formulaire : ', formData);
+  //     const gardenData = {
+  //       name: formData.get('gardenName') as string,
+  //       description: formData.get('gardenDescription') as string,
+  //       length: gardenLength,
+  //       width: gardenWidth,
+  //       type: formData.get('gardenType') as gardenType['type'],
+  //       privacy: formData.get('gardenPrivacy') as gardenType['privacy'],
+  //     };
+  //     console.log('Garden Data:');
+
+  //     setGarden({
+  //       ...garden,
+  //       authorId: 1,
+  //       name: formData.get('gardenName') as string,
+  //       description: formData.get('gardenDescription') as string,
+  //       latitude: 50.0546541,
+  //       longitude: 5.1549,
+  //       length: formData.get('length') as unknown as number,
+  //       width: formData.get('width') as unknown as number,
+  //       privacy: formData.get('gardenPrivacy') as gardenType['privacy'],
+  //       type: formData.get('gardenType') as gardenType['type'],
+  //     });
+  //     console.log('format requete : ', garden);
+  //     createNewGarden(garden);
+  //     router.push('/garden-manager');
+  //   } else {
+  //     console.error('Form nor found');
+  //   }
+  // };
+
   const handleSubmit = () => {
     const form = document.getElementById('createGarden') as HTMLFormElement;
     if (form) {
-      form.submit();
-      console.log(form);
-      setGarden({
-        ...garden,
+      const formData = new FormData(form);
+
+      const gardenData: gardenType = {
         authorId: 1,
-        name: form.gardenName,
-        description: form.gardenDescription,
-        latitude: 50,
-        longitude: 50,
-        length: gardenLength,
-        width: gardenWidth,
-        privacy: form.gardenPrivacy,
-        type: form.gardenType,
-      });
-      createNewGarden(garden);
+        name: formData.get('gardenName') as string,
+        description: formData.get('gardenDescription') as string,
+        latitude: 50.0546541,
+        longitude: 5.1549,
+        length: Number(formData.get('gardenLength')),
+        width: Number(formData.get('gardenWidth')),
+        privacy: Number(formData.get('gardenPrivacy')),
+        type: Number(formData.get('gardenType')),
+      };
+
+      console.log('Garden Data:', gardenData);
+      createNewGarden(gardenData);
+
+      // router.push('/garden-manager');
     } else {
-      console.error('Form nor found');
+      console.error('Form not found');
     }
   };
 
@@ -140,23 +178,21 @@ const CreateGardenForm = () => {
 
           <label htmlFor="gardenType">What kind of garden is it?</label>
           <select name="gardenType" className="rounded-md border-1">
-            <option value="personnal">Personnal</option>
-            <option value="famillial">Famillial</option>
-            <option value="collective">Collective</option>
-            <option value="professionnal">Professionnal</option>
+            <option value="0">Personnal</option>
+            <option value="2">Famillial</option>
+            <option value="2">Collective</option>
+            <option value="3">Professionnal</option>
           </select>
 
           <label htmlFor="gardenPrivacy">What about privacy settings?</label>
           <select name="gardenPrivacy" className="rounded-md border-1">
-            <option value="private">
+            <option value="0">
               Private (Only me and my collaborators can see this garden)
             </option>
-            <option value="semiPrivate">
+            <option value="1">
               Semi private (My followers can see thi garden)
             </option>
-            <option value="public">
-              Public (Everybody can see this garden)
-            </option>
+            <option value="2">Public (Everybody can see this garden)</option>
           </select>
 
           {/* <MapComponent onLocationSelect={handleLocationSelect} />

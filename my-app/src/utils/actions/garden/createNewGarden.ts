@@ -6,8 +6,8 @@ type gardenType = {
   longitude: number;
   length: number;
   width: number;
-  privacy: 'private' | 'public';
-  type: 'individual' | 'collective' | 'professionnal';
+  privacy: number;
+  type: number;
 };
 
 export const createNewGarden = async (
