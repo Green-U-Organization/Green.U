@@ -61,6 +61,29 @@ public class UserController(GreenUDB db) : ControllerBase
         return Ok(user);
     }
 
+    [HttpPost]
+    public async Task<ActionResult<User>> CreateUser(User user)
+    {
+        var userDbData = await _db.Users
+           .Where(u => u.Username == user.Username)
+           .Select(u => new User { Username = u.Username })
+           .ToArrayAsync();
+
+        if (userDbData.Length != 0)
+        {
+            return Conflict(new { message = "This username already exists" });
+        }
+
+        string[] hashSalt = Authentification.Hasher(user.Password, null);
+        user.Password = hashSalt[0];
+        user.Salt = hashSalt[1];
+
+        _db.Users.Add(user);
+        await _db.SaveChangesAsync();
+
+        return Ok(new { message = "User created !" });
+    }
+
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdateUser(long id, UserModification modification)
     {
