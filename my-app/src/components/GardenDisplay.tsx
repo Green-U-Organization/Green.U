@@ -2,9 +2,9 @@
 
 import Card from '@/components/UI/Card';
 import Garden from '@/components/UI/Garden';
-import React, { use, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import GardenCardHeader from '@/components/UI/GardenCardHeader';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 
 type GardenType = {
   id: number;
@@ -20,11 +20,12 @@ type GardenType = {
 };
 
 const GardenDisplay = () => {
-  const [currentGardenId, setCurrentGardenId] = useState<number>(1);
+  // const [currentGardenId, setCurrentGardenId] = useState<number>(1);
   const [currentScale, setCurrentScale] = useState<number>(125);
   const [currentGarden, setCurrentGarden] = useState<GardenType | null>(null);
 
   const handleGardenIdChange = (selectedGarden: GardenType) => {
+    console.log('current garden : ', selectedGarden);
     setCurrentGarden(selectedGarden);
   };
 

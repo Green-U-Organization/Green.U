@@ -2,54 +2,54 @@
 import React, { useState } from 'react';
 import Card from './UI/Card';
 import TextInput from './UI/TextInput';
-import MapComponent from './UI/MapComponent';
+// import MapComponent from './UI/MapComponent';
 import Button from './UI/Button';
 import HashtagInput from './HashtagInput';
-import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
+// import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
 import { useRouter } from 'next/navigation';
 
-type gardenType = {
-  authorId: number;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  length: number;
-  width: number;
-  privacy: 'private' | 'public';
-  type: 'individual' | 'collective' | 'professionnal';
-};
+// type gardenType = {
+//   authorId: number;
+//   name: string;
+//   description: string;
+//   latitude: number;
+//   longitude: number;
+//   length: number;
+//   width: number;
+//   privacy: 'private' | 'public';
+//   type: 'individual' | 'collective' | 'professionnal';
+// };
 
 const CreateGardenForm = () => {
-  const [location, setLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+  // const [location, setLocation] = useState<{
+  //   latitude: number;
+  //   longitude: number;
+  // } | null>(null);
 
   const [gardenLength, setGardenLength] = useState<number>(10);
   const [gardenWidth, setGardenWidth] = useState<number>(10);
-  const [garden, setGarden] = useState<gardenType>({
-    authorId: 1,
-    name: '',
-    description: '',
-    latitude: 50,
-    longitude: 50,
-    length: gardenLength,
-    width: gardenWidth,
-    privacy: 'public',
-    type: 'individual',
-  });
+  // const [garden, setGarden] = useState<gardenType>({
+  //   authorId: 1,
+  //   name: '',
+  //   description: '',
+  //   latitude: 50,
+  //   longitude: 50,
+  //   length: gardenLength,
+  //   width: gardenWidth,
+  //   privacy: 'public',
+  //   type: 'individual',
+  // });
 
   const rows = 5;
   const cols = 33;
   const router = useRouter();
 
-  const handleLocationSelect = (selectedLocation: {
-    latitude: number;
-    longitude: number;
-  }) => {
-    setLocation(selectedLocation);
-  };
+  // const handleLocationSelect = (selectedLocation: {
+  //   latitude: number;
+  //   longitude: number;
+  // }) => {
+  //   setLocation(selectedLocation);
+  // };
 
   const handleLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -61,28 +61,28 @@ const CreateGardenForm = () => {
     setGardenWidth(Number(e.target.value));
   };
 
-  const handleSubmit = () => {
-    const form = document.getElementById('createGarden') as HTMLFormElement;
-    if (form) {
-      form.submit();
-      console.log(form);
-      setGarden({
-        ...garden,
-        authorId: 1,
-        name: form.gardenName,
-        description: form.gardenDescription,
-        latitude: 50,
-        longitude: 50,
-        length: gardenLength,
-        width: gardenWidth,
-        privacy: form.gardenPrivacy,
-        type: form.gardenType,
-      });
-      createNewGarden(garden);
-    } else {
-      console.error('Form nor found');
-    }
-  };
+  // const handleSubmit = () => {
+  //   const form = document.getElementById('createGarden') as HTMLFormElement;
+  //   if (form) {
+  //     form.submit();
+  //     console.log(form);
+  //     setGarden({
+  //       ...garden,
+  //       authorId: 1,
+  //       name: form.gardenName,
+  //       description: form.gardenDescription,
+  //       latitude: 50,
+  //       longitude: 50,
+  //       length: gardenLength,
+  //       width: gardenWidth,
+  //       privacy: form.gardenPrivacy,
+  //       type: form.gardenType,
+  //     });
+  //     createNewGarden(garden);
+  //   } else {
+  //     console.error('Form nor found');
+  //   }
+  // };
 
   return (
     <>

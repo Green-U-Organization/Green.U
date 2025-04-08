@@ -109,7 +109,7 @@ const Home = () => {
       console.error(translations.errGeoNavigator);
       alert(translations.errGeoNavigator);
     }
-  }, []);
+  });
 
   //Fonction pour calculer la distance entre 2 points GPS
   const calculateDistance = (

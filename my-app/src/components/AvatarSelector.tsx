@@ -95,9 +95,7 @@ function AvatarSelector({ onSelect, isOpen, onClose }: AvatarSelectorProps) {
         <AvatarUpload />
 
         <div className="sticky flex justify-center">
-          <Button type="submit" onClick={onClose}>
-            {translations.close}
-          </Button>
+          <Button onClick={onClose}>{translations.close}</Button>
         </div>
       </Card>
     </div>

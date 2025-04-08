@@ -33,7 +33,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   onGardenIdChange,
   onScaleChange,
 }) => {
-  const [gardens, setGardens] = useState<any[]>([]);
+  const [gardens, setGardens] = useState<Garden[]>([]);
   const [gardenId, setGardenId] = useState<number | null>(null);
   const [selectedGarden, setSelectedGarden] = useState<Garden>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -61,7 +61,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
       setSelectedGarden(gardens.find((garden) => garden.id === gardenId));
       console.log('selectedGarden : ', selectedGarden);
     }
-  }, [gardenId, gardens]);
+  }, [gardenId, selectedGarden, gardens]);
 
   //#endregion
 
@@ -77,14 +77,6 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
     if (selectedGarden) {
       onGardenIdChange(selectedGarden);
     }
-  };
-
-  const handleEditGarden = () => {
-    console.log('edit garden');
-  };
-
-  const handleCreateGarden = () => {
-    console.log('create garden');
   };
   //#endregion
 

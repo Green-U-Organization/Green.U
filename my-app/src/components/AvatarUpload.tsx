@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabaseClient';
 import FileUpload from './UI/FileUpload';
 import { useLanguage } from '../app/contexts/LanguageProvider';
 import Button from './UI/Button';
+import Image from 'next/image';
 
 export default function AvatarUpload() {
   const [file, setFile] = useState<File | null>(null);
@@ -36,7 +37,7 @@ export default function AvatarUpload() {
       return;
     }
 
-    const img = new Image();
+    const img = new window.Image();
     img.src = URL.createObjectURL(selectedFile);
     img.onload = () => {
       if (img.width > maxDimensions || img.height > maxDimensions) {
@@ -61,7 +62,7 @@ export default function AvatarUpload() {
 
     const fileName = `avatars/${Date.now()}_${file.name}`;
     setFileName(null);
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from('avatars')
       .upload(fileName, file);
 
@@ -94,11 +95,7 @@ export default function AvatarUpload() {
 
       {avatarUrl ? (
         <div className="mb-2 flex flex-col items-center">
-          <img
-            src={avatarUrl}
-            alt="Avatar"
-            className="border-border mx-auto h-24 w-24 rounded-full border-2"
-          />
+          <Image src={avatarUrl} alt="Avatar" />
           <p className="text-shadow mt-2">{translations.avataruploaded}</p>
         </div>
       ) : (

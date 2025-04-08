@@ -81,9 +81,7 @@ const page = () => {
         className="bg-cardbackground flex items-center justify-center font-(family-name:--font-jersey) text-lg"
       >
         <div className="flex items-center justify-center">
-          <Button type={'action'} handleAction={addTask}>
-            Add task
-          </Button>
+          <Button onClick={addTask}>Add task</Button>
 
           <div className="mr-5 flex">
             <p>sort by :</p>

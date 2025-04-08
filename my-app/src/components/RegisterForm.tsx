@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useState, useRef, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Card from '@/components/UI/Card';
 import TextInput from '@/components/UI/TextInput';
 import Button from '@/components/UI/Button';
@@ -8,7 +8,7 @@ import Calendar from 'react-calendar';
 import { CalendarProps } from 'react-calendar';
 import Radio from '@/components/UI/Radio';
 import DropDownPostalCode from '@/components/DropDownPostalCode';
-import DropDown from '@/components/UI/DropDown';
+// import DropDown from '@/components/UI/DropDown';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Checkbox from '@/components/UI/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
@@ -29,21 +29,21 @@ type FormData = {
   interests: string[];
 };
 
-type ErrorForm = {
-  errorEmptyLogin: boolean;
-  errorEmptyEmail: boolean;
-  errorEmptyFirstname: boolean;
-  errorEmptyGardenerLevel: boolean;
-  errorEmptyInterests: boolean;
-  errorEmptyLastname: boolean;
-  errorEmptyPassword: boolean;
-  errorEmptyPasswordVerify: boolean;
-  errorEmptyPostalCode: boolean;
-  errorMatchingPassword: boolean;
-  errorNotCheckedToU: boolean;
-  errorEmptyBirthDate: boolean;
-  errorSpecialCharPassword: boolean;
-};
+// type ErrorForm = {
+//   errorEmptyLogin: boolean;
+//   errorEmptyEmail: boolean;
+//   errorEmptyFirstname: boolean;
+//   errorEmptyGardenerLevel: boolean;
+//   errorEmptyInterests: boolean;
+//   errorEmptyLastname: boolean;
+//   errorEmptyPassword: boolean;
+//   errorEmptyPasswordVerify: boolean;
+//   errorEmptyPostalCode: boolean;
+//   errorMatchingPassword: boolean;
+//   errorNotCheckedToU: boolean;
+//   errorEmptyBirthDate: boolean;
+//   errorSpecialCharPassword: boolean;
+// };
 
 const RegisterForm = () => {
   //#region 	VARIABLES
@@ -52,12 +52,12 @@ const RegisterForm = () => {
   const calendarRef = useRef<HTMLDivElement>(null);
 
   //Les niveaux possible du jardinier
-  const gardenerLevels = [
-    translations.levelbeginner,
-    translations.levelintermediate,
-    translations.leveladvanced,
-    translations.levelexpert,
-  ];
+  // const gardenerLevels = [
+  //   translations.levelbeginner,
+  //   translations.levelintermediate,
+  //   translations.leveladvanced,
+  //   translations.levelexpert,
+  // ];
 
   //	https://blog.logrocket.com/using-react-usestate-object/
   const [formDataRegister, setFormDataRegister] = useState<FormData>({
@@ -101,7 +101,7 @@ const RegisterForm = () => {
   //#endregion
 
   //#region	VALIDITY FUCTIONS
-  const step1Validation = (data: Record<string, any>) => {
+  const step1Validation = (data: Partial<FormData>) => {
     const hasEmptyFields =
       !data.login ||
       !data.password ||
@@ -115,7 +115,8 @@ const RegisterForm = () => {
     console.log('emptyfields? ', hasEmptyFields);
 
     const passwordValid =
-      data.password.length >= 8 && specialCharRegex.test(data.password);
+      (data.password?.length ?? 0) >= 8 &&
+      specialCharRegex.test(data.password ?? '');
     console.log('passwordValid ? : ', passwordValid);
     //AJOUTER MESSAGE D ERREUR SPECIFIQUE
 
@@ -123,8 +124,8 @@ const RegisterForm = () => {
     console.log('passwordMatch ? ', passwordsMatch);
     //AJOUTER MESSAGE D ERREUR SPECIFIQUE
 
-    checkPassword(data.password);
-    checkPasswordVerify(data.password, data.passwordVerify);
+    checkPassword(data.password ?? '');
+    checkPasswordVerify(data.password ?? '', data.passwordVerify ?? '');
 
     const postalCodeValid = isValidPostalCode;
 
@@ -336,10 +337,10 @@ const RegisterForm = () => {
     }
   };
 
-  const handleChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) =>
-    (e: ChangeEvent<HTMLInputElement>) =>
-      setter(e.target.value);
+  // const handleChange =
+  //   (setter: React.Dispatch<React.SetStateAction<string>>) =>
+  //   (e: ChangeEvent<HTMLInputElement>) =>
+  //     setter(e.target.value);
 
   const handleSubmit = () => {
     const isValid = step2Validation();
