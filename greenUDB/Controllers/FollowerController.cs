@@ -1,5 +1,6 @@
 ﻿using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GreenUApi.Controllers
 {
@@ -16,13 +17,28 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("user/{id}")]
-        public IActionResult FollowAnUser(long id, Follower follower)
+        public async Task<ActionResult<Follower>> FollowAnUser(long id, Follower follower)
         {
 
             if (follower.FollowerId == 0)
             {
                 return NotFound(new { message = "Follower id is missed"});
             }
+
+            var User = await _db.Users.FindAsync(id);
+            var CheckFollowerId = await _db.Users.FindAsync(follower.FollowerId);
+
+            if (User == null)
+            {
+                return NotFound("User not found");
+            }
+
+            if (CheckFollowerId == null)
+            {
+                return NotFound("Follower Id not found");
+            }
+
+
 
             
 
