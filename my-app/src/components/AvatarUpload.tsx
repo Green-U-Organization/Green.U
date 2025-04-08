@@ -122,7 +122,7 @@ export default function AvatarUpload() {
         <FileUpload onFileChange={handleFileChange} />
 
         {file && (
-          <Button type="button" onClick={uploadImage} disabled={uploading}>
+          <Button onClick={uploadImage} disabled={uploading}>
             {uploading ? translations.uploading : translations.upload}
           </Button>
         )}

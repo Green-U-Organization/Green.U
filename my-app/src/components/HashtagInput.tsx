@@ -53,8 +53,9 @@ const HashtagInput: React.FC<HashtagInputProps> = ({
 
   //Mise à jour de l'input
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    //Suppression des espaces
-    setInputValue(e.target.value.replace(/\s+/g, ''));
+    //Suppression des espaces et des #
+    const sanitizedValue = e.target.value.replace(/#/g, '').replace(/\s+/g, '');
+    setInputValue(sanitizedValue);
   };
 
   return (
@@ -75,9 +76,7 @@ const HashtagInput: React.FC<HashtagInputProps> = ({
         {inputValue.trim() !== '' &&
           !hashtags.includes(`#${inputValue.trim()}`) && (
             <div className="flex items-start">
-              <Button type="button" onClick={handleAddHashtag}>
-                {translations.add}
-              </Button>
+              <Button onClick={handleAddHashtag}>{translations.add}</Button>
             </div>
           )}
       </div>

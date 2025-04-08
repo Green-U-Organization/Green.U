@@ -60,7 +60,7 @@ const RegisterForm = () => {
   ];
 
   //	https://blog.logrocket.com/using-react-usestate-object/
-  const [formDataRegister, setFormDataRegister] = useState({
+  const [formDataRegister, setFormDataRegister] = useState<FormData>({
     login: '',
     password: '',
     passwordVerify: '',
@@ -68,7 +68,7 @@ const RegisterForm = () => {
     lastname: '',
     email: '',
     postalCode: '',
-    gender: '',
+    gender: 'M',
     birthDate: '',
     gardenerLevel: '',
     interests: [],
@@ -101,33 +101,30 @@ const RegisterForm = () => {
   //#endregion
 
   //#region	VALIDITY FUCTIONS
-  const step1Validation = () => {
-    // setFormData(prevFormData => ({...prevFormData ,
-    // 	login : formData.login
-    // }))
-
+  const step1Validation = (data: Record<string, any>) => {
     const hasEmptyFields =
-      !formDataRegister.login ||
-      !formDataRegister.password ||
-      !formDataRegister.passwordVerify ||
-      !formDataRegister.firstname ||
-      !formDataRegister.lastname ||
-      !formDataRegister.email ||
-      !formDataRegister.postalCode ||
+      !data.login ||
+      !data.password ||
+      !data.passwordVerify ||
+      !data.firstname ||
+      !data.lastname ||
+      !data.email ||
+      !data.postalCode ||
       !formDataRegister.birthDate;
 
     console.log('emptyfields? ', hasEmptyFields);
 
     const passwordValid =
-      formDataRegister.password.length > 8 &&
-      specialCharRegex.test(formDataRegister.password);
-
+      data.password.length >= 8 && specialCharRegex.test(data.password);
     console.log('passwordValid ? : ', passwordValid);
     //AJOUTER MESSAGE D ERREUR SPECIFIQUE
-    const passwordsMatch =
-      formDataRegister.password === formDataRegister.passwordVerify;
+
+    const passwordsMatch = data.password === data.passwordVerify;
     console.log('passwordMatch ? ', passwordsMatch);
     //AJOUTER MESSAGE D ERREUR SPECIFIQUE
+
+    checkPassword(data.password);
+    checkPasswordVerify(data.password, data.passwordVerify);
 
     const postalCodeValid = isValidPostalCode;
 
@@ -135,14 +132,13 @@ const RegisterForm = () => {
       !hasEmptyFields && passwordValid && passwordsMatch && postalCodeValid
     );
   };
-  //const calendarRef = useRef<HTMLDivElement>(null);
 
   const step2Validation = () => {
     console.log('check validation step 2');
+
     const isValid =
-      formDataRegister.gardenerLevel &&
-      formDataRegister.interests.length > 0 &&
-      isCheckedToU;
+      //formDataRegister.gardenerLevel &&
+      formDataRegister.interests.length > 0 && isCheckedToU;
 
     setErrorForm((prevErrorForm) => ({
       ...prevErrorForm,
@@ -151,12 +147,12 @@ const RegisterForm = () => {
       errorNotCheckedToU: !isCheckedToU,
     }));
 
-    console.log('validation ok');
+    console.log('validation ok: ', isValid);
     return isValid;
   };
 
   const checkPassword = (password: string) => {
-    if (password.length <= 8) {
+    if (password.length < 8) {
       setErrorForm((prevErrorForm) => ({
         ...prevErrorForm,
         errorSpecialCharPassword: true,
@@ -178,48 +174,38 @@ const RegisterForm = () => {
   };
 
   //Réinitialisation des erreurs quand on arrive sur la page 2
-  useEffect(() => {
-    console.log('##', errorForm.errorEmptyInterests);
-    console.log('garden', errorForm.errorEmptyGardenerLevel);
-  }, [
-    errorForm.errorEmptyGardenerLevel,
-    errorForm.errorEmptyInterests,
-    errorForm.errorNotCheckedToU,
-    step,
-  ]);
+  // useEffect(() => {
+  //   console.log('##', errorForm.errorEmptyInterests);
+  //   console.log('garden', errorForm.errorEmptyGardenerLevel);
+  // }, [
+  //   errorForm.errorEmptyGardenerLevel,
+  //   errorForm.errorEmptyInterests,
+  //   errorForm.errorNotCheckedToU,
+  //   step,
+  // ]);
   //#endregion
 
   //#region NAVIGATION FUNCTION
 
-  useEffect(() => {
-    if (step === 1) {
-      const isValid = step1Validation();
-      if (!isValid) {
-        setErrorForm((prev) => ({
-          ...prev,
-          errorEmptyLogin: !formDataRegister.login,
-          errorEmptyPassword: !formDataRegister.password,
-          errorEmptyPasswordVerify: !formDataRegister.passwordVerify,
-          errorEmptyFirstname: !formDataRegister.firstname,
-          errorEmptyLastname: !formDataRegister.lastname,
-          errorEmptyEmail: !formDataRegister.email,
-          errorEmptyPostalCode: !formDataRegister.postalCode,
-          errorEmptyBirthDate: !formDataRegister.birthDate,
-        }));
-      } else {
-        setStep((prev) => prev + 1);
-      }
-    }
-  }, [formDataRegister]);
+  // useEffect(() => {
+
+  // }, [formDataRegister]);
+
+  const formRef = useRef<HTMLFormElement>(null);
 
   // Fonction permettant d'avancer dans les pages
   const handleNextStep = (e: React.FormEvent) => {
     e.preventDefault();
 
     //https://fr.react.dev/reference/react-dom/components/input#reading-the-input-values-when-submitting-a-form
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
+
+    if (!formRef.current) return;
+    const formData = new FormData(formRef.current);
     const formJson = Object.fromEntries(formData.entries());
+
+    //Ajout manuel du champ birthdate (car géré par Calendar et non par un input)
+    formJson.birthDate = formDataRegister.birthDate;
+
     console.log(formJson);
 
     setFormDataRegister((prevFormData) => ({
@@ -227,6 +213,7 @@ const RegisterForm = () => {
       login: formJson.login as string,
       password: formJson.password as string,
       passwordVerify: formJson.passwordVerify as string,
+      birthDate: prevFormData.birthDate,
       firstname: formJson.firstname as string,
       lastname: formJson.lastname as string,
       email: formJson.email as string,
@@ -234,35 +221,53 @@ const RegisterForm = () => {
       postalCode: formJson.postalCode as string,
     }));
 
-    console.log('login: ', formDataRegister.login);
-    console.log('password: ', formDataRegister.password);
-    console.log('verifyPassword: ', formDataRegister.passwordVerify);
-    console.log('firstname: ', formDataRegister.firstname);
-    console.log('lastname: ', formDataRegister.lastname);
-    console.log('email: ', formDataRegister.email);
-    console.log('postalCode: ', formDataRegister.postalCode);
-    console.log('gender: ', formDataRegister.gender);
-
     if (step === 1) {
-      const isValid = step1Validation();
-      console.log('Validation step 1 result:', isValid);
+      const isValid = step1Validation(formJson);
+
+      // console.log('login: ', formDataRegister.login);
+      // console.log('password: ', formDataRegister.password);
+      // console.log('verifyPassword: ', formDataRegister.passwordVerify);
+      // console.log('birthdate: ', formDataRegister.birthDate);
+      // console.log('firstname: ', formDataRegister.firstname);
+      // console.log('lastname: ', formDataRegister.lastname);
+      // console.log('email: ', formDataRegister.email);
+      // console.log('postalCode: ', formDataRegister.postalCode);
+      // console.log('gender: ', formDataRegister.gender);
 
       if (!isValid) {
         setErrorForm((prev) => ({
           ...prev,
-          errorEmptyLogin: !formDataRegister.login,
-          errorEmptyPassword: !formDataRegister.password,
-          errorEmptyPasswordVerify: !formDataRegister.passwordVerify,
-          errorEmptyFirstname: !formDataRegister.firstname,
-          errorEmptyLastname: !formDataRegister.lastname,
-          errorEmptyEmail: !formDataRegister.email,
-          errorEmptyPostalCode: !formDataRegister.postalCode,
-          errorEmptyBirthDate: !formDataRegister.birthDate,
+          errorEmptyLogin: !formJson.login,
+          errorEmptyPassword: !formJson.password,
+          errorEmptyPasswordVerify: !formJson.passwordVerify,
+          errorEmptyFirstname: !formJson.firstname,
+          errorEmptyLastname: !formJson.lastname,
+          errorEmptyEmail: !formJson.email,
+          errorEmptyPostalCode: !formJson.postalCode,
+          errorEmptyBirthDate: !formJson.birthDate,
         }));
         return;
+      } else {
+        // Aucune erreur, donc on les vide toutes
+        setErrorForm({
+          errorEmptyLogin: false,
+          errorEmptyPassword: false,
+          errorEmptyPasswordVerify: false,
+          errorEmptyFirstname: false,
+          errorEmptyLastname: false,
+          errorEmptyEmail: false,
+          errorEmptyPostalCode: false,
+          errorEmptyBirthDate: false,
+          errorEmptyGardenerLevel: false,
+          errorEmptyInterests: false,
+          errorMatchingPassword: false,
+          errorNotCheckedToU: false,
+          errorSpecialCharPassword: false,
+        });
       }
+
+      setStep((prev) => prev + 1);
     }
-    setStep((prev) => prev + 1);
   };
 
   // Fonction permettant de reculer dans les pages
@@ -273,7 +278,12 @@ const RegisterForm = () => {
 
   // Fonction callback pour mettre à jour l'état des hashtags
   const handleInterestsHashtagsChange = (newHashtags: string[]) => {
-    setFormData.interests(newHashtags);
+    setFormDataRegister((prev) => ({
+      ...prev,
+      interests: newHashtags,
+    }));
+
+    //setFormData.interests(newHashtags);
   };
 
   //#region PASSWORD VISIBILITY
@@ -309,6 +319,7 @@ const RegisterForm = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [birthDateDisplay]);
+
   const handleClick = () => {
     setBirthDateDisplay((prev) => !prev);
   };
@@ -330,32 +341,34 @@ const RegisterForm = () => {
     (e: ChangeEvent<HTMLInputElement>) =>
       setter(e.target.value);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (
-      !formDataRegister.gardenerLevel ||
-      !formDataRegister.interests.length ||
-      !isCheckedToU
-    ) {
+  const handleSubmit = () => {
+    const isValid = step2Validation();
+    console.log('Submit -> is valid: ', isValid);
+    if (!isValid) {
       return;
-    } else {
-      console.log('FORM OK');
-      const bodyRequest = {
-        Username: formDataRegister.login,
-        Password: formDataRegister.password,
-        Firstname: formDataRegister.firstname,
-        Lastname: formDataRegister.lastname,
-        Email: formDataRegister.email,
-        Postal_code: formDataRegister.postalCode,
-        Country: 'Belgium',
-        Sexe: formDataRegister.gender,
-        Birthdate: formDataRegister.birthDate,
-      };
-      fetch(process.env.NEXT_PUBLIC_API + '/Users', {
-        method: 'GET',
-        body: JSON.stringify(bodyRequest),
-      });
     }
+
+    // !formDataRegister.gardenerLevel ||
+    // !formDataRegister.interests.length ||
+    // !isCheckedToU
+
+    console.log('FORM OK');
+    const bodyRequest = {
+      Username: formDataRegister.login,
+      Password: formDataRegister.password,
+      Firstname: formDataRegister.firstname,
+      Lastname: formDataRegister.lastname,
+      Email: formDataRegister.email,
+      Postal_code: formDataRegister.postalCode,
+      Country: 'Belgium',
+      Sexe: formDataRegister.gender,
+      Birthdate: formDataRegister.birthDate,
+    };
+    fetch(process.env.NEXT_PUBLIC_API + '/users', {
+      method: 'POST',
+      body: JSON.stringify(bodyRequest),
+    });
+    //}
   };
   //#endregion
 
@@ -364,6 +377,7 @@ const RegisterForm = () => {
       <h1 className="mb-5 text-4xl">{translations.signup}: </h1>
 
       <form
+        ref={formRef}
         method="post"
         onSubmit={handleNextStep}
         className="flex flex-col"
@@ -385,6 +399,7 @@ const RegisterForm = () => {
             placeholder={translations.enterpassword}
             error={errorForm.errorEmptyPassword}
             errorPassChar={errorForm.errorSpecialCharPassword}
+            autoComplete="new-password"
           />
 
           <button
@@ -408,6 +423,7 @@ const RegisterForm = () => {
             placeholder={translations.enterpasswordagain}
             error={errorForm.errorEmptyPasswordVerify}
             errorPassMatch={errorForm.errorMatchingPassword}
+            autoComplete="new-password"
           />
 
           <button
@@ -423,26 +439,34 @@ const RegisterForm = () => {
           </button>
         </div>
 
-        <p onClick={handleClick}>{translations.birthdate} </p>
-        <p onClick={handleClick} className="bg-bginput mb-5 pl-3">
-          {formDataRegister.birthDate.toString()}
-        </p>
+        <div className="relative mb-5">
+          <p onClick={handleClick}>{translations.birthdate} </p>
+          <p
+            onClick={handleClick}
+            className={` ${formDataRegister.birthDate ? 'bg-bginput text-black' : 'bg-bginput text-gray-500'} ${errorForm.errorEmptyBirthDate ? 'border-txterror border bg-transparent' : ''} cursor-pointer pl-3`}
+          >
+            {formDataRegister.birthDate
+              ? new Date(formDataRegister.birthDate).toLocaleDateString()
+              : translations.choosebirthdate}
+          </p>
 
-        {birthDateDisplay && (
-          <div ref={calendarRef}>
-            <Calendar
-              onChange={handleDateChange}
-              value={
-                formDataRegister.birthDate
-                  ? new Date(formDataRegister.birthDate)
-                  : new Date()
-              }
-            />
-          </div>
-        )}
-        {errorForm.errorEmptyBirthDate && (
-          <p className="text-txterror">{translations.errorEmptyInput}</p>
-        )}
+          {birthDateDisplay && (
+            <div ref={calendarRef}>
+              <Calendar
+                onChange={handleDateChange}
+                value={
+                  formDataRegister.birthDate
+                    ? new Date(formDataRegister.birthDate)
+                    : new Date()
+                }
+                maxDate={new Date()}
+              />
+            </div>
+          )}
+          {errorForm.errorEmptyBirthDate && (
+            <p className="text-txterror mb-5">{translations.errorEmptyInput}</p>
+          )}
+        </div>
 
         <TextInput
           type="text"
@@ -516,7 +540,9 @@ const RegisterForm = () => {
           error={errorForm.errorEmptyPostalCode}
           setIsValidPostalCode={setIsValidPostalCode}
         />
-        <Button type="submit">{translations.next}</Button>
+        <div className="flex justify-center pb-5">
+          <Button onClick={handleNextStep}>{translations.next}</Button>
+        </div>
       </form>
 
       <form
@@ -571,18 +597,8 @@ const RegisterForm = () => {
           <p className="text-txterror">{translations.errorNotCheckedToU}</p>
         )}
         <div className="flex justify-center pb-5">
-          <Button type="action" handleAction={handlePrevStep}>
-            {translations.previous}
-          </Button>
-
-          <Button
-            type="submit"
-            handleSubmit={(e) =>
-              handleSubmit(e as unknown as FormEvent<HTMLFormElement>)
-            }
-          >
-            {translations.sign}
-          </Button>
+          <Button onClick={handlePrevStep}>{translations.previous}</Button>
+          <Button onClick={handleSubmit}>{translations.sign}</Button>
         </div>
       </form>
     </Card>

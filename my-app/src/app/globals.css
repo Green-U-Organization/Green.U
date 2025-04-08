@@ -112,3 +112,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+::placeholder {
+  color: #6a7282;
+}
