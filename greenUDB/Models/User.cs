@@ -41,6 +41,10 @@ public partial class User
 
     public long Xp { get; set; } = 0!;
 
+    public bool Newsletter { get; set; } = false;
+
+    public bool Tou { get; set; } = false;
+
     public bool Deleted { get; set; } = false;
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
