@@ -11,11 +11,11 @@ export const getAllParcelByGardenId = async (gardenId: number) => {
     );
 
     if (!response.ok) {
-      throw new Error(`Failed to edit parcel:  ${response.statusText}`);
+      throw new Error(`Failed to get parcels:  ${response.statusText}`);
     }
     return response.json();
   } catch (error) {
-    console.error('Error in editParcel: ', error);
+    console.error('Error in getAllParcelByGardenId: ', error);
     throw error;
   }
 };

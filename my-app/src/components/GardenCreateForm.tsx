@@ -61,41 +61,6 @@ const CreateGardenForm = () => {
     setGardenWidth(Number(e.target.value));
   };
 
-  // const handleSubmit = () => {
-  //   const form = document.getElementById('createGarden') as HTMLFormElement;
-  //   if (form) {
-  //     const formData = new FormData(form);
-  //     console.log('formulaire : ', formData);
-  //     const gardenData = {
-  //       name: formData.get('gardenName') as string,
-  //       description: formData.get('gardenDescription') as string,
-  //       length: gardenLength,
-  //       width: gardenWidth,
-  //       type: formData.get('gardenType') as gardenType['type'],
-  //       privacy: formData.get('gardenPrivacy') as gardenType['privacy'],
-  //     };
-  //     console.log('Garden Data:');
-
-  //     setGarden({
-  //       ...garden,
-  //       authorId: 1,
-  //       name: formData.get('gardenName') as string,
-  //       description: formData.get('gardenDescription') as string,
-  //       latitude: 50.0546541,
-  //       longitude: 5.1549,
-  //       length: formData.get('length') as unknown as number,
-  //       width: formData.get('width') as unknown as number,
-  //       privacy: formData.get('gardenPrivacy') as gardenType['privacy'],
-  //       type: formData.get('gardenType') as gardenType['type'],
-  //     });
-  //     console.log('format requete : ', garden);
-  //     createNewGarden(garden);
-  //     router.push('/garden-manager');
-  //   } else {
-  //     console.error('Form nor found');
-  //   }
-  // };
-
   const handleSubmit = () => {
     const form = document.getElementById('createGarden') as HTMLFormElement;
     if (form) {
@@ -115,8 +80,7 @@ const CreateGardenForm = () => {
 
       console.log('Garden Data:', gardenData);
       createNewGarden(gardenData);
-
-      // router.push('/garden-manager');
+      router.push('/garden-manager');
     } else {
       console.error('Form not found');
     }

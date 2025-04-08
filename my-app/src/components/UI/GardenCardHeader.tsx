@@ -61,14 +61,6 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   useEffect(() => {
     fetchGardens();
   }, []);
-
-  // useEffect(() => {
-  //   if (gardenId !== null) {
-  //     setSelectedGarden(gardens.find((garden) => garden.id === gardenId));
-  //     console.log('selectedGarden : ', selectedGarden);
-  //   }
-  // }, [gardenId, selectedGarden, gardens]);
-
   //#endregion
 
   //#region HANDLER

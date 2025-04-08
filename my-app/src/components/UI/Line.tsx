@@ -15,13 +15,11 @@ type LineType = {
 
 type LineProps = {
   lineX: number;
-  lineStatus: string;
-  line: LineType;
   handleClick?: () => void;
   scale: number;
 };
 
-const Line: FC<LineProps> = ({ lineX, handleClick, line, scale }) => {
+const Line: FC<LineProps> = ({ lineX, handleClick, scale }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);
 
   const cropIcon: { [key: string]: string } = {

@@ -49,7 +49,6 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
 
     getAllParcelByGardenId(garden.id).then((result) => {
       setParcels(result);
-      console.log(parcels);
     });
   }, [garden]);
 
@@ -110,12 +109,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
 
         {parcels?.map((parcel) => (
           <div className="relative z-10" key={parcel.id}>
-            <Parcel
-              parcelX={parcel.width}
-              parcelY={parcel.length}
-              parcelID={parcel.id}
-              scale={scale}
-            />
+            <Parcel parcel={parcel} scale={scale} />
           </div>
         ))}
       </div>
