@@ -45,6 +45,14 @@ namespace GreenUApi.Controllers
         [HttpGet("user/{id}")]
         public async Task<ActionResult<TagsInterest>> GetUserTag(long id)
         {
+
+            var User = await _db.Users.FindAsync(id);
+
+            if (User == null)
+            {
+                return NotFound("User not found");
+            }
+
             var UserTags = await _db.TagsInterests
            .Where(t => t.UserId == id)
            .Select(t => t.Hashtag)
@@ -52,7 +60,7 @@ namespace GreenUApi.Controllers
 
             if (UserTags.Length == 0)
             {
-                return NotFound(new { message = "This user tag not exist" });
+                return NotFound(new { message = "This user doesn't have tags" });
             }
 
             return Ok(UserTags);
