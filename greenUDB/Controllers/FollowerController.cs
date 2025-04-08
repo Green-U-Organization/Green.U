@@ -1,6 +1,7 @@
 ﻿using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using YamlDotNet.Core.Tokens;
 
 namespace GreenUApi.Controllers
 {
@@ -17,16 +18,16 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("user/{id}")]
-        public async Task<ActionResult<Follower>> FollowAnUser(long id, Follower follower)
+        public async Task<ActionResult<Follower>> FollowAnUser(long id, Follower followerData)
         {
 
-            if (follower.FollowerId == 0)
+            if (followerData.FollowerId == 0)
             {
                 return NotFound(new { message = "Follower id is missed"});
             }
 
             var User = await _db.Users.FindAsync(id);
-            var CheckFollowerId = await _db.Users.FindAsync(follower.FollowerId);
+            var CheckFollowerId = await _db.Users.FindAsync(followerData.FollowerId);
 
             if (User == null)
             {
@@ -38,11 +39,12 @@ namespace GreenUApi.Controllers
                 return NotFound("Follower Id not found");
             }
 
+            followerData.UserId = id;
 
+            _db.Followers.Add(followerData);
+            await _db.SaveChangesAsync();
 
-            
-
-            return Ok();
+            return Ok(new { message = "Follow complete !"});
         }
     }
 }
