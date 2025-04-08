@@ -1,59 +1,57 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Security.Cryptography;
-
-using GreenUApi.controller;
-using Token;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using DotNetEnv;
+using GreenUApi.Models;
 using System.Text;
-using GreenUApi.model;
 
-namespace GreenUApi.authentification
+namespace Token;
+public class Jwt
 {
-    public class Authentification
+    public static string GenerateJwtToken(User user)
     {
-        public static string[] Hasher(string password, byte[]? salty)
+        Env.Load();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "");
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            // Generate a 128-bit salt using a sequence of
-            // cryptographically strong random bytes.
-            byte[] salt;
-            if(salty != null){
-                salt = salty;
-            }
-            else{
-                salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
-            }
-
-            // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: password!,
-            salt: salt,
-            prf: KeyDerivationPrf.HMACSHA256,
-            iterationCount: 100000,
-            numBytesRequested: 256 / 8));
-
-            return new string[] { hashed, Convert.ToBase64String(salt) };
-
-        }
-
-        public static async Task<IResult> Login(string usernameInput, string password, greenUDB db)
-        {
-            var user = await UserController.GetUserForLogin(usernameInput, db);
-
-            if (user.Data[0].Username == null)
-                return TypedResults.NotFound();
-
-            var hashedPassword = Hasher(password, Encoding.UTF8.GetBytes(user.Data[0].Salt))[0];
-
-            if (user.Data[0].Password == hashedPassword)
+            Subject = new ClaimsIdentity(new[]
             {
-                // Generate a JWT with user data
-                var token = Jwt.GenerateJwtToken(user.Data[0]);
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("userId", user.Id.ToString())
+            }),
+            Expires = DateTime.UtcNow.AddHours(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
 
-                // Return the JWT
-                return TypedResults.Ok(new { message = "Mot de passe valide !", token });
-            }
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
 
-            return TypedResults.Unauthorized();
+    public bool VerifyJwtToken(string token)
+    {
+        Env.Load();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "");
+
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
+
+        try{
+            SecurityToken validatedToken;
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+
+            return true;
+        }catch{
+            return false;
         }
-
     }
 }
