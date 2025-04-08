@@ -425,6 +425,9 @@ namespace GreenUApi.Migrations
                     b.Property<long>("Level")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("Newsletter")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
@@ -438,6 +441,9 @@ namespace GreenUApi.Migrations
 
                     b.Property<string>("Salt")
                         .HasColumnType("text");
+
+                    b.Property<bool>("Tou")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Username")
                         .HasColumnType("text");
