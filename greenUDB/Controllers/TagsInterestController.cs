@@ -93,7 +93,6 @@ namespace GreenUApi.Controllers
                 return BadRequest(new { message = "Tag not found"});
             }
 
-
         }
 
 
@@ -150,6 +149,34 @@ namespace GreenUApi.Controllers
             }
 
             return Ok(UserTags);
+        }
+
+        [HttpDelete("garden/{id}")]
+        public async Task<ActionResult<TagsInterest>> DeleteGardenTag(long id, TagsInterest Tag)
+        {
+
+            try
+            {
+                TagsInterest tagExists = await _db.TagsInterests
+                    .Where(t => t.GardenId == id && t.Hashtag == Tag.Hashtag)
+                    .FirstAsync();
+
+                if (tagExists == null)
+                {
+                    return NotFound(new { message = "Garden tag not found" });
+                }
+
+                _db.TagsInterests.Remove(tagExists);
+                await _db.SaveChangesAsync();
+
+                return Ok(new { message = "Tag Deleted !" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Tag not found" });
+            }
+
         }
     }
 }
