@@ -24,6 +24,9 @@ const page = () => {
 
   const router = useRouter();
 
+  // A DEGAGER
+  console.log(userId);
+
   // const [checkPass, setCheckPass] = useState<Boolean>(false);
 
   // const specialChar = [
@@ -89,7 +92,7 @@ const page = () => {
     // checkPassword(newPassword);
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
 
@@ -119,7 +122,7 @@ const page = () => {
           throw new Error('User not found');
         }
 
-        const userId = response.id;
+        const userId = String(response.id);
 
         // Définir la date d'expiration du cookie (10 minutes)
         const minutes = 10; //Délais d'expiration du cookie
@@ -191,7 +194,14 @@ const page = () => {
 
             <br />
             <div className="flex flex-row justify-between pb-5">
-              <Button onClick={handleSubmit}>{translations.login}</Button>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSubmit(e as unknown as FormEvent<HTMLFormElement>);
+                }}
+              >
+                {translations.login}
+              </Button>
               <Button onClick={() => router.push('/signin')}>
                 {translations.signup}
               </Button>

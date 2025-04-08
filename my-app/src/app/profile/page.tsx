@@ -1,22 +1,17 @@
 'use client';
 import Image from 'next/image';
-import {
-  FaMapMarkerAlt,
-  FaInstagram,
-  FaFacebook,
-  FaEnvelope,
-} from 'react-icons/fa';
+import { FaMapMarkerAlt, FaEnvelope } from 'react-icons/fa';
 import Card from '@/components/UI/Card';
 import Button from '@/components/UI/Button';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import AvatarSelector from '@/components/AvatarSelector';
+// import AvatarSelector from '@/components/AvatarSelector';
 import { useLanguage } from '../contexts/LanguageProvider';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function GardenerProfile() {
   const router = useRouter();
-  const [avatar, setAvatar] = useState<string | null>(null);
+  // const [avatar, setAvatar] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
   const { translations } = useLanguage();
@@ -61,11 +56,11 @@ export default function GardenerProfile() {
       {/* Sélecteur d'avatar */}
       {isAvatarSelectorOpen ? (
         <>
-          <AvatarSelector
+          {/* <AvatarSelector
             onSelect={setAvatar}
             isOpen={isAvatarSelectorOpen}
             onClose={() => setIsAvatarSelectorOpen(false)}
-          />
+          /> */}
         </>
       ) : (
         <Card className="flex max-w-5xl flex-col p-5">
@@ -191,8 +186,10 @@ export default function GardenerProfile() {
                 📢 {translations.contact}
               </h2>
               <div className="text-border mt-2 flex space-x-4">
-                {/* <a href="#" target='_blank' className="hover:text-shadow"><FaInstagram /></a>
-                    <a href="#" target='_blank' className="hover:text-shadow"><FaFacebook /></a> */}
+                {/*
+                    <a href="#" target='_blank' className="hover:text-shadow"><FaInstagram /></a>
+                    <a href="#" target='_blank' className="hover:text-shadow"><FaFacebook /></a>
+                    */}
                 <a
                   href="mailto:jean.dupont@gmail.com"
                   className="hover:text-shadow"
@@ -204,14 +201,11 @@ export default function GardenerProfile() {
 
             <div className="mt-auto flex justify-center p-2">
               {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
-              <Button type="submit" handleSubmit={() => router.push('/login')}>
+              <Button onClick={() => router.push('/login')}>
                 {translations.back}
               </Button>
               {/* ID DU USER A TRANSMETTRE POUR L'EDITION DU PROFILE */}
-              <Button
-                type="submit"
-                handleSubmit={() => router.push('/editProfile')}
-              >
+              <Button onClick={() => router.push('/editProfile')}>
                 {translations.edit}
               </Button>
             </div>

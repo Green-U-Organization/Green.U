@@ -1,6 +1,10 @@
 'use client';
 import React from 'react';
+<<<<<<< HEAD
+import { useState, useRef, useEffect } from 'react';
+=======
 import { useState, useRef, useEffect, ChangeEvent } from 'react';
+>>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
 import Card from '@/components/UI/Card';
 import TextInput from '@/components/UI/TextInput';
 import Button from '@/components/UI/Button';
@@ -8,6 +12,10 @@ import Calendar from 'react-calendar';
 import { CalendarProps } from 'react-calendar';
 import Radio from '@/components/UI/Radio';
 import DropDownPostalCode from '@/components/DropDownPostalCode';
+<<<<<<< HEAD
+// import DropDown from '@/components/UI/DropDown';
+=======
+>>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Checkbox from '@/components/UI/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
@@ -32,21 +40,21 @@ type FormData = {
   isAdmin: boolean;
 };
 
-type ErrorForm = {
-  errorEmptyLogin: boolean;
-  errorEmptyEmail: boolean;
-  errorEmptyFirstname: boolean;
-  errorEmptyGardenerLevel: boolean;
-  errorEmptyInterests: boolean;
-  errorEmptyLastname: boolean;
-  errorEmptyPassword: boolean;
-  errorEmptyPasswordVerify: boolean;
-  errorEmptyPostalCode: boolean;
-  errorMatchingPassword: boolean;
-  errorNotCheckedToU: boolean;
-  errorEmptyBirthDate: boolean;
-  errorSpecialCharPassword: boolean;
-};
+// type ErrorForm = {
+//   errorEmptyLogin: boolean;
+//   errorEmptyEmail: boolean;
+//   errorEmptyFirstname: boolean;
+//   errorEmptyGardenerLevel: boolean;
+//   errorEmptyInterests: boolean;
+//   errorEmptyLastname: boolean;
+//   errorEmptyPassword: boolean;
+//   errorEmptyPasswordVerify: boolean;
+//   errorEmptyPostalCode: boolean;
+//   errorMatchingPassword: boolean;
+//   errorNotCheckedToU: boolean;
+//   errorEmptyBirthDate: boolean;
+//   errorSpecialCharPassword: boolean;
+// };
 
 const RegisterForm = () => {
   //#region 	VARIABLES
@@ -56,12 +64,12 @@ const RegisterForm = () => {
   const router = useRouter();
 
   //Les niveaux possible du jardinier
-  const gardenerLevels = [
-    translations.levelbeginner,
-    translations.levelintermediate,
-    translations.leveladvanced,
-    translations.levelexpert,
-  ];
+  // const gardenerLevels = [
+  //   translations.levelbeginner,
+  //   translations.levelintermediate,
+  //   translations.leveladvanced,
+  //   translations.levelexpert,
+  // ];
 
   //	https://blog.logrocket.com/using-react-usestate-object/
   const [formDataRegister, setFormDataRegister] = useState<FormData>({
@@ -108,8 +116,12 @@ const RegisterForm = () => {
   //#endregion
 
   //#region	VALIDITY FUCTIONS
+<<<<<<< HEAD
+  const step1Validation = (data: Partial<FormData>) => {
+=======
   const step1Validation = (data: Record<string, any>) => {
     console.log('check validation step 1:');
+>>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
     const hasEmptyFields =
       !data.login ||
       !data.password ||
@@ -123,14 +135,15 @@ const RegisterForm = () => {
     console.log('emptyfields? ', hasEmptyFields);
 
     const passwordValid =
-      data.password.length >= 8 && specialCharRegex.test(data.password);
+      (data.password?.length ?? 0) >= 8 &&
+      specialCharRegex.test(data.password ?? '');
     console.log('passwordValid ? : ', passwordValid);
 
     const passwordsMatch = data.password === data.passwordVerify;
     console.log('passwordMatch ? ', passwordsMatch);
 
-    checkPassword(data.password);
-    checkPasswordVerify(data.password, data.passwordVerify);
+    checkPassword(data.password ?? '');
+    checkPasswordVerify(data.password ?? '', data.passwordVerify ?? '');
 
     const postalCodeValid = isValidPostalCode;
 
@@ -343,10 +356,10 @@ const RegisterForm = () => {
     }
   };
 
-  const handleChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) =>
-    (e: ChangeEvent<HTMLInputElement>) =>
-      setter(e.target.value);
+  // const handleChange =
+  //   (setter: React.Dispatch<React.SetStateAction<string>>) =>
+  //   (e: ChangeEvent<HTMLInputElement>) =>
+  //     setter(e.target.value);
 
   const handleSubmit = () => {
     const isValid = step2Validation();

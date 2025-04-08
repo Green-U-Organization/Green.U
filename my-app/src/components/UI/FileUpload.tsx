@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Button from './Button';
 
@@ -9,7 +9,7 @@ interface FileUploadProps {
 const FileUpload: React.FC<FileUploadProps> = ({ onFileChange }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { translations } = useLanguage();
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  // const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {

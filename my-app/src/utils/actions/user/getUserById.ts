@@ -1,4 +1,6 @@
-export const getUserById = async (userId: number): Promise<any> => {
+export const getUserById = async <T extends Record<string, unknown>>(
+  userId: number
+): Promise<T> => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API}/user/${userId}`,

@@ -2,9 +2,9 @@
 
 import Card from '@/components/UI/Card';
 import Garden from '@/components/UI/Garden';
-import React, { use, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import GardenCardHeader from '@/components/UI/GardenCardHeader';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 
 type GardenType = {
   id: number;
@@ -15,12 +15,12 @@ type GardenType = {
   longitude: number;
   length: number;
   width: number;
-  privacy: 'private' | 'public';
-  type: 'individual' | 'collective' | 'professionnal';
+  privacy: number;
+  type: number;
 };
 
 const GardenDisplay = () => {
-  const [currentGardenId, setCurrentGardenId] = useState<number>(1);
+  // const [currentGardenId, setCurrentGardenId] = useState<number>(1);
   const [currentScale, setCurrentScale] = useState<number>(125);
   const [currentGarden, setCurrentGarden] = useState<GardenType | null>(null);
 
@@ -40,6 +40,7 @@ const GardenDisplay = () => {
           className="flex flex-col items-center p-5"
           onGardenIdChange={handleGardenIdChange}
           onScaleChange={handleScaleChange}
+          type="display"
         ></GardenCardHeader>
 
         <div className="max-w-full overflow-x-auto">

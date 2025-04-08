@@ -6,7 +6,6 @@ import React, {
   PropsWithChildren,
   useState,
 } from 'react';
-import { useRouter } from 'next/navigation';
 
 type ButtonProps = {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;

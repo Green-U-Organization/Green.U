@@ -1,4 +1,4 @@
-import CreateGardenForm from '@/components/CreateGardenForm';
+import CreateGardenForm from '@/components/GardenCreateForm';
 import React from 'react';
 
 const page = () => {
