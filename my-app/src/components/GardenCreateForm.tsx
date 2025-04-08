@@ -7,6 +7,7 @@ import Button from './UI/Button';
 import HashtagInput from './HashtagInput';
 import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
 import { useRouter } from 'next/navigation';
+import LocationPicker from './UI/LocationPicker';
 
 type gardenType = {
   authorId: number;
@@ -70,8 +71,8 @@ const CreateGardenForm = () => {
         authorId: 1,
         name: formData.get('gardenName') as string,
         description: formData.get('gardenDescription') as string,
-        latitude: 50.0546541,
-        longitude: 5.1549,
+        latitude: parseFloat(formData.get('latitude') as string),
+        longitude: parseFloat(formData.get('longitude') as string),
         length: Number(formData.get('gardenLength')),
         width: Number(formData.get('gardenWidth')),
         privacy: Number(formData.get('gardenPrivacy')),
@@ -138,6 +139,13 @@ const CreateGardenForm = () => {
             step="1"
             onChange={handleWidthChange}
             className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
+          />
+
+          {/* Intégration de la map de localisation du terrain */}
+          <LocationPicker
+            initialLat={0} //Pour ne pas avoir un pin par défaut
+            initialLng={0} //Idem
+            //onLocationChange={(lat, lng) => console.log(lat, lng)}
           />
 
           <label htmlFor="gardenType">What kind of garden is it?</label>
