@@ -4,6 +4,7 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 08/04/25 | @Emmanuel | L'ajout d'un user fonctionne via RegisterForm | 
 | 07/04/25 | @Emmanuel | Travail sur le nouvelle version de RegisterForm
 | 06/04/25 | @Emmanuel | Ajout de la prop disable et title au composant Button
 ||| Création d'un bucket Supabase pour le stockage des avatars

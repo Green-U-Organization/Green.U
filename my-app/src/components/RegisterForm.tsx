@@ -1,10 +1,6 @@
 'use client';
 import React from 'react';
-<<<<<<< HEAD
 import { useState, useRef, useEffect } from 'react';
-=======
-import { useState, useRef, useEffect, ChangeEvent } from 'react';
->>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
 import Card from '@/components/UI/Card';
 import TextInput from '@/components/UI/TextInput';
 import Button from '@/components/UI/Button';
@@ -12,14 +8,11 @@ import Calendar from 'react-calendar';
 import { CalendarProps } from 'react-calendar';
 import Radio from '@/components/UI/Radio';
 import DropDownPostalCode from '@/components/DropDownPostalCode';
-<<<<<<< HEAD
-// import DropDown from '@/components/UI/DropDown';
-=======
->>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Checkbox from '@/components/UI/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 type Value = CalendarProps['value'];
 
 type FormData = {
@@ -34,6 +27,9 @@ type FormData = {
   birthDate: string;
   gardenerLevel: string;
   interests: string[];
+  newsletter: boolean;
+  tou: boolean;
+  isAdmin: boolean;
 };
 
 // type ErrorForm = {
@@ -57,6 +53,7 @@ const RegisterForm = () => {
   const { translations } = useLanguage();
   const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
   const calendarRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   //Les niveaux possible du jardinier
   // const gardenerLevels = [
@@ -79,6 +76,9 @@ const RegisterForm = () => {
     birthDate: '',
     gardenerLevel: '',
     interests: [],
+    newsletter: false,
+    tou: false,
+    isAdmin: false,
   });
 
   const [errorForm, setErrorForm] = useState({
@@ -102,18 +102,13 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVerify, setShowPasswordVerify] = useState(false);
   const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isCheckedNewsletter, setIsCheckedNewsletter] = useState(false);
   const [isCheckedToU, setIsCheckedToU] = useState(false);
 
   //#endregion
 
   //#region	VALIDITY FUCTIONS
-<<<<<<< HEAD
   const step1Validation = (data: Partial<FormData>) => {
-=======
-  const step1Validation = (data: Record<string, any>) => {
-    console.log('check validation step 1:');
->>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
     const hasEmptyFields =
       !data.login ||
       !data.password ||
@@ -217,7 +212,7 @@ const RegisterForm = () => {
     //Ajout manuel du champ birthdate (car géré par Calendar et non par un input)
     formJson.birthDate = formDataRegister.birthDate;
 
-    console.log(formJson);
+    console.log('formJson page 1: ', formJson);
 
     setFormDataRegister((prevFormData) => ({
       ...prevFormData,
@@ -360,6 +355,16 @@ const RegisterForm = () => {
       return;
     }
 
+    if (!formRef.current) return;
+    const formData = new FormData(formRef.current);
+    const formJson = Object.fromEntries(formData.entries());
+
+    setFormDataRegister((prevFormData) => ({
+      ...prevFormData,
+      newsletter: isCheckedNewsletter,
+      tou: isCheckedToU,
+    }));
+
     console.log('FORM OK');
     const bodyRequest = {
       Username: formDataRegister.login,
@@ -371,12 +376,48 @@ const RegisterForm = () => {
       Country: 'Belgium',
       Sexe: formDataRegister.gender,
       Birthdate: formDataRegister.birthDate,
+      Newsletter: isCheckedNewsletter,
+      Tou: isCheckedToU,
+      isAdmin: formDataRegister.isAdmin,
     };
-    console.log('bodyrequest: ', bodyRequest);
-    fetch(process.env.NEXT_PUBLIC_API + '/user', {
-      method: 'POST',
-      body: JSON.stringify(bodyRequest),
-    });
+    console.log('formJson page 2: ', bodyRequest);
+
+    // try {
+    //   const response = fetch(process.env.NEXT_PUBLIC_API + '/user', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(bodyRequest),
+    //   });
+
+    //   if (response.ok) {
+    //     const data = response.json();
+    //     console.log('User added with succes !');
+    //     //ATTENDRE L'OBJET RETOURNE DU BACKEND
+    //     //QUI CONTIENDRA LE USERID ENTRE AUTRES
+    //     //IL POURRA ËTRE UTILISE POUR AJOUTER LES HASHTAGS
+
+    //     // const userId = null;
+
+    //     //   if (formDataRegister.interests.length > 0) {
+    //     //   }
+    //     //   // fetch(process.env.NEXT_PUBLIC_API + `/tags/user${userId}`, {
+    //     //   //   method: 'POST',
+    //     //   //   headers: {
+    //     //   //     'Content-Type': 'application/json',
+    //     //   //   },
+    //     //   //   body: JSON.stringify(bodyRequest),
+    //     //   // });
+    //     // }
+    //     //Redirige vers la page du dashboard
+    //     router.push('/landing');
+    //   } else {
+    //     console.error('Server error: ', response.status, response.text());
+    //   }
+    // } catch (error) {
+    //   console.error('Netword error or other: ', error);
+    // }
   };
   //#endregion
 
@@ -583,7 +624,10 @@ const RegisterForm = () => {
 
         {/* Newsletter & Condition Générale d'Utilisation */}
         <div className="mb-2 flex items-start">
-          <Checkbox checked={isChecked} onChange={setIsChecked} />
+          <Checkbox
+            checked={isCheckedNewsletter}
+            onChange={setIsCheckedNewsletter}
+          />
           <p className="ml-2">{translations.newsletter}</p>
         </div>
         <div className="mb-0 flex items-start">
