@@ -15,6 +15,7 @@ namespace GreenUApi.Controllers
         [HttpPost("user/{id}")]
         public async Task<ActionResult<TagsInterest>> CreateUserTags(long id, [FromBody] TagsInterest Tag)
         {
+
             var User = await _db.Users.FindAsync(id);
 
             if (User == null)
@@ -73,7 +74,7 @@ namespace GreenUApi.Controllers
 
             if (User == null)
             {
-                return NotFound("User not found");
+                return NotFound("Garden not found");
             }
 
             bool tagExists = await _db.TagsInterests
@@ -91,7 +92,7 @@ namespace GreenUApi.Controllers
             }
             else
             {
-                return BadRequest(new { message = "The tag with this user is already exist" });
+                return BadRequest(new { message = "The tag with this garden is already exist" });
             }
 
         }
@@ -99,6 +100,14 @@ namespace GreenUApi.Controllers
         [HttpGet("garden/{id}")]
         public async Task<ActionResult<TagsInterest>> GetGardenTag(long id)
         {
+
+            var User = await _db.Users.FindAsync(id);
+
+            if (User == null)
+            {
+                return NotFound("Garden not found");
+            }
+
             var UserTags = await _db.TagsInterests
            .Where(t => t.UserId == id)
            .Select(t => t.Hashtag)
@@ -106,7 +115,7 @@ namespace GreenUApi.Controllers
 
             if (UserTags.Length == 0)
             {
-                return NotFound(new { message = "This user tag not exist" });
+                return NotFound(new { message = "This garden doesn't have tags" });
             }
 
             return Ok(UserTags);
