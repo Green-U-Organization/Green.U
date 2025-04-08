@@ -211,8 +211,8 @@ namespace GreenUApi.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
-                    b.Property<long?>("Length")
-                        .HasColumnType("bigint");
+                    b.Property<double?>("Length")
+                        .HasColumnType("double");
 
                     b.Property<long?>("ParcelId")
                         .HasColumnType("bigint")
@@ -321,8 +321,8 @@ namespace GreenUApi.Migrations
                     b.Property<double?>("ParcelAngle")
                         .HasColumnType("double");
 
-                    b.Property<long?>("Width")
-                        .HasColumnType("bigint");
+                    b.Property<double?>("Width")
+                        .HasColumnType("double");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
