@@ -61,28 +61,28 @@ const CreateGardenForm = () => {
     setGardenWidth(Number(e.target.value));
   };
 
-  // const handleSubmit = () => {
-  //   const form = document.getElementById('createGarden') as HTMLFormElement;
-  //   if (form) {
-  //     form.submit();
-  //     console.log(form);
-  //     setGarden({
-  //       ...garden,
-  //       authorId: 1,
-  //       name: form.gardenName,
-  //       description: form.gardenDescription,
-  //       latitude: 50,
-  //       longitude: 50,
-  //       length: gardenLength,
-  //       width: gardenWidth,
-  //       privacy: form.gardenPrivacy,
-  //       type: form.gardenType,
-  //     });
-  //     createNewGarden(garden);
-  //   } else {
-  //     console.error('Form nor found');
-  //   }
-  // };
+  const handleSubmit = () => {
+    const form = document.getElementById('createGarden') as HTMLFormElement;
+    if (form) {
+      form.submit();
+      console.log(form);
+      setGarden({
+        ...garden,
+        authorId: 1,
+        name: form.gardenName,
+        description: form.gardenDescription,
+        latitude: 50,
+        longitude: 50,
+        length: gardenLength,
+        width: gardenWidth,
+        privacy: form.gardenPrivacy,
+        type: form.gardenType,
+      });
+      createNewGarden(garden);
+    } else {
+      console.error('Form nor found');
+    }
+  };
 
   return (
     <>
@@ -169,9 +169,7 @@ const CreateGardenForm = () => {
           )} */}
           <div className="flex justify-between">
             <Button onClick={() => router.push('/garden-manager')}>Back</Button>
-            <Button onClick={() => router.push('/garden-manager/create')}>
-              Create !
-            </Button>
+            <Button onClick={handleSubmit}>Create !</Button>
           </div>
         </form>
       </Card>
