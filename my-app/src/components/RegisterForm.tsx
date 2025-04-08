@@ -1,10 +1,6 @@
 'use client';
 import React from 'react';
-<<<<<<< HEAD
 import { useState, useRef, useEffect } from 'react';
-=======
-import { useState, useRef, useEffect, ChangeEvent } from 'react';
->>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
 import Card from '@/components/UI/Card';
 import TextInput from '@/components/UI/TextInput';
 import Button from '@/components/UI/Button';
@@ -12,10 +8,6 @@ import Calendar from 'react-calendar';
 import { CalendarProps } from 'react-calendar';
 import Radio from '@/components/UI/Radio';
 import DropDownPostalCode from '@/components/DropDownPostalCode';
-<<<<<<< HEAD
-// import DropDown from '@/components/UI/DropDown';
-=======
->>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Checkbox from '@/components/UI/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
@@ -116,12 +108,7 @@ const RegisterForm = () => {
   //#endregion
 
   //#region	VALIDITY FUCTIONS
-<<<<<<< HEAD
   const step1Validation = (data: Partial<FormData>) => {
-=======
-  const step1Validation = (data: Record<string, any>) => {
-    console.log('check validation step 1:');
->>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
     const hasEmptyFields =
       !data.login ||
       !data.password ||
