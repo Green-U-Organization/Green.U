@@ -1,6 +1,10 @@
 'use client';
 import React from 'react';
+<<<<<<< HEAD
 import { useState, useRef, useEffect } from 'react';
+=======
+import { useState, useRef, useEffect, ChangeEvent } from 'react';
+>>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
 import Card from '@/components/UI/Card';
 import TextInput from '@/components/UI/TextInput';
 import Button from '@/components/UI/Button';
@@ -8,7 +12,10 @@ import Calendar from 'react-calendar';
 import { CalendarProps } from 'react-calendar';
 import Radio from '@/components/UI/Radio';
 import DropDownPostalCode from '@/components/DropDownPostalCode';
+<<<<<<< HEAD
 // import DropDown from '@/components/UI/DropDown';
+=======
+>>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Checkbox from '@/components/UI/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
@@ -101,7 +108,12 @@ const RegisterForm = () => {
   //#endregion
 
   //#region	VALIDITY FUCTIONS
+<<<<<<< HEAD
   const step1Validation = (data: Partial<FormData>) => {
+=======
+  const step1Validation = (data: Record<string, any>) => {
+    console.log('check validation step 1:');
+>>>>>>> aeb859a7e44f59682592cd19b20f49c278fed238
     const hasEmptyFields =
       !data.login ||
       !data.password ||
@@ -118,11 +130,9 @@ const RegisterForm = () => {
       (data.password?.length ?? 0) >= 8 &&
       specialCharRegex.test(data.password ?? '');
     console.log('passwordValid ? : ', passwordValid);
-    //AJOUTER MESSAGE D ERREUR SPECIFIQUE
 
     const passwordsMatch = data.password === data.passwordVerify;
     console.log('passwordMatch ? ', passwordsMatch);
-    //AJOUTER MESSAGE D ERREUR SPECIFIQUE
 
     checkPassword(data.password ?? '');
     checkPasswordVerify(data.password ?? '', data.passwordVerify ?? '');
@@ -135,7 +145,7 @@ const RegisterForm = () => {
   };
 
   const step2Validation = () => {
-    console.log('check validation step 2');
+    console.log('check validation step 2:');
 
     const isValid =
       //formDataRegister.gardenerLevel &&
@@ -329,9 +339,10 @@ const RegisterForm = () => {
 
   const handleDateChange = (value: Value) => {
     if (value instanceof Date) {
+      const formattedDate = value.toISOString().split('T')[0]; //Format YYYY-MM-DD
       setFormDataRegister((prevFormData) => ({
         ...prevFormData,
-        birthDate: value.toString(),
+        birthDate: formattedDate,
       }));
       setBirthDateDisplay(false);
     }
@@ -349,10 +360,6 @@ const RegisterForm = () => {
       return;
     }
 
-    // !formDataRegister.gardenerLevel ||
-    // !formDataRegister.interests.length ||
-    // !isCheckedToU
-
     console.log('FORM OK');
     const bodyRequest = {
       Username: formDataRegister.login,
@@ -365,11 +372,11 @@ const RegisterForm = () => {
       Sexe: formDataRegister.gender,
       Birthdate: formDataRegister.birthDate,
     };
-    fetch(process.env.NEXT_PUBLIC_API + '/users', {
+    console.log('bodyrequest: ', bodyRequest);
+    fetch(process.env.NEXT_PUBLIC_API + '/user', {
       method: 'POST',
       body: JSON.stringify(bodyRequest),
     });
-    //}
   };
   //#endregion
 
