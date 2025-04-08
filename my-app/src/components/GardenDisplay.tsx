@@ -15,8 +15,8 @@ type GardenType = {
   longitude: number;
   length: number;
   width: number;
-  privacy: 'private' | 'public';
-  type: 'individual' | 'collective' | 'professionnal';
+  privacy: number;
+  type: number;
 };
 
 const GardenDisplay = () => {
@@ -25,7 +25,6 @@ const GardenDisplay = () => {
   const [currentGarden, setCurrentGarden] = useState<GardenType | null>(null);
 
   const handleGardenIdChange = (selectedGarden: GardenType) => {
-    console.log('current garden : ', selectedGarden);
     setCurrentGarden(selectedGarden);
   };
 
@@ -41,6 +40,7 @@ const GardenDisplay = () => {
           className="flex flex-col items-center p-5"
           onGardenIdChange={handleGardenIdChange}
           onScaleChange={handleScaleChange}
+          type="display"
         ></GardenCardHeader>
 
         <div className="max-w-full overflow-x-auto">
