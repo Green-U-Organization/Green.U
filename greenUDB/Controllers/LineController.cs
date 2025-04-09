@@ -30,27 +30,29 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête GET pour obtenir une ligne :
         ///
-        /// GET /line/{id}
-        /// </remarks>
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<Line>> GetLine(long id)
-        // {
-        //     var line = await _context.Lines.FindAsync(id);
-
-        //     if (line == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     return line;
-        // }
-
-
+        // / GET /line/{id}
+        // / </remarks>
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Line>>> GetAllLinesById(long id)
         {
-            var parcel = await _context.Parcels.FindAsync(id);
+            var line = await _context.Lines.FindAsync(id);
 
+            if (line == null)
+            {
+                return NotFound();
+            }
+
+            var lines = await _context.Lines.Where(l => l.ParcelId == parcel.Id).ToListAsync();
+
+            return lines;
+        }
+
+        [HttpGet("{gardenId}/{id}")]
+        public async Task<ActionResult<IEnumerable<Line>>> GetAllLinesById(long gardenId, long id)
+        {
+            var parcel = await _context.Parcels
+                .Where(p => p.Id == id && p.GardenId == gardenId)
+                .FirstOrDefaultAsync(); 
             if (parcel == null)
             {
                 return NotFound();
@@ -121,17 +123,19 @@ namespace GreenUApi.Controllers
         ///     "Length": 57.4,
         /// }
         /// </remarks>
-        [HttpPost]
+       [HttpPost]
         public async Task<ActionResult<Line>> PostLine(Line line)
         {
+            // Attribuer la date de création avant d'ajouter la ligne à la base de données
+            line.CreatedAt = DateTime.UtcNow;
+
             _context.Lines.Add(line);
             await _context.SaveChangesAsync();
 
-            line.CreatedAt = DateTime.UtcNow;
-
+            // Retourner la réponse avec l'URL de la ressource créée
             return CreatedAtAction("GetLine", new { id = line.Id }, line);
-       
         }
+
         /// <summary>
         /// Supprime une ligne par son ID.
         /// </summary>
