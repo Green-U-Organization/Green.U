@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GreenUApi.Controllers
 {
     [Route("/garden/parcel/line")]
     [ApiController]
+    // [Authorize]
     public class LineController : ControllerBase
     {
         private readonly GreenUDB _context;
@@ -28,19 +30,23 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête GET pour obtenir une ligne :
         ///
-        /// GET /line/{id}
-        /// </remarks>
+        // / GET /line/{id}
+        // / </remarks>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Line>> GetLine(long id)
+        public async Task<ActionResult<IEnumerable<Line>>> GetLine(long id)
         {
-            var line = await _context.Lines.FindAsync(id);
+            var parcel = await _context.Parcels.FindAsync(id);
 
-            if (line == null)
+            if (parcel == null)
             {
                 return NotFound();
             }
 
-            return line;
+            // return Ok(parcel);
+
+            var lines = await _context.Lines.Where(l => l.ParcelId == parcel.Id).ToListAsync();
+
+            return Ok(lines);
         }
 
         /// <summary>
@@ -103,17 +109,19 @@ namespace GreenUApi.Controllers
         ///     "Length": 57.4,
         /// }
         /// </remarks>
-        [HttpPost]
+       [HttpPost]
         public async Task<ActionResult<Line>> PostLine(Line line)
         {
+            // Attribuer la date de création avant d'ajouter la ligne à la base de données
+            line.CreatedAt = DateTime.UtcNow;
+
             _context.Lines.Add(line);
             await _context.SaveChangesAsync();
 
-            line.CreatedAt = DateTime.UtcNow;
-
+            // Retourner la réponse avec l'URL de la ressource créée
             return CreatedAtAction("GetLine", new { id = line.Id }, line);
-       
         }
+
         /// <summary>
         /// Supprime une ligne par son ID.
         /// </summary>

@@ -13,7 +13,9 @@ public partial class Line
 
     public long? ParcelId { get; set; }
 
-    public long? Length { get; set; }
+    public long? PLantNurseryId { get; set; }
+
+    public Double? Length { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

@@ -10,7 +10,7 @@ using GreenUApi.Models;
 namespace GreenUApi.Controllers
 {
     [Route("crops")]
-    [ApiController]
+    // [ApiController]
     public class CropController : ControllerBase
     {
         private readonly GreenUDB _context;
@@ -21,7 +21,7 @@ namespace GreenUApi.Controllers
         }
 
         /// <summary>
-        /// Route : GET: api/Crop
+        /// Route : GET: /Crop
         /// <return> 
         /// Liste des cultures avec les détails comme l'ID, LineId, PlantNurseryId, etc.
         /// Le format de la réponse sera le suivant:
@@ -57,9 +57,19 @@ namespace GreenUApi.Controllers
             return await _context.Crops.ToListAsync();
         }
 
-        [HttpGet("line/crops{line}")]
+        [HttpGet("line/{line}")]
         public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByline(long line){
             var crops = await _context.Crops.Where(c => c.LineId == line).ToListAsync();
+            if(!crops.Any()){
+                return NotFound();
+            }
+
+            return Ok(crops);
+        }
+
+        [HttpGet("plantNursery/{plantNursery}")]
+        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByPlantNursery(long line){
+            var crops = await _context.Crops.Where(c => c.PlantNurseryId == line).ToListAsync();
             if(!crops.Any()){
                 return NotFound();
             }
@@ -80,7 +90,7 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête PATCH pour la mise à jour d'une culture :
         ///
-        /// PATCH /api/crops/{id}
+        /// PATCH /crops/{id}
         /// Content-Type: application/json
         /// Body:
         /// {
@@ -132,7 +142,7 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête POST pour ajouter une culture :
         ///
-        /// POST /api/crops
+        /// POST /crops
         /// Content-Type: application/json
         /// Body:
         /// {
@@ -166,7 +176,7 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête DELETE pour supprimer une culture :
         ///
-        /// DELETE /api/crops/{id}
+        /// DELETE /crops/{id}
         /// </remarks>
         [HttpDelete]
         public async Task<IActionResult> DeleteCrop(long id)
