@@ -4,11 +4,11 @@ import React from 'react';
 const page = () => {
   return (
     <>
-      {/* <GardenCardHeader
+      <GardenCardHeader
         containerName="Garden Editor"
         onScaleChange={}
         type="edit"
-      /> */}
+      />
     </>
   );
 };

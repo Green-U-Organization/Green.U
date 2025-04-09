@@ -1,7 +1,6 @@
 'use client';
 import React, { FC, useEffect, useState } from 'react';
-import Line from './Line';
-import data from '../../app/data/data';
+//import Line from './Line';
 import styles from '../../app/Assets.module.css';
 import { getAllLinesByParcelId } from '@/utils/actions/garden/parcel/line/getAllLinesByParcelId';
 
@@ -33,7 +32,7 @@ type LinesType = {
 
 const Parcel: FC<Parcel> = ({ parcel, scale }) => {
   const [currentParcel, setCurrentParcel] = useState<Parcels>(parcel);
-  const [lines, setLines] = useState<LinesType[]>([]);
+  const [lines, setLines] = useState<LinesType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const parcelY = currentParcel?.length;
@@ -44,13 +43,14 @@ const Parcel: FC<Parcel> = ({ parcel, scale }) => {
     setIsLoading(false);
 
     getAllLinesByParcelId(parcel.id).then((result) => {
-      if (Array.isArray(result)) {
-        setLines(result);
-      } else {
-        console.error('Expected an array but got:', result);
-      }
+      setLines(result);
+      console.log(lines);
     });
-  }, [parcel]);
+  }, [parcel, lines]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className="z-10 ml-5">
@@ -97,7 +97,7 @@ const Parcel: FC<Parcel> = ({ parcel, scale }) => {
 
           {/* //MainCore */}
 
-          <div
+          {/* <div
             className={`${styles.parcelBackground} flex flex-col justify-around`}
             style={{
               height: parcelX * scale,
@@ -105,12 +105,12 @@ const Parcel: FC<Parcel> = ({ parcel, scale }) => {
             }}
           >
             {lines?.map((line) => (
-              <div className="h-5 w-20 bg-amber-100">
-                {/* <Line key={line.id} lineX={line.length} scale={scale} /> */}
+              <div key={line.id} className="z-20 h-5 w-20 bg-amber-100">
+                <Line lineX={line.length} scale={scale} />
               </div>
             ))}
-            {/* <p>id : {parcel.id} length : {parcel.length} width : {parcel.width}</p> */}
-          </div>
+            {/* <p>id : {parcel.id} length : {parcel.length} width : {parcel.width}</p> 
+          </div> */}
 
           {/* //BorderRight */}
           <div
