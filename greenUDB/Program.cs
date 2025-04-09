@@ -9,21 +9,21 @@ using Microsoft.IdentityModel.Tokens;
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "")),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ClockSkew = TimeSpan.Zero
-        };
-    });
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateIssuerSigningKey = true,
+//            IssuerSigningKey = new SymmetricSecurityKey(
+//                Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "")),
+//            ValidateIssuer = false,
+//            ValidateAudience = false,
+//            ClockSkew = TimeSpan.Zero
+//        };
+//    });
 
-builder.Services.AddAuthorization();
+//builder.Services.AddAuthorization();
 
 // Autres services
 builder.Services.AddControllers();
@@ -66,21 +66,10 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
-// Use cors
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowLocalhost3000", policy =>
-    {
-        policy.WithOrigins("http://localhost:3000")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
-
 app.UseCors("AllowSpecificOrigin");
 
 app.UseRouting();
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
