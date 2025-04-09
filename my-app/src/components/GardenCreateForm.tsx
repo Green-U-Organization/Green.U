@@ -177,14 +177,6 @@ const CreateGardenForm = () => {
             onChange={(e) => setSelectedType(Number(e.target.value))}
           />
 
-          {/* <label htmlFor="gardenType">{translations.kindOfGarden}</label>
-          <select name="gardenType" className="mb-5 rounded-md border-1">
-            <option value="0">{translations.gardenType0}</option>
-            <option value="1">{translations.gardenType1}</option>
-            <option value="2">{translations.gardenType2}</option>
-            <option value="3">{translations.gardenType3}</option>
-          </select> */}
-
           <SelectInput
             label={translations.privacySettings}
             name="gardenPrivacy"
@@ -196,13 +188,6 @@ const CreateGardenForm = () => {
             value={selectedPrivacy}
             onChange={(e) => setSelectedPrivacy(Number(e.target.value))}
           />
-
-          {/* <label htmlFor="gardenPrivacy">{translations.privacySettings}</label>
-          <select name="gardenPrivacy" className="mb-5 rounded-md border-1">
-            <option value="0">{translations.privateGarden}</option>
-            <option value="1">{translations.semiPrivateGarden}</option>
-            <option value="2">{translations.publicGarden}</option>
-          </select> */}
 
           <div className="flex justify-center">
             <Button onClick={() => router.push('/garden-manager')}>

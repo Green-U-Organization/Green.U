@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Card from '@/components/UI/Card';
 import TextInput from '@/components/UI/TextInput';
 import Button from '@/components/UI/Button';
+import SelectInput from './UI/SelectInput';
 import Calendar from 'react-calendar';
 import { CalendarProps } from 'react-calendar';
 import Radio from '@/components/UI/Radio';
@@ -63,6 +64,8 @@ const RegisterForm = () => {
   //   translations.levelexpert,
   // ];
 
+  const [selectedGardenerLevel, setSelectedGardenerLevel] = useState<number>(0);
+
   //	https://blog.logrocket.com/using-react-usestate-object/
   const [formDataRegister, setFormDataRegister] = useState<FormData>({
     login: '',
@@ -98,7 +101,7 @@ const RegisterForm = () => {
   });
 
   const [isValidPostalCode, setIsValidPostalCode] = useState(true);
-  const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"
+  const [step, setStep] = useState(2); //Pour gérer l'affichage des "pages"
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVerify, setShowPasswordVerify] = useState(false);
   const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
@@ -376,9 +379,10 @@ const RegisterForm = () => {
       Country: 'Belgium',
       Sexe: formDataRegister.gender,
       Birthdate: formDataRegister.birthDate,
+      gardenerLevel: selectedGardenerLevel,
       Newsletter: isCheckedNewsletter,
       Tou: isCheckedToU,
-      isAdmin: formDataRegister.isAdmin,
+      //isAdmin: formDataRegister.isAdmin,
     };
     console.log('formJson page 2: ', bodyRequest);
 
@@ -613,6 +617,19 @@ const RegisterForm = () => {
 						*/}
 
         {/* Niveau du jardinier */}
+        <SelectInput
+          label={translations.yourlevel}
+          name="gardenerLevel"
+          options={[
+            { value: 0, label: translations.levelbeginner },
+            { value: 1, label: translations.levelintermediate },
+            { value: 2, label: translations.leveladvanced },
+            { value: 3, label: translations.levelexpert },
+          ]}
+          value={selectedGardenerLevel}
+          onChange={(e) => setSelectedGardenerLevel(Number(e.target.value))}
+        />
+
         {/* <DropDown
 							label={translations.yourlevel}
 							placeholder={translations.enteryourlevel}

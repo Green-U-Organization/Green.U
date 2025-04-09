@@ -9,6 +9,7 @@
 ||| Correction du bug dans le composant HashTag avec la touche Enter 
 ||| Remplacement du favicon
 ||| Ajout d'un composant SelectInput et adaptation de GardenCreateForm
+||| Correction d'un bug lors de la validation d'un code postal dont la localité contient plusieurs traits d'union
 | 08/04/25 | @Emmanuel | L'ajout d'un user fonctionne via RegisterForm | 
 ||| Ajout d'une map avec localisation du terrain pour la création d'un terrain
 | 07/04/25 | @Emmanuel | Travail sur le nouvelle version de RegisterForm
