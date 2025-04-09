@@ -90,5 +90,20 @@ namespace GreenUApi.Controllers
             return Ok(new { message = "The list of follower", content =  Follow });
         }
 
+        [HttpDelete("user")]
+        public async Task<ActionResult<Follower>> DeleteUserFollow(Follower follower)
+        {
+            var followExist = await _db.Followers
+                .Where(f => f.UserId == follower.UserId && f.FollowerId == follower.FollowerId)
+                .FirstAsync();
+
+            if (followExist == null)
+            {
+                return BadRequest(new { message = "We have inccorect id" });
+            }
+
+            return Ok("Unfollow complete");
+        }
+
     }
 }
