@@ -10,6 +10,16 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GreenUApi.Controllers
 {
+
+    public class LineDto
+    {
+        public long? Id { get; set; }
+        public long? ParcelId { get; set; }
+        public long? PlantNurseryId { get; set; }
+        public double? Length { get; set; }
+        public DateTime? CreatedAt { get; set; }
+    }
+
     [Route("/garden/parcel/line")]
     [ApiController]
     // [Authorize]
@@ -33,20 +43,26 @@ namespace GreenUApi.Controllers
         // / GET /line/{id}
         // / </remarks>
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Line>>> GetLine(long id)
+        public async Task<ActionResult<IEnumerable<LineDto>>> GetLine(long id)
         {
-            var parcel = await _context.Parcels.FindAsync(id);
+            var lines = await _context.Lines
+                .Where(l => l.ParcelId == id)
+                .Select(l => new LineDto
+                {
+                    Id = l.Id,
+                    ParcelId = l.ParcelId,
+                    PlantNurseryId = l.PLantNurseryId,
+                    Length = l.Length,
+                    CreatedAt = l.CreatedAt
+                })
+                .ToListAsync();
 
-            if (parcel == null)
+            if (lines == null || !lines.Any())
             {
                 return NotFound();
             }
 
-            // return Ok(parcel);
-
-            var lines = await _context.Lines.Where(l => l.ParcelId == parcel.Id).ToListAsync();
-
-            return Ok(lines);
+            return lines;
         }
 
         /// <summary>
