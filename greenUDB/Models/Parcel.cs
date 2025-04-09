@@ -17,7 +17,7 @@ public partial class Parcel
 
     public double? Width { get; set; }
 
-    public long? NLine { get; set; }
+    public Double? NLine { get; set; }
 
     public double? ParcelAngle { get; set; }
 
