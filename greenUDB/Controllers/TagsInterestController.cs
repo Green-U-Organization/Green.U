@@ -1,4 +1,5 @@
 ﻿using GreenUApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ namespace GreenUApi.Controllers
 {
     [Route("tags")]
     [ApiController]
+    // [Authorize]
     public class TagsInterestController(GreenUDB db)  : ControllerBase
     {
         private readonly GreenUDB _db = db;

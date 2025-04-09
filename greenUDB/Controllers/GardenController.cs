@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GreenUApi.Controllers
 {
     [Route("garden")]
     [ApiController]
+    // [Authorize]
     public class GardenController : ControllerBase
     {
         private readonly GreenUDB _context;
@@ -23,7 +25,7 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête GET pour obtenir un jardin :
         ///
-        /// GET /api/gardens/{id}
+        /// GET /garden/{id}
         /// </remarks>
         [HttpGet("{id}")]
         public async Task<ActionResult<Garden>> GetGarden(long id)
@@ -46,9 +48,9 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête GET pour obtenir les jardins d'un utilisateur :
         ///
-        /// GET /api/gardens/user/{author}
+        /// GET /garden/username/{author}
         /// </remarks>
-        [HttpGet("user/{author}")]
+        [HttpGet("username/{author}")]
         public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByName(string author)
         {
             var user = await _context.Users.Where(u => u.Username == author).ToListAsync();
@@ -70,6 +72,32 @@ namespace GreenUApi.Controllers
         }
 
         /// <summary>
+        /// Récupère tous les jardins associés à un utilisateur par son nom d'utilisateur.
+        /// </summary>
+        /// <param name="userId">L'id de l'auteur des jardins.</param>
+        /// <returns>Retourne une liste de jardins associés à l'utilisateur, ou HTTP 404 Not Found si l'utilisateur ou les jardins n'existent pas.</returns>
+        /// <remarks>
+        /// Exemple de requête GET pour obtenir les jardins d'un utilisateur :
+        ///
+        /// GET /garden/user/{authorId}
+        /// </remarks>
+        /// <returns></returns>
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
+        {
+            var gardens = await _context.Gardens
+                                        .Where(g => g.AuthorId == userId)
+                                        .ToListAsync();
+
+            if (gardens == null)
+            {
+                return NotFound();
+            }
+
+            return gardens;
+        }
+
+        /// <summary>
         /// Met à jour les informations d'un jardin existant.
         /// </summary>
         /// <param name="id">L'ID du jardin à mettre à jour.</param>
@@ -78,7 +106,7 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête PATCH pour mettre à jour un jardin :
         ///
-        /// PATCH /api/gardens/{id}
+        /// PATCH /garden/{id}
         /// Body:
         /// {
         ///     "name": "New Garden Name",
@@ -118,7 +146,7 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête POST pour ajouter un jardin :
         ///
-        /// POST /api/gardens
+        /// POST /garden
         /// Body:
         /// {
         ///     "id": 0,
@@ -162,7 +190,7 @@ namespace GreenUApi.Controllers
         /// <remarks>
         /// Exemple de requête DELETE pour supprimer un jardin :
         ///
-        /// DELETE /api/gardens/{id}
+        /// DELETE /garden/{id}
         /// </remarks>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGarden(long id)

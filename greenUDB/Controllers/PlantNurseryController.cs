@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GreenUApi.Controllers
 {
     [Route("plantnursery")]
     [ApiController]
+    // [Authorize]
     public class PlantNurseryController : ControllerBase
     {
         private readonly GreenUDB _context;
@@ -156,7 +158,7 @@ namespace GreenUApi.Controllers
         /// <param name="id">L'ID de la pépinière à vérifier.</param>
         /// <returns>Retourne true si la pépinière existe, sinon false.</returns>
         /// <remarks>
-        /// Cette méthode est utilisée pour vérifier la présence d'une pépinière avant de tenter une mise à jour ou une suppression.
+        /// /// Cette méthode est utilisée pour vérifier la présence d'une pépinière avant de tenter une mise à jour ou une suppression.
         /// </remarks>
         private bool PlantNurseryExists(long? id)
         {
