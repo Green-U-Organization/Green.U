@@ -15,7 +15,7 @@ public partial class Line
 
     public long? PLantNurseryId { get; set; }
 
-    public long? Length { get; set; }
+    public Double? Length { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

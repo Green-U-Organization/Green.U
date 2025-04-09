@@ -33,34 +33,20 @@ namespace GreenUApi.Controllers
         // / GET /line/{id}
         // / </remarks>
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Line>>> GetAllLinesById(long id)
+        public async Task<ActionResult<IEnumerable<Line>>> GetLine(long id)
         {
-            var line = await _context.Lines.FindAsync(id);
+            var parcel = await _context.Parcels.FindAsync(id);
 
-            if (line == null)
-            {
-                return NotFound();
-            }
-
-            var lines = await _context.Lines.Where(l => l.ParcelId == parcel.Id).ToListAsync();
-
-            return lines;
-        }
-
-        [HttpGet("{gardenId}/{id}")]
-        public async Task<ActionResult<IEnumerable<Line>>> GetAllLinesById(long gardenId, long id)
-        {
-            var parcel = await _context.Parcels
-                .Where(p => p.Id == id && p.GardenId == gardenId)
-                .FirstOrDefaultAsync(); 
             if (parcel == null)
             {
                 return NotFound();
             }
 
+            // return Ok(parcel);
+
             var lines = await _context.Lines.Where(l => l.ParcelId == parcel.Id).ToListAsync();
 
-            return lines;
+            return Ok(lines);
         }
 
         /// <summary>

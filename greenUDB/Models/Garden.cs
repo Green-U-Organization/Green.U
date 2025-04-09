@@ -31,9 +31,9 @@ public partial class Garden
 
     public Double Longitude { get; set; }
 
-    public long Length { get; set; }
+    public Double Length { get; set; }
 
-    public long Width { get; set; }
+    public Double Width { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
