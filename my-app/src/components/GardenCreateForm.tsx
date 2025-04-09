@@ -8,6 +8,7 @@ import HashtagInput from './HashtagInput';
 import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
 import { useRouter } from 'next/navigation';
 import LocationPicker from './UI/LocationPicker';
+import { useLanguage } from '../app/contexts/LanguageProvider';
 
 type gardenType = {
   authorId: number;
@@ -22,6 +23,8 @@ type gardenType = {
 };
 
 const CreateGardenForm = () => {
+  const { translations } = useLanguage();
+
   // const [location, setLocation] = useState<{
   //   latitude: number;
   //   longitude: number;
@@ -90,33 +93,37 @@ const CreateGardenForm = () => {
   return (
     <>
       <Card className="h-full max-w-screen px-8 pt-5 pb-10">
-        <h1 className="text-center text-4xl">Garden Creator</h1>
+        <h1 className="text-center text-4xl">{translations.gardenCreator}</h1>
 
         <form method="post" id="createGarden" className="flex flex-col">
           <TextInput
             type="text"
-            label="Nom du jardin"
+            label={translations.gardenName}
             name="gardenName"
-            placeholder="Jardin du giga lombric"
+            placeholder={translations.giveaGardenName}
             //   error={errorForm.errorEmptyGardenName}
           />
-          <label htmlFor="gardenDescription">What is your garden about?</label>
+          <label htmlFor="gardenDescription">
+            {translations.gardenDescription}
+          </label>
           <textarea
             name="gardenDescription"
+            placeholder={translations.giveaGardenDescription}
             rows={Number(rows)}
             cols={Number(cols)}
-            className="rounded-md border-1"
+            className="rounded-md border-1 pl-3"
           ></textarea>
 
           <HashtagInput
-            label={'Add some Hashtags to caracterize your garden'}
+            label={translations.addTagsToCaracterize}
             name="gardenHashtag"
-            placeHolder="#Permaculture"
+            placeHolder={translations.exempleTagGarden}
             error={false}
           ></HashtagInput>
 
           <label htmlFor="gardenLength">
-            Your garden is <span>{gardenLength}</span> meters long
+            {translations.yourGardenIs} <span>{gardenLength}</span>{' '}
+            {translations.metersLong}
           </label>
           <input
             name="gardenLength"
@@ -129,7 +136,8 @@ const CreateGardenForm = () => {
           />
 
           <label htmlFor="gardenWidth">
-            Your garden is <span>{gardenWidth}</span> meters large
+            {translations.yourGardenIs} <span>{gardenWidth}</span>{' '}
+            {translations.metersLarge}
           </label>
           <input
             name="gardenWidth"
@@ -148,36 +156,26 @@ const CreateGardenForm = () => {
             //onLocationChange={(lat, lng) => console.log(lat, lng)}
           />
 
-          <label htmlFor="gardenType">What kind of garden is it?</label>
+          <label htmlFor="gardenType">{translations.kindOfGarden}</label>
           <select name="gardenType" className="rounded-md border-1">
-            <option value="0">Personnal</option>
-            <option value="2">Famillial</option>
-            <option value="2">Collective</option>
-            <option value="3">Professionnal</option>
+            <option value="0">{translations.gardenType0}</option>
+            <option value="1">{translations.gardenType1}</option>
+            <option value="2">{translations.gardenType2}</option>
+            <option value="3">{translations.gardenType3}</option>
           </select>
 
-          <label htmlFor="gardenPrivacy">What about privacy settings?</label>
+          <label htmlFor="gardenPrivacy">{translations.privacySettings}</label>
           <select name="gardenPrivacy" className="rounded-md border-1">
-            <option value="0">
-              Private (Only me and my collaborators can see this garden)
-            </option>
-            <option value="1">
-              Semi private (My followers can see thi garden)
-            </option>
-            <option value="2">Public (Everybody can see this garden)</option>
+            <option value="0">{translations.privateGarden}</option>
+            <option value="1">{translations.semiPrivateGarden}</option>
+            <option value="2">{translations.publicGarden}</option>
           </select>
 
-          {/* <MapComponent onLocationSelect={handleLocationSelect} />
-
-          {location && (
-            <div>
-              <p>Latitude: {location.latitude}</p>
-              <p>Longitude: {location.longitude}</p>
-            </div>
-          )} */}
           <div className="flex justify-between">
-            <Button onClick={() => router.push('/garden-manager')}>Back</Button>
-            <Button onClick={handleSubmit}>Create !</Button>
+            <Button onClick={() => router.push('/garden-manager')}>
+              {translations.back}
+            </Button>
+            <Button onClick={handleSubmit}>{translations.create}</Button>
           </div>
         </form>
       </Card>
