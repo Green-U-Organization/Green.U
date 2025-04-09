@@ -3,36 +3,11 @@ import React, { FC, useEffect, useState } from 'react';
 //import Line from './Line';
 import styles from '../../app/Assets.module.css';
 import { getAllLinesByParcelId } from '@/utils/actions/garden/parcel/line/getAllLinesByParcelId';
+import { Lines, ParcelProps, Parcels } from '@/utils/types';
 
-type Parcel = {
-  parcel: Parcels;
-  scale: number;
-};
-
-type Parcels = {
-  id: number;
-  gardenId: number;
-  length: number;
-  width: number;
-  nLine: number;
-  parcelAngle: number;
-  createdAt: string;
-  garden: string;
-  lines: [];
-  logs: [];
-};
-
-type LinesType = {
-  id: number;
-  parcelId: number;
-  length: number;
-  // crop: string;
-  // status: string;
-};
-
-const Parcel: FC<Parcel> = ({ parcel, scale }) => {
+const Parcel: FC<ParcelProps> = ({ parcel, scale }) => {
   const [currentParcel, setCurrentParcel] = useState<Parcels>(parcel);
-  const [lines, setLines] = useState<LinesType[]>();
+  const [lines, setLines] = useState<Lines[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const parcelY = currentParcel?.length;

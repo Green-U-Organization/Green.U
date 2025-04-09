@@ -1,14 +1,10 @@
-import GardenCardHeader from '@/components/UI/GardenCardHeader';
+import GardenEdit from '@/components/GardenEdit';
 import React from 'react';
 
 const page = () => {
   return (
     <>
-      <GardenCardHeader
-        containerName="Garden Editor"
-        onScaleChange={}
-        type="edit"
-      />
+      <GardenEdit />
     </>
   );
 };

@@ -1,13 +1,6 @@
 'use client';
+import { RadioProps } from '@/utils/types';
 import React, { useState } from 'react';
-
-interface RadioProps {
-  name: string;
-  value: string;
-  checked?: boolean;
-  id: string;
-  onChange?: (value: string) => void;
-}
 
 const Radio: React.FC<RadioProps> = ({
   name,

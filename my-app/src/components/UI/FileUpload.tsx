@@ -1,10 +1,7 @@
 import React, { useRef } from 'react';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Button from './Button';
-
-interface FileUploadProps {
-  onFileChange: (file: File) => void;
-}
+import { FileUploadProps } from '@/utils/types';
 
 const FileUpload: React.FC<FileUploadProps> = ({ onFileChange }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);

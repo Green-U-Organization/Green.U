@@ -5,28 +5,7 @@ import ZoomSlider from './ZoomSlider';
 import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
 import Button from './Button';
 import { useRouter } from 'next/navigation';
-
-type GardenCardHeaderProps = {
-  containerName: string;
-  className?: string;
-  children?: React.ReactNode;
-  onGardenIdChange?: (selectedGarden: Garden) => void;
-  onScaleChange: (scale: number) => void;
-  type: 'display' | 'edit';
-};
-
-type Garden = {
-  id: number;
-  authorId: number;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  length: number;
-  width: number;
-  privacy: number;
-  type: number;
-};
+import { Garden, GardenCardHeaderProps } from '@/utils/types';
 
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   containerName,
@@ -49,7 +28,9 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
       const firstGarden = fetchedGardens.at(0);
       if (firstGarden) {
         setGardenId(firstGarden.id);
-        onGardenIdChange && onGardenIdChange(firstGarden);
+        if (onGardenIdChange) {
+          onGardenIdChange(firstGarden);
+        }
       }
     } catch (error) {
       console.error('Error fetching gardens:', error);
@@ -100,13 +81,19 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
           {containerName}
         </h1>
 
-        <div className="col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center">
+        <div
+          className="col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center"
+          style={{ display: type === 'display' ? 'flex' : 'none' }}
+        >
           <Button onClick={() => router.push('/garden-manager/edit')}>
             Edit actual Garden
           </Button>
         </div>
 
-        <div className="col-start-2 col-end-3 row-start-2 row-end-3 flex justify-center">
+        <div
+          className="col-start-2 col-end-3 row-start-2 row-end-3 flex justify-center"
+          style={{ display: type === 'display' ? 'flex' : 'none' }}
+        >
           <Button onClick={() => router.push('/garden-manager/create')}>
             Create new Garden
           </Button>

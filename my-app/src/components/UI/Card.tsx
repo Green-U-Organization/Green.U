@@ -1,9 +1,5 @@
+import { CardProps } from '@/utils/types';
 import React from 'react';
-
-type CardProps = {
-  children: React.ReactNode;
-  className?: string;
-};
 
 const Card: React.FC<CardProps> = ({ children, className }) => {
   return (

@@ -3,11 +3,7 @@
 import React, { FC, useState } from 'react'; // <DraggableCore>
 // import {garden} from '../data/garden'
 import styles from '../../app/Assets.module.css';
-
-type LineProps = {
-  lineX: number;
-  scale: number;
-};
+import { LineProps } from '@/utils/types';
 
 const Line: FC<LineProps> = ({ lineX, scale }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);

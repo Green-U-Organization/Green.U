@@ -1,38 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import Parcel from './Parcel';
+import ParcelProps from './Parcel';
 import styles from '../../app/Assets.module.css';
 import { getAllParcelByGardenId } from '@/utils/actions/garden/parcel/getAllParcelByGardenId';
-
-type GardenProps = {
-  garden: Garden;
-  scale: number;
-};
-
-type Garden = {
-  id: number;
-  authorId: number;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  length: number;
-  width: number;
-  privacy: number;
-  type: number;
-};
-
-type Parcels = {
-  id: number;
-  gardenId: number;
-  length: number;
-  width: number;
-  nLine: number;
-  parcelAngle: number;
-  createdAt: string;
-  garden: string;
-  lines: [];
-  logs: [];
-};
+import { GardenProps, type Garden, Parcels } from '@/utils/types';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);

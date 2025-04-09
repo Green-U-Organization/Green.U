@@ -1,13 +1,5 @@
 import { useLanguage } from '@/app/contexts/LanguageProvider';
-
-interface DropdownSelectProps<T> {
-  label: string;
-  placeholder: string;
-  options: T[]; // Liste d'options générique
-  selectedValue: T;
-  setSelectedValue: (value: T) => void;
-  error?: boolean;
-}
+import { DropdownSelectProps } from '@/utils/types';
 
 const DropdownSelect = <T extends string | number>({
   label,

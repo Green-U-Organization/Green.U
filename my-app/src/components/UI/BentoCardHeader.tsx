@@ -2,12 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import React, { FC, PropsWithChildren } from 'react';
-
-type BentoCardHeaderProps = {
-  containerName: string;
-  className?: string;
-  children?: React.ReactNode;
-};
+import { BentoCardHeaderProps } from '@/utils/types';
 
 const BentoCardHeader: FC<PropsWithChildren<BentoCardHeaderProps>> = ({
   containerName,

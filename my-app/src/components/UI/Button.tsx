@@ -1,4 +1,5 @@
 'use client';
+import { ButtonProps } from '@/utils/types';
 import React, {
   FC,
   FormEvent,
@@ -6,11 +7,6 @@ import React, {
   PropsWithChildren,
   useState,
 } from 'react';
-
-type ButtonProps = {
-  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
-  disabled?: boolean;
-};
 
 const Button: FC<PropsWithChildren<ButtonProps>> = ({
   children,

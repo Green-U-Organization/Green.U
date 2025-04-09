@@ -1,23 +1,8 @@
 'use client';
 
+import { TodosProps } from '@/utils/types';
 import Image from 'next/image';
 import React, { useState } from 'react';
-
-type Props = {
-  status: number;
-  content: string;
-  added: string;
-  publishBy: string;
-  id: string;
-  itemKey: number;
-  style: React.CSSProperties;
-  garden: string;
-  parcel: string;
-  line: string;
-  className?: string;
-  onStatusChange: (id: string, newStatus: number) => void;
-  handleEdit: (e: React.FormEvent) => void;
-};
 
 const Todo = ({
   status,
@@ -32,7 +17,7 @@ const Todo = ({
   className,
   onStatusChange,
   handleEdit,
-}: Props) => {
+}: TodosProps) => {
   const [checked, setChecked] = useState(false);
 
   const handleCheck = () => {

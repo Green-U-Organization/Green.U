@@ -4,14 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import TextInput from './TextInput';
 import Button from './Button';
-
-interface LocationPickerProps {
-  initialLat?: number;
-  initialLng?: number;
-  onLocationChange?: (lat: number, lng: number) => void;
-  readOnly?: boolean;
-  multipleMarkers?: { lat: number; lng: number }[];
-}
+import { LocationPickerProps } from '@/utils/types';
 
 // Icône pour la localisation des terrains
 const customIcon = new L.Icon({

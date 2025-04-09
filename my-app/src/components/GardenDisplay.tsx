@@ -41,7 +41,7 @@ const GardenDisplay = () => {
           onGardenIdChange={handleGardenIdChange}
           onScaleChange={handleScaleChange}
           type="display"
-        ></GardenCardHeader>
+        />
 
         <div className="max-w-full overflow-x-auto">
           {currentGarden && (

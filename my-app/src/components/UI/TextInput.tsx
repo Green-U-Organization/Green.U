@@ -1,14 +1,7 @@
 'use client';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
+import { TextInputProps } from '@/utils/types';
 import { FC } from 'react';
-
-type TextInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  label?: string;
-  error?: boolean;
-  errorPassMatch?: boolean;
-  errorPassChar?: boolean;
-  className?: string; // Explicitly include className
-};
 
 const TextInput: FC<TextInputProps> = ({
   label,

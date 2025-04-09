@@ -1,12 +1,8 @@
 'use client';
+import { ZoomSliderProps } from '@/utils/types';
 import React from 'react';
 
-type Props = {
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  className?: string;
-};
-
-const ZoomSlider = ({ handleChange, className }: Props) => {
+const ZoomSlider = ({ handleChange, className }: ZoomSliderProps) => {
   return (
     <input
       type="range"
