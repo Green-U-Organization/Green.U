@@ -1,11 +1,11 @@
 'use client';
 import Image from 'next/image';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import ZoomSlider from './ZoomSlider';
-import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
 import Button from './Button';
 import { useRouter } from 'next/navigation';
-import { Garden, GardenCardHeaderProps } from '@/utils/types';
+import { GardenCardHeaderProps } from '@/utils/types';
+import { useGarden } from '../../app/hooks/useGarden';
 
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   containerName,
@@ -14,35 +14,12 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   onScaleChange,
   type,
 }) => {
-  const [gardens, setGardens] = useState<Garden[]>([]);
   const [gardenId, setGardenId] = useState<number | null>(null);
   // const [selectedGarden, setSelectedGarden] = useState<Garden>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
+  const { gardens, loading, error, isEmpty } = useGarden(1); //IL FAUDRA CHOPPER L'ID DANS LES COOKIES
 
   //#region FETCHING GARDEN DATA
-  const fetchGardens = async () => {
-    try {
-      const fetchedGardens = await getAllGardenByUserId(1);
-      setGardens(fetchedGardens);
-      const firstGarden = fetchedGardens.at(0);
-      if (firstGarden) {
-        setGardenId(firstGarden.id);
-        if (onGardenIdChange) {
-          onGardenIdChange(firstGarden);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching gardens:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchGardens();
-  }, []);
-  //#endregion
 
   //#region HANDLER
   const handleScaleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,8 +45,14 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
 
   const gardenDescription = gardens.find((g) => g.id === gardenId)?.description;
 
-  if (isLoading) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error : {error}</div>;
+  }
+  if (isEmpty) {
+    return <div>Oups, no garden find...</div>;
   }
 
   return (

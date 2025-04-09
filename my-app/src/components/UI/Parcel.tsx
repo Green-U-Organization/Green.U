@@ -3,10 +3,10 @@ import React, { FC, useEffect, useState } from 'react';
 //import Line from './Line';
 import styles from '../../app/Assets.module.css';
 import { getAllLinesByParcelId } from '@/utils/actions/garden/parcel/line/getAllLinesByParcelId';
-import { Lines, ParcelProps, Parcels } from '@/utils/types';
+import { Lines, ParcelProps, Parcel } from '@/utils/types';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale }) => {
-  const [currentParcel, setCurrentParcel] = useState<Parcels>(parcel);
+  const [currentParcel, setCurrentParcel] = useState<Parcel>(parcel);
   const [lines, setLines] = useState<Lines[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 

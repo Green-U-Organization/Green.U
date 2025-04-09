@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import gardenIdReducer from './garden/gardenIdSlice';
+import gardenReducer from './garden/gardenSlice';
+import parcelReducer from './parcel/parcelSlice';
 
 export const store = configureStore({
   reducer: {
-    garden: gardenIdReducer,
+    garden: gardenReducer,
+    parcel: parcelReducer,
   },
 });
 

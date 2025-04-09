@@ -50,7 +50,7 @@ export interface Garden {
   type: number;
 }
 
-export interface Parcels {
+export interface Parcel {
   id: number;
   gardenId: number;
   length: number;
@@ -86,7 +86,7 @@ export interface LocationPickerProps {
 }
 
 export interface ParcelProps {
-  parcel: Parcels;
+  parcel: Parcel;
   scale: number;
 };
 
