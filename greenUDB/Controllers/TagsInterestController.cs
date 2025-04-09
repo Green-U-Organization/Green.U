@@ -88,7 +88,7 @@ namespace GreenUApi.Controllers
                 return Ok(new {message = "Tag Deleted !", content = tagExists});
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest(new { message = "Tag not found"});
             }

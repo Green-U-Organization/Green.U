@@ -58,31 +58,34 @@ namespace GreenUApi.Controllers
         [HttpGet("user/{id}")]
         public async Task<ActionResult<Follower>> GetFollowerUser(long id)
         {
-           var Follow = await _db.Followers
-                .Where(f => f.UserId == id)
-                .Join(
-               _db.Users,
-               follower => follower.FollowerId,
-               user => user.Id,
-               (follower, user) => new
-               {
-                   FollowerId = follower.FollowerId,
-                   UserId = user.Username,
-               }
-               )
-                .ToListAsync();
 
-            //var followsWithUsernames = await _db.Followers
-            //    .Where(f => f.UserId == id)
-            //    .Join(
-            //    _db.Users,                  // La table avec laquelle vous voulez faire la jointure
-            //    follower => follower.FollowerId,  // La clé de la première table
-            //    user => user.Id,                  // La clé de la deuxième table
-            //    (follower, user) => new {         // Le résultat projeté
-            //    FollowerId = follower.FollowerId,
-            //    Username = user.Username      // En supposant que la propriété s'appelle Username
-            //    })
-            //    .ToListAsync();
+            var User = await _db.Users.FindAsync(id);
+
+            if (User == null)
+            {
+                return BadRequest("The user id doesn't exist");
+            }
+
+             var Follow = await _db.Followers
+                    .Where(f => f.UserId == id)
+                    .Join(
+                _db.Users,
+                follower => follower.FollowerId,
+                user => user.Id,
+                (follower, user) => new
+                {
+                    FollowerId = follower.FollowerId,
+                    UserId = user.Username,
+                }
+                )
+                    .ToListAsync();
+
+            if (Follow.Count == 0)
+            {
+                return NotFound(new { message = "This user didn't have follower" });
+            }
+
+            
 
             return Ok(new { message = "The list of follower", content =  Follow });
         }
