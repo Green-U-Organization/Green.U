@@ -7,7 +7,7 @@ namespace GreenUApi.Controllers
 {
     [Route("tags")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class TagsInterestController(GreenUDB db)  : ControllerBase
     {
         private readonly GreenUDB _db = db;

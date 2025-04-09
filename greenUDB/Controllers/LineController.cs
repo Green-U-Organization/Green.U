@@ -12,7 +12,7 @@ namespace GreenUApi.Controllers
 {
     [Route("/garden/parcel/line")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class LineController : ControllerBase
     {
         private readonly GreenUDB _context;
