@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import TextInput from './TextInput';
 import Button from './Button';
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 interface LocationPickerProps {
   initialLat?: number;
@@ -28,6 +29,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   readOnly = false,
   multipleMarkers = [],
 }) => {
+  const { translations } = useLanguage();
+
   const [markerPosition, setMarkerPosition] = useState<{
     lat: number;
     lng: number;
@@ -79,7 +82,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
 
   return (
     <div className={`flex flex-col ${markerPosition ? 'mb-0' : 'mb-5'}`}>
-      <div className="h-70 overflow-hidden">
+      <p>{translations.addGardenPosition}</p>
+      <div className="mb-2 h-70 overflow-hidden">
         <MapContainer
           center={
             markerPosition ||
@@ -106,23 +110,29 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
       </div>
 
       {!readOnly && markerPosition && (
-        <div className="mb-auto flex flex-col items-center gap-2 md:flex-row">
-          <TextInput
-            type="text"
-            label="Latitude"
-            name="latitude"
-            readOnly
-            value={markerPosition.lat.toString()}
-          />
-          <TextInput
-            type="text"
-            label="Longitude"
-            name="longitude"
-            readOnly
-            value={markerPosition.lng.toString()}
-          />
-          <div>
-            <Button onClick={handleRemovePin}>Supprimer</Button>
+        <div className="flex flex-col gap-2 md:flex-row">
+          <div className="flex-1">
+            <TextInput
+              type="text"
+              label={translations.latitude}
+              name="latitude"
+              readOnly
+              value={markerPosition.lat.toString()}
+              className="mb-0!"
+            />
+          </div>
+          <div className="flex-1">
+            <TextInput
+              type="text"
+              label={translations.longitude}
+              name="longitude"
+              readOnly
+              value={markerPosition.lng.toString()}
+              className="mb-0!"
+            />
+          </div>
+          <div className="flex items-center justify-center">
+            <Button onClick={handleRemovePin}>{translations.deletePin}</Button>
           </div>
         </div>
       )}

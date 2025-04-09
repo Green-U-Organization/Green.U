@@ -72,6 +72,12 @@ const HashtagInput: React.FC<HashtagInputProps> = ({
           value={inputValue}
           placeholder={placeHolder}
           error={error}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleAddHashtag();
+            }
+          }}
         />
         {inputValue.trim() !== '' &&
           !hashtags.includes(`#${inputValue.trim()}`) && (

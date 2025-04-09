@@ -21,7 +21,7 @@ const TextInput: FC<TextInputProps> = ({
   const { translations } = useLanguage();
 
   return (
-    <div className={`mb-5 ${className}`}>
+    <div className={`${className} mb-5`}>
       {label && (
         <label htmlFor={props.id || props.name} className="mr-3">
           {label}:

@@ -101,6 +101,7 @@
   "previous": "Previous",
   "add": "Add",
   "create": "Create",
+  "deletePin": "Delete the pin",
 
   "__COMMENT_MAP": "MAP",
   "map": "Map",
@@ -116,6 +117,11 @@
   "errWaitingTime": "Waiting time exceeded",
   "errCheckPermissions": " Check your permissions and enable GPS",
   "errGeoNavigator": "Geolocation is not supported by this browser",
+
+  "__LOCATION_PICKER": "MAP",
+  "addGardenPosition": "Location of your garden:",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
 
   "__COMMENT": "GARDEN",
   "likes": "Likes:",

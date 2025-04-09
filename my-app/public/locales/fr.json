@@ -101,6 +101,7 @@
   "previous": "Précédent",
   "add": "Ajouter",
   "create": "Créer",
+  "deletePin": "Supprimer l'épingle",
 
   "__COMMENT_MAP": "MAP",
   "map": "Plan",
@@ -116,6 +117,11 @@
   "errWaitingTime": "Temps d'attente dépassé",
   "errCheckPermissions": " Vérifiez vos permissions et activez le GPS",
   "errGeoNavigator": "La géolocalisation n'est pas supportée par ce navigateur",
+
+  "__LOCATION_PICKER": "MAP",
+  "addGardenPosition": "Localisation de votre jardin:",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
 
   "__COMMENT": "GARDEN",
   "likes": "Likes:",

@@ -93,7 +93,9 @@ const CreateGardenForm = () => {
   return (
     <>
       <Card className="h-full max-w-screen px-8 pt-5 pb-10">
-        <h1 className="text-center text-4xl">{translations.gardenCreator}</h1>
+        <h1 className="mb-5 text-center text-4xl">
+          {translations.gardenCreator}
+        </h1>
 
         <form method="post" id="createGarden" className="flex flex-col">
           <TextInput
@@ -111,7 +113,7 @@ const CreateGardenForm = () => {
             placeholder={translations.giveaGardenDescription}
             rows={Number(rows)}
             cols={Number(cols)}
-            className="rounded-md border-1 pl-3"
+            className="mb-5 rounded-md border-1 pl-3"
           ></textarea>
 
           <HashtagInput
@@ -131,6 +133,7 @@ const CreateGardenForm = () => {
             min="1"
             max="500"
             step="1"
+            value={gardenLength}
             onChange={handleLengthChange}
             className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
           />
@@ -145,6 +148,7 @@ const CreateGardenForm = () => {
             min="1"
             max="500"
             step="1"
+            value={gardenWidth}
             onChange={handleWidthChange}
             className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
           />
@@ -157,7 +161,7 @@ const CreateGardenForm = () => {
           />
 
           <label htmlFor="gardenType">{translations.kindOfGarden}</label>
-          <select name="gardenType" className="rounded-md border-1">
+          <select name="gardenType" className="mb-5 rounded-md border-1">
             <option value="0">{translations.gardenType0}</option>
             <option value="1">{translations.gardenType1}</option>
             <option value="2">{translations.gardenType2}</option>
@@ -165,13 +169,13 @@ const CreateGardenForm = () => {
           </select>
 
           <label htmlFor="gardenPrivacy">{translations.privacySettings}</label>
-          <select name="gardenPrivacy" className="rounded-md border-1">
+          <select name="gardenPrivacy" className="mb-5 rounded-md border-1">
             <option value="0">{translations.privateGarden}</option>
             <option value="1">{translations.semiPrivateGarden}</option>
             <option value="2">{translations.publicGarden}</option>
           </select>
 
-          <div className="flex justify-between">
+          <div className="flex justify-center">
             <Button onClick={() => router.push('/garden-manager')}>
               {translations.back}
             </Button>
