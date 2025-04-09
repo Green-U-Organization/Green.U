@@ -10,6 +10,7 @@
 ||| Remplacement du favicon
 ||| Ajout d'un composant SelectInput et adaptation de GardenCreateForm
 ||| Correction d'un bug lors de la validation d'un code postal dont la localité contient plusieurs traits d'union
+||| Ajout de l'input list 'skillLevel' dans le Register
 | 08/04/25 | @Emmanuel | L'ajout d'un user fonctionne via RegisterForm | 
 ||| Ajout d'une map avec localisation du terrain pour la création d'un terrain
 | 07/04/25 | @Emmanuel | Travail sur le nouvelle version de RegisterForm

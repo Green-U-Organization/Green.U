@@ -26,7 +26,7 @@ type FormData = {
   postalCode: string;
   gender: string;
   birthDate: string;
-  gardenerLevel: string;
+  skillLevel: string;
   interests: string[];
   newsletter: boolean;
   tou: boolean;
@@ -64,7 +64,7 @@ const RegisterForm = () => {
   //   translations.levelexpert,
   // ];
 
-  const [selectedGardenerLevel, setSelectedGardenerLevel] = useState<number>(0);
+  const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
 
   //	https://blog.logrocket.com/using-react-usestate-object/
   const [formDataRegister, setFormDataRegister] = useState<FormData>({
@@ -77,7 +77,7 @@ const RegisterForm = () => {
     postalCode: '',
     gender: 'M',
     birthDate: '',
-    gardenerLevel: '',
+    skillLevel: '',
     interests: [],
     newsletter: false,
     tou: false,
@@ -151,7 +151,7 @@ const RegisterForm = () => {
 
     setErrorForm((prevErrorForm) => ({
       ...prevErrorForm,
-      errorEmptyGardenerLevel: !formDataRegister.gardenerLevel,
+      errorEmptyGardenerLevel: !formDataRegister.skillLevel,
       errorEmptyInterests: !formDataRegister.interests.length,
       errorNotCheckedToU: !isCheckedToU,
     }));
@@ -379,7 +379,7 @@ const RegisterForm = () => {
       Country: 'Belgium',
       Sexe: formDataRegister.gender,
       Birthdate: formDataRegister.birthDate,
-      gardenerLevel: selectedGardenerLevel,
+      Skill_level: selectedSkillLevel,
       Newsletter: isCheckedNewsletter,
       Tou: isCheckedToU,
       //isAdmin: formDataRegister.isAdmin,
@@ -618,16 +618,16 @@ const RegisterForm = () => {
 
         {/* Niveau du jardinier */}
         <SelectInput
-          label={translations.yourlevel}
-          name="gardenerLevel"
+          label={translations.skillLevel}
+          name="skillLevel"
           options={[
             { value: 0, label: translations.levelbeginner },
             { value: 1, label: translations.levelintermediate },
             { value: 2, label: translations.leveladvanced },
             { value: 3, label: translations.levelexpert },
           ]}
-          value={selectedGardenerLevel}
-          onChange={(e) => setSelectedGardenerLevel(Number(e.target.value))}
+          value={selectedSkillLevel}
+          onChange={(e) => setSelectedSkillLevel(Number(e.target.value))}
         />
 
         {/* <DropDown
