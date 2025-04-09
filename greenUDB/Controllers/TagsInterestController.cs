@@ -1,4 +1,4 @@
-﻿using GreenUApi.Models;
+﻿    using GreenUApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -88,7 +88,7 @@ namespace GreenUApi.Controllers
                 return Ok(new {message = "Tag Deleted !", content = tagExists});
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest(new { message = "Tag not found"});
             }
