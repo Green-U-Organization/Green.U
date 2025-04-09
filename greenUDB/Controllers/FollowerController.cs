@@ -74,8 +74,8 @@ namespace GreenUApi.Controllers
                 user => user.Id,
                 (follower, user) => new
                 {
-                    FollowerId = follower.FollowerId,
-                    UserId = user.Username,
+                    follower.FollowerId,
+                    user.Username,
                 }
                 )
                     .ToListAsync();
