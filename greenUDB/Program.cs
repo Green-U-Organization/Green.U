@@ -67,6 +67,16 @@ builder.Services.AddOpenApiDocument(config =>
 var app = builder.Build();
 
 // Use cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost3000", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 app.UseCors("AllowSpecificOrigin");
 
 app.UseRouting();
