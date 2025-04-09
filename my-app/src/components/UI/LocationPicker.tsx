@@ -14,11 +14,11 @@ interface LocationPickerProps {
 }
 
 // Icône pour la localisation des terrains
-const customIcon = new L.Icon({
-  iconUrl: '/image/divers/field-location.png',
-  iconSize: [30, 38], // Taille de l'icône
-  iconAnchor: [15, 38], // Point d'ancrage de l'icône
-  popupAnchor: [0, -38], // Point d'ancrage du popup
+const customIcon = L.icon({
+  iconUrl: '/image/divers/field-location-v2.png',
+  iconSize: [30, 26],
+  iconAnchor: [15, 26],
+  popupAnchor: [0, -26],
 });
 
 const LocationPicker: React.FC<LocationPickerProps> = ({
