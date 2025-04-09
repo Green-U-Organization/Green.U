@@ -71,21 +71,6 @@ namespace GreenUApi.Controllers
             return gardens;
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
-        {
-            var gardens = await _context.Gardens
-                                        .Where(g => g.AuthorId == userId)
-                                        .ToListAsync();
-
-            if (gardens == null)
-            {
-                return NotFound();
-            }
-
-            return gardens;
-        }
-
         /// <summary>
         /// Récupère tous les jardins associés à un utilisateur par son nom d'utilisateur.
         /// </summary>
