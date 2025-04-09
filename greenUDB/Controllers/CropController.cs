@@ -57,9 +57,19 @@ namespace GreenUApi.Controllers
             return await _context.Crops.ToListAsync();
         }
 
-        [HttpGet("line/crops{line}")]
+        [HttpGet("line/{line}")]
         public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByline(long line){
             var crops = await _context.Crops.Where(c => c.LineId == line).ToListAsync();
+            if(!crops.Any()){
+                return NotFound();
+            }
+
+            return Ok(crops);
+        }
+
+        [HttpGet("plantNursery/{plantNursery}")]
+        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByPlantNursery(long line){
+            var crops = await _context.Crops.Where(c => c.PlantNurseryId == line).ToListAsync();
             if(!crops.Any()){
                 return NotFound();
             }
