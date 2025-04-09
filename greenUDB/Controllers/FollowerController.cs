@@ -38,6 +38,14 @@ namespace GreenUApi.Controllers
             {
                 return NotFound("Follower Id not found");
             }
+            
+            bool followExists = await _db.Followers
+                .AnyAsync(f => f.UserId == id && f.FollowerId == followerData.FollowerId);
+
+            if (followExists)
+            {
+                return BadRequest(new { message = "The follow is already exist"});
+            }
 
             followerData.UserId = id;
 
@@ -46,5 +54,12 @@ namespace GreenUApi.Controllers
 
             return Ok(new { message = "Follow complete !"});
         }
+
+        [HttpGet("user/{id}")]
+        public Task<ActionResult<Follower>> GetFollowerUser(long id)
+        {
+
+        }
+
     }
 }
