@@ -32,17 +32,33 @@ namespace GreenUApi.Controllers
         ///
         /// GET /line/{id}
         /// </remarks>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Line>> GetLine(long id)
-        {
-            var line = await _context.Lines.FindAsync(id);
+        // [HttpGet("{id}")]
+        // public async Task<ActionResult<Line>> GetLine(long id)
+        // {
+        //     var line = await _context.Lines.FindAsync(id);
 
-            if (line == null)
+        //     if (line == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     return line;
+        // }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<Line>>> GetAllLinesById(long id)
+        {
+            var parcel = await _context.Parcels.FindAsync(id);
+
+            if (parcel == null)
             {
                 return NotFound();
             }
 
-            return line;
+            var lines = await _context.Lines.Where(l => l.ParcelId == parcel.Id).ToListAsync();
+
+            return lines;
         }
 
         /// <summary>
