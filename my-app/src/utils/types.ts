@@ -88,7 +88,7 @@ export interface LocationPickerProps {
 export interface ParcelProps {
   parcel: Parcel;
   scale: number;
-};
+}
 
 export interface Lines {
   id: number;
@@ -96,7 +96,7 @@ export interface Lines {
   length: number;
   // crop: string;
   // status: string;
-};
+}
 
 export interface RadioProps {
   name: string;
@@ -128,22 +128,9 @@ export interface TodosProps {
   className?: string;
   onStatusChange: (id: string, newStatus: number) => void;
   handleEdit: (e: React.FormEvent) => void;
-};
-
+}
 
 export interface ZoomSliderProps {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
-};
-
-export interface 
-
-export interface 
-
-export interface 
-
-export interface 
-
-export interface 
-
-export interface 
+}

@@ -1,13 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
-import ParcelProps from './Parcel';
+import Parcel from './Parcel';
 import styles from '../../app/Assets.module.css';
 import { getAllParcelByGardenId } from '@/utils/actions/garden/parcel/getAllParcelByGardenId';
-import { GardenProps, type Garden, Parcel } from '@/utils/types';
+import {
+  GardenProps,
+  type Garden,
+  type Parcel as ParcelType,
+} from '@/utils/types';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [parcels, setParcels] = useState<Parcel[]>();
+  const [parcels, setParcels] = useState<ParcelType[]>();
 
   // Calcul des dimensions du jardin
   const gardenX = currentGarden?.length;
