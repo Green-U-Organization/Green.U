@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import ZoomSlider from './ZoomSlider';
 import Button from './Button';
 import { useRouter } from 'next/navigation';
@@ -10,16 +10,22 @@ import { useGardenList } from '../../app/hooks/useGardenList';
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   containerName,
   className,
-  onGardenIdChange,
   onScaleChange,
   type,
 }) => {
-  const [gardenId, setGardenId] = useState<number | null>(null);
   // const [selectedGarden, setSelectedGarden] = useState<Garden>();
   const router = useRouter();
+  const {
+    gardens,
+    loading,
+    error,
+    isEmpty,
+    selectedGarden,
+    setSelectedGarden,
+  } = useGardenList(1); //IL FAUDRA CHOPPER L'ID du USER DANS LES COOKIES !!!!!!!!
 
-  const { gardens, loading, error, isEmpty } = useGardenList(1); //IL FAUDRA CHOPPER L'ID DANS LES COOKIES !!!!!!!!
-
+  console.log('Gardens from useGardenList:', gardens);
+  console.log('Selected Garden from useGardenList:', selectedGarden);
   //#region FETCHING GARDEN DATA
 
   //#region HANDLER
@@ -30,11 +36,15 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
 
   const handleGardenIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedGardenId = Number(e.target.value);
-    setGardenId(selectedGardenId);
-    const newlySelectedGarden = gardens.find((g) => g.id === selectedGardenId);
 
-    if (onGardenIdChange && newlySelectedGarden) {
-      onGardenIdChange(newlySelectedGarden);
+    console.log('Selected garden ID from dropdown:', selectedGardenId);
+
+    const garden = gardens.find((g) => g.id === selectedGardenId);
+    console.log('Garden found in gardens array:', garden);
+
+    if (garden) {
+      setSelectedGarden(garden);
+      console.log('Updated selectedGarden:', garden);
     }
 
     // if (selectedGarden) {
@@ -44,7 +54,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   };
   //#endregion
 
-  const gardenDescription = gardens.find((g) => g.id === gardenId)?.description;
+  const gardenDescription = selectedGarden?.description;
 
   if (loading) {
     return <div>Loading...</div>;
@@ -126,13 +136,17 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
             onChange={handleGardenIdChange}
             name="garden"
             id="gardenId"
-            value={gardenId || ''}
+            value={selectedGarden?.id || ''}
           >
-            {gardens.map((garden, index) => (
-              <option key={index} value={garden.id}>
-                {garden.name}
-              </option>
-            ))}
+            {' '}
+            <option value="" disabled></option>
+            {gardens &&
+              Array.isArray(gardens) &&
+              gardens.map((garden, index) => (
+                <option key={index} value={garden.id}>
+                  {garden.name}
+                </option>
+              ))}
           </select>
           <h2>{gardenDescription ?? 'No garden selected'}</h2>
         </div>

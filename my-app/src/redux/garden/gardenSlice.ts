@@ -4,12 +4,14 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GardenState {
   gardens: Garden[];
+  selectedGarden: Garden | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: GardenState = {
   gardens: [],
+  selectedGarden: null,
   loading: false,
   error: null,
 };
@@ -27,9 +29,16 @@ export const getGardenByUserIdFct = createAsyncThunk(
 );
 
 const gardenSlice = createSlice({
-  name: 'gardenList',
+  name: 'garden',
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedGarden: (state, action: PayloadAction<Garden>) => {
+      state.selectedGarden = action.payload;
+    },
+    clearSelectedGarden: (state) => {
+      state.selectedGarden = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getGardenByUserIdFct.pending, (state) => {
@@ -50,4 +59,5 @@ const gardenSlice = createSlice({
   },
 });
 
+export const { setSelectedGarden, clearSelectedGarden } = gardenSlice.actions;
 export default gardenSlice.reducer;
