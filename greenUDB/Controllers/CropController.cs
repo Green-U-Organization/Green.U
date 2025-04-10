@@ -9,6 +9,23 @@ using GreenUApi.Models;
 
 namespace GreenUApi.Controllers
 {
+    public class CropDto{
+        public long? LineId { get; set; }
+
+        public long? PlantNurseryId { get; set; }
+
+        public string Vegetable { get; set; } = null!;
+
+        public string? Variety { get; set; }
+
+        public long? Icon { get; set; }
+
+        public DateOnly? Sowing { get; set; }
+
+        public DateOnly? Planting { get; set; }
+
+        public DateOnly? Harvesting { get; set; }
+    }
 
     [Route("crops")]
     // [ApiController]
@@ -105,7 +122,8 @@ namespace GreenUApi.Controllers
         ///     "planting": "2025-05-01T00:00:00Z",
         ///     "harvesting": "2025-08-01T00:00:00Z"
         /// }
-        /// </remarks>        
+        /// </remarks>  
+          
         [HttpPatch]
         public async Task<IActionResult> PatchCrop(long id, Crop crop)
         {
@@ -151,19 +169,29 @@ namespace GreenUApi.Controllers
         ///     "plantNurseryId": 2,
         ///     "vegetable": "Carrot",
         ///     "variety": "Baby",
-        ///     "icon": 3,
-        ///     "sowing": "2025-04-06T00:00:00Z",
-        ///     "planting": "2025-05-01T00:00:00Z",
-        ///     "harvesting": "2025-08-01T00:00:00Z",
+        ///     "icon": 3
         /// }
         /// </remarks>
+        
         [HttpPost]
-        public async Task<ActionResult<Crop>> PostCrop(Crop crop)
+        public async Task<ActionResult<Crop>> PostCrop(CropDto crop)
         {
-            _context.Crops.Add(crop);
+            var newCrop = new Crop
+            {
+                LineId = crop.LineId,
+                PlantNurseryId = crop.PlantNurseryId,
+                Vegetable = crop.Vegetable,
+                Variety = crop.Variety,
+                Icon = crop.Icon,
+                Sowing = crop.Sowing,
+                Planting = crop.Planting,
+                Harvesting = crop.Harvesting
+            };
+
+            _context.Crops.Add(newCrop);
             await _context.SaveChangesAsync();
 
-            return CreatedAtRoute("GetPlantNursery", new { id = crop.Id }, crop);
+            return CreatedAtRoute("GetPlantNursery", new { id = newCrop.Id }, newCrop);
         }
 
         /// <summary>
