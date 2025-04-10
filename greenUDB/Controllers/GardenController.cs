@@ -11,7 +11,8 @@ namespace GreenUApi.Controllers
     public class GardenController : ControllerBase
     {
 
-        public class gardenDto{
+        public class GardenDto{
+            public long Id { get; set; }
             public long AuthorId { get; set; }
 
             public string Name { get; set; } = null!;
@@ -62,7 +63,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Object>> GetAllGardens()
+        public async Task<ActionResult<GardenDto>> GetAllGardens()
         {
             var gardens = await _context.Gardens.Select(g => new{
                 g.Id,
@@ -115,20 +116,33 @@ namespace GreenUApi.Controllers
         /// GET /garden/user/{authorId}
         /// </remarks>
         /// <returns></returns>
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long userId)
+       [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<GardenDto>>> GetGardensByUser(long userId)
         {
             var gardens = await _context.Gardens
                                         .Where(g => g.AuthorId == userId)
+                                        .Select(g => new GardenDto
+                                        {
+                                            AuthorId = g.AuthorId,
+                                            Name = g.Name,
+                                            Description = g.Description,
+                                            Latitude = g.Latitude,
+                                            Longitude = g.Longitude,
+                                            Length = g.Length,
+                                            Width = g.Width,
+                                            Privacy = g.Privacy,
+                                            Type = g.Type
+                                        })
                                         .ToListAsync();
 
-            if (gardens == null)
+            if (gardens == null || gardens.Count == 0)
             {
                 return NotFound();
             }
 
-            return gardens;
+            return Ok(gardens);
         }
+
 
         /// <summary>
         /// Met à jour les informations d'un jardin existant.
@@ -193,7 +207,7 @@ namespace GreenUApi.Controllers
         /// }
         /// </remarks>
         [HttpPost]
-        public async Task<ActionResult<Garden>> PostGarden([FromBody] gardenDto garden)
+        public async Task<ActionResult<Garden>> PostGarden([FromBody] GardenDto garden)
         {
 
             var newGarden = new Garden {
