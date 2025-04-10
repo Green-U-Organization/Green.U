@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
+using YamlDotNet.Core.Tokens;
 
 namespace GreenUApi.Controllers
 {
@@ -124,34 +125,30 @@ namespace GreenUApi.Controllers
         /// }
         /// </remarks>  
           
-        [HttpPatch]
-        public async Task<IActionResult> PatchCrop(long id, Crop crop)
+       [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchCrop(long id, [FromBody] CropDto crop)
         {
-            if (id != crop.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(crop).State = EntityState.Modified;
+            var existingCrop = await _context.Crops.FindAsync(id);
+            if (existingCrop == null) return NotFound();
+            if (crop.Vegetable != null) existingCrop.Vegetable = crop.Vegetable;
+            if (crop.Variety != null) existingCrop.Variety = crop.Variety;
+            if (crop.LineId != 0) existingCrop.LineId = crop.LineId;
+            if (crop.Icon != null) existingCrop.Icon = crop.Icon;
+            if (crop.Sowing != null) existingCrop.Sowing = crop.Sowing;
+            if (crop.Planting != null) existingCrop.Planting = crop.Planting;
+            if (crop.Harvesting != null) existingCrop.Harvesting = crop.Harvesting;
 
             try
             {
                 await _context.SaveChangesAsync();
+                return Ok(existingCrop);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!CropExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message ?? ex.Message}");
             }
-
-            return NoContent();
         }
+
 
         /// <summary>
         /// Crée une nouvelle culture dans la base de données.
@@ -176,22 +173,27 @@ namespace GreenUApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Crop>> PostCrop(CropDto crop)
         {
-            var newCrop = new Crop
-            {
-                LineId = crop.LineId,
-                PlantNurseryId = crop.PlantNurseryId,
-                Vegetable = crop.Vegetable,
-                Variety = crop.Variety,
-                Icon = crop.Icon,
-                Sowing = crop.Sowing,
-                Planting = crop.Planting,
-                Harvesting = crop.Harvesting
-            };
+            try{
+                var newCrop = new Crop
+                {
+                    LineId = crop.LineId,
+                    PlantNurseryId = crop.PlantNurseryId,
+                    Vegetable = crop.Vegetable,
+                    Variety = crop.Variety,
+                    Icon = crop.Icon,
+                    Sowing = crop.Sowing,
+                    Planting = crop.Planting,
+                    Harvesting = crop.Harvesting
+                };
 
-            _context.Crops.Add(newCrop);
-            await _context.SaveChangesAsync();
+                _context.Crops.Add(newCrop);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtRoute("GetPlantNursery", new { id = newCrop.Id }, newCrop);
+                return CreatedAtRoute("GetPlantNursery", new { id = newCrop.Id }, newCrop);
+            }
+            catch(Exception ex){
+                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
 
         /// <summary>

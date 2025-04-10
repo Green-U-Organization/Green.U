@@ -61,6 +61,18 @@ namespace GreenUApi.Controllers
             return garden;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<Object>> GetAllGardens()
+        {
+            var gardens = await _context.Gardens.Select(g => new{
+                g.Id,
+                g.Latitude,
+                g.Longitude
+            }).ToListAsync();
+
+            return Ok(gardens);
+        }
+
         /// <summary>
         /// Récupère tous les jardins associés à un utilisateur par son nom d'utilisateur.
         /// </summary>
@@ -270,5 +282,9 @@ namespace GreenUApi.Controllers
         {
             return _context.Gardens.Any(e => e.Id == id);
         }
+    }
+
+    public class GardenDto
+    {
     }
 }
