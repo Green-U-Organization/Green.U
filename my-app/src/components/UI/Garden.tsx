@@ -1,17 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import Parcel from './Parcel';
 import styles from '../../app/Assets.module.css';
-import { getAllParcelByGardenId } from '@/utils/actions/garden/parcel/getAllParcelByGardenId';
-import {
-  GardenProps,
-  type Garden,
-  type Parcel as ParcelType,
-} from '@/utils/types';
+import { GardenProps, type Garden } from '@/utils/types';
+import { useParcelList } from '@/app/hooks/useParcelList';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [parcels, setParcels] = useState<ParcelType[]>();
+  const { parcels, loading, error, isEmpty } = useParcelList(currentGarden.id);
 
   // Calcul des dimensions du jardin
   const gardenX = currentGarden?.length;
@@ -19,15 +14,16 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
 
   useEffect(() => {
     setCurrentGarden(garden);
-    setIsLoading(false);
-
-    getAllParcelByGardenId(garden.id).then((result) => {
-      setParcels(result);
-    });
   }, [garden]);
 
-  if (isLoading) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error : {error}</div>;
+  }
+  if (isEmpty) {
+    return <div>Oups, no parcel find...</div>;
   }
 
   return (

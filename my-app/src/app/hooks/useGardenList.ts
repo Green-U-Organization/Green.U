@@ -3,7 +3,7 @@ import { getGardenByUserIdFct } from '../../redux/garden/gardenSlice';
 import { RootState, store } from '../../redux/store';
 import { useEffect } from 'react';
 
-export const useGarden = (userId: number) => {
+export const useGardenList = (userId: number) => {
   const dispatch = useDispatch<typeof store.dispatch>();
   const { gardens, loading, error } = useSelector(
     (state: RootState) => state.garden

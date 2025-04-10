@@ -5,7 +5,7 @@ import ZoomSlider from './ZoomSlider';
 import Button from './Button';
 import { useRouter } from 'next/navigation';
 import { GardenCardHeaderProps } from '@/utils/types';
-import { useGarden } from '../../app/hooks/useGarden';
+import { useGardenList } from '../../app/hooks/useGardenList';
 
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   containerName,
@@ -17,7 +17,8 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   const [gardenId, setGardenId] = useState<number | null>(null);
   // const [selectedGarden, setSelectedGarden] = useState<Garden>();
   const router = useRouter();
-  const { gardens, loading, error, isEmpty } = useGarden(1); //IL FAUDRA CHOPPER L'ID DANS LES COOKIES
+
+  const { gardens, loading, error, isEmpty } = useGardenList(1); //IL FAUDRA CHOPPER L'ID DANS LES COOKIES !!!!!!!!
 
   //#region FETCHING GARDEN DATA
 

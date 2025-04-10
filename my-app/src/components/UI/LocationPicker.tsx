@@ -5,6 +5,7 @@ import L from 'leaflet';
 import TextInput from './TextInput';
 import Button from './Button';
 import { LocationPickerProps } from '@/utils/types';
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 // Icône pour la localisation des terrains
 const customIcon = L.icon({

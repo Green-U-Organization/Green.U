@@ -27,57 +27,6 @@ const page = () => {
   // A DEGAGER
   console.log(userId);
 
-  // const [checkPass, setCheckPass] = useState<Boolean>(false);
-
-  // const specialChar = [
-  // 	"²",
-  // 	"&",
-  // 	"~",
-  // 	"'",
-  // 	"#",
-  // 	"{",
-  // 	"(",
-  // 	"[",
-  // 	"-",
-  // 	"|",
-  // 	"`",
-  // 	"_",
-  // 	"^",
-  // 	"@",
-  // 	")",
-  // 	"]",
-  // 	"=",
-  // 	"}",
-  // 	"+",
-  // 	"°",
-  // 	"^",
-  // 	"¨",
-  // 	"¤",
-  // 	"$",
-  // 	"£",
-  // 	"%",
-  // 	"!",
-  // 	"§",
-  // 	":",
-  // 	"/",
-  // 	";",
-  // 	".",
-  // 	"?",
-  // ];
-
-  // const checkPassword = (password: string) => {
-  // 	console.log("checking password...");
-  // 	if (password.length <= 8) {
-  // 		setCheckPass(false);
-  // 		console.log("password too short");
-  // 		return;
-  // 	}
-  // 	const hasSpecialChar = specialChar.some((char) =>
-  // 		password.includes(char)
-  // 	);
-  // 	setCheckPass(hasSpecialChar);
-  // };
-
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     setErrorEmail(false);

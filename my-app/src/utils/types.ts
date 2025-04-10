@@ -90,7 +90,7 @@ export interface ParcelProps {
   scale: number;
 }
 
-export interface Lines {
+export interface Line {
   id: number;
   parcelId: number;
   length: number;
