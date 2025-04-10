@@ -17,8 +17,6 @@ public partial class Follower
 
     public long? GardenId { get; set; }
 
-    public virtual User FollowerNavigation { get; set; } = null!;
-
     public virtual Garden? Garden { get; set; }
 
     public virtual User? User { get; set; }

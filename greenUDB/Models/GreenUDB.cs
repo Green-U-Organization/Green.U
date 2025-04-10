@@ -39,7 +39,7 @@ public partial class GreenUDB : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .UseCollation("utf8mb4_0900_ai_ci")
+            .UseCollation("utf8mb4_unicode_ci")
             .HasCharSet("utf8mb4");
 
 
@@ -135,11 +135,6 @@ public partial class GreenUDB : DbContext
             entity.Property(e => e.FollowerId).HasColumnName("Follower_id");
             entity.Property(e => e.GardenId).HasColumnName("Garden_id");
             entity.Property(e => e.UserId).HasColumnName("User_id");
-
-            entity.HasOne(d => d.FollowerNavigation).WithMany(p => p.FollowerFollowerNavigations)
-                .HasForeignKey(d => d.FollowerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_Follower_Follower_id");
 
             entity.HasOne(d => d.Garden).WithMany(p => p.Followers)
                 .HasForeignKey(d => d.GardenId)

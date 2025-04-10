@@ -17,7 +17,7 @@ namespace GreenUApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseCollation("utf8mb4_0900_ai_ci")
+                .UseCollation("utf8mb4_unicode_ci")
                 .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
@@ -341,7 +341,7 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("gardenId")
+                    b.Property<long?>("GardenId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id")
@@ -425,6 +425,9 @@ namespace GreenUApi.Migrations
                     b.Property<long>("Level")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("Newsletter")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
@@ -438,6 +441,9 @@ namespace GreenUApi.Migrations
 
                     b.Property<string>("Salt")
                         .HasColumnType("text");
+
+                    b.Property<bool>("Tou")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Username")
                         .HasColumnType("text");
@@ -489,12 +495,6 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Follower", b =>
                 {
-                    b.HasOne("GreenUApi.Models.User", "FollowerNavigation")
-                        .WithMany("FollowerFollowerNavigations")
-                        .HasForeignKey("FollowerId")
-                        .IsRequired()
-                        .HasConstraintName("fk_Follower_Follower_id");
-
                     b.HasOne("GreenUApi.Models.Garden", "Garden")
                         .WithMany("Followers")
                         .HasForeignKey("GardenId")
@@ -504,8 +504,6 @@ namespace GreenUApi.Migrations
                         .WithMany("FollowerUsers")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_Follower_User_id");
-
-                    b.Navigation("FollowerNavigation");
 
                     b.Navigation("Garden");
 
@@ -640,8 +638,6 @@ namespace GreenUApi.Migrations
             modelBuilder.Entity("GreenUApi.Models.User", b =>
                 {
                     b.Navigation("Contributors");
-
-                    b.Navigation("FollowerFollowerNavigations");
 
                     b.Navigation("FollowerUsers");
 
