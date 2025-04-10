@@ -5,6 +5,7 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -62,7 +63,12 @@ builder.Services.AddCors(options =>
 });
 
 // Add other services
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;  // Ignore les boucles de référence
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;  // Ignore les valeurs null
+    });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>
