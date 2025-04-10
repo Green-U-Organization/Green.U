@@ -4,6 +4,7 @@ import Card from './UI/Card';
 import TextInput from './UI/TextInput';
 // import MapComponent from './UI/MapComponent';
 import Button from './UI/Button';
+import SelectInput from './UI/SelectInput';
 import HashtagInput from './HashtagInput';
 import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
 import { useRouter } from 'next/navigation';
@@ -32,6 +33,9 @@ const CreateGardenForm = () => {
 
   const [gardenLength, setGardenLength] = useState<number>(10);
   const [gardenWidth, setGardenWidth] = useState<number>(10);
+  const [selectedType, setSelectedType] = useState<number>(0);
+  const [selectedPrivacy, setSelectedPrivacy] = useState<number>(0);
+
   // const [garden, setGarden] = useState<gardenType>({
   //   authorId: 1,
   //   name: '',
@@ -71,15 +75,15 @@ const CreateGardenForm = () => {
       const formData = new FormData(form);
 
       const gardenData: gardenType = {
-        authorId: 1,
+        authorId: 1, //CETTE DONNEE DEVRA ETRE CORRIGEE !!!!
         name: formData.get('gardenName') as string,
         description: formData.get('gardenDescription') as string,
         latitude: parseFloat(formData.get('latitude') as string),
         longitude: parseFloat(formData.get('longitude') as string),
         length: Number(formData.get('gardenLength')),
         width: Number(formData.get('gardenWidth')),
-        privacy: Number(formData.get('gardenPrivacy')),
-        type: Number(formData.get('gardenType')),
+        privacy: selectedPrivacy,
+        type: selectedType,
       };
 
       console.log('Garden Data:', gardenData);
@@ -93,7 +97,9 @@ const CreateGardenForm = () => {
   return (
     <>
       <Card className="h-full max-w-screen px-8 pt-5 pb-10">
-        <h1 className="text-center text-4xl">{translations.gardenCreator}</h1>
+        <h1 className="mb-5 text-center text-4xl">
+          {translations.gardenCreator}
+        </h1>
 
         <form method="post" id="createGarden" className="flex flex-col">
           <TextInput
@@ -111,7 +117,7 @@ const CreateGardenForm = () => {
             placeholder={translations.giveaGardenDescription}
             rows={Number(rows)}
             cols={Number(cols)}
-            className="rounded-md border-1 pl-3"
+            className="mb-5 rounded-md border-1 pl-3"
           ></textarea>
 
           <HashtagInput
@@ -131,6 +137,7 @@ const CreateGardenForm = () => {
             min="1"
             max="500"
             step="1"
+            value={gardenLength}
             onChange={handleLengthChange}
             className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
           />
@@ -145,6 +152,7 @@ const CreateGardenForm = () => {
             min="1"
             max="500"
             step="1"
+            value={gardenWidth}
             onChange={handleWidthChange}
             className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
           />
@@ -156,22 +164,32 @@ const CreateGardenForm = () => {
             //onLocationChange={(lat, lng) => console.log(lat, lng)}
           />
 
-          <label htmlFor="gardenType">{translations.kindOfGarden}</label>
-          <select name="gardenType" className="rounded-md border-1">
-            <option value="0">{translations.gardenType0}</option>
-            <option value="1">{translations.gardenType1}</option>
-            <option value="2">{translations.gardenType2}</option>
-            <option value="3">{translations.gardenType3}</option>
-          </select>
+          <SelectInput
+            label={translations.kindOfGarden}
+            name="gardenType"
+            options={[
+              { value: 0, label: translations.gardenType0 },
+              { value: 1, label: translations.gardenType1 },
+              { value: 2, label: translations.gardenType2 },
+              { value: 3, label: translations.gardenType3 },
+            ]}
+            value={selectedType}
+            onChange={(e) => setSelectedType(Number(e.target.value))}
+          />
 
-          <label htmlFor="gardenPrivacy">{translations.privacySettings}</label>
-          <select name="gardenPrivacy" className="rounded-md border-1">
-            <option value="0">{translations.privateGarden}</option>
-            <option value="1">{translations.semiPrivateGarden}</option>
-            <option value="2">{translations.publicGarden}</option>
-          </select>
+          <SelectInput
+            label={translations.privacySettings}
+            name="gardenPrivacy"
+            options={[
+              { value: 0, label: translations.privateGarden },
+              { value: 1, label: translations.semiPrivateGarden },
+              { value: 2, label: translations.publicGarden },
+            ]}
+            value={selectedPrivacy}
+            onChange={(e) => setSelectedPrivacy(Number(e.target.value))}
+          />
 
-          <div className="flex justify-between">
+          <div className="flex justify-center">
             <Button onClick={() => router.push('/garden-manager')}>
               {translations.back}
             </Button>

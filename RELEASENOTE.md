@@ -4,7 +4,15 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 09/04/25 | @Emmanuel | Ajout des traductions pour la page de création de terrain
+||| Mise en place d'une nouvelle épingle pour localiser les terrains
+||| Correction du bug dans le composant HashTag avec la touche Enter 
+||| Remplacement du favicon
+||| Ajout d'un composant SelectInput et adaptation de GardenCreateForm
+||| Correction d'un bug lors de la validation d'un code postal dont la localité contient plusieurs traits d'union
+||| Ajout de l'input list 'skillLevel' dans le Register
 | 08/04/25 | @Emmanuel | L'ajout d'un user fonctionne via RegisterForm | 
+||| Ajout d'une map avec localisation du terrain pour la création d'un terrain
 | 07/04/25 | @Emmanuel | Travail sur le nouvelle version de RegisterForm
 | 06/04/25 | @Emmanuel | Ajout de la prop disable et title au composant Button
 ||| Création d'un bucket Supabase pour le stockage des avatars

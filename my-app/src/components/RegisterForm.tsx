@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Card from '@/components/UI/Card';
 import TextInput from '@/components/UI/TextInput';
 import Button from '@/components/UI/Button';
+import SelectInput from './UI/SelectInput';
 import Calendar from 'react-calendar';
 import { CalendarProps } from 'react-calendar';
 import Radio from '@/components/UI/Radio';
@@ -25,7 +26,7 @@ type FormData = {
   postalCode: string;
   gender: string;
   birthDate: string;
-  gardenerLevel: string;
+  skillLevel: string;
   interests: string[];
   newsletter: boolean;
   tou: boolean;
@@ -63,6 +64,8 @@ const RegisterForm = () => {
   //   translations.levelexpert,
   // ];
 
+  const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
+
   //	https://blog.logrocket.com/using-react-usestate-object/
   const [formDataRegister, setFormDataRegister] = useState<FormData>({
     login: '',
@@ -74,7 +77,7 @@ const RegisterForm = () => {
     postalCode: '',
     gender: 'M',
     birthDate: '',
-    gardenerLevel: '',
+    skillLevel: '',
     interests: [],
     newsletter: false,
     tou: false,
@@ -148,7 +151,7 @@ const RegisterForm = () => {
 
     setErrorForm((prevErrorForm) => ({
       ...prevErrorForm,
-      errorEmptyGardenerLevel: !formDataRegister.gardenerLevel,
+      errorEmptyGardenerLevel: !formDataRegister.skillLevel,
       errorEmptyInterests: !formDataRegister.interests.length,
       errorNotCheckedToU: !isCheckedToU,
     }));
@@ -376,9 +379,10 @@ const RegisterForm = () => {
       Country: 'Belgium',
       Sexe: formDataRegister.gender,
       Birthdate: formDataRegister.birthDate,
+      Skill_level: selectedSkillLevel,
       Newsletter: isCheckedNewsletter,
       Tou: isCheckedToU,
-      isAdmin: formDataRegister.isAdmin,
+      //isAdmin: formDataRegister.isAdmin,
     };
     console.log('formJson page 2: ', bodyRequest);
 
@@ -613,6 +617,19 @@ const RegisterForm = () => {
 						*/}
 
         {/* Niveau du jardinier */}
+        <SelectInput
+          label={translations.skillLevel}
+          name="skillLevel"
+          options={[
+            { value: 0, label: translations.levelbeginner },
+            { value: 1, label: translations.levelintermediate },
+            { value: 2, label: translations.leveladvanced },
+            { value: 3, label: translations.levelexpert },
+          ]}
+          value={selectedSkillLevel}
+          onChange={(e) => setSelectedSkillLevel(Number(e.target.value))}
+        />
+
         {/* <DropDown
 							label={translations.yourlevel}
 							placeholder={translations.enteryourlevel}
