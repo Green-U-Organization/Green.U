@@ -17,21 +17,7 @@ const GardenEdit = () => {
         type={'edit'}
       />
 
-      <Garden
-        garden={{
-          id: 0,
-          authorId: 0,
-          name: '',
-          description: '',
-          latitude: 0,
-          longitude: 0,
-          length: 0,
-          width: 0,
-          privacy: 0,
-          type: 0,
-        }}
-        scale={0}
-      />
+      <Garden scale={0} />
     </>
   );
 };

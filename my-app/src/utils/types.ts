@@ -83,6 +83,8 @@ export interface LocationPickerProps {
   onLocationChange?: (lat: number, lng: number) => void;
   readOnly?: boolean;
   multipleMarkers?: { lat: number; lng: number }[];
+  enableRadius?: boolean;
+  showUserPosition?: boolean;
 }
 
 export interface ParcelProps {
@@ -90,7 +92,7 @@ export interface ParcelProps {
   scale: number;
 }
 
-export interface Lines {
+export interface Line {
   id: number;
   parcelId: number;
   length: number;

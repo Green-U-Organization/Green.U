@@ -13,17 +13,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import TextInput from './TextInput';
 import Button from './Button';
+import { LocationPickerProps } from '@/utils/types';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
-
-interface LocationPickerProps {
-  initialLat?: number;
-  initialLng?: number;
-  onLocationChange?: (lat: number, lng: number) => void;
-  readOnly?: boolean;
-  multipleMarkers?: { lat: number; lng: number }[];
-  enableRadius?: boolean;
-  showUserPosition?: boolean;
-}
 
 // Recentrer dynamiquement la map sur la position utilisateur
 const CenterMapOnUser: React.FC<{ position: { lat: number; lng: number } }> = ({

@@ -1,30 +1,29 @@
 'use client';
 import React, { FC, useEffect, useState } from 'react';
-//import Line from './Line';
+import Line from './Line';
 import styles from '../../app/Assets.module.css';
-import { getAllLinesByParcelId } from '@/utils/actions/garden/parcel/line/getAllLinesByParcelId';
-import { Lines, ParcelProps, Parcel } from '@/utils/types';
+import { ParcelProps, type Parcel } from '@/utils/types';
+import { useLineList } from '@/app/hooks/useLineList';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale }) => {
   const [currentParcel, setCurrentParcel] = useState<Parcel>(parcel);
-  const [lines, setLines] = useState<Lines[]>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  const { lines, loading, error, isEmpty } = useLineList(currentParcel.id);
   const parcelY = currentParcel?.length;
   const parcelX = currentParcel?.width;
 
   useEffect(() => {
     setCurrentParcel(parcel);
-    setIsLoading(false);
+  }, [parcel]);
 
-    getAllLinesByParcelId(parcel.id).then((result) => {
-      setLines(result);
-      console.log(lines);
-    });
-  }, [parcel, lines]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return <div className="m-10">Loading...</div>;
+  }
+  if (error) {
+    console.log('currentparcel : ', currentParcel.id);
+    return <div className="m-10">Error : {error}</div>;
+  }
+  if (isEmpty) {
+    return <div className="m-10">Oups, no lines find...</div>;
   }
 
   return (
@@ -72,7 +71,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale }) => {
 
           {/* //MainCore */}
 
-          {/* <div
+          <div
             className={`${styles.parcelBackground} flex flex-col justify-around`}
             style={{
               height: parcelX * scale,
@@ -84,8 +83,10 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale }) => {
                 <Line lineX={line.length} scale={scale} />
               </div>
             ))}
-            {/* <p>id : {parcel.id} length : {parcel.length} width : {parcel.width}</p> 
-          </div> */}
+            <p>
+              id : {parcel.id} length : {parcel.length} width : {parcel.width}
+            </p>
+          </div>
 
           {/* //BorderRight */}
           <div
