@@ -107,7 +107,7 @@
   "map": "Plan",
   "youarehere": "Vous êtes ici",
   "radius": "Sélectionner le rayon (km) :",
-  "distance": "Distance",
+  "distance": "Distance: ",
   "errgeo": "Erreur de géolocalisation",
   "errpos": "Impossible d'obtenir votre position",
   "errUnknown": "Erreur inconue",
@@ -120,8 +120,8 @@
 
   "__LOCATION_PICKER": "MAP",
   "addGardenPosition": "Localisation de votre jardin:",
-  "latitude": "Latitude",
-  "longitude": "Longitude",
+  "latitude": "Latitude: ",
+  "longitude": "Longitude: ",
 
   "__COMMENT": "GARDEN",
   "likes": "Likes:",

@@ -161,7 +161,7 @@ const CreateGardenForm = () => {
           <LocationPicker
             initialLat={0} //Pour ne pas avoir un pin par défaut
             initialLng={0} //Idem
-            //onLocationChange={(lat, lng) => console.log(lat, lng)}
+            onLocationChange={(lat, lng) => console.log(lat, lng)}
           />
 
           <SelectInput
