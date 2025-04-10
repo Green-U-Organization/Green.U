@@ -126,16 +126,22 @@ namespace GreenUApi.Controllers
         /// }
         /// </remarks>
        [HttpPost]
-        public async Task<ActionResult<Line>> PostLine(Line line)
+        public async Task<ActionResult<Line>> PostLine(LineDto line)
         {
-            // Attribuer la date de création avant d'ajouter la ligne à la base de données
-            line.CreatedAt = DateTime.UtcNow;
+            var newLine = new Line{
+                Id = line.Id,
+                ParcelId = line.ParcelId,
+                PLantNurseryId = line.PlantNurseryId,
+                Length = line.Length,
+                CreatedAt = DateTime.UtcNow
+            };
+            
 
-            _context.Lines.Add(line);
+            _context.Lines.Add(newLine);
             await _context.SaveChangesAsync();
 
             // Retourner la réponse avec l'URL de la ressource créée
-            return CreatedAtAction("GetLine", new { id = line.Id }, line);
+            return Ok(newLine);
         }
 
         /// <summary>

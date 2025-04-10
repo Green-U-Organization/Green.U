@@ -195,17 +195,35 @@ namespace GreenUApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGarden(long id)
         {
-            var garden = await _context.Gardens.FindAsync(id);
-            if (garden == null)
+            try
             {
-                return NotFound();
-            }
+                var garden = await _context.Gardens.FindAsync(id);
+                if (garden == null)
+                {
+                    return NotFound();
+                }
 
-            _context.Gardens.Remove(garden);
-            await _context.SaveChangesAsync();
+                var parcels = await _context.Parcels.Where(p => p.GardenId == id).ToListAsync();
+
+                // Supprimer chaque parcel associé
+                foreach (var parcel in parcels)
+                {
+                    _context.Parcels.Remove(parcel);
+                }
+
+                // Supprimer le jardin
+                _context.Gardens.Remove(garden);
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message ?? ex.Message}");
+            }
 
             return NoContent();
         }
+
 
         /// <summary>
         /// Vérifie si un jardin existe dans la base de données.
