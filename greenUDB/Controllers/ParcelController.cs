@@ -137,16 +137,36 @@ namespace GreenUApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParcel(long id)
         {
-            var parcel = await _context.Parcels.FindAsync(id);
-            if (parcel == null)
+            try
             {
-                return NotFound();
+                var parcel = await _context.Parcels.FindAsync(id);
+                if (parcel == null)
+                {
+                    return NotFound();
+                }
+
+                var lines = await _context.Lines.Where(l => l.ParcelId == parcel.Id).ToListAsync();
+
+                foreach(var line in lines)
+                {
+                    var crops = await _context.Crops.Where(c => c.LineId == line.Id).ToListAsync();
+                    foreach (var crop in crops)
+                    {
+                        _context.Crops.Remove(crop); 
+                    }
+                    _context.Lines.Remove(line);
+                }
+
+                _context.Parcels.Remove(parcel);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
             }
-
-            _context.Parcels.Remove(parcel);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                // Log l'exception pour obtenir plus d'informations
+                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
         /// <summary>
         /// Vérifie si une parcelle existe dans la base de données.
