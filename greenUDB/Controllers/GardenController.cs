@@ -10,6 +10,27 @@ namespace GreenUApi.Controllers
     // [Authorize]
     public class GardenController : ControllerBase
     {
+
+        public class gardenDto{
+            public long AuthorId { get; set; }
+
+            public string Name { get; set; } = null!;
+
+            public string Description { get; set; } = null!;
+
+            public double Latitude { get; set; }
+
+            public double Longitude { get; set; }
+
+            public double Length { get; set; }
+
+            public double Width { get; set; }
+
+            public GardenPrivacy Privacy { get; set; } = GardenPrivacy.Public;
+
+            public GardenType Type { get; set; } = GardenType.Personnal;
+
+        }
         private readonly GreenUDB _context;
 
         public GardenController(GreenUDB context)
@@ -160,9 +181,23 @@ namespace GreenUApi.Controllers
         /// }
         /// </remarks>
         [HttpPost]
-        public async Task<ActionResult<Garden>> PostGarden([FromBody] Garden garden)
+        public async Task<ActionResult<Garden>> PostGarden([FromBody] gardenDto garden)
         {
-            if (garden == null)
+
+            var newGarden = new Garden {
+                AuthorId = garden.AuthorId,
+                Name = garden.Name,
+                Description = garden.Description,
+                Latitude = garden.Latitude,
+                Longitude = garden.Longitude,
+                Length = garden.Length,
+                Width = garden.Width,
+                CreatedAt = DateTime.Now,
+                Privacy = garden.Privacy,
+                Type = garden.Type
+            };
+
+            if (newGarden == null)
             {
                 return BadRequest("Invalid garden data.");
             }
@@ -173,12 +208,10 @@ namespace GreenUApi.Controllers
                 return BadRequest("The specified authorId does not exist.");
             }
 
-            garden.CreatedAt = DateTime.UtcNow;
-
-            _context.Gardens.Add(garden);
+            _context.Gardens.Add(newGarden);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetGarden), new { id = garden.Id }, garden);
+            return CreatedAtAction(nameof(GetGarden), new { id = newGarden.Id }, newGarden);
         }
 
 
