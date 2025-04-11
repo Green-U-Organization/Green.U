@@ -157,6 +157,13 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     onLocationChange?.(0, 0);
   };
 
+  //Restriction du rayon lors de la saisie
+  const handleRadiusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = Number(e.target.value);
+    if (value > 30) value = 30;
+    setRadius(value);
+  };
+
   return (
     <div className={`flex flex-col ${markerPosition ? 'mb-0' : 'mb-5'}`}>
       {!enableRadius && <p>{translations.addGardenPosition}</p>}
@@ -169,7 +176,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             <input
               type="range"
               min="1"
-              max="100"
+              max="30"
               value={radius}
               onChange={(e) => setRadius(Number(e.target.value))}
               className="mt-2 w-full"
@@ -177,9 +184,9 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             <input
               type="number"
               min="1"
-              max="100"
+              max="30"
               value={radius}
-              onChange={(e) => setRadius(Number(e.target.value))}
+              onChange={handleRadiusChange}
               className="mr-1 ml-2 w-16 rounded border p-1"
             />
             km

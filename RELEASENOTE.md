@@ -4,6 +4,10 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 11/04/25 | @Emmanuel | Mise en cache des fichiers de traduction
+||| Réactivation du choix et de l'upload d'un avatar
+||| Blocage du rayon de délimitation de recherche de jardins à 30km
+| 10/04/25 | @Emmanuel | Utilisation et amélioration du composant LocationPicker pour utilisation dans la localisation des jardins
 | 09/04/25 | @Emmanuel | Ajout des traductions pour la page de création de terrain
 ||| Mise en place d'une nouvelle épingle pour localiser les terrains
 ||| Correction du bug dans le composant HashTag avec la touche Enter 
