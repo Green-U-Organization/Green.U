@@ -46,7 +46,6 @@ namespace GreenUApi.Controllers
         /// <returns>Retourne un jardin correspondant à l'ID spécifié, ou HTTP 404 Not Found si le jardin n'existe pas.</returns>
         /// <remarks>
         /// Exemple de requête GET pour obtenir un jardin :
-        ///
         /// GET /garden/{id}
         /// </remarks>
         [HttpGet("{id}")]
@@ -160,6 +159,7 @@ namespace GreenUApi.Controllers
         ///     "name": "New Garden Name",
         ///     "location": "New Location"
         /// }
+        ///</remarks>
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchGarden(long id, Garden garden)
         {
