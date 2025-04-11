@@ -11,7 +11,7 @@ export default function AvatarUpload() {
   const [uploading, setUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  //const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
   const { translations } = useLanguage();
 
@@ -95,7 +95,13 @@ export default function AvatarUpload() {
 
       {avatarUrl ? (
         <div className="mb-2 flex flex-col items-center">
-          <Image src={avatarUrl} alt="Avatar" />
+          <Image
+            src={avatarUrl}
+            alt="Avatar"
+            width={72}
+            height={72}
+            className="border-border mx-auto h-24 w-24 rounded-full border-2"
+          />
           <p className="text-shadow mt-2">{translations.avataruploaded}</p>
         </div>
       ) : (

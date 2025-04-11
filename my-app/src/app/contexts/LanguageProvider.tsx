@@ -16,7 +16,8 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | null>(null);
 
-// const translationsCache: Record<string, Record<string, string>> = {}; // Cache en mémoire
+// Cache en mémoire
+const translationsCache: Record<string, Record<string, string>> = {};
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -35,7 +36,13 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const loadTranslations = async () => {
+      //Si le fichier de traduction est déjà dans le cache on le récupère
+      if (translationsCache[locale]) {
+        setTranslations(translationsCache[locale]);
+        return;
+      }
       try {
+        //Sinon on le charge
         const response = await fetch(`/locales/${locale}.json`);
         if (!response.ok) throw new Error('Loading error');
         const data = await response.json();
