@@ -31,12 +31,12 @@ namespace GreenUApi.Controllers
 
             if (User == null)
             {
-                return NotFound("User not found");
+                return NotFound(new { message = "User not found" });
             }
 
             if (CheckFollowerId == null)
             {
-                return NotFound("Follower Id not found");
+                return NotFound(new { message = "Follow id user not found" });
             }
             
             bool followExists = await _db.Followers
@@ -44,7 +44,7 @@ namespace GreenUApi.Controllers
 
             if (followExists)
             {
-                return BadRequest(new { message = "The follow is already exist"});
+                return BadRequest(new { message = "This follow row is already exist"});
             }
 
             followerData.UserId = id;
@@ -63,7 +63,7 @@ namespace GreenUApi.Controllers
 
             if (User == null)
             {
-                return BadRequest("The user id doesn't exist");
+                return BadRequest(new { message = "The user id doesn't exist"});
             }
 
              var Follow = await _db.Followers
@@ -88,6 +88,21 @@ namespace GreenUApi.Controllers
             
 
             return Ok(new { message = "The list of follower", content =  Follow });
+        }
+
+        [HttpDelete("user")]
+        public async Task<ActionResult<Follower>> DeleteUserFollow(Follower follower)
+        {
+            var followExist = await _db.Followers
+                .Where(f => f.UserId == follower.UserId && f.FollowerId == follower.FollowerId)
+                .FirstAsync();
+
+            if (followExist == null)
+            {
+                return BadRequest(new { message = "We have inccorect id" });
+            }
+
+            return Ok("Unfollow complete");
         }
 
     }
