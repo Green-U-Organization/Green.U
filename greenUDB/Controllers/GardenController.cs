@@ -66,8 +66,15 @@ namespace GreenUApi.Controllers
         {
             var gardens = await _context.Gardens.Select(g => new{
                 g.Id,
+                g.AuthorId,
+                g.Name,
+                g.Description,
                 g.Latitude,
-                g.Longitude
+                g.Longitude,
+                g.Length,
+                g.Width,
+                g.Privacy,
+                g.Type
             }).ToListAsync();
 
             return Ok(gardens);
