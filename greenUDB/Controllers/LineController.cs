@@ -39,9 +39,8 @@ namespace GreenUApi.Controllers
         /// <returns>Retourne la ligne correspondante à l'ID spécifié, ou HTTP 404 Not Found si la ligne n'existe pas.</returns>
         /// <remarks>
         /// Exemple de requête GET pour obtenir une ligne :
-        ///
-        // / GET /line/{id}
-        // / </remarks>
+        /// GET /line/{id}
+        /// </remarks>
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<LineDto>>> GetLine(long id)
         {

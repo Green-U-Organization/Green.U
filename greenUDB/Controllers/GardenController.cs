@@ -12,7 +12,7 @@ namespace GreenUApi.Controllers
     {
 
         public class GardenDto{
-            public long Id { get; set; }
+            public long? Id { get; set; }
             public long AuthorId { get; set; }
 
             public string Name { get; set; } = null!;
@@ -46,7 +46,6 @@ namespace GreenUApi.Controllers
         /// <returns>Retourne un jardin correspondant à l'ID spécifié, ou HTTP 404 Not Found si le jardin n'existe pas.</returns>
         /// <remarks>
         /// Exemple de requête GET pour obtenir un jardin :
-        ///
         /// GET /garden/{id}
         /// </remarks>
         [HttpGet("{id}")]
@@ -67,8 +66,15 @@ namespace GreenUApi.Controllers
         {
             var gardens = await _context.Gardens.Select(g => new{
                 g.Id,
+                g.AuthorId,
+                g.Name,
+                g.Description,
                 g.Latitude,
-                g.Longitude
+                g.Longitude,
+                g.Length,
+                g.Width,
+                g.Privacy,
+                g.Type
             }).ToListAsync();
 
             return Ok(gardens);
@@ -123,6 +129,7 @@ namespace GreenUApi.Controllers
                                         .Where(g => g.AuthorId == userId)
                                         .Select(g => new GardenDto
                                         {
+                                            Id = g.Id,
                                             AuthorId = g.AuthorId,
                                             Name = g.Name,
                                             Description = g.Description,
@@ -159,6 +166,7 @@ namespace GreenUApi.Controllers
         ///     "name": "New Garden Name",
         ///     "location": "New Location"
         /// }
+        ///</remarks>
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchGarden(long id, Garden garden)
         {

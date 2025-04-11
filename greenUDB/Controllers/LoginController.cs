@@ -17,11 +17,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("login")]
-        /// <summary>
-        /// Fonction de connexion
-        /// </summary>
-        /// <param name="model">Un objet de la forme { "Email": string, "Password": string }</param>
-        /// <returns></returns>
+
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var result = await Authentification.Login(model.Email, model.Password, _db);
