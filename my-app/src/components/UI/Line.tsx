@@ -69,7 +69,7 @@ const Line: FC<LineProps> = ({ lineX, scale }) => {
     aubergine1: styles.cropAubergine1,
   };
 
-  const selectedCrop = line.crop.icon;
+  //const selectedCrop = line.crop.icon;
 
   const handleMouseEnter = () => {
     SetDisplayInfo(true);
@@ -88,11 +88,11 @@ const Line: FC<LineProps> = ({ lineX, scale }) => {
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
+      // onClick={handleClick}
     >
       {/* Image du légume - z-index inférieur */}
       <div
-        className={`${cropIcon[selectedCrop]} absolute bottom-0 z-10`} // z-10 pour l'image
+        // className={`${cropIcon[selectedCrop]} absolute bottom-0 z-10`} // z-10 pour l'image
         style={{
           width: lineX * scale,
           height: 0.2 * scale,
@@ -108,9 +108,9 @@ const Line: FC<LineProps> = ({ lineX, scale }) => {
             top: '0',
           }}
         >
-          <h3 className="font-bold">{line.crop.vegetable}</h3>
+          {/* <h3 className="font-bold">{line.crop.vegetable}</h3>
           <h4 className="text-sm italic">{line.crop.variety}</h4>
-          <h5 className="mt-1 text-xs">{line.status}</h5>
+          <h5 className="mt-1 text-xs">{line.status}</h5> */}
           <div className="mt-2 flex w-full flex-row justify-evenly">
             <button className="border-2 bg-white px-2">❗</button>
             <button className="border-2 bg-white px-2">👍</button>
