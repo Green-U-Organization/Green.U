@@ -24,15 +24,15 @@ namespace GreenUApi.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var result = await Authentification.Login(model.Email, model.Password, _db);
+            var (success, token, message) = await Authentification.Login(model.Email, model.Password, _db);
             
-            if (result.success)
+            if (success)
             {
-                return Ok(new { message = result.message, token = result.token });
+                return Ok(new { message, token });
             }
             else
             {
-                return Unauthorized(new { message = result.message });
+                return Unauthorized(new { message });
             }
         }
 
@@ -47,6 +47,12 @@ namespace GreenUApi.Controllers
             if (userDbData.Length != 0)
             {
                 return Conflict(new { message = "This username already exists" });
+            }
+
+
+            if (user.Password == null)
+            {
+                return BadRequest(new { message = "Password is missing" });
             }
 
             string[] hashSalt = Authentification.Hasher(user.Password, null);

@@ -74,6 +74,11 @@ public class UserController(GreenUDB db) : ControllerBase
             return Conflict(new { message = "This username already exists" });
         }
 
+        if (user.Password == null)
+        {
+            return BadRequest(new { message = "Password is missing"});
+        }
+
         string[] hashSalt = Authentification.Hasher(user.Password, null);
         user.Password = hashSalt[0];
         user.Salt = hashSalt[1];
@@ -155,7 +160,7 @@ public class UserController(GreenUDB db) : ControllerBase
             user.Gender = modification.Gender;
         }
 
-        if (modification.Birthday != null)
+        if (modification.Birthday != default)
         {
             user.Birthday = modification.Birthday;
         }
