@@ -13,6 +13,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale }) => {
 
   useEffect(() => {
     setCurrentParcel(parcel);
+    console.log(currentParcel.id);
   }, [parcel]);
 
   if (loading) {

@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import GardenCardHeader from './UI/GardenCardHeader';
 import Garden from './UI/Garden';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const GardenEdit = () => {
   const [currentScale, setCurrentScale] = useState<number>(10);
@@ -9,6 +11,9 @@ const GardenEdit = () => {
   const handleScaleChange = (scale: number) => {
     setCurrentScale(scale);
   };
+
+  const garden = useSelector((state: RootState) => state.garden.selectedGarden);
+
   return (
     <>
       <GardenCardHeader
@@ -17,7 +22,7 @@ const GardenEdit = () => {
         type={'edit'}
       />
 
-      <Garden scale={0} />
+      {garden && <Garden garden={garden} scale={0} />}
     </>
   );
 };
