@@ -46,9 +46,26 @@ namespace GreenUApi.Controllers
         [HttpPost("list/user/{id}")]
         public async Task<ActionResult<TagsInterest>> CreateUserTagWithList(long id, [FromBody] string[] tagList)
         {
+            var user = await _db.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
 
-            return Ok(new { message = "Prout" });
-                }
+            // Create all entities with Select and add all tags with AddRange()
+            // https://learn.microsoft.com/fr-fr/dotnet/api/system.collections.generic.list-1.addrange?view=net-8.0
+            var newTags = tagList.Select(tag => new TagsInterest
+            {
+                Hashtag = tag,
+                UserId = id 
+            }).ToList();
+
+            _db.TagsInterests.AddRange(newTags);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { message = "User tag list created !" });
+        }
 
         [HttpGet("user/{id}")]
         public async Task<ActionResult<TagsInterest>> GetUserTag(long id)
