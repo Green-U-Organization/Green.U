@@ -43,6 +43,13 @@ namespace GreenUApi.Controllers
           
         }
 
+        [HttpPost("list/user/{id}")]
+        public async Task<ActionResult<TagsInterest>> CreateUserTagWithList(long id, [FromBody] string[] tagList)
+        {
+
+            return Ok(new { message = "Prout" });
+                }
+
         [HttpGet("user/{id}")]
         public async Task<ActionResult<TagsInterest>> GetUserTag(long id)
         {
