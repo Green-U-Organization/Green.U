@@ -12,6 +12,11 @@ namespace GreenUApi.Controllers
     {
         private readonly GreenUDB _db = db;
 
+        public class HashtagContainer
+        {
+            public List<string> Hashtags { get; set; }
+        }
+
         [HttpPost("user/{id}")]
         public async Task<ActionResult<TagsInterest>> CreateUserTags(long id, [FromBody] TagsInterest Tag)
         {
@@ -41,6 +46,30 @@ namespace GreenUApi.Controllers
                 return BadRequest(new { message = "The tag with this user is already exist" });
             }
           
+        }
+
+        [HttpPost("list/user/{id}")]
+        public async Task<ActionResult<TagsInterest>> CreateUserTagWithList(long id, [FromBody] HashtagContainer container)
+        {
+            var user = await _db.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            // Create all entities with Select and add all tags with AddRange()
+            // https://learn.microsoft.com/fr-fr/dotnet/api/system.collections.generic.list-1.addrange?view=net-8.0
+            var newTags = container.Hashtags.Select(tag => new TagsInterest
+            {
+                Hashtag = tag,
+                UserId = id 
+            }).ToList();
+
+            _db.TagsInterests.AddRange(newTags);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { message = "User tag list created !" });
         }
 
         [HttpGet("user/{id}")]

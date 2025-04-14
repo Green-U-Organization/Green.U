@@ -259,7 +259,7 @@ namespace GreenUApi.Controllers
         ///
         /// DELETE /garden/{id}
         /// </remarks>
-        [HttpDelete("{id}")]
+        [HttpPatch("delete/{id}")]
         public async Task<IActionResult> DeleteGarden(long id)
         {
             try
@@ -270,17 +270,7 @@ namespace GreenUApi.Controllers
                     return NotFound();
                 }
 
-                var parcels = await _context.Parcels.Where(p => p.GardenId == id).ToListAsync();
-
-                // Supprimer chaque parcel associé
-                foreach (var parcel in parcels)
-                {
-                    _context.Parcels.Remove(parcel);
-                }
-
-                // Supprimer le jardin
-                _context.Gardens.Remove(garden);
-
+                garden.Deleted = true;
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
