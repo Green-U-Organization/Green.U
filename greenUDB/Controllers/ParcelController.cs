@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using Docker.DotNet.Models;
 
 namespace GreenUApi.Controllers
 {
@@ -64,14 +65,18 @@ namespace GreenUApi.Controllers
         /// }
         /// </remarks>
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PutParcel(long id, Parcel parcel)
+        public async Task<IActionResult> PatchParcel(long id, Parcel parcel)
         {
-            if (id != parcel.Id)
+
+            var oldParcel = await _context.Parcels.Where(p => p.Id == id).FirstOrDefaultAsync();
+
+            if (oldParcel == null)
             {
-                return BadRequest();
+                return BadRequest(new {message = "Mauvais parcel id."});
             }
 
-            _context.Entry(parcel).State = EntityState.Modified;
+            parcel.Id = id;
+            _context.Entry(oldParcel).CurrentValues.SetValues(parcel);
 
             try
             {

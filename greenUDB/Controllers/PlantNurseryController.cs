@@ -146,6 +146,12 @@ namespace GreenUApi.Controllers
                 return NotFound();
             }
 
+            var lines = await _context.Lines.Where(l => l.PLantNurseryId == plantNursery.Id).ToListAsync();
+
+            foreach(var line in lines){
+                line.PLantNurseryId = null;
+            }
+
             _context.PlantNursery.Remove(plantNursery);
             await _context.SaveChangesAsync();
 

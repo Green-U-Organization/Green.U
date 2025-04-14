@@ -162,6 +162,12 @@ namespace GreenUApi.Controllers
                 return NotFound();
             }
 
+            var crops = await _context.Crops.Where(c => c.LineId == line.Id).ToListAsync();
+
+            foreach(var crop in crops){
+                crop.LineId = null;
+            }
+
             _context.Lines.Remove(line);
             await _context.SaveChangesAsync();
 
