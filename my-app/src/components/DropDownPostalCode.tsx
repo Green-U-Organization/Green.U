@@ -29,7 +29,7 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({
       return;
     }
 
-    const regex = /^[0-9]{4}(-[A-Za-z0-9]+)*$/;
+    const regex = /^[0-9]{4}(-[\p{L}\p{N}' ]+)*$/u;
     if (regex.test(inputValue)) {
       //Séparation du code postal et de la ville
       const parts = inputValue.split('-');

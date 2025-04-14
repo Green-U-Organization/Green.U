@@ -14,6 +14,7 @@ import Checkbox from '@/components/UI/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { addUser } from '@/utils/actions/user/addUser';
 type Value = CalendarProps['value'];
 
 type FormData = {
@@ -55,15 +56,6 @@ const RegisterForm = () => {
   const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
   const calendarRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  //Les niveaux possible du jardinier
-  // const gardenerLevels = [
-  //   translations.levelbeginner,
-  //   translations.levelintermediate,
-  //   translations.leveladvanced,
-  //   translations.levelexpert,
-  // ];
-
   const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
 
   //	https://blog.logrocket.com/using-react-usestate-object/
@@ -145,9 +137,7 @@ const RegisterForm = () => {
   const step2Validation = () => {
     console.log('check validation step 2:');
 
-    const isValid =
-      //formDataRegister.gardenerLevel &&
-      formDataRegister.interests.length > 0 && isCheckedToU;
+    const isValid = formDataRegister.interests.length > 0 && isCheckedToU;
 
     setErrorForm((prevErrorForm) => ({
       ...prevErrorForm,
@@ -196,10 +186,6 @@ const RegisterForm = () => {
 
   //#region NAVIGATION FUNCTION
 
-  // useEffect(() => {
-
-  // }, [formDataRegister]);
-
   const formRef = useRef<HTMLFormElement>(null);
 
   // Fonction permettant d'avancer dans les pages
@@ -232,16 +218,6 @@ const RegisterForm = () => {
 
     if (step === 1) {
       const isValid = step1Validation(formJson);
-
-      // console.log('login: ', formDataRegister.login);
-      // console.log('password: ', formDataRegister.password);
-      // console.log('verifyPassword: ', formDataRegister.passwordVerify);
-      // console.log('birthdate: ', formDataRegister.birthDate);
-      // console.log('firstname: ', formDataRegister.firstname);
-      // console.log('lastname: ', formDataRegister.lastname);
-      // console.log('email: ', formDataRegister.email);
-      // console.log('postalCode: ', formDataRegister.postalCode);
-      // console.log('gender: ', formDataRegister.gender);
 
       if (!isValid) {
         setErrorForm((prev) => ({
@@ -291,8 +267,6 @@ const RegisterForm = () => {
       ...prev,
       interests: newHashtags,
     }));
-
-    //setFormData.interests(newHashtags);
   };
 
   //#region PASSWORD VISIBILITY
@@ -346,12 +320,10 @@ const RegisterForm = () => {
     }
   };
 
-  // const handleChange =
-  //   (setter: React.Dispatch<React.SetStateAction<string>>) =>
-  //   (e: ChangeEvent<HTMLInputElement>) =>
-  //     setter(e.target.value);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const isValid = step2Validation();
     console.log('Submit -> is valid: ', isValid);
     if (!isValid) {
@@ -379,6 +351,7 @@ const RegisterForm = () => {
       Country: 'Belgium',
       Sexe: formDataRegister.gender,
       Birthdate: formDataRegister.birthDate,
+      Hashtag: formDataRegister.interests,
       Skill_level: selectedSkillLevel,
       Newsletter: isCheckedNewsletter,
       Tou: isCheckedToU,
@@ -386,42 +359,69 @@ const RegisterForm = () => {
     };
     console.log('formJson page 2: ', bodyRequest);
 
-    // try {
-    //   const response = fetch(process.env.NEXT_PUBLIC_API + '/user', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(bodyRequest),
-    //   });
+    //addUser(bodyRequest);
 
-    //   if (response.ok) {
-    //     const data = response.json();
-    //     console.log('User added with succes !');
-    //     //ATTENDRE L'OBJET RETOURNE DU BACKEND
-    //     //QUI CONTIENDRA LE USERID ENTRE AUTRES
-    //     //IL POURRA ËTRE UTILISE POUR AJOUTER LES HASHTAGS
+    try {
+      setIsSubmitting(true);
+      setSubmitError(null); // reset errors
 
-    //     // const userId = null;
+      const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bodyRequest),
+      });
 
-    //     //   if (formDataRegister.interests.length > 0) {
-    //     //   }
-    //     //   // fetch(process.env.NEXT_PUBLIC_API + `/tags/user${userId}`, {
-    //     //   //   method: 'POST',
-    //     //   //   headers: {
-    //     //   //     'Content-Type': 'application/json',
-    //     //   //   },
-    //     //   //   body: JSON.stringify(bodyRequest),
-    //     //   // });
-    //     // }
-    //     //Redirige vers la page du dashboard
-    //     router.push('/landing');
-    //   } else {
-    //     console.error('Server error: ', response.status, response.text());
-    //   }
-    // } catch (error) {
-    //   console.error('Netword error or other: ', error);
-    // }
+      if (!response.ok) {
+        const errorText = await response.text();
+        setSubmitError(
+          `${translations.serverError} : ${response.status} - ${errorText}`
+        );
+        return; // STOP LA REDIRECTION
+      }
+      console.log('User created!');
+
+      //------------------------------------------
+      // A ADAPTER SELON LA METHODE UTILISEE
+      const userData = await response.json();
+      const userId = userData?.id || 1;
+      //------------------------------------------
+
+      //Ajout des hashtags
+      if (formDataRegister.interests.length > 0) {
+        console.log(
+          'hashtags = ',
+          JSON.stringify({ hashtags: formDataRegister.interests })
+        );
+        const hashtagResponse = await fetch(
+          process.env.NEXT_PUBLIC_API + `/tags/list/user/${userId}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ hashtags: formDataRegister.interests }),
+          }
+        );
+
+        if (!hashtagResponse.ok) {
+          const errorText = await hashtagResponse.text();
+          setSubmitError(
+            `⚠️ ${translations.userCreatedButNotHashtags} : ${errorText}`
+          );
+          return; // STOP LA REDIRECTION
+        }
+        console.log('Hashtags added!');
+      }
+      //Redirige vers la page du dashboard
+      router.push('/landing');
+    } catch (error: any) {
+      console.error('Network error :', error);
+      setSubmitError(translations.networkErrorRetry);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   //#endregion
 
@@ -667,8 +667,15 @@ const RegisterForm = () => {
         )}
         <div className="flex justify-center pb-5">
           <Button onClick={handlePrevStep}>{translations.previous}</Button>
-          <Button onClick={handleSubmit}>{translations.sign}</Button>
+          <Button onClick={handleSubmit} disabled={isSubmitting}>
+            {translations.sign}
+          </Button>
         </div>
+        {submitError && (
+          <div className="mb-8 flex flex-wrap overflow-x-auto scroll-auto rounded-md bg-yellow-100 p-3 text-yellow-800 shadow">
+            {submitError}
+          </div>
+        )}
       </form>
     </Card>
   );

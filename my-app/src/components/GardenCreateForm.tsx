@@ -21,6 +21,7 @@ type gardenType = {
   width: number;
   privacy: number;
   type: number;
+  hashtags: string[];
 };
 
 const CreateGardenForm = () => {
@@ -84,6 +85,7 @@ const CreateGardenForm = () => {
         width: Number(formData.get('gardenWidth')),
         privacy: selectedPrivacy,
         type: selectedType,
+        hashtags: formData.getAll('gardenHashtag') as string[],
       };
 
       console.log('Garden Data:', gardenData);
@@ -161,6 +163,7 @@ const CreateGardenForm = () => {
           <LocationPicker
             initialLat={0} //Pour ne pas avoir un pin par défaut
             initialLng={0} //Idem
+            //showUserPosition={true}
             onLocationChange={(lat, lng) => console.log(lat, lng)}
           />
 
