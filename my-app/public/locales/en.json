@@ -40,6 +40,10 @@
   "cgu": "Terms of Use",
   "newsletter": "I would like to sign up for the newsletter (optional).",
   "errorNotCheckedToU": "Please accept the ToU",
+  "completeProfileLater": "You can try again or complete your profile later.",
+  "networkErrorRetry": "A network error has occurred. Please try again.",
+  "serverError": "Server error",
+  "userCreatedButNotHashtags": "User created, but hashtags could not be saved.",
 
   "__COMMENT_4": "CGU",
   "cgutitle": "Terms of Use (ToU)",

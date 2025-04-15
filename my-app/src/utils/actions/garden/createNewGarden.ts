@@ -8,6 +8,7 @@ type gardenType = {
   width: number;
   privacy: number;
   type: number;
+  hashtags: string[];
 };
 
 export const createNewGarden = async (

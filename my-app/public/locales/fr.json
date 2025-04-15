@@ -40,6 +40,10 @@
   "cgu": "Conditions Générales d'Utilisation",
   "newsletter": "Je voudrais m'inscrire à la newsletter (optionnel).",
   "errorNotCheckedToU": "Veuillez accepter les CGU",
+  "completeProfileLater": "Vous pouvez réessayer ou compléter votre profil plus tard.",
+  "networkErrorRetry": "Une erreur réseau est survenue. Veuillez réessayer.",
+  "serverError": "Erreur serveur",
+  "userCreatedButNotHashtags": "Utilisateur créé, mais les hashtags n'ont pas pu être enregistrés.",
 
   "__COMMENT_4": "CGU",
   "cgutitle": "Conditions Générales d'Utilisation (CGU)",

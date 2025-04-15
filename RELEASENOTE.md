@@ -4,6 +4,9 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 14/04/25 | @Emmanuel | Caractères accentués dans les codes postaux non gérés
+||| Adaptation suite à la nouvelle route pour l'ajout de tags dans le Register. Gestion des erreurs.
+||| Ajout dans Actions des 2 nouvelles routes pour l'ajout des hashtags
 | 11/04/25 | @Emmanuel | Mise en cache des fichiers de traduction
 ||| Réactivation du choix et de l'upload d'un avatar
 ||| Blocage du rayon de délimitation de recherche de jardins à 30km
