@@ -10,7 +10,7 @@ const ZoomSlider = ({ handleChange, className }: ZoomSliderProps) => {
       max="200"
       step="10"
       onChange={handleChange}
-      className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none ${className}`}
+      className={`bg-border h-2 cursor-cell appearance-none ${className}`}
     />
   );
 };

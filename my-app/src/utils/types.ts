@@ -133,6 +133,6 @@ export interface TodosProps {
 }
 
 export interface ZoomSliderProps {
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 }

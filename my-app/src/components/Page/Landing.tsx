@@ -1,11 +1,11 @@
 'use client';
-import Card from '../components/UI/Card';
+import Card from '../../components/Atom/Card';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import data from '../app//data/data';
-import Todo from '../components/UI/Todo';
+import data from '../../app/data/data';
+import Todo from '../../components/Molecule/Todo';
 import Link from 'next/link';
-import BentoCardHeader from '../components/UI/BentoCardHeader';
+import BentoCardHeader from '../../components/Molecule/BentoCardHeader';
 import Cookies from 'js-cookie';
 
 const Landing = () => {

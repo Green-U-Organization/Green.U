@@ -1,11 +1,12 @@
 'use client';
 import Image from 'next/image';
 import React, { FC } from 'react';
-import ZoomSlider from './ZoomSlider';
-import Button from './Button';
+import ZoomSlider from '../Atom/ZoomSlider';
+import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
 import { GardenCardHeaderProps } from '@/utils/types';
 import { useGardenList } from '../../app/hooks/useGardenList';
+import H1 from '../Atom/H1';
 
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   containerName,
@@ -71,9 +72,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
       <section
         className={`grid-rows-auto mt-3 grid auto-cols-auto items-center ${className}`}
       >
-        <h1 className="col-start-1 col-end-3 mt-2 ml-4 text-center text-4xl">
-          {containerName}
-        </h1>
+        <H1>{containerName}</H1>
 
         <div
           className="col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center"

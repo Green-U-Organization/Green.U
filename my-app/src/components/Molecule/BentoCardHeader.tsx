@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import React, { FC, PropsWithChildren } from 'react';
 import { BentoCardHeaderProps } from '@/utils/types';
+import H1 from '../Atom/H1';
 
 const BentoCardHeader: FC<PropsWithChildren<BentoCardHeaderProps>> = ({
   containerName,
@@ -15,7 +16,7 @@ const BentoCardHeader: FC<PropsWithChildren<BentoCardHeaderProps>> = ({
     <section
       className={`mx-2 mt-3 flex items-center justify-between ${className}`}
     >
-      <h1 className="mt-2 ml-4 text-4xl">{containerName}</h1>
+      <H1>{containerName}</H1>
       <p>{children}</p>
       <Link href={`/${pageLink}`}>
         <Image
