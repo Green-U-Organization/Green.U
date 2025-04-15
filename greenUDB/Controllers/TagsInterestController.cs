@@ -54,7 +54,7 @@ namespace GreenUApi.Controllers
             var user = await _db.Users.FindAsync(id);
             if (user == null)
             {
-                return NotFound("User not found");
+                return NotFound(new { message = "User not found" });
             }
 
             // Create all entities with Select and add all tags with AddRange()
@@ -154,6 +154,30 @@ namespace GreenUApi.Controllers
                 return BadRequest(new { message = "The tag with this garden is already exist" });
             }
 
+        }
+
+        [HttpPost("list/garden/{id}")]
+        public async Task<ActionResult<TagsInterest>> CreateGardenTagWithList(long id, [FromBody] HashtagContainer container)
+        {
+            var Garden = await _db.Gardens.FindAsync(id);
+            if (Garden == null)
+            {
+                return NotFound(new { message = "Garden not found" });
+            }
+
+            // Create all entities with Select and add all tags with AddRange()
+            // https://learn.microsoft.com/fr-fr/dotnet/api/system.collections.generic.list-1.addrange?view=net-8.0
+            var newTags = container.Hashtags.Select(tag => new TagsInterest
+            {
+                Hashtag = tag,
+                GardenId = id
+            }).ToList();
+
+            _db.TagsInterests.AddRange(newTags);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { message = "User tag list created !" });
         }
 
         [HttpGet("garden/{id}")]
