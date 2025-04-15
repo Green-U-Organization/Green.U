@@ -3,9 +3,9 @@
 
 import React, { useEffect, useState } from 'react';
 import data from '../data/data';
-import Button from '@/components/UI/Button';
-import Todo from '@/components/UI/Todo';
-import Card from '@/components/UI/Card';
+import Button from '@/components/Atom/Button';
+import Todo from '@/components/Molecule/Todo';
+import Card from '@/components/Atom/Card';
 import TodoPopUp from '@/components/UI/TodoPopUp';
 
 const page = () => {

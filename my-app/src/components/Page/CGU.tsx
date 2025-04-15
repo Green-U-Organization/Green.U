@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useLanguage } from '../../src/app/contexts/LanguageProvider';
-import Card from '@/components/UI/Card';
-import Button from '@/components/UI/Button';
+import { useLanguage } from '../../../src/app/contexts/LanguageProvider';
+import Card from '@/components/Atom/Card';
+import Button from '@/components/Atom/Button';
 
 const CGU = () => {
   const router = useRouter();

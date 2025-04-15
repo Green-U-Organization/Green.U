@@ -1,15 +1,15 @@
 'use client';
 import React, { useState } from 'react';
-import Card from './UI/Card';
-import TextInput from './UI/TextInput';
+import Card from '../Atom/Card';
+import TextInput from '../Atom/TextInput';
 // import MapComponent from './UI/MapComponent';
-import Button from './UI/Button';
-import SelectInput from './UI/SelectInput';
-import HashtagInput from './HashtagInput';
+import Button from '../Atom/Button';
+import SelectInput from '../Atom/SelectInput';
+import HashtagInput from '../HashtagInput';
 import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
 import { useRouter } from 'next/navigation';
-import LocationPicker from './UI/LocationPicker';
-import { useLanguage } from '../app/contexts/LanguageProvider';
+import LocationPicker from '../UI/LocationPicker';
+import { useLanguage } from '../../app/contexts/LanguageProvider';
 
 type gardenType = {
   authorId: number;

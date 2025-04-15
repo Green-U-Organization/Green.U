@@ -3,9 +3,9 @@
 
 import React, { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
-import Card from '@/components/UI/Card';
-import TextInput from '@/components/UI/TextInput';
-import Button from '@/components/UI/Button';
+import Card from '@/components/Atom/Card';
+import TextInput from '@/components/Atom/TextInput';
+import Button from '@/components/Atom/Button';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';

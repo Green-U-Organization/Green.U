@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import GardenCardHeader from './UI/GardenCardHeader';
-import Garden from './UI/Garden';
+import GardenCardHeader from '../Organism/GardenCardHeader';
+import Garden from '../Organism/Garden';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Icon from '../Atom/Icon';
 import ZoomSlider from '../Atom/ZoomSlider';
-import MenuIcon from './MenuIcon';
 
 interface MenuSandwichProps {
   iconList: {
