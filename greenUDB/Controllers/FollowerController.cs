@@ -90,19 +90,23 @@ namespace GreenUApi.Controllers
             return Ok(new { message = "The list of follower", content =  Follow });
         }
 
-        [HttpDelete("user")]
-        public async Task<ActionResult<Follower>> DeleteUserFollow(Follower follower)
+        [HttpDelete("user/{id}")]
+        public async Task<ActionResult<Follower>> DeleteUserFollow(long id, Follower follower)
         {
+            // I use FirstOrDefaultAsync because if id is incorrect this method return Null 
+            // https://learn.microsoft.com/en-us/dotnet/api/system.data.entity.queryableextensions.firstordefaultasync?view=entity-framework-6.2.0
             var followExist = await _db.Followers
-                .Where(f => f.UserId == follower.UserId && f.FollowerId == follower.FollowerId)
-                .FirstAsync();
+                .FirstOrDefaultAsync(f => f.UserId == id && f.FollowerId == follower.FollowerId);
 
             if (followExist == null)
             {
-                return BadRequest(new { message = "We have inccorect id" });
+                return BadRequest(new { message = "We have an inccorect id" });
             }
 
-            return Ok("Unfollow complete");
+            _db.Followers.Remove(followExist);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { message = "Unfollow complete !"});
         }
 
     }
