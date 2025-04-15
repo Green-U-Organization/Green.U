@@ -1,20 +1,20 @@
 'use client';
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
-import Card from '@/components/UI/Card';
-import TextInput from '@/components/UI/TextInput';
-import Button from '@/components/UI/Button';
-import SelectInput from './UI/SelectInput';
+import Card from '@/components/Atom/Card';
+import TextInput from '@/components/Atom/TextInput';
+import Button from '@/components/Atom/Button';
+import SelectInput from '@/components/Atom/SelectInput';
 import Calendar from 'react-calendar';
 import { CalendarProps } from 'react-calendar';
-import Radio from '@/components/UI/Radio';
+import Radio from '@/components/Atom/Radio';
 import DropDownPostalCode from '@/components/DropDownPostalCode';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
-import Checkbox from '@/components/UI/Checkbox';
+import Checkbox from '@/components/Atom/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { addUser } from '@/utils/actions/user/addUser';
+// import { addUser } from '@/utils/actions/user/addUser';
 type Value = CalendarProps['value'];
 
 type FormData = {
