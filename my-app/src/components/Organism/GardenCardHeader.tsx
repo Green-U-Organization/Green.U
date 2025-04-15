@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import React, { FC } from 'react';
-import ZoomSlider from '../Atom/ZoomSlider';
+
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
 import { GardenCardHeaderProps } from '@/utils/types';
@@ -11,7 +11,6 @@ import H1 from '../Atom/H1';
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   containerName,
   className,
-  onScaleChange,
   type,
 }) => {
   // const [selectedGarden, setSelectedGarden] = useState<Garden>();
@@ -30,11 +29,6 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   //#region FETCHING GARDEN DATA
 
   //#region HANDLER
-  const handleScaleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const scale = Number(e.target.value);
-    onScaleChange(scale);
-  };
-
   const handleGardenIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedGardenId = Number(e.target.value);
 
@@ -90,13 +84,6 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
           <Button onClick={() => router.push('/garden-manager/create')}>
             Create new Garden
           </Button>
-        </div>
-
-        <div className="col-start-1 col-end-2 row-start-4 row-end-5 flex justify-center">
-          <ZoomSlider
-            handleChange={handleScaleChange}
-            className=""
-          ></ZoomSlider>
         </div>
 
         <div

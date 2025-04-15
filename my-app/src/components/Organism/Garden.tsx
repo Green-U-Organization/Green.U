@@ -6,59 +6,50 @@ import { useParcelList } from '@/app/hooks/useParcelList';
 import MenuSandwich from '../Molecule/MenuSandwich';
 import Submenu from '../Molecule/Submenu';
 import NewParcelForm from '../Molecule/NewParcelForm';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { setFullscreen } from '../../redux/garden/gardenSlice';
+// import { useGardenList } from '../../app/hooks/useGardenList';
+import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
+  // Hooks
+  const dispatch = useDispatch();
+
+  // State
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
   const [gardenLock, setGardenLock] = useState<boolean>(true);
-  const [listDisplay, setListDisplay] = useState<boolean>(false);
+  // const [listDisplay, setListDisplay] = useState<boolean>(false);
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
   const { parcels, loading, error, isEmpty } = useParcelList(currentGarden.id);
 
+  // Selectors
+  const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
+
+  // Handlers
   const handleAdd = () => {
     console.log('Add garden');
     setAddSubmenu((prev) => !prev);
   };
 
   useEffect(() => {
-    console.log('addSubmenu updated:', addSubmenu); // S'exécute après la mise à jour de l'état
+    console.log('addSubmenu updated:', addSubmenu);
   }, [addSubmenu]);
 
+  //TODO:
   const handleEditGarden = () => {
     console.log('Edit Garden');
   };
+  //TODO:
   const handleDisplayMode = () => {
     console.log('display');
   };
+  const handleAddParcel = () => {
+    console.log('first');
+  };
 
   const handleFullscreenSwitch = () => {
-    console.log('fullScreen');
-  };
-
-  const handleAddParcel = () => {
-    console.log('add Parcel');
-  };
-
-  const handleLockGarden = () => {
-    console.log('lockgarden');
-    setGardenLock((prev) => {
-      const newLockState = !prev;
-
-      const newIconList = iconList.map((icon) => {
-        if (icon.alt === 'lock or unlock garden edition') {
-          return {
-            ...icon,
-            src: newLockState
-              ? '/image/icons/lockClose.png'
-              : '/image/icons/lockOpen.png',
-          };
-        }
-        return icon;
-      });
-
-      setIconList(newIconList);
-      console.log('gardenLock : ', newLockState);
-      return newLockState;
-    });
+    dispatch(setFullscreen(!fullscreen));
   };
 
   const addSubmenuIcon = [
@@ -74,7 +65,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
       alt: 'Add greenhouse',
       handleClick: handleAddParcel,
       displayCondition: true,
-      form: <div>Greenhouse Form</div>,
+      form: <NewGreenhouseForm displayCondition={true} />,
     },
     {
       src: '/image/icons/nursery.png',
@@ -92,17 +83,13 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     },
   ];
 
-  const [iconList, setIconList] = useState([
+  const iconList = [
     {
       src: '/image/icons/add.png',
       alt: 'Add Parcel',
       handleClick: handleAdd,
       submenu: (
-        <Submenu
-          displayCondition={addSubmenu}
-          iconList={addSubmenuIcon}
-          children={undefined}
-        />
+        <Submenu displayCondition={addSubmenu} iconList={addSubmenuIcon} />
       ),
     },
     {
@@ -121,11 +108,13 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
       handleClick: handleFullscreenSwitch,
     },
     {
-      src: '/image/icons/lockClose.png',
+      src: gardenLock
+        ? '/image/icons/lockClose.png'
+        : '/image/icons/lockOpen.png',
       alt: 'lock or unlock garden edition',
-      handleClick: handleLockGarden,
+      handleClick: () => setGardenLock((prev) => !prev),
     },
-  ]);
+  ];
 
   // Calcul des dimensions du jardin
   const gardenX = currentGarden?.length;
@@ -144,15 +133,6 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   if (isEmpty) {
     return <div>Oups, no parcel find...</div>;
   }
-
-  const handleListDisplay = () => {
-    setListDisplay((prev) => !prev);
-  };
-
-  const handleGardenLock = () => {
-    setGardenLock((prev) => !prev);
-  };
-
   return (
     <section className="mb-10 ml-10 flex flex-col">
       <MenuSandwich iconList={iconList}>

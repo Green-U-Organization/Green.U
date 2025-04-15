@@ -68,7 +68,7 @@ export interface GardenCardHeaderProps {
   className?: string;
   children?: React.ReactNode;
   onGardenIdChange?: (selectedGarden: Garden) => void;
-  onScaleChange: (scale: number) => void;
+
   type: 'display' | 'edit';
 }
 
@@ -134,5 +134,6 @@ export interface TodosProps {
 
 export interface ZoomSliderProps {
   handleChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  scale: number;
   className?: string;
 }

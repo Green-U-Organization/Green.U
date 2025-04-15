@@ -7,6 +7,8 @@ interface GardenState {
   selectedGarden: Garden | null;
   loading: boolean;
   error: string | null;
+  scale: number;
+  fullscreen: boolean;
 }
 
 const initialState: GardenState = {
@@ -14,6 +16,8 @@ const initialState: GardenState = {
   selectedGarden: null,
   loading: false,
   error: null,
+  scale: 10,
+  fullscreen: false,
 };
 
 export const getGardenByUserIdFct = createAsyncThunk(
@@ -38,6 +42,12 @@ const gardenSlice = createSlice({
     clearSelectedGarden: (state) => {
       state.selectedGarden = null;
     },
+    setScale: (state, action: PayloadAction<number>) => {
+      state.scale = action.payload;
+    },
+    setFullscreen: (state, action: PayloadAction<boolean>) => {
+      state.fullscreen = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -59,5 +69,10 @@ const gardenSlice = createSlice({
   },
 });
 
-export const { setSelectedGarden, clearSelectedGarden } = gardenSlice.actions;
+export const {
+  setSelectedGarden,
+  clearSelectedGarden,
+  setScale,
+  setFullscreen,
+} = gardenSlice.actions;
 export default gardenSlice.reducer;

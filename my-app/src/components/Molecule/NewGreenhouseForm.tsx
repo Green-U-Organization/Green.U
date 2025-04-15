@@ -3,7 +3,7 @@ import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
 import H2 from '../Atom/H2';
 
-const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
+const NewGreenhouseForm: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
 }) => {
   if (!displayCondition) return null;
@@ -14,7 +14,7 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
 
   return (
     <div className="bg-gardenBG flex h-[80vw] w-[60vw] flex-col items-center justify-between rounded-xl border-2 p-4">
-      <H2>Add parcel</H2>
+      <H2>Add Greenhouse</H2>
       <form className="flex flex-col items-center">
         <TextInput label="Length"></TextInput>
 
@@ -26,4 +26,4 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   );
 };
 
-export default NewParcelForm;
+export default NewGreenhouseForm;

@@ -2,38 +2,38 @@
 
 import Card from '@/components/Atom/Card';
 import Garden from '@/components/Organism/Garden';
-import React, { useState } from 'react';
+import React from 'react';
 import GardenCardHeader from '@/components/Organism/GardenCardHeader';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store'; // Assurez-vous que le chemin vers votre store est correct
+import { RootState } from '@/redux/store';
 
 // import Draggable from 'react-draggable';
 
 const GardenDisplay = () => {
-  // const [currentGardenId, setCurrentGardenId] = useState<number>(1);
-  const [currentScale, setCurrentScale] = useState<number>(125);
-
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
-
-  const handleScaleChange = (scale: number) => {
-    setCurrentScale(scale);
-  };
+  const scale = useSelector((state: RootState) => state.garden.scale);
+  const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
 
   return (
-    <section className="flex items-center justify-center">
-      <Card className="overflow-auto overflow-x-auto overflow-y-auto">
-        <GardenCardHeader
-          containerName={'Garden Manager'}
-          className="flex flex-col items-center p-5"
-          onScaleChange={handleScaleChange}
-          type="display"
-        />
+    <section className="flex min-h-screen items-center justify-center">
+      <Card className="min-h-screen overflow-auto">
+        <div
+          style={{
+            display: fullscreen ? 'none' : 'block',
+          }}
+        >
+          <GardenCardHeader
+            containerName={'Garden Manager'}
+            className="flex flex-col items-center p-5"
+            type="display"
+          />
+        </div>
 
-        <div className="max-w-full overflow-x-auto">
+        <div className="mt-[5vw] max-w-full overflow-x-auto">
           {currentGarden && (
-            <Garden garden={currentGarden} scale={currentScale}></Garden>
+            <Garden garden={currentGarden} scale={scale}></Garden>
           )}
         </div>
       </Card>

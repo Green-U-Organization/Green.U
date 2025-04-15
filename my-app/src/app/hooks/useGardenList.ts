@@ -1,15 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getGardenByUserIdFct } from '../../redux/garden/gardenSlice';
 import { RootState, store } from '../../redux/store';
 import { useCallback, useEffect } from 'react';
 import { Garden } from '@/utils/types';
-import { setSelectedGarden } from '../../redux/garden/gardenSlice';
+import {
+  setSelectedGarden,
+  setFullscreen,
+  setScale,
+  getGardenByUserIdFct,
+} from '../../redux/garden/gardenSlice';
 
 export const useGardenList = (userId: number) => {
   const dispatch = useDispatch<typeof store.dispatch>();
-  const { gardens, loading, error, selectedGarden } = useSelector(
-    (state: RootState) => state.garden
-  );
+  const { gardens, loading, error, selectedGarden, scale, fullscreen } =
+    useSelector((state: RootState) => state.garden);
 
   useEffect(() => {
     dispatch(getGardenByUserIdFct(userId));
@@ -22,6 +25,20 @@ export const useGardenList = (userId: number) => {
     [dispatch]
   );
 
+  const updateScale = useCallback(
+    (scale: number) => {
+      dispatch(setScale(scale));
+    },
+    [dispatch]
+  );
+
+  const updateFullscreen = useCallback(
+    (fullscreen: boolean) => {
+      dispatch(setFullscreen(fullscreen));
+    },
+    [dispatch]
+  );
+
   return {
     gardens,
     loading,
@@ -29,5 +46,9 @@ export const useGardenList = (userId: number) => {
     selectedGarden,
     setSelectedGarden: updateSelectedGarden,
     isEmpty: gardens.length === 0 && !loading,
+    scale,
+    setScale: updateScale,
+    updateFullscreen,
+    fullscreen,
   };
 };
