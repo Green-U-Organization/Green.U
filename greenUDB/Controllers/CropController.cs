@@ -15,7 +15,7 @@ namespace GreenUApi.Controllers
 
         public long? PlantNurseryId { get; set; }
 
-        public string Vegetable { get; set; } = null!;
+        public string Vegetable { get; set; } = "no Vege";
 
         public string? Variety { get; set; }
 
@@ -171,11 +171,11 @@ namespace GreenUApi.Controllers
         /// </remarks>
         
         [HttpPost]
-        public async Task<ActionResult<Crop>> PostCrop(Crop crop)
+        public async Task<ActionResult<Crop>> PostCrop([FromBody] Crop crop)
         {
-            if (crop.LineId.GetValueOrDefault(0) == 0 || crop.PlantNurseryId.GetValueOrDefault(0) == 0)
+            if (!crop.LineId.HasValue && !crop.PlantNurseryId.HasValue)
             {
-                return BadRequest(new { message = "No id for line or plantNursery" });
+                return BadRequest(new { message = "No id for line or plantNursery"});
             }
 
             if (crop.LineId.GetValueOrDefault(0) != 0)
@@ -184,7 +184,6 @@ namespace GreenUApi.Controllers
                     .FindAsync(crop.LineId);
 
                 if (ExistingLine == null) return BadRequest(new { message = "Line id is incorrect" });
-
             }
 
             if (crop.PlantNurseryId.GetValueOrDefault(0) != 0)
@@ -193,7 +192,6 @@ namespace GreenUApi.Controllers
                     .FindAsync(crop.PlantNurseryId);
                 if (ExistingPlantNursery == null) return BadRequest(new { message = "PlantNursery id is bad" });
             }
-
 
             _context.Crops.Add(crop);
                 await _context.SaveChangesAsync();
