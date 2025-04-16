@@ -171,7 +171,7 @@ namespace GreenUApi.Controllers
         /// </remarks>
         
         [HttpPost]
-        public async Task<ActionResult<Crop>> PostCrop(CropDto crop)
+        public async Task<ActionResult<Crop>> PostCrop(Crop crop)
         {
             try{
                 var newCrop = new Crop
