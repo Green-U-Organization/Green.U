@@ -7,14 +7,24 @@ import { LineProps } from '@/utils/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
+import { deleteOneLineByLineId } from '@/utils/actions/garden/parcel/line/deleteOneLineByLineId';
+import Confirmation from '../Molecule/Confirmation';
 
-const Line: FC<LineProps> = ({ lineX, scale, lineKey }) => {
+const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);
   const [displayLineInfo, setDisplayLineInfo] = useState<boolean>(false);
+  const [displayDeletingLinePopup, setDisplayDeletingLinePopup] =
+    useState<boolean>(false);
 
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
+
+  const deletingLine = () => {
+    console.log(line.id);
+    deleteOneLineByLineId(line.id);
+    setDisplayDeletingLinePopup(false);
+  };
 
   const cropIcon: { [key: string]: string } = {
     asperge: styles.cropAsperge,
@@ -92,7 +102,7 @@ const Line: FC<LineProps> = ({ lineX, scale, lineKey }) => {
       <div
         className={`relative z-0`}
         style={{
-          width: lineX * scale,
+          width: line.length * scale,
           height: (2 * scale) / 100,
           display: graphicMode ? 'block' : 'none',
         }}
@@ -104,7 +114,7 @@ const Line: FC<LineProps> = ({ lineX, scale, lineKey }) => {
         <div
           // className={`${cropIcon[selectedCrop]} absolute bottom-0 z-10`} // z-10 pour l'image
           style={{
-            width: lineX * scale,
+            width: line.length * scale,
             height: 0.2 * scale,
           }}
         ></div>
@@ -158,9 +168,21 @@ const Line: FC<LineProps> = ({ lineX, scale, lineKey }) => {
               className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
               src="/image/icons/trash.png"
               alt="Delete line"
+              onClick={() => setDisplayDeletingLinePopup(true)}
             />
           </div>
         </div>
+      </div>
+      <div
+        style={{
+          display: displayDeletingLinePopup ? 'block' : 'none',
+        }}
+      >
+        <Confirmation
+          element={'line'}
+          handleYesClick={deletingLine}
+          handleNoClick={() => setDisplayDeletingLinePopup(false)}
+        />
       </div>
     </>
   );

@@ -73,7 +73,7 @@ export interface GardenCardHeaderProps {
 }
 
 export interface LineProps {
-  lineX: number;
+  line: Line;
   scale: number;
   lineKey: number;
 }

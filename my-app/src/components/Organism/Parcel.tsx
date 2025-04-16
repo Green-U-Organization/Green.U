@@ -174,7 +174,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                   display: displayParcelInfo ? 'block' : 'none',
                 }}
               >
-                <Line lineKey={index} lineX={line.length} scale={scale} />
+                <Line lineKey={index} line={line} scale={scale} />
               </div>
             ))}
           </div>
