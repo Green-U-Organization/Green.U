@@ -23,7 +23,7 @@ namespace GreenUApi.Controllers
 
             if (followerData.FollowerId == 0)
             {
-                return NotFound(new { message = "Follower id is missed"});
+                return NotFound(new { message = "Follower id is missed" });
             }
 
             var User = await _db.Users.FindAsync(id);
@@ -38,13 +38,13 @@ namespace GreenUApi.Controllers
             {
                 return NotFound(new { message = "Follow id user not found" });
             }
-            
+
             bool followExists = await _db.Followers
                 .AnyAsync(f => f.UserId == id && f.FollowerId == followerData.FollowerId);
 
             if (followExists)
             {
-                return BadRequest(new { message = "This follow row is already exist"});
+                return BadRequest(new { message = "This follow row is already exist" });
             }
 
             followerData.UserId = id;
@@ -52,7 +52,7 @@ namespace GreenUApi.Controllers
             _db.Followers.Add(followerData);
             await _db.SaveChangesAsync();
 
-            return Ok(new { message = "Follow complete !"});
+            return Ok(new { message = "Follow complete !" });
         }
 
         [HttpGet("user/{id}")]
@@ -63,36 +63,37 @@ namespace GreenUApi.Controllers
 
             if (User == null)
             {
-                return BadRequest(new { message = "The user id doesn't exist"});
+                return BadRequest(new { message = "The user id doesn't exist" });
             }
 
-             var Follow = await _db.Followers
-                    .Where(f => f.UserId == id)
-                    .Join(
-                _db.Users,
-                follower => follower.FollowerId,
-                user => user.Id,
-                (follower, user) => new
-                {
-                    follower.FollowerId,
-                    user.Username,
-                }
-                )
-                    .ToListAsync();
+            var Follow = await _db.Followers
+                   .Where(f => f.UserId == id)
+                   .Join(
+               _db.Users,
+               follower => follower.FollowerId,
+               user => user.Id,
+               (follower, user) => new
+               {
+                   follower.FollowerId,
+                   user.Username,
+               }
+               )
+                   .ToListAsync();
 
             if (Follow.Count == 0)
             {
                 return NotFound(new { message = "This user didn't have follower" });
             }
 
-            
 
-            return Ok(new { message = "The list of follower", content =  Follow });
+
+            return Ok(new { message = "The list of follower", content = Follow });
         }
 
         [HttpDelete("user/{id}")]
         public async Task<ActionResult<Follower>> DeleteUserFollow(long id, Follower follower)
         {
+
             // I use FirstOrDefaultAsync because if id is incorrect this method return Null 
             // https://learn.microsoft.com/en-us/dotnet/api/system.data.entity.queryableextensions.firstordefaultasync?view=entity-framework-6.2.0
             var followExist = await _db.Followers
@@ -107,6 +108,100 @@ namespace GreenUApi.Controllers
             await _db.SaveChangesAsync();
 
             return Ok(new { message = "Unfollow complete !"});
+        }
+
+
+        [HttpPost("garden/{id}")]
+        public async Task<ActionResult<Follower>> FollowAGarden(long id, Follower followerData)
+        {
+
+            if (followerData.FollowerId == 0)
+            {
+                return NotFound(new { message = "Follower id is missed" });
+            }
+
+            var Garden = await _db.Gardens.FindAsync(id);
+            var CheckFollowerId = await _db.Users.FindAsync(followerData.FollowerId);
+
+            if (Garden == null)
+            {
+                return NotFound(new { message = "Garden not found" });
+            }
+
+            if (CheckFollowerId == null)
+            {
+                return NotFound(new { message = "Follow id user not found" });
+            }
+
+            bool followExists = await _db.Followers
+                .AnyAsync(f => f.GardenId == id && f.FollowerId == followerData.FollowerId);
+
+            if (followExists)
+            {
+                return BadRequest(new { message = "This follow row is already exist" });
+            }
+
+            followerData.GardenId = id;
+
+            _db.Followers.Add(followerData);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { message = "Garden Follow complete !" });
+        }
+
+        [HttpGet("garden/{id}")]
+        public async Task<ActionResult<Follower>> GetFollowerGarden(long id)
+        {
+
+            var Garden = await _db.Gardens.FindAsync(id);
+
+            if (Garden == null)
+            {
+                return BadRequest(new { message = "The garden id doesn't exist" });
+            }
+
+            var Follow = await _db.Followers
+                   .Where(f => f.GardenId == id)
+                   .Join(
+               _db.Users,
+               follower => follower.FollowerId,
+               user => user.Id,
+               (follower, user) => new
+               {
+                   follower.FollowerId,
+                   user.Username,
+               }
+               )
+                   .ToListAsync();
+
+            if (Follow.Count == 0)
+            {
+                return NotFound(new { message = "This garden didn't have follower" });
+            }
+
+
+
+            return Ok(new { message = "The list of garden follower", content = Follow });
+        }
+
+        [HttpDelete("garden/{id}")]
+        public async Task<ActionResult<Follower>> DeleteGardenFollow(long id, Follower follower)
+        {
+
+            // I use FirstOrDefaultAsync because if id is incorrect this method return Null 
+            // https://learn.microsoft.com/en-us/dotnet/api/system.data.entity.queryableextensions.firstordefaultasync?view=entity-framework-6.2.0
+            var followExist = await _db.Followers
+                .FirstOrDefaultAsync(f => f.GardenId == id && f.FollowerId == follower.FollowerId);
+
+            if (followExist == null)
+            {
+                return BadRequest(new { message = "We have an inccorect id" });
+            }
+
+            _db.Followers.Remove(followExist);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { message = "Garden Unfollow complete !" });
         }
 
     }
