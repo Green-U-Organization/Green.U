@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Icon from '../Atom/Icon';
 import ZoomSlider from '../Atom/ZoomSlider';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 interface MenuSandwichProps {
   iconList: {
@@ -16,6 +18,11 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
   const [clickMenuDisplay, setClickMenuDisplay] = useState<boolean>(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
+  //Selectors
+  const graphicMode = useSelector(
+    (state: RootState) => state.garden.graphicMode
+  );
+
   const handleClickMenu = () => {
     setClickMenuDisplay((prev) => !prev);
     setActiveSubmenu(null);
@@ -28,7 +35,7 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
 
   return (
     <section
-      className="_MENU_SANDWICH_ bg-gardenBG relative flex flex-row-reverse items-center rounded-b-xl border-2"
+      className="_MENU_SANDWICH_ bg-cardbackground relative flex flex-row-reverse items-center rounded-b-xl border-2"
       style={{
         height: '10vw',
         width: clickMenuDisplay ? '100vw' : '10vw',
@@ -39,10 +46,13 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
       }}
     >
       <div className="absolute -top-45 left-25">{children}</div>
-      <div className="bg-gardenBG absolute -top-[49.9vw] -right-0.5 flex h-[50vW] w-[10vw] flex-col items-center justify-between rounded-t-xl border-2 border-b-0">
-        <p>+</p>
-        <ZoomSlider className="z-50 -rotate-90" />
-        <p>-</p>
+      <div
+        className="bg-cardbackground absolute -top-[49.9vw] -right-0.5 flex h-[50vW] w-[10vw] flex-col items-center justify-between rounded-t-xl border-2 border-b-0"
+        style={{
+          display: graphicMode ? 'flex' : 'none',
+        }}
+      >
+        <ZoomSlider className="z-50 -rotate-90" scale={0} />
       </div>
       <Image
         className="h-[9vw] w-[9vw] rounded-md p-1"

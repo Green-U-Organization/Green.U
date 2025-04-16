@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 export const useLineList = (parcelId: number) => {
   const dispatch = useDispatch<typeof store.dispatch>();
-  const { lines, loading, error } = useSelector(
+  const { linesByParcelId, loading, error } = useSelector(
     (state: RootState) => state.line
   );
 
@@ -14,9 +14,9 @@ export const useLineList = (parcelId: number) => {
   }, [dispatch, parcelId]);
 
   return {
-    lines,
+    lines: linesByParcelId[parcelId] || [],
     loading,
     error,
-    isEmpty: lines.length === 0 && !loading,
+    isEmpty: !linesByParcelId[parcelId]?.length && !loading,
   };
 };

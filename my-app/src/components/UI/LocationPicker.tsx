@@ -11,8 +11,8 @@ import {
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import TextInput from './TextInput';
-import Button from './Button';
+import TextInput from '../Atom/TextInput';
+import Button from '../Atom/Button';
 import { LocationPickerProps } from '@/utils/types';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 

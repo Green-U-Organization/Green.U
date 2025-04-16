@@ -3,13 +3,13 @@ import { Line } from '@/utils/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface LineState {
-  lines: Line[];
+  linesByParcelId: Record<number, Line[]>;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: LineState = {
-  lines: [],
+  linesByParcelId: {},
   loading: false,
   error: null,
 };
@@ -19,7 +19,7 @@ export const getLinesByParcelIdFct = createAsyncThunk(
   async (parcelId: number, { rejectWithValue }) => {
     try {
       const lines = await getAllLinesByParcelId(parcelId);
-      return lines;
+      return { parcelId, lines };
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -38,9 +38,9 @@ const lineSlice = createSlice({
       })
       .addCase(
         getLinesByParcelIdFct.fulfilled,
-        (state, action: PayloadAction<Line[]>) => {
+        (state, action: PayloadAction<{ parcelId: number; lines: Line[] }>) => {
           state.loading = false;
-          state.lines = action.payload;
+          state.linesByParcelId[action.payload.parcelId] = action.payload.lines;
         }
       )
       .addCase(getLinesByParcelIdFct.rejected, (state, action) => {

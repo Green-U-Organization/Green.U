@@ -27,13 +27,13 @@ const Submenu: React.FC<SubmenuProps> = ({ iconList, children }) => {
 
   return (
     <section
-      className="_SUBMENU_SANDWICH_ bg-gardenBG absolute -top-0.5 -left-0.5 flex flex-col-reverse items-center justify-center rounded-t-xl border-2 border-b-0"
+      className="_SUBMENU_SANDWICH_ bg-cardbackground absolute -top-0.5 -left-0.5 flex flex-col-reverse items-center justify-center rounded-t-xl border-2 border-b-0"
       style={{
         height: '50vw',
         width: '10vw',
       }}
     >
-      <div className="flex h-[40vw] flex-col items-center justify-between">
+      <div className="relative flex h-[40vw] flex-col items-center justify-between">
         {iconList.map((icon, index) => (
           <div key={index} className="relative">
             <Icon
@@ -44,7 +44,13 @@ const Submenu: React.FC<SubmenuProps> = ({ iconList, children }) => {
               }}
             />
             {activeForm === icon.alt && (
-              <div className="absolute -top-[40vw] left-[8vw] ml-2">
+              <div
+                className="absolute"
+                style={{
+                  bottom: `${index + 1 * -10}vw`,
+                  left: '11vw',
+                }}
+              >
                 {icon.form}
               </div>
             )}

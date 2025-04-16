@@ -75,6 +75,7 @@ export interface GardenCardHeaderProps {
 export interface LineProps {
   lineX: number;
   scale: number;
+  lineKey: number;
 }
 
 export interface LocationPickerProps {
@@ -90,6 +91,7 @@ export interface LocationPickerProps {
 export interface ParcelProps {
   parcel: Parcel;
   scale: number;
+  parcelKey: number;
 }
 
 export interface Line {

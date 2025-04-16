@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Button from '../Atom/Button';
 import H2 from '../Atom/H2';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
+import { createNewParcel } from '@/utils/actions/garden/parcel/createNewParcel';
+import { setReload } from '@/redux/garden/gardenSlice';
+import { useRouter } from 'next/navigation';
 
 const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
@@ -13,9 +15,12 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   const actualGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
+  const router = useRouter();
+  const dispatch = useDispatch();
   if (!displayCondition) return null;
 
-  const handleSubmit = () => {
+  let reload = useSelector((state: RootState) => state.garden.reload);
+  const handleSubmit = async () => {
     const newParcel = {
       gardenId: actualGarden?.id,
       length: length,
@@ -25,7 +30,10 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
     };
 
     console.log(newParcel);
-    createNewGarden(newParcel);
+    await createNewParcel(newParcel);
+    console.log(reload);
+    // router.push('./garden-manager');
+    dispatch(setReload()); //FIXME: rerender de la page garden pour que le jardin soit mis a jour en direct
   };
 
   const handleLengthChange = (e: { target: { value: string } }) => {
@@ -40,7 +48,7 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   };
 
   return (
-    <div className="bg-gardenBG flex h-[auto] w-[60vw] flex-col items-center justify-between rounded-xl border-2 p-4">
+    <div className="bg-cardbackground flex h-[auto] w-[60vw] flex-col items-center justify-between rounded-xl border-2 p-4">
       <H2>Add parcel</H2>
       <form className="flex flex-col items-center">
         {/* <TextInput label="Length"></TextInput> */}

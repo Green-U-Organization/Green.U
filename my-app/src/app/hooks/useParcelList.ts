@@ -3,7 +3,7 @@ import { getParcelByGardenIdFct } from '@/redux/parcel/parcelSlice';
 import { RootState, store } from '../../redux/store';
 import { useEffect } from 'react';
 
-export const useParcelList = (gardenId: number) => {
+export const useParcelList = (gardenId: number, reload: boolean) => {
   const dispatch = useDispatch<typeof store.dispatch>();
   const { parcels, loading, error } = useSelector(
     (state: RootState) => state.parcel

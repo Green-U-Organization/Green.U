@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import React, { FC } from 'react';
 
 import Button from '../Atom/Button';
@@ -55,62 +54,22 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
     return <div>Loading...</div>;
   }
   if (error) {
-    return <div>Error : {error}</div>;
+    console.log('Error : ', { error });
   }
   if (isEmpty) {
-    return <div>Oups, no garden find...</div>;
+    console.log('Oups, no garden find...');
   }
 
   return (
     <>
       <section
-        className={`grid-rows-auto mt-3 grid auto-cols-auto items-center ${className}`}
+        className={`flex flex-col items-center justify-start ${className}`}
       >
-        <H1>{containerName}</H1>
-
-        <div
-          className="col-start-1 col-end-2 row-start-2 row-end-3 flex justify-center"
-          style={{ display: type === 'display' ? 'flex' : 'none' }}
-        >
-          <Button onClick={() => router.push('/garden-manager/edit')}>
-            Edit actual Garden
-          </Button>
-        </div>
-
-        <div
-          className="col-start-2 col-end-3 row-start-2 row-end-3 flex justify-center"
-          style={{ display: type === 'display' ? 'flex' : 'none' }}
-        >
+        <div className="flex items-center justify-center">
+          <H1>{containerName}</H1>
           <Button onClick={() => router.push('/garden-manager/create')}>
-            Create new Garden
+            +
           </Button>
-        </div>
-
-        <div
-          className="col-start-2 col-end-3 row-start-4 row-end-5 mr-2 flex justify-around"
-          style={{ display: type === 'edit' ? 'block' : 'none' }}
-        >
-          <Image
-            className="h-8 w-8 rounded-md border-1 border-black object-contain p-1"
-            src="/image/icons/list.png"
-            alt="expand"
-            width={20}
-            height={20}
-          />
-          <Image
-            className="h-8 w-8 rounded-md border-1 border-black object-contain p-1"
-            src="/image/icons/fence.png"
-            alt="expand"
-            width={20}
-            height={20}
-          />
-          <Image
-            className="h-8 w-8 rounded-md border-1 border-black object-contain p-1"
-            src="/image/icons/edit.png"
-            alt="expand"
-            width={20}
-            height={20}
-          />
         </div>
 
         <div
@@ -134,7 +93,9 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
                 </option>
               ))}
           </select>
-          <h2>{gardenDescription ?? 'No garden selected'}</h2>
+          <p className="text-lg italic">
+            {gardenDescription ?? 'No garden selected'}
+          </p>
         </div>
       </section>
     </>

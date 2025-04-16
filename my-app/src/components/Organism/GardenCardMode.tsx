@@ -9,35 +9,27 @@ import Submenu from '../Molecule/Submenu';
 import NewParcelForm from '../Molecule/NewParcelForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
-import {
-  setFullscreen,
-  setGraphicMode,
-  setReload,
-} from '../../redux/garden/gardenSlice';
+import { setFullscreen, setReload } from '../../redux/garden/gardenSlice';
 // import { useGardenList } from '../../app/hooks/useGardenList';
 import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
 
-const Garden: FC<GardenProps> = ({ garden, scale }) => {
+const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks
   const dispatch = useDispatch();
-
-  //Selectors
   const reload = useSelector((state: RootState) => state.garden.reload);
-  const graphicMode = useSelector(
-    (state: RootState) => state.garden.graphicMode
-  );
-  const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
 
   // State
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
   const [gardenLock, setGardenLock] = useState<boolean>(true);
-
   // const [listDisplay, setListDisplay] = useState<boolean>(false);
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
   const { parcels, loading, error, isEmpty } = useParcelList(
     currentGarden.id,
     reload
   );
+
+  // Selectors
+  const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
 
   // Handlers
   const handleAdd = () => {
@@ -62,7 +54,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   };
   //TODO:
   const handleDisplayMode = () => {
-    dispatch(setGraphicMode());
+    console.log('display');
   };
   const handleAddParcel = () => {
     console.log('first');
@@ -118,7 +110,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
       handleClick: handleEditGarden,
     },
     {
-      src: !graphicMode ? '/image/icons/fence.png' : '/image/icons/list.png',
+      src: '/image/icons/fence.png',
       alt: 'switch Garden display mode',
       handleClick: handleDisplayMode,
     },
@@ -160,63 +152,57 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
       </MenuSandwich>
 
       <section
-        className={`_GARDEN_ ${graphicMode ? 'bg-gardenBG' : 'bg-cardbackground'} relative rounded-xl`}
+        className="_GARDEN_ bg-gardenBG relative rounded-xl"
         style={{
-          height: graphicMode ? gardenX * scale : '100vh',
-          width: graphicMode ? gardenY * scale : '100vw',
+          height: gardenX * scale,
+          width: gardenY * scale,
         }}
       >
+        {/* GRASS */}
         <div
+          className={`absolute top-0 ${styles.grassBG} z-0 rounded-xl`}
           style={{
-            display: graphicMode ? 'block' : 'none',
+            height: gardenX * scale,
+            width: gardenY * scale,
           }}
-        >
-          {/* GRASS */}
-          <div
-            className={`absolute top-0 ${styles.grassBG} z-0 rounded-xl`}
-            style={{
-              height: gardenX * scale,
-              width: gardenY * scale,
-            }}
-          ></div>
+        ></div>
 
-          {/* TOP Fence */}
-          <div
-            className={`absolute top-0 ${styles.gardenHorizontalFence} z-20 rounded-xl`}
-            style={{
-              height: 0.3 * scale,
-              width: gardenY * scale,
-            }}
-          ></div>
-          {/* BOTTOM Fence */}
-          <div
-            className={`absolute bottom-0 ${styles.gardenHorizontalFence} z-20 rounded-xl`}
-            style={{
-              height: 0.3 * scale,
-              width: gardenY * scale,
-            }}
-          ></div>
-          {/* LEFT Fence */}
-          <div
-            className={`absolute top-0 left-0 ${styles.gardenVerticalFence} z-20 rounded-xl`}
-            style={{
-              height: gardenX * scale,
-              width: 0.2 * scale,
-            }}
-          ></div>
-          {/* RIGHT Fence */}
-          <div
-            className={`absolute top-0 right-0 ${styles.gardenVerticalFence} z-20 rounded-xl`}
-            style={{
-              height: gardenX * scale,
-              width: 0.2 * scale,
-            }}
-          ></div>
-        </div>
+        {/* TOP Fence */}
+        <div
+          className={`absolute top-0 ${styles.gardenHorizontalFence} z-20 rounded-xl`}
+          style={{
+            height: 0.3 * scale,
+            width: gardenY * scale,
+          }}
+        ></div>
+        {/* BOTTOM Fence */}
+        <div
+          className={`absolute bottom-0 ${styles.gardenHorizontalFence} z-20 rounded-xl`}
+          style={{
+            height: 0.3 * scale,
+            width: gardenY * scale,
+          }}
+        ></div>
+        {/* LEFT Fence */}
+        <div
+          className={`absolute top-0 left-0 ${styles.gardenVerticalFence} z-20 rounded-xl`}
+          style={{
+            height: gardenX * scale,
+            width: 0.2 * scale,
+          }}
+        ></div>
+        {/* RIGHT Fence */}
+        <div
+          className={`absolute top-0 right-0 ${styles.gardenVerticalFence} z-20 rounded-xl`}
+          style={{
+            height: gardenX * scale,
+            width: 0.2 * scale,
+          }}
+        ></div>
 
-        {parcels?.map((parcel, index) => (
+        {parcels?.map((parcel) => (
           <div className="relative z-10" key={parcel.id}>
-            <Parcel parcelKey={index + 1} parcel={parcel} scale={scale} />
+            <Parcel parcel={parcel} scale={scale} />
           </div>
         ))}
       </section>
@@ -224,4 +210,4 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   );
 };
 
-export default Garden;
+export default GardenCardMode;

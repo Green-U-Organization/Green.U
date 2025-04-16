@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
-import Card from './Card';
-import TextInput from './TextInput';
-import Button from './Button';
+import Card from '../Atom/Card';
+import TextInput from '../Atom/TextInput';
+import Button from '../Atom/Button';
 
 const TodoPopUp = () => {
   const [content, setContent] = useState<string>('');

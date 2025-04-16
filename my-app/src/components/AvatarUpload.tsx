@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import FileUpload from './UI/FileUpload';
+import FileUpload from './Molecule/FileUpload';
 import { useLanguage } from '../app/contexts/LanguageProvider';
-import Button from './UI/Button';
+import Button from './Atom/Button';
 import Image from 'next/image';
 
 export default function AvatarUpload() {

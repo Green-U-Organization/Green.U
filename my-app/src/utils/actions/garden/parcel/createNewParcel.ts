@@ -7,7 +7,7 @@ type parcelType = {
   parcel_angle: number;
 };
 
-export const createNewGarden = async (
+export const createNewParcel = async (
   parcel: parcelType
 ): Promise<parcelType> => {
   try {

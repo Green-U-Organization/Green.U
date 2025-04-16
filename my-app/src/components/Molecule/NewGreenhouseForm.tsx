@@ -13,7 +13,7 @@ const NewGreenhouseForm: React.FC<{ displayCondition: boolean }> = ({
   };
 
   return (
-    <div className="bg-gardenBG flex h-[80vw] w-[60vw] flex-col items-center justify-between rounded-xl border-2 p-4">
+    <div className="bg-cardbackground flex h-[80vw] w-[60vw] flex-col items-center justify-between rounded-xl border-2 p-4">
       <H2>Add Greenhouse</H2>
       <form className="flex flex-col items-center">
         <TextInput label="Length"></TextInput>

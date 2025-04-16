@@ -13,15 +13,19 @@ const ZoomSlider = ({ className }: ZoomSliderProps) => {
   };
 
   return (
-    <input
-      type="range"
-      min="10"
-      max="200"
-      step="10"
-      value={scale} // PAS SUR DE CA...
-      onChange={handleScaleChange}
-      className={`bg-border h-2 cursor-cell appearance-none ${className}`}
-    />
+    <>
+      <p onClick={() => setScale(scale + 5)}>+</p>
+      <input
+        type="range"
+        min="10"
+        max="200"
+        step="10"
+        value={scale} // PAS SUR DE CA...
+        onChange={handleScaleChange}
+        className={`bg-border h-2 cursor-cell appearance-none ${className}`}
+      />
+      <p onClick={() => setScale(scale - 5)}>-</p>
+    </>
   );
 };
 
