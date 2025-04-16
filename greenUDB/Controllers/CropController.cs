@@ -173,27 +173,33 @@ namespace GreenUApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Crop>> PostCrop(Crop crop)
         {
-            try{
-                var newCrop = new Crop
-                {
-                    LineId = crop.LineId,
-                    PlantNurseryId = crop.PlantNurseryId,
-                    Vegetable = crop.Vegetable,
-                    Variety = crop.Variety,
-                    Icon = crop.Icon,
-                    Sowing = crop.Sowing,
-                    Planting = crop.Planting,
-                    Harvesting = crop.Harvesting
-                };
+            if (crop.LineId.GetValueOrDefault(0) == 0 || crop.PlantNurseryId.GetValueOrDefault(0) == 0)
+            {
+                return BadRequest(new { message = "No id for line or plantNursery" });
+            }
 
-                _context.Crops.Add(newCrop);
+            if (crop.LineId.GetValueOrDefault(0) != 0)
+            {
+                var ExistingLine = await _context.Lines
+                    .FindAsync(crop.LineId);
+
+                if (ExistingLine == null) return BadRequest(new { message = "Line id is incorrect" });
+
+            }
+
+            if (crop.PlantNurseryId.GetValueOrDefault(0) != 0)
+            {
+                var ExistingPlantNursery = await _context.PlantNursery
+                    .FindAsync(crop.PlantNurseryId);
+                if (ExistingPlantNursery == null) return BadRequest(new { message = "PlantNursery id is bad" });
+            }
+
+
+            _context.Crops.Add(crop);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtRoute("GetPlantNursery", new { id = newCrop.Id }, newCrop);
-            }
-            catch(Exception ex){
-                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message ?? ex.Message}");
-            }
+                return Ok(crop);
+
         }
 
         /// <summary>
