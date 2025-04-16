@@ -114,8 +114,14 @@ namespace GreenUApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Parcel>> PostParcel(Parcel parcel)
         {
-            parcel.Id = 0;
-    
+            var GardenExist = await _context.Gardens
+                .FirstOrDefaultAsync(garden => garden.Id == parcel.GardenId);
+
+            if (GardenExist == null)
+            {
+                return BadRequest(new { message = "Garden id is incorrect..."});
+            }
+
             _context.Parcels.Add(parcel);
             await _context.SaveChangesAsync();
 
