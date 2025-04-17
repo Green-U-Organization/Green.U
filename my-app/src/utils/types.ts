@@ -68,7 +68,7 @@ export interface GardenCardHeaderProps {
   className?: string;
   children?: React.ReactNode;
   onGardenIdChange?: (selectedGarden: Garden) => void;
-
+  onScaleChange?: (scale: number) => void;
   type: 'display' | 'edit';
 }
 

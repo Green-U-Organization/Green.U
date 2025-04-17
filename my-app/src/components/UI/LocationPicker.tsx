@@ -108,7 +108,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         }
       );
     }
-  }, [markerPosition, multipleMarkers, showUserPosition]);
+  }, [markerPosition, multipleMarkers, showUserPosition, translations.errCheckPermissions, translations.errGeoPermissionRefused, translations.errPosition, translations.errPositionUnavailable, translations.errUnknown, translations.errWaitingTime,translations.errgeo]);
 
   //Fonction pour filtrer les points dans le rayon
   const filterMarkerInRadius = (
@@ -144,6 +144,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           const clickedLatLng = L.latLng(lat, lng);
           const distanceInMeters = userLatLng.distanceTo(clickedLatLng);
           setDistance(distanceInMeters);
+          console.log(distance);
         }
       },
     });

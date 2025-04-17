@@ -1,10 +1,11 @@
 'use client';
 
 import React, { FC, useState } from 'react'; // <DraggableCore>
-import styles from '../../app/Assets.module.css';
+// import styles from '../../app/Assets.module.css';
 import { LineProps } from '@/utils/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import Image from 'next/image';
 import H2 from '../Atom/H2';
 import { deleteOneLineByLineId } from '@/utils/actions/garden/parcel/line/deleteOneLineByLineId';
 import Confirmation from '../Molecule/Confirmation';
@@ -13,7 +14,6 @@ import AddCropPopup from '../Molecule/AddCropPopup';
 
 const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);
-  const [displayLineInfo, setDisplayLineInfo] = useState<boolean>(false);
   const [displayDeletingLinePopup, setDisplayDeletingLinePopup] =
     useState<boolean>(false);
   const [cropIsPresent, setCropIsPresent] = useState<boolean>(false);
@@ -32,66 +32,66 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
     setDisplayDeletingLinePopup(false);
   };
 
-  const cropIcon: { [key: string]: string } = {
-    asperge: styles.cropAsperge,
-    oignonJaune: styles.cropOignonJaune,
-    courgette1: styles.cropCourgette1,
-    bettes: styles.cropBettes,
-    oignonRouge: styles.cropOignonRouge,
-    courgette2: styles.cropCourgette2,
-    celeri: styles.cropCeleri,
-    all: styles.cropAll,
-    courgette3: styles.cropCourgette3,
-    chouxFleur: styles.cropChouxFleur,
-    poireaux: styles.cropPoireaux,
-    tomate1: styles.cropTomate1,
-    chouxRouge: styles.cropChouxRouge,
-    piment: styles.cropPiment,
-    tomate2: styles.cropTomate2,
-    poivronVert: styles.cropPoivronVert,
-    tomate3: styles.cropTomate3,
-    laitue: styles.cropLaitue,
-    poivronRouge: styles.cropPoivronRouge,
-    petitPois: styles.cropPetitPois,
-    salade: styles.cropSalade,
-    poivronOrange: styles.cropPoivronOrange,
-    haricot: styles.cropHaricot,
-    poivronJaune: styles.cropPoivronJaune,
-    verdure1: styles.cropVerdure1,
-    pimentDoux: styles.cropPimentDoux,
-    verdure2: styles.cropVerdure2,
-    pasteque: styles.cropPasteque,
-    verdure3: styles.cropVerdure3,
-    courge1: styles.cropCourge1,
-    verdure4: styles.cropVerdure4,
-    courge2: styles.cropCourge2,
-    patate: styles.cropPatate,
-    courge3: styles.cropCourge3,
-    rutabaga: styles.cropRutabaga,
-    courge4: styles.cropCourge4,
-    navet: styles.cropNavet,
-    courge5: styles.cropCourge5,
-    racine4: styles.cropRacine4,
-    courge6: styles.cropCourge6,
-    vegetable1: styles.cropVegetable1,
-    mais: styles.cropMais,
-    racine1: styles.cropRacine1,
-    verdure5: styles.cropVerdure5,
-    carotte: styles.cropCarotte,
-    chouxBlanc: styles.cropChouxBlanc,
-    panais: styles.cropPanais,
-    chouxBruxelle: styles.cropChouxBruxelle,
-    radis: styles.cropRadis,
-    chouxRomanesco: styles.cropChouxRomanesco,
-    betterave: styles.cropBetterave,
-    artichaux: styles.cropArtichaux,
-    racine2: styles.cropRacine2,
-    poireaux2: styles.cropPoireaux2,
-    chouxRave: styles.cropChouxRave,
-    random1: styles.cropRandom1,
-    oignonBlanc: styles.cropOignonBlanc,
-    aubergine1: styles.cropAubergine1,
-  };
+  // const cropIcon: { [key: string]: string } = {
+  //   asperge: styles.cropAsperge,
+  //   oignonJaune: styles.cropOignonJaune,
+  //   courgette1: styles.cropCourgette1,
+  //   bettes: styles.cropBettes,
+  //   oignonRouge: styles.cropOignonRouge,
+  //   courgette2: styles.cropCourgette2,
+  //   celeri: styles.cropCeleri,
+  //   all: styles.cropAll,
+  //   courgette3: styles.cropCourgette3,
+  //   chouxFleur: styles.cropChouxFleur,
+  //   poireaux: styles.cropPoireaux,
+  //   tomate1: styles.cropTomate1,
+  //   chouxRouge: styles.cropChouxRouge,
+  //   piment: styles.cropPiment,
+  //   tomate2: styles.cropTomate2,
+  //   poivronVert: styles.cropPoivronVert,
+  //   tomate3: styles.cropTomate3,
+  //   laitue: styles.cropLaitue,
+  //   poivronRouge: styles.cropPoivronRouge,
+  //   petitPois: styles.cropPetitPois,
+  //   salade: styles.cropSalade,
+  //   poivronOrange: styles.cropPoivronOrange,
+  //   haricot: styles.cropHaricot,
+  //   poivronJaune: styles.cropPoivronJaune,
+  //   verdure1: styles.cropVerdure1,
+  //   pimentDoux: styles.cropPimentDoux,
+  //   verdure2: styles.cropVerdure2,
+  //   pasteque: styles.cropPasteque,
+  //   verdure3: styles.cropVerdure3,
+  //   courge1: styles.cropCourge1,
+  //   verdure4: styles.cropVerdure4,
+  //   courge2: styles.cropCourge2,
+  //   patate: styles.cropPatate,
+  //   courge3: styles.cropCourge3,
+  //   rutabaga: styles.cropRutabaga,
+  //   courge4: styles.cropCourge4,
+  //   navet: styles.cropNavet,
+  //   courge5: styles.cropCourge5,
+  //   racine4: styles.cropRacine4,
+  //   courge6: styles.cropCourge6,
+  //   vegetable1: styles.cropVegetable1,
+  //   mais: styles.cropMais,
+  //   racine1: styles.cropRacine1,
+  //   verdure5: styles.cropVerdure5,
+  //   carotte: styles.cropCarotte,
+  //   chouxBlanc: styles.cropChouxBlanc,
+  //   panais: styles.cropPanais,
+  //   chouxBruxelle: styles.cropChouxBruxelle,
+  //   radis: styles.cropRadis,
+  //   chouxRomanesco: styles.cropChouxRomanesco,
+  //   betterave: styles.cropBetterave,
+  //   artichaux: styles.cropArtichaux,
+  //   racine2: styles.cropRacine2,
+  //   poireaux2: styles.cropPoireaux2,
+  //   chouxRave: styles.cropChouxRave,
+  //   random1: styles.cropRandom1,
+  //   oignonBlanc: styles.cropOignonBlanc,
+  //   aubergine1: styles.cropAubergine1,
+  // };
 
   //const selectedCrop = line.crop.icon;
 
@@ -167,26 +167,30 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
         <div className="flex items-center justify-between">
           <H2>Line {lineKey + 1}</H2>
           <div className="mr-[5vw] flex">
-            <img
-              className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+            <Image
               src="/image/icons/add.png"
               alt="Add crop"
+              width={50} // Remplacez par la largeur souhaitée
+              height={50} // Remplacez par la hauteur souhaitée
               onClick={() => handleClickAddCrop()}
             />
-            <img
-              className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+            <Image
               src="/image/icons/edit.png"
               alt="Edit line"
+              width={50}
+              height={50}
             />
-            <img
-              className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+            <Image
               src="/image/icons/info.png"
               alt="Display info about line"
+              width={50}
+              height={50}
             />
-            <img
-              className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+            <Image
               src="/image/icons/trash.png"
               alt="Delete line"
+              width={50}
+              height={50}
               onClick={() => setDisplayDeletingLinePopup(true)}
             />
           </div>

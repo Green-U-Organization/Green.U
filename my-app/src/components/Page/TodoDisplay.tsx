@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import data from '../data/data';
+import data from '../../app/data/data';
 import Button from '@/components/Atom/Button';
 import Todo from '@/components/Molecule/Todo';
 import Card from '@/components/Atom/Card';

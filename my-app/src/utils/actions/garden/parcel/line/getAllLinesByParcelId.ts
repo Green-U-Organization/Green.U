@@ -1,7 +1,3 @@
-type parcelType = {
-  parcel_id: number;
-};
-
 export const getAllLinesByParcelId = async (parcelId: number) => {
   try {
     const response = await fetch(

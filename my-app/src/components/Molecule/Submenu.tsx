@@ -13,7 +13,7 @@ interface SubmenuProps {
   children?: React.ReactNode;
 }
 
-const Submenu: React.FC<SubmenuProps> = ({ iconList, children }) => {
+const Submenu: React.FC<SubmenuProps> = ({ iconList }) => {
   const [activeForm, setActiveForm] = useState<string | null>(null);
 
   const handleIconClick = (icon: {

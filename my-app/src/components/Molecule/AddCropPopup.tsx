@@ -11,11 +11,7 @@ interface AddCropPopup {
   lineId: number;
 }
 
-const AddCropPopup: FC<AddCropPopup> = ({
-  handleYesClick,
-  lineId,
-  handleNoClick,
-}) => {
+const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
   const handleSubmit = async () => {
     const form = document.getElementById('addCrop') as HTMLFormElement;
     if (form) {

@@ -9,11 +9,7 @@ import Submenu from '../Molecule/Submenu';
 import NewParcelForm from '../Molecule/NewParcelForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
-import {
-  setFullscreen,
-  setGraphicMode,
-  setReload,
-} from '../../redux/garden/gardenSlice';
+import { setFullscreen, setGraphicMode } from '../../redux/garden/gardenSlice';
 // import { useGardenList } from '../../app/hooks/useGardenList';
 import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
 
@@ -34,10 +30,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
 
   // const [listDisplay, setListDisplay] = useState<boolean>(false);
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
-  const { parcels, loading, error, isEmpty } = useParcelList(
-    currentGarden.id,
-    reload
-  );
+  const { parcels, loading, error, isEmpty } = useParcelList(currentGarden.id);
 
   // Handlers
   const handleAdd = () => {

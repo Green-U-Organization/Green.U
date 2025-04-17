@@ -4,8 +4,6 @@ import './globals.css';
 import ThemeApp from '@/components/ThemeApp';
 import Navbar from '@/components/UI/Navbar';
 import { LanguageProvider } from '@/app/contexts/LanguageProvider';
-import { Provider } from 'react-redux';
-import { store } from '../redux/store';
 import { StoreProvider } from '@/redux/StoreProvider';
 
 const geistSans = Geist({

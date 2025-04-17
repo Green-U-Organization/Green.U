@@ -9,7 +9,7 @@ import Submenu from '../Molecule/Submenu';
 import NewParcelForm from '../Molecule/NewParcelForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { setFullscreen, setReload } from '../../redux/garden/gardenSlice';
+import { setFullscreen } from '../../redux/garden/gardenSlice';
 // import { useGardenList } from '../../app/hooks/useGardenList';
 import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
 
@@ -23,10 +23,7 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   const [gardenLock, setGardenLock] = useState<boolean>(true);
   // const [listDisplay, setListDisplay] = useState<boolean>(false);
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
-  const { parcels, loading, error, isEmpty } = useParcelList(
-    currentGarden.id,
-    reload
-  );
+  const { parcels, loading, error, isEmpty } = useParcelList(currentGarden.id);
 
   // Selectors
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
@@ -200,9 +197,9 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
           }}
         ></div>
 
-        {parcels?.map((parcel) => (
+        {parcels?.map((parcel, index) => (
           <div className="relative z-10" key={parcel.id}>
-            <Parcel parcel={parcel} scale={scale} />
+            <Parcel parcel={parcel} scale={scale} parcelKey={index} />
           </div>
         ))}
       </section>

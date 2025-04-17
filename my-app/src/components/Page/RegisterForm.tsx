@@ -331,8 +331,8 @@ const RegisterForm = () => {
     }
 
     if (!formRef.current) return;
-    const formData = new FormData(formRef.current);
-    const formJson = Object.fromEntries(formData.entries());
+    // const formData = new FormData(formRef.current);
+    // const formJson = Object.fromEntries(formData.entries());
 
     setFormDataRegister((prevFormData) => ({
       ...prevFormData,
@@ -416,7 +416,7 @@ const RegisterForm = () => {
       }
       //Redirige vers la page du dashboard
       router.push('/landing');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Network error :', error);
       setSubmitError(translations.networkErrorRetry);
     } finally {

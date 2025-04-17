@@ -2,6 +2,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import Line from './Line';
 import styles from '../../app/Assets.module.css';
+import Image from 'next/image';
 import { ParcelProps, type Parcel } from '@/utils/types';
 import { useLineList } from '@/app/hooks/useLineList';
 import { useSelector } from 'react-redux';
@@ -29,7 +30,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   useEffect(() => {
     setCurrentParcel(parcel);
     console.log(currentParcel.id);
-  }, [parcel]);
+  }, [parcel, currentParcel.id]);
 
   const addLine = () => {
     const line = {
@@ -122,34 +123,44 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                   {parcel.length}m x {parcel.width}m
                 </p>
 
-                <img
+                <Image
                   onClick={() => setDisplayParcelInfo((prev) => !prev)}
                   className="mr-[2vw] h-[3vw] w-[auto]"
-                  src="\image\icons\chevronBas.png"
+                  src="/image/icons/chevronBas.png"
                   alt="Parcel Image"
+                  width={50}
+                  height={50}
                 />
               </div>
               <div className="flex items-center">
-                <img
+                <Image
                   className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
                   src="/image/icons/add.png"
                   alt="Add line"
+                  width={50}
+                  height={50}
                   onClick={addLine}
                 />
-                <img
+                <Image
                   className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
                   src="/image/icons/edit.png"
                   alt="Edit parcel"
+                  width={50}
+                  height={50}
                 />
-                <img
+                <Image
                   className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
                   src="/image/icons/info.png"
                   alt="Display info about parcel"
+                  width={50}
+                  height={50}
                 />
-                <img
+                <Image
                   className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
                   src="/image/icons/trash.png"
                   alt="Deleting parcel"
+                  width={50}
+                  height={50}
                   onClick={() => setDisplayDeletingParcelPopup(true)}
                 />
               </div>
@@ -170,6 +181,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
             {/* //Line map */}
             {lines?.map((line, index) => (
               <div
+                key={index}
                 style={{
                   display: displayParcelInfo ? 'block' : 'none',
                 }}

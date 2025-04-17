@@ -10,6 +10,7 @@ const GardenEdit = () => {
 
   const handleScaleChange = (scale: number) => {
     setCurrentScale(scale);
+    console.log(currentScale);
   };
 
   const garden = useSelector((state: RootState) => state.garden.selectedGarden);

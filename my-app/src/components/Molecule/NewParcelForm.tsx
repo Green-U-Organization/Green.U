@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { createNewParcel } from '@/utils/actions/garden/parcel/createNewParcel';
 import { setReload } from '@/redux/garden/gardenSlice';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
@@ -15,23 +15,25 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   const actualGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
-  const router = useRouter();
   const dispatch = useDispatch();
   if (!displayCondition) return null;
 
-  let reload = useSelector((state: RootState) => state.garden.reload);
+  // const reload = useSelector((state: RootState) => state.garden.reload);
   const handleSubmit = async () => {
     const newParcel = {
-      gardenId: actualGarden?.id,
+      gardenId: actualGarden?.id ?? 0,
       length: length,
       width: width,
       nLine: 1,
       parcelAngle: 0,
+      x_position: 0,
+      y_position: 0,
+      parcel_angle: 0,
     };
 
     console.log(newParcel);
     await createNewParcel(newParcel);
-    console.log(reload);
+    // console.log(reload);
     // router.push('./garden-manager');
     dispatch(setReload()); //FIXME: rerender de la page garden pour que le jardin soit mis a jour en direct
   };

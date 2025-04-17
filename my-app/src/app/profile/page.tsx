@@ -5,13 +5,13 @@ import Card from '@/components/Atom/Card';
 import Button from '@/components/Atom/Button';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import AvatarSelector from '@/components/AvatarSelector';
+// import AvatarSelector from '@/components/AvatarSelector';
 import { useLanguage } from '../contexts/LanguageProvider';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function GardenerProfile() {
   const router = useRouter();
-  const [avatar, setAvatar] = useState<string | null>(null);
+  // const [avatar, setAvatar] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
   const { translations } = useLanguage();
@@ -56,11 +56,11 @@ export default function GardenerProfile() {
       {/* Sélecteur d'avatar */}
       {isAvatarSelectorOpen ? (
         <>
-          <AvatarSelector
+          {/* <AvatarSelector
             onSelect={setAvatar}
             isOpen={isAvatarSelectorOpen}
             onClose={() => setIsAvatarSelectorOpen(false)}
-          />
+          /> */}
         </>
       ) : (
         <Card className="flex max-w-5xl flex-col p-5">

@@ -11,7 +11,7 @@ export default function AvatarUpload() {
   const [uploading, setUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+  // const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
   const { translations } = useLanguage();
 

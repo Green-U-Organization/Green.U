@@ -2,7 +2,7 @@
 
 import Card from '@/components/Atom/Card';
 import Garden from '../Organism/Garden';
-import React, { useEffect } from 'react';
+import React from 'react';
 import GardenCardHeader from '@/components/Organism/GardenCardHeader';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
