@@ -11,7 +11,8 @@ export const getCropByLinelId = async (lineId: number) => {
     );
 
     if (!response.ok) {
-      throw new Error(`Failed to get crops:  ${response.statusText}`);
+      // throw new Error(`Failed to get crops:  ${response.statusText}`);
+      return JSON.stringify(response);
     }
     return response.json();
   } catch (error) {

@@ -12,13 +12,16 @@ import { RootState } from '@/redux/store';
 import { setFullscreen, setGraphicMode } from '../../redux/garden/gardenSlice';
 // import { useGardenList } from '../../app/hooks/useGardenList';
 import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
+import {
+  useDeleteOneParcelByParcelIdMutation,
+  useGetAllParcelByGardenIdQuery,
+} from '@/slice/garden';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks
   const dispatch = useDispatch();
 
   //Selectors
-  const reload = useSelector((state: RootState) => state.garden.reload);
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
@@ -28,9 +31,19 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
   const [gardenLock, setGardenLock] = useState<boolean>(true);
 
+  //RTK Query
+  const {
+    data: parcels,
+    isLoading: parcelsIsLoading,
+    isError: parcelsIsError,
+  } = useGetAllParcelByGardenIdQuery({
+    gardenId: garden.id,
+  });
+
+  // const [createNewParcel] = useCreateNewParcelMutation;
+
   // const [listDisplay, setListDisplay] = useState<boolean>(false);
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
-  const { parcels, loading, error, isEmpty } = useParcelList(currentGarden.id);
 
   // Handlers
   const handleAdd = () => {
@@ -41,13 +54,6 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   useEffect(() => {
     console.log('addSubmenu updated:', addSubmenu);
   }, [addSubmenu]);
-
-  useEffect(() => {
-    console.log(reload);
-    console.log("that's where i'm suppose to reload");
-    setCurrentGarden(garden);
-    // dispatch(setReload());
-  }, [reload, dispatch, garden]);
 
   //TODO:
   const handleEditGarden = () => {
@@ -137,13 +143,13 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     setCurrentGarden(garden);
   }, [garden]);
 
-  if (loading) {
+  if (parcelsIsLoading) {
     return <div>Loading...</div>;
   }
-  if (error) {
-    console.log('Error : ', { error });
+  if (parcelsIsError) {
+    console.log('Error in current Garden : ', garden.id);
   }
-  if (isEmpty) {
+  if (parcels?.length === 0) {
     console.log('Oups, no parcel find..');
   }
   return (

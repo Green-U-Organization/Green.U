@@ -7,8 +7,7 @@ import { useParcelList } from '@/app/hooks/useParcelList';
 import MenuSandwich from '../Molecule/MenuSandwich';
 import Submenu from '../Molecule/Submenu';
 import NewParcelForm from '../Molecule/NewParcelForm';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { RootState, useSelector, useDispatch } from '@/redux/store';
 import { setFullscreen } from '../../redux/garden/gardenSlice';
 // import { useGardenList } from '../../app/hooks/useGardenList';
 import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
@@ -16,7 +15,7 @@ import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
 const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks
   const dispatch = useDispatch();
-  const reload = useSelector((state: RootState) => state.garden.reload);
+  const reload = useSelector((state) => state.garden.reload);
 
   // State
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);

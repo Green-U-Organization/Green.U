@@ -6,12 +6,21 @@ import { RootState } from '@/redux/store';
 import { createNewParcel } from '@/utils/actions/garden/parcel/createNewParcel';
 import { setReload } from '@/redux/garden/gardenSlice';
 // import { useRouter } from 'next/navigation';
+import { useCreateNewParcelMutation } from '@/slice/garden';
 
 const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
 }) => {
   const [length, setLength] = useState(1);
   const [width, setWidth] = useState(1);
+
+  //RTK Queries
+  const [
+    createNewParcel, // fetch de création de ligne
+    { isLoading: createNewParcelIsLoading },
+  ] = useCreateNewParcelMutation();
+
+  //Selectors
   const actualGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
@@ -32,10 +41,12 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
     };
 
     console.log(newParcel);
-    await createNewParcel(newParcel);
-    // console.log(reload);
-    // router.push('./garden-manager');
-    dispatch(setReload()); //FIXME: rerender de la page garden pour que le jardin soit mis a jour en direct
+    try {
+      createNewParcel(newParcel).unwrap();
+      console.log('parcel created');
+    } catch {
+      console.log('error creating parcel');
+    }
   };
 
   const handleLengthChange = (e: { target: { value: string } }) => {

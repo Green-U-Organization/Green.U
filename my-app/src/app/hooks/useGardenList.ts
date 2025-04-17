@@ -1,5 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, store } from '../../redux/store';
+import { store, useDispatch, useSelector } from '../../redux/store';
 import { useCallback, useEffect } from 'react';
 import { Garden } from '@/utils/types';
 import {
@@ -10,9 +9,9 @@ import {
 } from '../../redux/garden/gardenSlice';
 
 export const useGardenList = (userId: number) => {
-  const dispatch = useDispatch<typeof store.dispatch>();
+  const dispatch = useDispatch();
   const { gardens, loading, error, selectedGarden, scale, fullscreen } =
-    useSelector((state: RootState) => state.garden);
+    useSelector((state) => state.garden);
 
   useEffect(() => {
     dispatch(getGardenByUserIdFct(userId));

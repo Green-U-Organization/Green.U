@@ -15,7 +15,6 @@ export const createNewLine = async (line: lineType): Promise<lineType> => {
         body: JSON.stringify(line),
       }
     );
-    alert('line created!');
     if (!response.ok) {
       throw new Error(`Failed to create new line:  ${response.statusText}`);
     }

@@ -8,53 +8,71 @@ import { useLineList } from '@/app/hooks/useLineList';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
-import { createNewLine } from '@/utils/actions/garden/parcel/line/createNewLine';
 import Confirmation from '../Molecule/Confirmation';
 import { deleteOneParcelByParcelId } from '@/utils/actions/garden/parcel/deleteOneParcelByParcelId';
+import {
+  useCreateNewGardenLineMutation,
+  useGetAllLinesByParcelIdQuery,
+} from '@/slice/garden';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
-  const [currentParcel, setCurrentParcel] = useState<Parcel>(parcel);
   const [displayParcelInfo, setDisplayParcelInfo] = useState<boolean>(false);
   const [displayDeletingParcelPopup, setDisplayDeletingParcelPopup] =
     useState<boolean>(false);
-  const { lines, loading, error, isEmpty } = useLineList(currentParcel.id);
+  // const { lines, loading, error, isEmpty } = useLineList(currentParcel.id);
 
-  const parcelY = currentParcel?.length;
-  const parcelX = currentParcel?.width;
+  const {
+    data: lines,
+    isLoading: linesIsLoading,
+    isError: linesIsError,
+    refetch: refetchLines, // si tu as un boutton pour acutalisé: refetchLines()
+  } = useGetAllLinesByParcelIdQuery({
+    parcelId: parcel.id,
+  }); // get de donnés des données
+
+  const [
+    createNewLine, // fetch de création de ligne
+    { isLoading: createNewLineIsLoading },
+  ] = useCreateNewGardenLineMutation();
+
+  const parcelY = parcel?.length;
+  const parcelX = parcel?.width;
 
   //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
 
-  useEffect(() => {
-    setCurrentParcel(parcel);
-    console.log(currentParcel.id);
-  }, [parcel, currentParcel.id]);
+  // useEffect(() => {
+  //   setCurrentParcel(parcel);
+  //   console.log(currentParcel.id);
+  // }, [parcel, currentParcel.id]);
 
   const addLine = () => {
-    const line = {
-      parcelId: currentParcel.id,
-      length: currentParcel.length, // Je force la longueur de la line égale a la longueur de la parcelle
-    };
-    createNewLine(line);
-    //TODO: Prevoir un rerender pour actualiser la parcel avec la nouvelle line
+    try {
+      createNewLine({
+        parcelId: parcel.id,
+        length: parcel.length, // Je force la longueur de la line égale a la longueur de la parcelle
+      }).unwrap();
+      console.log('Line created');
+    } catch {
+      console.log('Error creating line');
+    }
   };
 
   const deletingParcel = () => {
-    console.log(currentParcel.id);
-    deleteOneParcelByParcelId(currentParcel.id);
+    console.log(parcel.id);
+    deleteOneParcelByParcelId(parcel.id);
     setDisplayDeletingParcelPopup(false);
   };
 
-  if (loading) {
+  if (linesIsLoading) {
     return <div className="m-10">Loading...</div>;
   }
-  if (error) {
-    console.log('currentparcel : ', currentParcel.id);
-    console.log('Error : ', { error });
+  if (linesIsError) {
+    console.log('error in currentparcel : ', parcel.id);
   }
-  if (isEmpty) {
+  if (lines?.length === 0) {
     console.log('Oups, no lines find...');
   }
 

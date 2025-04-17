@@ -17,8 +17,8 @@ const Icon = ({ icon }: { icon: IconProps }) => {
       <Image
         src={icon.src}
         alt={icon.alt}
-        width={32} // Remplacez par la largeur souhaitée
-        height={32} // Remplacez par la hauteur souhaitée
+        width={8}
+        height={32}
         style={{ height: '100%', width: '100%' }} // Ajustement pour occuper tout l'espace
       />
     </div>

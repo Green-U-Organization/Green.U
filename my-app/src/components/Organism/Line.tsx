@@ -11,6 +11,8 @@ import { deleteOneLineByLineId } from '@/utils/actions/garden/parcel/line/delete
 import Confirmation from '../Molecule/Confirmation';
 import { getCropByLinelId } from '@/utils/actions/crops/line/getCropByLineId';
 import AddCropPopup from '../Molecule/AddCropPopup';
+import ExistentCropPopup from '../Molecule/ExistentCropPopup';
+import { useDeleteOneLineByLineIdMutation } from '@/slice/garden';
 
 const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);
@@ -20,6 +22,13 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
   const [displayAddCropPopup, setDisplayAddCropPopup] =
     useState<boolean>(false);
 
+  //RTK Query
+  const [deleteLineMutation, { data: lines }] =
+    useDeleteOneLineByLineIdMutation();
+
+  // Example usage of the mutation function:
+  // deleteLineMutation({ lineId: line.id });
+
   //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
@@ -27,9 +36,17 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
 
   //Functions
   const deletingLine = () => {
-    console.log(line.id);
-    deleteOneLineByLineId(line.id);
-    setDisplayDeletingLinePopup(false);
+    // console.log(line.id);
+    // deleteOneLineByLineId(line.id);
+    // setDisplayDeletingLinePopup(false);
+    try {
+      deleteLineMutation({
+        lineId: line.id,
+      }).unwrap();
+      console.log('line deleted');
+    } catch {
+      console.log('error deleting line');
+    }
   };
 
   // const cropIcon: { [key: string]: string } = {
@@ -99,9 +116,10 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
   const handleClickAddCrop = async () => {
     const actualCrops = await getCropByLinelId(line.id);
     console.log(actualCrops);
-    if (actualCrops) {
+    if (actualCrops.content) {
       setCropIsPresent(true);
-    } else {
+    } else if (!actualCrops.content) {
+      console.log('empty line');
       setCropIsPresent(false);
     }
     setDisplayAddCropPopup(true);
@@ -167,30 +185,42 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
         <div className="flex items-center justify-between">
           <H2>Line {lineKey + 1}</H2>
           <div className="mr-[5vw] flex">
-            <Image
+            <img
+              className="mr-[2vw]"
               src="/image/icons/add.png"
               alt="Add crop"
-              width={50} // Remplacez par la largeur souhaitée
-              height={50} // Remplacez par la hauteur souhaitée
+              style={{
+                width: '5vw',
+                height: '5vw',
+              }}
               onClick={() => handleClickAddCrop()}
             />
-            <Image
+            <img
+              className="mr-[2vw]"
               src="/image/icons/edit.png"
               alt="Edit line"
-              width={50}
-              height={50}
+              style={{
+                width: '5vw',
+                height: '5vw',
+              }}
             />
-            <Image
+            <img
+              className="mr-[2vw]"
               src="/image/icons/info.png"
               alt="Display info about line"
-              width={50}
-              height={50}
+              style={{
+                width: '5vw',
+                height: '5vw',
+              }}
             />
-            <Image
+            <img
+              className="mr-[2vw]"
               src="/image/icons/trash.png"
               alt="Delete line"
-              width={50}
-              height={50}
+              style={{
+                width: '5vw',
+                height: '5vw',
+              }}
               onClick={() => setDisplayDeletingLinePopup(true)}
             />
           </div>
@@ -218,6 +248,16 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
         <AddCropPopup
           lineId={line.id}
           handleNoClick={() => setDisplayAddCropPopup(false)}
+        />
+      </div>
+
+      <div
+        style={{
+          display: displayAddCropPopup && cropIsPresent ? 'block' : 'none',
+        }}
+      >
+        <ExistentCropPopup
+          handleClickOk={() => setDisplayAddCropPopup(false)}
         />
       </div>
     </>

@@ -58,7 +58,7 @@ export interface Parcel {
   nLine: number;
   parcelAngle: number;
   createdAt: string;
-  garden: string;
+  garden?: string;
   lines: [];
   logs: [];
 }
