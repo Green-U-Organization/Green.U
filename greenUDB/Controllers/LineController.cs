@@ -17,7 +17,6 @@ namespace GreenUApi.Controllers
         public long? ParcelId { get; set; }
         public long? PlantNurseryId { get; set; }
         public double? Length { get; set; }
-        public DateTime? CreatedAt { get; set; }
     }
 
     [Route("/garden/parcel/line")]
@@ -32,15 +31,6 @@ namespace GreenUApi.Controllers
             _context = context;
         }
 
-        /// <summary>
-        /// Récupère les informations d'une ligne par son ID.
-        /// </summary>
-        /// <param name="id">L'ID de la ligne à récupérer.</param>
-        /// <returns>Retourne la ligne correspondante à l'ID spécifié, ou HTTP 404 Not Found si la ligne n'existe pas.</returns>
-        /// <remarks>
-        /// Exemple de requête GET pour obtenir une ligne :
-        /// GET /line/{id}
-        /// </remarks>
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<LineDto>>> GetLine(long id)
         {
@@ -51,8 +41,7 @@ namespace GreenUApi.Controllers
                     Id = l.Id,
                     ParcelId = l.ParcelId,
                     PlantNurseryId = l.PLantNurseryId,
-                    Length = l.Length,
-                    CreatedAt = l.CreatedAt
+                    Length = l.Length
                 })
                 .ToListAsync();
 
@@ -64,22 +53,6 @@ namespace GreenUApi.Controllers
             return lines;
         }
 
-        /// <summary>
-        /// Met à jour les informations d'une ligne existante.
-        /// </summary>
-        /// <param name="id">L'ID de la ligne à mettre à jour.</param>
-        /// <param name="line">L'objet ligne avec les nouvelles informations.</param>
-        /// <returns>Retourne HTTP 204 No Content si la mise à jour est réussie, ou HTTP 404 Not Found si la ligne n'existe pas.</returns>
-        /// <remarks>
-        /// Exemple de requête PATCH pour mettre à jour une ligne :
-        ///
-        /// PATCH /api/line/{id}
-        /// Body:
-        /// {
-        ///     "name": "Updated Line",
-        ///     "location": "Updated Location"
-        /// }
-        /// </remarks>
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchLine(long id, Line line)
         {
@@ -109,21 +82,6 @@ namespace GreenUApi.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Crée une nouvelle ligne.
-        /// </summary>
-        /// <param name="line">L'objet ligne à ajouter.</param>
-        /// <returns>Retourne HTTP 201 Created avec l'objet ligne créé et un lien vers la ressource créée.</returns>
-        /// <remarks>
-        /// Exemple de requête POST pour ajouter une ligne :
-        ///
-        /// POST /api/line
-        /// Body:
-        /// {
-        ///     "parcelId": 0,
-        ///     "Length": 57.4,
-        /// }
-        /// </remarks>
        [HttpPost]
         public async Task<ActionResult<Line>> PostLine(LineDto line)
         {
@@ -131,8 +89,7 @@ namespace GreenUApi.Controllers
                 Id = line.Id,
                 ParcelId = line.ParcelId,
                 PLantNurseryId = line.PlantNurseryId,
-                Length = line.Length,
-                CreatedAt = DateTime.UtcNow
+                Length = line.Length
             };
             
 
@@ -143,16 +100,6 @@ namespace GreenUApi.Controllers
             return Ok(newLine);
         }
 
-        /// <summary>
-        /// Supprime une ligne par son ID.
-        /// </summary>
-        /// <param name="id">L'ID de la ligne à supprimer.</param>
-        /// <returns>Retourne HTTP 204 No Content si la suppression est réussie, ou HTTP 404 Not Found si la ligne n'existe pas.</returns>
-        /// <remarks>
-        /// Exemple de requête DELETE pour supprimer une ligne :
-        ///
-        /// DELETE /line/{id}
-        /// </remarks>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLine(long id)
         {
@@ -168,14 +115,6 @@ namespace GreenUApi.Controllers
             return NoContent();
         }
         
-        /// <summary>
-        /// Vérifie si une ligne existe dans la base de données.
-        /// </summary>
-        /// <param name="id">L'ID de la ligne à vérifier.</param>
-        /// <returns>Retourne true si la ligne existe, sinon false.</returns>
-        /// <remarks>
-        /// Cette méthode est utilisée pour vérifier la présence d'une ligne avant de tenter une mise à jour ou une suppression.
-        /// </remarks>
         private bool LineExists(long id)
         {
             return _context.Lines.Any(e => e.Id == id);

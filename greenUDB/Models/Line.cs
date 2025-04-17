@@ -17,7 +17,7 @@ public partial class Line
 
     public double? Length { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public virtual ICollection<Crop> Crops { get; set; } = new List<Crop>();
 

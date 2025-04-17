@@ -39,15 +39,6 @@ namespace GreenUApi.Controllers
             _context = context;
         }
 
-        /// <summary>
-        /// Récupère les informations d'un jardin par son ID.
-        /// </summary>
-        /// <param name="id">L'ID du jardin à récupérer.</param>
-        /// <returns>Retourne un jardin correspondant à l'ID spécifié, ou HTTP 404 Not Found si le jardin n'existe pas.</returns>
-        /// <remarks>
-        /// Exemple de requête GET pour obtenir un jardin :
-        /// GET /garden/{id}
-        /// </remarks>
         [HttpGet("{id}")]
         public async Task<ActionResult<Garden>> GetGarden(long id)
         {
@@ -80,16 +71,6 @@ namespace GreenUApi.Controllers
             return Ok(gardens);
         }
 
-        /// <summary>
-        /// Récupère tous les jardins associés à un utilisateur par son nom d'utilisateur.
-        /// </summary>
-        /// <param name="author">Le nom d'utilisateur de l'auteur des jardins.</param>
-        /// <returns>Retourne une liste de jardins associés à l'utilisateur, ou HTTP 404 Not Found si l'utilisateur ou les jardins n'existent pas.</returns>
-        /// <remarks>
-        /// Exemple de requête GET pour obtenir les jardins d'un utilisateur :
-        ///
-        /// GET /garden/username/{author}
-        /// </remarks>
         [HttpGet("username/{author}")]
         public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByName(string author)
         {
@@ -111,17 +92,6 @@ namespace GreenUApi.Controllers
             return gardens;
         }
 
-        /// <summary>
-        /// Récupère tous les jardins associés à un utilisateur par son nom d'utilisateur.
-        /// </summary>
-        /// <param name="userId">L'id de l'auteur des jardins.</param>
-        /// <returns>Retourne une liste de jardins associés à l'utilisateur, ou HTTP 404 Not Found si l'utilisateur ou les jardins n'existent pas.</returns>
-        /// <remarks>
-        /// Exemple de requête GET pour obtenir les jardins d'un utilisateur :
-        ///
-        /// GET /garden/user/{authorId}
-        /// </remarks>
-        /// <returns></returns>
        [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<GardenDto>>> GetGardensByUser(long userId)
         {
@@ -150,23 +120,6 @@ namespace GreenUApi.Controllers
             return Ok(gardens);
         }
 
-
-        /// <summary>
-        /// Met à jour les informations d'un jardin existant.
-        /// </summary>
-        /// <param name="id">L'ID du jardin à mettre à jour.</param>
-        /// <param name="garden">L'objet jardin avec les nouvelles informations.</param>
-        /// <returns>Retourne HTTP 204 No Content si la mise à jour est réussie, ou HTTP 404 Not Found si le jardin n'existe pas.</returns>
-        /// <remarks>
-        /// Exemple de requête PATCH pour mettre à jour un jardin :
-        ///
-        /// PATCH /garden/{id}
-        /// Body:
-        /// {
-        ///     "name": "New Garden Name",
-        ///     "location": "New Location"
-        /// }
-        ///</remarks>
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchGarden(long id, Garden garden)
         {
@@ -192,28 +145,6 @@ namespace GreenUApi.Controllers
             return NoContent();
         }
 
-
-        /// <summary>
-        /// Crée un nouveau jardin.
-        /// </summary>
-        /// <param name="garden">L'objet jardin à ajouter.</param>
-        /// <returns>Retourne HTTP 201 Created avec l'objet jardin créé et un lien vers la ressource créée.</returns>
-        /// <remarks>
-        /// Exemple de requête POST pour ajouter un jardin :
-        ///
-        /// POST /garden
-        /// Body:
-        /// {
-        ///     "id": 0,
-        ///     "authorId": 0,
-        ///     "name": "string",
-        ///     "description": "string",
-        ///     "latitude": 0,
-        ///     "longitude": 0,
-        ///     "length": 0,
-        ///     "width": 0
-        /// }
-        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<Garden>> PostGarden([FromBody] GardenDto garden)
         {
@@ -226,7 +157,6 @@ namespace GreenUApi.Controllers
                 Longitude = garden.Longitude,
                 Length = garden.Length,
                 Width = garden.Width,
-                CreatedAt = DateTime.Now,
                 Privacy = garden.Privacy,
                 Type = garden.Type
             };
@@ -248,17 +178,6 @@ namespace GreenUApi.Controllers
             return CreatedAtAction(nameof(GetGarden), new { id = newGarden.Id }, newGarden);
         }
 
-
-        /// <summary>
-        /// Supprime un jardin par son ID.
-        /// </summary>
-        /// <param name="id">L'ID du jardin à supprimer.</param>
-        /// <returns>Retourne HTTP 204 No Content si la suppression est réussie, ou HTTP 404 Not Found si le jardin n'existe pas.</returns>
-        /// <remarks>
-        /// Exemple de requête DELETE pour supprimer un jardin :
-        ///
-        /// DELETE /garden/{id}
-        /// </remarks>
         [HttpPatch("delete/{id}")]
         public async Task<IActionResult> DeleteGarden(long id)
         {
@@ -281,15 +200,6 @@ namespace GreenUApi.Controllers
             return NoContent();
         }
 
-
-        /// <summary>
-        /// Vérifie si un jardin existe dans la base de données.
-        /// </summary>
-        /// <param name="id">L'ID du jardin à vérifier.</param>
-        /// <returns>Retourne true si le jardin existe, sinon false.</returns>
-        /// <remarks>
-        /// Cette méthode est utilisée pour vérifier la présence d'un jardin avant de tenter une mise à jour ou une suppression.
-        /// </remarks>
         private bool GardenExists(long id)
         {
             return _context.Gardens.Any(e => e.Id == id);

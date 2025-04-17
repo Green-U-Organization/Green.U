@@ -39,38 +39,6 @@ namespace GreenUApi.Controllers
             _context = context;
         }
 
-        /// <summary>
-        /// Route : GET: /Crop
-        /// <return> 
-        /// Liste des cultures avec les détails comme l'ID, LineId, PlantNurseryId, etc.
-        /// Le format de la réponse sera le suivant:
-        /// <code>
-        /// [
-        ///   {
-        ///     "id": 0,
-        ///     "lineId": 0,
-        ///     "plantNurseryId": 0,
-        ///     "vegetable": "string",
-        ///     "variety": "string",
-        ///     "icon": 0,
-        ///     "sowing": "2025-04-06",
-        ///     "planting": "2025-04-06",
-        ///     "harvesting": "2025-04-06",
-        ///     "createdAt": "2025-04-06T07:29:58.548Z",
-        ///     "line": "string",
-        ///     "logs": [
-        ///       {
-        ///         "id": 1,
-        ///         "description": "Log entry example",
-        ///         "timestamp": "2025-04-06T07:29:58.548Z"
-        ///       }
-        ///     ]
-        ///   }
-        /// ]
-        /// </code>
-        /// </return>
-        /// </summary>
-
         [HttpGet("line/{lineId}")]
         public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByline(long lineId){
             var crops = await _context.Crops.Where(c => c.LineId == lineId).ToListAsync();
@@ -92,35 +60,6 @@ namespace GreenUApi.Controllers
 
             return Ok(new { isEmpty = false, message = "All crops with plant nursery id", content = crops });
         }
-
-        /// <summary>
-        /// Met à jour les informations d'une culture existante.
-        /// </summary>
-        /// <param name="id">L'ID de la culture à mettre à jour.</param>
-        /// <param name="crop">Les données de la culture à mettre à jour. Si l'ID de la culture dans l'URL ne correspond pas à celui de l'objet passé, une erreur est retournée.</param>
-        /// <returns>
-        /// - **204 No Content** si la culture a été mise à jour avec succès. 
-        /// - **400 Bad Request** si l'ID de l'URL ne correspond pas à l'ID de l'objet culture passé.
-        /// - **404 Not Found** si la culture à mettre à jour n'existe pas.
-        /// </returns>
-        /// <remarks>
-        /// Exemple de requête PATCH pour la mise à jour d'une culture :
-        ///
-        /// PATCH /crops/{id}
-        /// Content-Type: application/json
-        /// Body:
-        /// {
-        ///     "id": 1,
-        ///     "lineId": 2,
-        ///     "plantNurseryId": 3,
-        ///     "vegetable": "Tomato",
-        ///     "variety": "Cherry",
-        ///     "icon": 5,
-        ///     "sowing": "2025-04-06T00:00:00Z",
-        ///     "planting": "2025-05-01T00:00:00Z",
-        ///     "harvesting": "2025-08-01T00:00:00Z"
-        /// }
-        /// </remarks>  
           
        [HttpPatch("{id}")]
         public async Task<IActionResult> PatchCrop(long id, [FromBody] CropDto crop)
@@ -141,27 +80,6 @@ namespace GreenUApi.Controllers
             
             
         }
-
-
-        /// <summary>
-        /// Crée une nouvelle culture dans la base de données.
-        /// </summary>
-        /// <param name="crop">L'objet culture à ajouter à la base de données.</param>
-        /// <returns>Retourne une réponse HTTP 201 Created avec l'élément créé et un lien vers la ressource créée.</returns>
-        /// <remarks>
-        /// Exemple de requête POST pour ajouter une culture :
-        ///
-        /// POST /crops
-        /// Content-Type: application/json
-        /// Body:
-        /// {
-        ///     "lineId": 1,
-        ///     "plantNurseryId": 2,
-        ///     "vegetable": "Carrot",
-        ///     "variety": "Baby",
-        ///     "icon": 3
-        /// }
-        /// </remarks>
         
         [HttpPost]
         public async Task<ActionResult<Crop>> PostCrop([FromBody] Crop crop)
@@ -193,19 +111,7 @@ namespace GreenUApi.Controllers
 
         }
 
-        /// <summary>
-        /// Supprime une culture par son ID.
-        /// </summary>
-        /// <param name="id">L'ID de la culture à supprimer.</param>
-        /// <returns>
-        /// Retourne une réponse HTTP 204 No Content si la suppression est réussie,
-        /// ou HTTP 404 Not Found si la culture n'existe pas.
-        /// </returns>
-        /// <remarks>
-        /// Exemple de requête DELETE pour supprimer une culture :
-        ///
-        /// DELETE /crops/{id}
-        /// </remarks>
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCrop(long id)
         {

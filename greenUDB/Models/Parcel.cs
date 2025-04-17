@@ -21,7 +21,7 @@ public partial class Parcel
 
     public double? ParcelAngle { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public virtual Garden? Garden { get; set; }
 
