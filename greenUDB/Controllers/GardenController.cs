@@ -32,17 +32,17 @@ namespace GreenUApi.Controllers
             public GardenType Type { get; set; } = GardenType.Personnal;
 
         }
-        private readonly GreenUDB _context;
+        private readonly GreenUDB _db   ;
 
         public GardenController(GreenUDB context)
         {
-            _context = context;
+            _db = context;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Garden>> GetGarden(long id)
         {
-            var garden = await _context.Gardens.FindAsync(id);
+            var garden = await _db.Gardens.FindAsync(id);
 
             if (garden == null)
             {
@@ -55,7 +55,7 @@ namespace GreenUApi.Controllers
         [HttpGet]
         public async Task<ActionResult<GardenDto>> GetAllGardens()
         {
-            var gardens = await _context.Gardens.Select(g => new{
+            var gardens = await _db.Gardens.Select(g => new{
                 g.Id,
                 g.AuthorId,
                 g.Name,
@@ -74,13 +74,13 @@ namespace GreenUApi.Controllers
         [HttpGet("username/{author}")]
         public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByName(string author)
         {
-            var user = await _context.Users.Where(u => u.Username == author).ToListAsync();
+            var user = await _db.Users.Where(u => u.Username == author).ToListAsync();
 
             if(user == null){
                 return NotFound();
             }
 
-            var gardens = await _context.Gardens
+            var gardens = await _db.Gardens
                                         .Where(g => g.AuthorId == user[0].Id)
                                         .ToListAsync();
 
@@ -95,7 +95,7 @@ namespace GreenUApi.Controllers
        [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<GardenDto>>> GetGardensByUser(long userId)
         {
-            var gardens = await _context.Gardens
+            var gardens = await _db.Gardens
                                         .Where(g => g.AuthorId == userId)
                                         .Select(g => new GardenDto
                                         {
@@ -124,11 +124,11 @@ namespace GreenUApi.Controllers
         public async Task<IActionResult> PatchGarden(long id, Garden garden)
         {
             garden.Id = id;
-            _context.Entry(garden).State = EntityState.Modified;
+            _db.Entry(garden).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -166,14 +166,14 @@ namespace GreenUApi.Controllers
                 return BadRequest("Invalid garden data.");
             }
 
-            var userExists = await _context.Users.AnyAsync(u => u.Id == garden.AuthorId);
+            var userExists = await _db.Users.AnyAsync(u => u.Id == garden.AuthorId);
             if (!userExists)
             {
                 return BadRequest("The specified authorId does not exist.");
             }
 
-            _context.Gardens.Add(newGarden);
-            await _context.SaveChangesAsync();
+            _db.Gardens.Add(newGarden);
+            await _db.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetGarden), new { id = newGarden.Id }, newGarden);
         }
@@ -183,14 +183,14 @@ namespace GreenUApi.Controllers
         {
             try
             {
-                var garden = await _context.Gardens.FindAsync(id);
+                var garden = await _db.Gardens.FindAsync(id);
                 if (garden == null)
                 {
                     return NotFound();
                 }
 
                 garden.Deleted = true;
-                await _context.SaveChangesAsync();
+                await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -202,7 +202,7 @@ namespace GreenUApi.Controllers
 
         private bool GardenExists(long id)
         {
-            return _context.Gardens.Any(e => e.Id == id);
+            return _db.Gardens.Any(e => e.Id == id);
         }
     }
 
