@@ -67,9 +67,15 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
+
+                    b.Property<double?>("Distance_plantation")
+                        .HasColumnType("double");
 
                     b.Property<DateOnly?>("Harvesting")
                         .HasColumnType("date");
@@ -425,9 +431,6 @@ namespace GreenUApi.Migrations
                     b.Property<string>("Lastname")
                         .HasColumnType("text");
 
-                    b.Property<long>("Level")
-                        .HasColumnType("bigint");
-
                     b.Property<bool>("Newsletter")
                         .HasColumnType("tinyint(1)");
 
@@ -444,6 +447,9 @@ namespace GreenUApi.Migrations
 
                     b.Property<string>("Salt")
                         .HasColumnType("text");
+
+                    b.Property<byte>("Skill_level")
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<bool>("Tou")
                         .HasColumnType("tinyint(1)");
