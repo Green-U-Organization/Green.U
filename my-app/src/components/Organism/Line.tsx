@@ -1,7 +1,6 @@
 'use client';
 
 import React, { FC, useState } from 'react'; // <DraggableCore>
-// import {garden} from '../data/garden'
 import styles from '../../app/Assets.module.css';
 import { LineProps } from '@/utils/types';
 import { useSelector } from 'react-redux';
@@ -9,17 +8,24 @@ import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
 import { deleteOneLineByLineId } from '@/utils/actions/garden/parcel/line/deleteOneLineByLineId';
 import Confirmation from '../Molecule/Confirmation';
+import { getCropByLinelId } from '@/utils/actions/crops/line/getCropByLineId';
+import AddCropPopup from '../Molecule/AddCropPopup';
 
 const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);
   const [displayLineInfo, setDisplayLineInfo] = useState<boolean>(false);
   const [displayDeletingLinePopup, setDisplayDeletingLinePopup] =
     useState<boolean>(false);
+  const [cropIsPresent, setCropIsPresent] = useState<boolean>(false);
+  const [displayAddCropPopup, setDisplayAddCropPopup] =
+    useState<boolean>(false);
 
+  //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
 
+  //Functions
   const deletingLine = () => {
     console.log(line.id);
     deleteOneLineByLineId(line.id);
@@ -89,6 +95,18 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
 
   //const selectedCrop = line.crop.icon;
 
+  //Handlers
+  const handleClickAddCrop = async () => {
+    const actualCrops = await getCropByLinelId(line.id);
+    console.log(actualCrops);
+    if (actualCrops) {
+      setCropIsPresent(true);
+    } else {
+      setCropIsPresent(false);
+    }
+    setDisplayAddCropPopup(true);
+  };
+
   const handleMouseEnter = () => {
     SetDisplayInfo(true);
   };
@@ -153,6 +171,7 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
               className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
               src="/image/icons/add.png"
               alt="Add crop"
+              onClick={() => handleClickAddCrop()}
             />
             <img
               className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
@@ -173,6 +192,8 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
           </div>
         </div>
       </div>
+
+      {/* POPUP */}
       <div
         style={{
           display: displayDeletingLinePopup ? 'block' : 'none',
@@ -182,6 +203,17 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
           element={'line'}
           handleYesClick={deletingLine}
           handleNoClick={() => setDisplayDeletingLinePopup(false)}
+        />
+      </div>
+
+      <div
+        style={{
+          display: displayAddCropPopup && !cropIsPresent ? 'block' : 'none',
+        }}
+      >
+        <AddCropPopup
+          lineId={line.id}
+          handleNoClick={() => setDisplayAddCropPopup(false)}
         />
       </div>
     </>
