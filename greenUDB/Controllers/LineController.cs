@@ -24,17 +24,17 @@ namespace GreenUApi.Controllers
     // [Authorize]
     public class LineController : ControllerBase
     {
-        private readonly GreenUDB _context;
+        private readonly GreenUDB _db;
 
         public LineController(GreenUDB context)
         {
-            _context = context;
+            _db = context;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<LineDto>>> GetLine(long id)
         {
-            var lines = await _context.Lines
+            var lines = await _db.Lines
                 .Where(l => l.ParcelId == id)
                 .Select(l => new LineDto
                 {
@@ -61,11 +61,11 @@ namespace GreenUApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(line).State = EntityState.Modified;
+            _db.Entry(line).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -93,8 +93,8 @@ namespace GreenUApi.Controllers
             };
             
 
-            _context.Lines.Add(newLine);
-            await _context.SaveChangesAsync();
+            _db.Lines.Add(newLine);
+            await _db.SaveChangesAsync();
 
             // Retourner la réponse avec l'URL de la ressource créée
             return Ok(newLine);
@@ -103,21 +103,21 @@ namespace GreenUApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLine(long id)
         {
-            var line = await _context.Lines.FindAsync(id);
+            var line = await _db.Lines.FindAsync(id);
             if (line == null)
             {
                 return NotFound();
             }
 
-            _context.Lines.Remove(line);
-            await _context.SaveChangesAsync();
+            _db.Lines.Remove(line);
+            await _db.SaveChangesAsync();
 
             return NoContent();
         }
         
         private bool LineExists(long id)
         {
-            return _context.Lines.Any(e => e.Id == id);
+            return _db.Lines.Any(e => e.Id == id);
         }
     }
 }
