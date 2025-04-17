@@ -15,23 +15,23 @@ namespace GreenUApi.Controllers
     // [Authorize]
     public class PlantNurseryController : ControllerBase
     {
-        private readonly GreenUDB _context;
+        private readonly GreenUDB _db;
 
         public PlantNurseryController(GreenUDB context)
         {
-            _context = context;
+            _db = context;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlantNursery>>> GetPlantNursery()
         {
-            return await _context.PlantNursery.ToListAsync();
+            return await _db.PlantNursery.ToListAsync();
         }
 
         [HttpGet("{id}", Name = "GetPlantNursery")]
         public async Task<ActionResult<PlantNursery>> GetPlantNursery(long? id)
         {
-            var plantNursery = await _context.PlantNursery.FindAsync(id);
+            var plantNursery = await _db.PlantNursery.FindAsync(id);
 
             if (plantNursery == null)
             {
@@ -49,11 +49,11 @@ namespace GreenUApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(plantNursery).State = EntityState.Modified;
+            _db.Entry(plantNursery).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,8 +73,8 @@ namespace GreenUApi.Controllers
         [HttpPost]
         public async Task<ActionResult<PlantNursery>> PostPlantNursery(PlantNursery plantNursery)
         {
-            _context.PlantNursery.Add(plantNursery);
-            await _context.SaveChangesAsync();
+            _db.PlantNursery.Add(plantNursery);
+            await _db.SaveChangesAsync();
 
             return CreatedAtAction("GetPlantNursery", new { id = plantNursery.Id }, plantNursery);
         }
@@ -82,21 +82,21 @@ namespace GreenUApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlantNursery(long? id)
         {
-            var plantNursery = await _context.PlantNursery.FindAsync(id);
+            var plantNursery = await _db.PlantNursery.FindAsync(id);
             if (plantNursery == null)
             {
                 return NotFound();
             }
 
-            _context.PlantNursery.Remove(plantNursery);
-            await _context.SaveChangesAsync();
+            _db.PlantNursery.Remove(plantNursery);
+            await _db.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool PlantNurseryExists(long? id)
         {
-            return _context.PlantNursery.Any(e => e.Id == id);
+            return _db.PlantNursery.Any(e => e.Id == id);
         }
     }
 }
