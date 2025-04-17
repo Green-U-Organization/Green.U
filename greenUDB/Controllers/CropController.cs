@@ -32,16 +32,16 @@ namespace GreenUApi.Controllers
     // [ApiController]
     public class CropController : ControllerBase
     {
-        private readonly GreenUDB _context;
+        private readonly GreenUDB _db;
 
         public CropController(GreenUDB context)
         {
-            _context = context;
+            _db = context;
         }
 
         [HttpGet("line/{lineId}")]
         public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByline(long lineId){
-            var crops = await _context.Crops.Where(c => c.LineId == lineId).ToListAsync();
+            var crops = await _db.Crops.Where(c => c.LineId == lineId).ToListAsync();
             if(!crops.Any())
             {
                 return BadRequest(new { isEmpty = true, message = "No crop here..." });
@@ -52,7 +52,7 @@ namespace GreenUApi.Controllers
 
         [HttpGet("plantNursery/{plantNursery}")]
         public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByPlantNursery(long line){
-            var crops = await _context.Crops.Where(c => c.PlantNurseryId == line).ToListAsync();
+            var crops = await _db.Crops.Where(c => c.PlantNurseryId == line).ToListAsync();
             if(!crops.Any())
             {
                 return BadRequest(new { isEmpty = true, message = "No crops..." });
@@ -64,7 +64,7 @@ namespace GreenUApi.Controllers
        [HttpPatch("{id}")]
         public async Task<IActionResult> PatchCrop(long id, [FromBody] CropDto crop)
         {
-            var existingCrop = await _context.Crops.FindAsync(id);
+            var existingCrop = await _db.Crops.FindAsync(id);
             if (existingCrop == null) return BadRequest(new { isEmpty = true, message = "The crop id is incorrect" });
             if (crop.Vegetable != null) existingCrop.Vegetable = crop.Vegetable;
             if (crop.Variety != null) existingCrop.Variety = crop.Variety;
@@ -75,7 +75,7 @@ namespace GreenUApi.Controllers
             if (crop.Harvesting != null) existingCrop.Harvesting = crop.Harvesting;
 
            
-            await _context.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             return Ok(new { isEmpty = false, message = "This crop is edited", content = existingCrop});
             
             
@@ -91,7 +91,7 @@ namespace GreenUApi.Controllers
 
             if (crop.LineId.HasValue)
             {
-                var ExistingLine = await _context.Lines
+                var ExistingLine = await _db.Lines
                     .FindAsync(crop.LineId);
 
                 if (ExistingLine == null) return BadRequest(new {isEmpty = true, message = "Line id is incorrect" });
@@ -99,13 +99,13 @@ namespace GreenUApi.Controllers
 
             if (crop.PlantNurseryId.HasValue)
             {
-                var ExistingPlantNursery = await _context.PlantNursery
+                var ExistingPlantNursery = await _db.PlantNursery
                     .FindAsync(crop.PlantNurseryId);
                 if (ExistingPlantNursery == null) return BadRequest(new {isEmpty = true, message = "PlantNursery id is bad" });
             }
 
-            _context.Crops.Add(crop);
-                await _context.SaveChangesAsync();
+            _db.Crops.Add(crop);
+                await _db.SaveChangesAsync();
 
                 return Ok(new {isEmpty = false, message = "Your crop are created !", content = crop});
 
@@ -115,14 +115,14 @@ namespace GreenUApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCrop(long id)
         {
-            var crop = await _context.Crops.FindAsync(id);
+            var crop = await _db.Crops.FindAsync(id);
             if (crop == null)
             {
                 return NotFound(new {isEmpty = true, message = "No crop with this id..."});
             }
 
-            _context.Crops.Remove(crop);
-            await _context.SaveChangesAsync();
+            _db.Crops.Remove(crop);
+            await _db.SaveChangesAsync();
 
             return Ok(new {isEmpty = false, message = "This crop is now deleted" , content = crop});
         }
