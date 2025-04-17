@@ -23,7 +23,7 @@ namespace GreenUApi.Controllers
 
             if (followerData.FollowerId == 0)
             {
-                return NotFound(new { message = "Follower id is missed" });
+                return BadRequest(new { isEmpty = true, message = "Follower id is missed" });
             }
 
             var User = await _db.Users.FindAsync(id);
@@ -31,12 +31,12 @@ namespace GreenUApi.Controllers
 
             if (User == null)
             {
-                return NotFound(new { message = "User not found" });
+                return BadRequest(new { isEmpty = true, message = "User not found" });
             }
 
             if (CheckFollowerId == null)
             {
-                return NotFound(new { message = "Follow id user not found" });
+                return BadRequest(new { isEmpty = true, message = "Follow id user not found" });
             }
 
             bool followExists = await _db.Followers
@@ -44,7 +44,7 @@ namespace GreenUApi.Controllers
 
             if (followExists)
             {
-                return BadRequest(new { message = "This follow row is already exist" });
+                return BadRequest(new { isEmpty = true, message = "This follow row is already exist" });
             }
 
             followerData.UserId = id;
@@ -52,7 +52,7 @@ namespace GreenUApi.Controllers
             _db.Followers.Add(followerData);
             await _db.SaveChangesAsync();
 
-            return Ok(new { message = "Follow complete !" });
+            return Ok(new { isEmpty = true, message = "Follow complete !" });
         }
 
         [HttpGet("user/{id}")]
@@ -63,7 +63,7 @@ namespace GreenUApi.Controllers
 
             if (User == null)
             {
-                return BadRequest(new { message = "The user id doesn't exist" });
+                return BadRequest(new {isEmpty = true, message = "The user id doesn't exist" });
             }
 
             var Follow = await _db.Followers
@@ -82,12 +82,12 @@ namespace GreenUApi.Controllers
 
             if (Follow.Count == 0)
             {
-                return NotFound(new { message = "This user didn't have follower" });
+                return NotFound(new { isEmpty = true, message = "This user didn't have follower" });
             }
 
 
 
-            return Ok(new { message = "The list of follower", content = Follow });
+            return Ok(new { isEmpty = false, message = "The list of follower", content = Follow });
         }
 
         [HttpDelete("user/{id}")]
@@ -101,13 +101,13 @@ namespace GreenUApi.Controllers
 
             if (followExist == null)
             {
-                return BadRequest(new { message = "We have an inccorect id" });
+                return BadRequest(new { isEmpty = true, message = "We have an inccorect id" });
             }
 
             _db.Followers.Remove(followExist);
             await _db.SaveChangesAsync();
 
-            return Ok(new { message = "Unfollow complete !"});
+            return Ok(new { isEmpty = true, message = "Unfollow complete !"});
         }
 
 
@@ -117,7 +117,7 @@ namespace GreenUApi.Controllers
 
             if (followerData.FollowerId == 0)
             {
-                return NotFound(new { message = "Follower id is missed" });
+                return BadRequest(new { isEmpty = true, message = "Follower id is missed" });
             }
 
             var Garden = await _db.Gardens.FindAsync(id);
@@ -125,12 +125,12 @@ namespace GreenUApi.Controllers
 
             if (Garden == null)
             {
-                return NotFound(new { message = "Garden not found" });
+                return NotFound(new { isEmpty = true, message = "Garden not found" });
             }
 
             if (CheckFollowerId == null)
             {
-                return NotFound(new { message = "Follow id user not found" });
+                return NotFound(new { isEmpty = true, message = "Follow id user not found" });
             }
 
             bool followExists = await _db.Followers
@@ -138,7 +138,7 @@ namespace GreenUApi.Controllers
 
             if (followExists)
             {
-                return BadRequest(new { message = "This follow row is already exist" });
+                return BadRequest(new { isEmpty = true, message = "This follow row is already exist" });
             }
 
             followerData.GardenId = id;
@@ -146,7 +146,7 @@ namespace GreenUApi.Controllers
             _db.Followers.Add(followerData);
             await _db.SaveChangesAsync();
 
-            return Ok(new { message = "Garden Follow complete !" });
+            return Ok(new { isEmpty = true, message = "Garden Follow complete !" });
         }
 
         [HttpGet("garden/{id}")]
@@ -157,7 +157,7 @@ namespace GreenUApi.Controllers
 
             if (Garden == null)
             {
-                return BadRequest(new { message = "The garden id doesn't exist" });
+                return BadRequest(new { isEmpty = true, message = "The garden id doesn't exist" });
             }
 
             var Follow = await _db.Followers
@@ -176,12 +176,12 @@ namespace GreenUApi.Controllers
 
             if (Follow.Count == 0)
             {
-                return NotFound(new { message = "This garden didn't have follower" });
+                return NotFound(new { isEmpty = true, message = "This garden didn't have follower" });
             }
 
 
 
-            return Ok(new { message = "The list of garden follower", content = Follow });
+            return Ok(new { isEmpty = false, message = "The list of garden follower", content = Follow });
         }
 
         [HttpDelete("garden/{id}")]
@@ -195,13 +195,13 @@ namespace GreenUApi.Controllers
 
             if (followExist == null)
             {
-                return BadRequest(new { message = "We have an inccorect id" });
+                return BadRequest(new { isEmpty = true, message = "We have an inccorect id" });
             }
 
             _db.Followers.Remove(followExist);
             await _db.SaveChangesAsync();
 
-            return Ok(new { message = "Garden Unfollow complete !" });
+            return Ok(new { isEmpty = true, message = "Garden Unfollow complete !" });
         }
 
     }
