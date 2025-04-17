@@ -50,15 +50,15 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (user == null)
         {
-            return NotFound(new { message = "User not found" });
+            return NotFound(new { isEmpty = true, message = "User not found" });
         }
 
         if (user.Deleted)
         {
-            return NotFound(new { message = "This user is deleted" });
+            return NotFound(new { isEmpty = true, message = "This user is deleted" });
         }
         
-        return Ok(user);
+        return Ok(new { isEmpty = false, message = "This is the user data", content = user});
     }
 
     [HttpPost]
@@ -71,12 +71,12 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (userDbData.Length != 0)
         {
-            return Conflict(new { message = "This username already exists" });
+            return Conflict(new { isEmpty = true, message = "This username already exists" });
         }
 
         if (user.Password == null)
         {
-            return BadRequest(new { message = "Password is missing"});
+            return BadRequest(new { isEmpty = true, message = "Password is missing"});
         }
 
         string[] hashSalt = Authentification.Hasher(user.Password, null);
@@ -86,7 +86,7 @@ public class UserController(GreenUDB db) : ControllerBase
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        return Ok(new { message = "User created !" });
+        return Ok(new { isEmpty = true, message = "User created !" });
     }
 
     [HttpPatch("{id}")]
@@ -96,14 +96,13 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (user == null)
         {
-            return NotFound(new { message = "This user no longer exists" });
+            return NotFound(new { isEmpty = true, message = "This user no longer exists" });
         }
 
         if (user.Deleted == true)
         {
-            return BadRequest(new {message = "The user is deleted"});
+            return BadRequest(new { isEmpty = true, message = "The user is deleted"});
         }
-        Console.WriteLine($"Salt value: {modification.Salt ?? "NULL"}");
 
         if (!string.IsNullOrEmpty(modification.Username))
         {
@@ -113,7 +112,7 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (!string.IsNullOrEmpty(modification.Salt))
         {
-            return BadRequest(new {message = "You can't modify SALT !! Modify password ! La bise fieux"});
+            return BadRequest(new { isEmpty = true, message = "You can't modify SALT !! Modify password ! La bise fieux"});
         }
 
         if (!string.IsNullOrEmpty(modification.Password))
@@ -178,7 +177,7 @@ public class UserController(GreenUDB db) : ControllerBase
         _db.Users.Update(user);
         await _db.SaveChangesAsync();
 
-        return Ok(new { message = "User is modified" });
+        return Ok(new { isEmpty = true, message = "User is modified" });
     }
 
     [HttpDelete("{id}")]
@@ -188,12 +187,12 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (user == null)
         {
-            return NotFound(new { message = "Incorrect ID" });
+            return NotFound(new { isEmpty = true, message = "Incorrect ID" });
         }
 
         if ( user.Deleted == true )
         {
-            return BadRequest(new { message = "The user it's already deleted" });
+            return BadRequest(new { isEmpty = true, message = "The user it's already deleted" });
         }
 
         user.Username = null;
@@ -214,6 +213,6 @@ public class UserController(GreenUDB db) : ControllerBase
         _db.Users.Update(user);
         await _db.SaveChangesAsync();
 
-        return Ok(new { message = "DELETE SUCCES" });
+        return Ok(new { isEmpty = true, message = "DELETE SUCCES" });
     }
 }

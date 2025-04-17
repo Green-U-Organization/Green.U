@@ -44,7 +44,7 @@ namespace GreenUApi.Controllers
 
             if (followExists)
             {
-                return BadRequest(new { isEmpty = true, message = "This follow row is already exist" });
+                return Conflict(new { isEmpty = true, message = "This follow row is already exist" });
             }
 
             followerData.UserId = id;
@@ -138,7 +138,7 @@ namespace GreenUApi.Controllers
 
             if (followExists)
             {
-                return BadRequest(new { isEmpty = true, message = "This follow row is already exist" });
+                return Conflict(new { isEmpty = true, message = "This follow row is already exist" });
             }
 
             followerData.GardenId = id;
