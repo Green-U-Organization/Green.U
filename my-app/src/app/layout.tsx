@@ -4,6 +4,7 @@ import './globals.css';
 import ThemeApp from '@/components/ThemeApp';
 import Navbar from '@/components/UI/Navbar';
 import { LanguageProvider } from '@/app/contexts/LanguageProvider';
+import { StoreProvider } from '@/redux/StoreProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,15 +34,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="bg-white">
-      <body
-        className={`pt-15 ${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
-      >
-        <LanguageProvider>
-          <Navbar />
-          <ThemeApp>{children}</ThemeApp>
-        </LanguageProvider>
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en" className="bg-white">
+        <body
+          className={`pt-15 ${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
+        >
+          <LanguageProvider>
+            <Navbar />
+            <ThemeApp>{children}</ThemeApp>
+          </LanguageProvider>
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

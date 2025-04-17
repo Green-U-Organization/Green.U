@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import Card from '@/components/UI/Card';
-import Button from '@/components/UI/Button';
+import Card from '@/components/Atom/Card';
+import Button from '@/components/Atom/Button';
 import { useLanguage } from '../app/contexts/LanguageProvider';
 import AvatarUpload from './AvatarUpload';
 //import { useState } from "react";

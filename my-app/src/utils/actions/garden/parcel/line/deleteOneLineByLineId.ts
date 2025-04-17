@@ -1,24 +1,20 @@
-type lineType = {
-  parcelId: number;
-};
-
-export const deleteOneLineByLineId = async (line: lineType) => {
+export const deleteOneLineByLineId = async (lineId: number) => {
   try {
     const response = await fetch(
-      process.env.NEXT_PUBLIC_API + '/garden/parcel/line',
+      process.env.NEXT_PUBLIC_API + `/garden/parcel/line/${lineId}`,
       {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(line),
       }
     );
 
     if (!response.ok) {
       throw new Error(`Failed to delete line:  ${response.statusText}`);
     }
-    return response.json();
+    return;
+    //response.json();
   } catch (error) {
     console.error('Error in deleteoneLineByLineId: ', error);
     throw error;

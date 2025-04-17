@@ -1,7 +1,7 @@
-export const deleteOneParcelByParcelId = async (gardenId: number) => {
+export const deleteOneParcelByParcelId = async (parcelId: number) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API}/garden/tags/${gardenId}`,
+      `${process.env.NEXT_PUBLIC_API}/garden/parcel/${parcelId}`,
       {
         method: 'DELETE',
         headers: {
@@ -14,7 +14,8 @@ export const deleteOneParcelByParcelId = async (gardenId: number) => {
       throw new Error(`Failed to delete parcel: ${response.statusText}`);
     }
 
-    return response.json();
+    return;
+    //response.json();
   } catch (error) {
     console.error('Error in deleteOneParcelByParcelId: ', error);
     throw error;

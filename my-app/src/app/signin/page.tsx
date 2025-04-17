@@ -1,5 +1,5 @@
 import React from 'react';
-import RegisterForm from '../../components/RegisterForm';
+import RegisterForm from '../../components/Page/RegisterForm';
 
 const page = () => {
   //#region FETCH FUNCTION

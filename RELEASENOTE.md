@@ -4,6 +4,22 @@
 
 | Date  | Collaborateur(s) | Tâche | Remarques |
 |--------|-----------------|-------|-----------|
+| 14/04/25 | @Emmanuel | Caractères accentués dans les codes postaux non gérés
+||| Adaptation suite à la nouvelle route pour l'ajout de tags dans le Register. Gestion des erreurs.
+||| Ajout dans Actions des 2 nouvelles routes pour l'ajout des hashtags
+| 11/04/25 | @Emmanuel | Mise en cache des fichiers de traduction
+||| Réactivation du choix et de l'upload d'un avatar
+||| Blocage du rayon de délimitation de recherche de jardins à 30km
+| 10/04/25 | @Emmanuel | Utilisation et amélioration du composant LocationPicker pour utilisation dans la localisation des jardins
+| 09/04/25 | @Emmanuel | Ajout des traductions pour la page de création de terrain
+||| Mise en place d'une nouvelle épingle pour localiser les terrains
+||| Correction du bug dans le composant HashTag avec la touche Enter 
+||| Remplacement du favicon
+||| Ajout d'un composant SelectInput et adaptation de GardenCreateForm
+||| Correction d'un bug lors de la validation d'un code postal dont la localité contient plusieurs traits d'union
+||| Ajout de l'input list 'skillLevel' dans le Register
+| 08/04/25 | @Emmanuel | L'ajout d'un user fonctionne via RegisterForm | 
+||| Ajout d'une map avec localisation du terrain pour la création d'un terrain
 | 07/04/25 | @Emmanuel | Travail sur le nouvelle version de RegisterForm
 | 06/04/25 | @Emmanuel | Ajout de la prop disable et title au composant Button
 ||| Création d'un bucket Supabase pour le stockage des avatars

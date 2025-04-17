@@ -2,12 +2,14 @@ type CropType = {
   lineId: number;
   vegetable: string;
   variety: string;
-  icon: string;
+  sowing: string;
+  planting: string;
+  harvesting: string;
 };
 
 export const addCropLine = async (crop: CropType): Promise<CropType> => {
   try {
-    const response = await fetch(process.env.NEXT_PUBLIC_API + '/crops/line', {
+    const response = await fetch(process.env.NEXT_PUBLIC_API + '/crops', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

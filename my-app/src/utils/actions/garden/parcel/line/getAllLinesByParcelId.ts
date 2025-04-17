@@ -1,17 +1,12 @@
-type parcelType = {
-  parcel_id: number;
-};
-
-export const getAllLinesByParcelId = async (parcel: parcelType) => {
+export const getAllLinesByParcelId = async (parcelId: number) => {
   try {
     const response = await fetch(
-      process.env.NEXT_PUBLIC_API + '/garden/parcel/line',
+      `${process.env.NEXT_PUBLIC_API}/garden/parcel/line/${parcelId}`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(parcel),
       }
     );
 

@@ -1,7 +1,12 @@
+import GardenEdit from '@/components/Page/GardenEdit';
 import React from 'react';
 
 const page = () => {
-  return <div>page</div>;
+  return (
+    <>
+      <GardenEdit />
+    </>
+  );
 };
 
 export default page;

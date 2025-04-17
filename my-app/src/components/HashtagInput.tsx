@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from 'react';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
-import Button from '@/components/UI/Button';
-import TextInput from '@/components/UI/TextInput';
+import Button from '@/components/Atom/Button';
+import TextInput from '@/components/Atom/TextInput';
 
 interface HashtagInputProps {
   //Callback pour remonter les Hashtags au parent
@@ -72,6 +72,12 @@ const HashtagInput: React.FC<HashtagInputProps> = ({
           value={inputValue}
           placeholder={placeHolder}
           error={error}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleAddHashtag();
+            }
+          }}
         />
         {inputValue.trim() !== '' &&
           !hashtags.includes(`#${inputValue.trim()}`) && (
