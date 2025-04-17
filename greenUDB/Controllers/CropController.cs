@@ -74,7 +74,8 @@ namespace GreenUApi.Controllers
         [HttpGet("line/{lineId}")]
         public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByline(long lineId){
             var crops = await _context.Crops.Where(c => c.LineId == lineId).ToListAsync();
-            if(!crops.Any()){
+            if(!crops.Any())
+            {
                 return BadRequest(new { isEmpty = true, message = "No crop here..." });
             }
 
@@ -84,8 +85,9 @@ namespace GreenUApi.Controllers
         [HttpGet("plantNursery/{plantNursery}")]
         public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByPlantNursery(long line){
             var crops = await _context.Crops.Where(c => c.PlantNurseryId == line).ToListAsync();
-            if(!crops.Any()){
-                return NotFound(new { isEmpty = true, message = "No crops..." });
+            if(!crops.Any())
+            {
+                return BadRequest(new { isEmpty = true, message = "No crops..." });
             }
 
             return Ok(new { isEmpty = false, message = "All crops with plant nursery id", content = crops });
@@ -170,28 +172,28 @@ namespace GreenUApi.Controllers
         {
             if (!crop.LineId.HasValue && !crop.PlantNurseryId.HasValue)
             {
-                return BadRequest(new { message = "No id for line or plantNursery"});
+                return BadRequest(new {isEmpty = true, message = "No id for line or plantNursery"});
             }
 
-            if (crop.LineId.GetValueOrDefault(0) != 0)
+            if (crop.LineId.HasValue)
             {
                 var ExistingLine = await _context.Lines
                     .FindAsync(crop.LineId);
 
-                if (ExistingLine == null) return BadRequest(new { message = "Line id is incorrect" });
+                if (ExistingLine == null) return BadRequest(new {isEmpty = true, message = "Line id is incorrect" });
             }
 
-            if (crop.PlantNurseryId.GetValueOrDefault(0) != 0)
+            if (crop.PlantNurseryId.HasValue)
             {
                 var ExistingPlantNursery = await _context.PlantNursery
                     .FindAsync(crop.PlantNurseryId);
-                if (ExistingPlantNursery == null) return BadRequest(new { message = "PlantNursery id is bad" });
+                if (ExistingPlantNursery == null) return BadRequest(new {isEmpty = true, message = "PlantNursery id is bad" });
             }
 
             _context.Crops.Add(crop);
                 await _context.SaveChangesAsync();
 
-                return Ok(crop);
+                return Ok(new {isEmpty = false, message = "Your crop are created !", content = crop});
 
         }
 
@@ -208,32 +210,19 @@ namespace GreenUApi.Controllers
         ///
         /// DELETE /crops/{id}
         /// </remarks>
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCrop(long id)
         {
             var crop = await _context.Crops.FindAsync(id);
             if (crop == null)
             {
-                return NotFound();
+                return NotFound(new {isEmpty = true, message = "No crop with this id..."});
             }
 
             _context.Crops.Remove(crop);
             await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
-
-        /// <summary>
-        /// Vérifie si une culture existe dans la base de données.
-        /// </summary>
-        /// <param name="id">L'ID de la culture à vérifier.</param>
-        /// <returns>Retourne true si la culture existe, sinon false.</returns>
-        /// <remarks>
-        /// Cette méthode est utilisée pour vérifier la présence d'une culture avant de tenter une mise à jour ou suppression.
-        /// </remarks>
-        private bool CropExists(long id)
-        {
-            return _context.Crops.Any(e => e.Id == id);
+            return Ok(new {isEmpty = false, message = "This crop is now deleted" , content = crop});
         }
     }
 }
