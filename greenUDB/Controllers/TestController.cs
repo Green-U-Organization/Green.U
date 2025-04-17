@@ -14,7 +14,7 @@ namespace GreenUApi.Controllers
         [HttpGet]
         public OkObjectResult Test()
         {
-            return Ok(new { message = "The api work well !" });
+            return Ok(new { isEmpty = true, message = "The api work well !" });
         }
     }
 }

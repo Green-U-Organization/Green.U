@@ -11,6 +11,13 @@ public class Jwt
 {
     public static string GenerateJwtToken(User user)
     {
+
+        if (string.IsNullOrEmpty(user.Username) || user.Id == null || user.Id == 0)
+        {
+            return "Id and username are null or invalid";
+
+        }
+
         Env.Load();
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "");
@@ -20,7 +27,7 @@ public class Jwt
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("userId", user.Id.ToString())
+                new Claim("userId", user.Id.ToString() ?? string.Empty)
             }),
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

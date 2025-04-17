@@ -17,7 +17,7 @@ public partial class Contributor
 
     public bool Admin { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public virtual Garden Garden { get; set; } = null!;
 

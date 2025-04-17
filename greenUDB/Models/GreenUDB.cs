@@ -136,11 +136,6 @@ public partial class GreenUDB : DbContext
             entity.Property(e => e.GardenId).HasColumnName("Garden_id");
             entity.Property(e => e.UserId).HasColumnName("User_id");
 
-            entity.HasOne(d => d.FollowerNavigation).WithMany(p => p.FollowerFollowerNavigations)
-                .HasForeignKey(d => d.FollowerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_Follower_Follower_id");
-
             entity.HasOne(d => d.Garden).WithMany(p => p.Followers)
                 .HasForeignKey(d => d.GardenId)
                 .HasConstraintName("fk_Follower_Garden_id");

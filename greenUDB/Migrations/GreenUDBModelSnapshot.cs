@@ -67,9 +67,15 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
+
+                    b.Property<double?>("Distance_plantation")
+                        .HasColumnType("double");
 
                     b.Property<DateOnly?>("Harvesting")
                         .HasColumnType("date");
@@ -157,6 +163,9 @@ namespace GreenUApi.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -164,8 +173,8 @@ namespace GreenUApi.Migrations
                     b.Property<double>("Latitude")
                         .HasColumnType("double");
 
-                    b.Property<long>("Length")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Length")
+                        .HasColumnType("double");
 
                     b.Property<double>("Longitude")
                         .HasColumnType("double");
@@ -185,8 +194,8 @@ namespace GreenUApi.Migrations
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("Width")
-                        .HasColumnType("bigint");
+                    b.Property<double>("Width")
+                        .HasColumnType("double");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
@@ -211,20 +220,20 @@ namespace GreenUApi.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
-                    b.Property<long?>("Length")
+                    b.Property<double?>("Length")
+                        .HasColumnType("double");
+
+                    b.Property<long?>("PLantNurseryId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("ParcelId")
                         .HasColumnType("bigint")
                         .HasColumnName("Parcel_id");
 
-                    b.Property<long?>("PlantNurseryId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
-                    b.HasIndex("PlantNurseryId");
+                    b.HasIndex("PLantNurseryId");
 
                     b.HasIndex(new[] { "ParcelId" }, "fk_Line_Parcel_id");
 
@@ -314,15 +323,15 @@ namespace GreenUApi.Migrations
                     b.Property<double?>("Length")
                         .HasColumnType("double");
 
-                    b.Property<long?>("NLine")
-                        .HasColumnType("bigint")
+                    b.Property<double?>("NLine")
+                        .HasColumnType("double")
                         .HasColumnName("N_line");
 
                     b.Property<double?>("ParcelAngle")
                         .HasColumnType("double");
 
-                    b.Property<long?>("Width")
-                        .HasColumnType("bigint");
+                    b.Property<double?>("Width")
+                        .HasColumnType("double");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
@@ -422,8 +431,8 @@ namespace GreenUApi.Migrations
                     b.Property<string>("Lastname")
                         .HasColumnType("text");
 
-                    b.Property<long>("Level")
-                        .HasColumnType("bigint");
+                    b.Property<bool>("Newsletter")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Password")
                         .HasColumnType("text");
@@ -438,6 +447,12 @@ namespace GreenUApi.Migrations
 
                     b.Property<string>("Salt")
                         .HasColumnType("text");
+
+                    b.Property<byte>("Skill_level")
+                        .HasColumnType("tinyint unsigned");
+
+                    b.Property<bool>("Tou")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Username")
                         .HasColumnType("text");
@@ -489,12 +504,6 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Follower", b =>
                 {
-                    b.HasOne("GreenUApi.Models.User", "FollowerNavigation")
-                        .WithMany("FollowerFollowerNavigations")
-                        .HasForeignKey("FollowerId")
-                        .IsRequired()
-                        .HasConstraintName("fk_Follower_Follower_id");
-
                     b.HasOne("GreenUApi.Models.Garden", "Garden")
                         .WithMany("Followers")
                         .HasForeignKey("GardenId")
@@ -504,8 +513,6 @@ namespace GreenUApi.Migrations
                         .WithMany("FollowerUsers")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_Follower_User_id");
-
-                    b.Navigation("FollowerNavigation");
 
                     b.Navigation("Garden");
 
@@ -521,14 +528,14 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Line", b =>
                 {
+                    b.HasOne("GreenUApi.Models.PlantNursery", null)
+                        .WithMany("Lines")
+                        .HasForeignKey("PLantNurseryId");
+
                     b.HasOne("GreenUApi.Models.Parcel", "Parcel")
                         .WithMany("Lines")
                         .HasForeignKey("ParcelId")
                         .HasConstraintName("fk_Line_Parcel_id");
-
-                    b.HasOne("GreenUApi.Models.PlantNursery", null)
-                        .WithMany("Lines")
-                        .HasForeignKey("PlantNurseryId");
 
                     b.Navigation("Parcel");
                 });
@@ -640,8 +647,6 @@ namespace GreenUApi.Migrations
             modelBuilder.Entity("GreenUApi.Models.User", b =>
                 {
                     b.Navigation("Contributors");
-
-                    b.Navigation("FollowerFollowerNavigations");
 
                     b.Navigation("FollowerUsers");
 

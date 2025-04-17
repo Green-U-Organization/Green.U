@@ -26,8 +26,10 @@ public partial class Crop
     public DateOnly? Planting { get; set; }
 
     public DateOnly? Harvesting { get; set; }
+    public double? Distance_plantation { get; set; }
+    public string? Comments { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public virtual Line? Line { get; set; }
 

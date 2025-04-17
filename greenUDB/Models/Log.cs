@@ -30,7 +30,7 @@ public partial class Log
 
     public string Status { get; set; } = null!;
 
-    public long? CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public virtual User? Author { get; set; }
 

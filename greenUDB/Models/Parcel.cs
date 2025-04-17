@@ -13,15 +13,15 @@ public partial class Parcel
 
     public long? GardenId { get; set; }
 
-    public Double? Length { get; set; }
+    public double? Length { get; set; }
 
-    public long? Width { get; set; }
+    public double? Width { get; set; }
 
-    public long? NLine { get; set; }
+    public double? NLine { get; set; }
 
-    public Double? ParcelAngle { get; set; }
+    public double? ParcelAngle { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public virtual Garden? Garden { get; set; }
 

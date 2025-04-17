@@ -5,6 +5,7 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,13 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAuthorization();
 
 // Autres services
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    options.JsonSerializerOptions.MaxDepth = 64;
+});
+
 builder.Services.AddControllers();
 builder.Services.AddDbContext<GreenUDB>();
 
@@ -43,18 +51,28 @@ builder.Services.AddDbContext<GreenUDB>(options =>
 );
 
 // Use Cors with .env
-var allowedOrigin = Environment.GetEnvironmentVariable("API") ?? "http://localhost:3000";
-builder.Services.AddCors(options =>
+var allowedOrigins = new string[] { "http://localhost:3000", "http://192.168.0.71:3000" };
+Console.WriteLine("Allowed Origins:");
+foreach (var origin in allowedOrigins)
+{
+    Console.WriteLine(origin);
+}
+    builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
-    policy => policy.WithOrigins(allowedOrigin)
+    policy => policy.WithOrigins(allowedOrigins)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
 });
 
 // Add other services
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;  // Ignore les boucles de référence
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;  // Ignore les valeurs null
+    });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>
@@ -66,7 +84,6 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
-// Use cors
 app.UseCors("AllowSpecificOrigin");
 
 app.UseRouting();

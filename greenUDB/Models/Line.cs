@@ -13,9 +13,11 @@ public partial class Line
 
     public long? ParcelId { get; set; }
 
-    public long? Length { get; set; }
+    public long? PLantNurseryId { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public double? Length { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public virtual ICollection<Crop> Crops { get; set; } = new List<Crop>();
 

@@ -37,17 +37,19 @@ public partial class User
 
     public string? Bio { get; set; }
 
-    public long Level { get; set; } = 0!;
+    public byte Skill_level { get; set; }
 
     public long Xp { get; set; } = 0!;
+
+    public bool Newsletter { get; set; } = false;
+
+    public bool Tou { get; set; } = false;
 
     public bool Deleted { get; set; } = false;
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public virtual ICollection<Contributor> Contributors { get; set; } = new List<Contributor>();
-
-    public virtual ICollection<Follower> FollowerFollowerNavigations { get; set; } = new List<Follower>();
 
     public virtual ICollection<Follower> FollowerUsers { get; set; } = new List<Follower>();
 

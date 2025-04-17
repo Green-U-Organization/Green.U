@@ -25,17 +25,19 @@ public partial class Garden
 
     public string Name { get; set; } = null!;
 
+    public bool Deleted { get; set; } = false;
+
     public string Description { get; set; } = null!;
 
     public double Latitude { get; set; }
 
     public double Longitude { get; set; }
 
-    public long Length { get; set; }
+    public double Length { get; set; }
 
-    public long Width { get; set; }
+    public double Width { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public GardenPrivacy Privacy { get; set; } = GardenPrivacy.Public;
 
