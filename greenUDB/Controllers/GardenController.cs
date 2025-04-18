@@ -51,7 +51,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<GardenDto>> GetAllGardens()
+        public async Task<ActionResult<Garden>> GetAllGardens()
         {
             var gardens = await _db.Gardens
                 .ToListAsync();
@@ -60,7 +60,7 @@ namespace GreenUApi.Controllers
         }
 
        [HttpGet("user/{id}")]
-        public async Task<ActionResult<IEnumerable<GardenDto>>> GetGardensByUser(long id)
+        public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long id)
         {
             var gardens = await _db.Gardens
                                         .Where(g => g.AuthorId == id)
@@ -243,9 +243,5 @@ namespace GreenUApi.Controllers
 
             return Ok(new { isEmpty = false, message = "This garden are deleted", content = garden });
         }
-    }
-
-    public class GardenDto
-    {
     }
 }
