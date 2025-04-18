@@ -55,41 +55,10 @@ namespace GreenUApi.Controllers
         [HttpGet]
         public async Task<ActionResult<GardenDto>> GetAllGardens()
         {
-            var gardens = await _db.Gardens.Select(g => new{
-                g.Id,
-                g.AuthorId,
-                g.Name,
-                g.Description,
-                g.Latitude,
-                g.Longitude,
-                g.Length,
-                g.Width,
-                g.Privacy,
-                g.Type
-            }).ToListAsync();
-
-            return Ok(gardens);
-        }
-
-        [HttpGet("username/{author}")]
-        public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByName(string author)
-        {
-            var user = await _db.Users.Where(u => u.Username == author).ToListAsync();
-
-            if(user == null){
-                return NotFound();
-            }
-
             var gardens = await _db.Gardens
-                                        .Where(g => g.AuthorId == user[0].Id)
-                                        .ToListAsync();
+                .ToListAsync();
 
-            if (gardens == null)
-            {
-                return NotFound();
-            }
-
-            return gardens;
+            return Ok(new { isEmpty = false, message = "All garden", content = gardens });
         }
 
        [HttpGet("user/{userId}")]
