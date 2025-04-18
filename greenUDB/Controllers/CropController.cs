@@ -110,27 +110,24 @@ namespace GreenUApi.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Crop>> PostCropPlantnursery([FromBody] Crop crop)
+        [HttpPost("plantnursery/{id}")]
+        public async Task<ActionResult<Crop>> PostCropPlantnursery(long id, [FromBody] Crop crop)
         {
+            crop.PlantNurseryId = id;
+
             if (!crop.PlantNurseryId.HasValue)
             {
-                return BadRequest(new { isEmpty = true, message = "No id for line or plantNursery" });
-            }
-
-            if (crop.LineId.HasValue)
-            {
-                var ExistingLine = await _db.Lines
-                    .FindAsync(crop.LineId);
-
-                if (ExistingLine == null) return BadRequest(new { isEmpty = true, message = "Line id is incorrect" });
+                return BadRequest(new { isEmpty = true, message = "No id for plantNursery" });
             }
 
             if (crop.PlantNurseryId.HasValue)
             {
                 var ExistingPlantNursery = await _db.PlantNursery
                     .FindAsync(crop.PlantNurseryId);
+
                 if (ExistingPlantNursery == null) return BadRequest(new { isEmpty = true, message = "PlantNursery id is bad" });
+
+
             }
 
             _db.Crops.Add(crop);
