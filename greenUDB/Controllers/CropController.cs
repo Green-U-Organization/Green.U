@@ -77,37 +77,63 @@ namespace GreenUApi.Controllers
            
             await _db.SaveChangesAsync();
             return Ok(new { isEmpty = false, message = "This crop is edited", content = existingCrop});
-            
-            
+  
         }
         
-        [HttpPost]
-        public async Task<ActionResult<Crop>> PostCrop([FromBody] Crop crop)
+        [HttpPost("line/{id}")]
+        public async Task<ActionResult<Crop>> PostCropLine(long id, [FromBody] Crop crop)
         {
-            if (!crop.LineId.HasValue && !crop.PlantNurseryId.HasValue)
-            {
-                return BadRequest(new {isEmpty = true, message = "No id for line or plantNursery"});
-            }
+            crop.LineId = id;
 
+            if (!crop.LineId.HasValue)
+            {
+                return BadRequest(new {isEmpty = true, message = "No id for line"});
+            }
+                
             if (crop.LineId.HasValue)
             {
                 var ExistingLine = await _db.Lines
                     .FindAsync(crop.LineId);
 
                 if (ExistingLine == null) return BadRequest(new {isEmpty = true, message = "Line id is incorrect" });
-            }
 
-            if (crop.PlantNurseryId.HasValue)
-            {
-                var ExistingPlantNursery = await _db.PlantNursery
-                    .FindAsync(crop.PlantNurseryId);
-                if (ExistingPlantNursery == null) return BadRequest(new {isEmpty = true, message = "PlantNursery id is bad" });
+                var ExistingCropLine = await _db.Crops
+                    .FindAsync(crop.LineId);
+
+                if (ExistingCropLine != null) return Conflict(new { isEmpty = true, message = "This line have a crop..." });
             }
 
             _db.Crops.Add(crop);
                 await _db.SaveChangesAsync();
 
                 return Ok(new {isEmpty = false, message = "Your crop are created !", content = crop});
+
+        }
+
+        [HttpPost("plantnursery/{id}")]
+        public async Task<ActionResult<Crop>> PostCropPlantnursery(long id, [FromBody] Crop crop)
+        {
+            crop.PlantNurseryId = id;
+
+            if (!crop.PlantNurseryId.HasValue)
+            {
+                return BadRequest(new { isEmpty = true, message = "No id for plantNursery" });
+            }
+
+            if (crop.PlantNurseryId.HasValue)
+            {
+                var ExistingPlantNursery = await _db.PlantNursery
+                    .FindAsync(crop.PlantNurseryId);
+
+                if (ExistingPlantNursery == null) return BadRequest(new { isEmpty = true, message = "PlantNursery id is bad" });
+
+
+            }
+
+            _db.Crops.Add(crop);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "Your crop are created !", content = crop });
 
         }
 

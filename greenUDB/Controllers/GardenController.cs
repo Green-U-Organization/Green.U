@@ -46,10 +46,10 @@ namespace GreenUApi.Controllers
 
             if (garden == null)
             {
-                return NotFound();
+                return NotFound(new { isEmpty = true, message = "The id is incorrect" });
             }
 
-            return garden;
+            return Ok(new { isEmpty = false, message = "The garden", content = garden });
         }
 
         [HttpGet]
