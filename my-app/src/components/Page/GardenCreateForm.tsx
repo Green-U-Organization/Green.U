@@ -6,10 +6,10 @@ import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
 import SelectInput from '../Atom/SelectInput';
 import HashtagInput from '../HashtagInput';
-import { createNewGarden } from '@/utils/actions/garden/createNewGarden';
 import { useRouter } from 'next/navigation';
 import LocationPicker from '../UI/LocationPicker';
 import { useLanguage } from '../../app/contexts/LanguageProvider';
+import { useCreateNewGardenMutation } from '@/slice/garden';
 
 type gardenType = {
   authorId: number;
@@ -48,6 +48,9 @@ const CreateGardenForm = () => {
   //   privacy: 0,
   //   type: 0,
   // });
+
+  //RTH Query
+  const [createNewGarden] = useCreateNewGardenMutation();
 
   const rows = 5;
   const cols = 33;
@@ -89,7 +92,14 @@ const CreateGardenForm = () => {
       };
 
       console.log('Garden Data:', gardenData);
-      createNewGarden(gardenData);
+
+      try {
+        createNewGarden(gardenData).unwrap();
+        console.log('Garden created with success');
+      } catch {
+        console.log('Error creatng garden');
+      }
+
       router.push('/garden-manager');
     } else {
       console.error('Form not found');

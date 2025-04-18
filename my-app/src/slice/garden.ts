@@ -33,6 +33,20 @@ type CreateNewParcelRequest = {
   parcel_angle: number;
 };
 
+type CreateNewGardenRequest = {
+  id: number;
+  authorId: number;
+  name: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  privacy: number;
+  type: number;
+  hashtags: [];
+};
+
 type GetAllParcelByGardenIdRequest = {
   gardenId: number;
 };
@@ -49,8 +63,104 @@ type GetAllParcelByGardenIdResponse = {
   logs: [];
 }[];
 
+type GetAllGardenByUserIdResponse = {
+  id: number;
+  authorId: number;
+  name: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  privacy: number;
+  type: number;
+  hashtags: [];
+}[];
+
+type GetAllGardenByUserIdRequest = {
+  userId: number;
+};
+
+type GetOneGardenByGardenIdResponse = {
+  id: number;
+  authorId: number;
+  name: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  privacy: number;
+  type: number;
+  hashtags: [];
+};
+
+type GetOneGardenByGardenIdRequest = {
+  gardenId: number;
+};
+
+type CreateCropToLineRequest = {
+  lineId: number;
+  vegetable: string;
+  variety: string;
+  icon: string;
+  sowing: string;
+  planting: string;
+  harvesting: string;
+  distancePlantation: number;
+  comments: string;
+};
+
+type CreateCropToNurseryRequest = {
+  nurseryId: number;
+  vegetable: string;
+  variety: string;
+  sowing: string;
+  planting: string;
+  harvesting: string;
+  distance_plantation: number;
+  comments: string;
+};
+
+type GetCropByLineIdResponse = {
+  id: number;
+  vegetable: string;
+  variety: string;
+  sowing: string;
+  planting: string;
+  harvesting: string;
+  distance_plantation: number;
+  comments: string;
+};
+
+type GetCropByLineIdRequest = {
+  lineId: number;
+};
+
+type GetCropByNurseryIdResponse = {
+  id: number;
+  vegetable: string;
+  variety: string;
+  sowing: string;
+  planting: string;
+  harvesting: string;
+  distance_plantation: number;
+  comments: string;
+};
+
+type GetCropByNurseryIdRequest = {
+  nurseryId: number;
+};
+
 export const extendedGardenAPI = api
-  .enhanceEndpoints({ addTagTypes: ['garden-lines', 'garden-parcels'] })
+  .enhanceEndpoints({
+    addTagTypes: [
+      'garden-lines',
+      'garden-parcels',
+      'garden-gardens',
+      'garden-crops',
+    ],
+  })
   .injectEndpoints({
     endpoints: (builder) => ({
       //CreateNewGardenLine >> OK
@@ -62,6 +172,7 @@ export const extendedGardenAPI = api
         }),
         invalidatesTags: ['garden-lines'],
       }),
+
       //GelAllLineByParcelId >> OK
       getAllLinesByParcelId: builder.query<
         GetAllLinesByParcelIdResponse,
@@ -73,7 +184,8 @@ export const extendedGardenAPI = api
         }),
         providesTags: ['garden-lines'],
       }),
-      //DeleteOneLine >> OK
+
+      //DeleteOneLine >> OK >>>>>> BUG WHEN DELETING LINE WITH CROPS
       DeleteOneLineByLineId: builder.mutation<
         void,
         DeleteOneLineByLineIdRequest
@@ -85,9 +197,10 @@ export const extendedGardenAPI = api
         }),
         invalidatesTags: ['garden-lines'],
       }),
-      //EditLine
 
-      //CreateNewParcel
+      //EditLine >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+      //CreateNewParcel >> OK
       createNewParcel: builder.mutation<void, CreateNewParcelRequest>({
         query: (arg) => ({
           url: `/garden/parcel/`,
@@ -96,7 +209,8 @@ export const extendedGardenAPI = api
         }),
         invalidatesTags: ['garden-parcels'],
       }),
-      //GetAllParcelByGardenId
+
+      //GetAllParcelByGardenId >> OK
       getAllParcelByGardenId: builder.query<
         GetAllParcelByGardenIdResponse,
         GetAllParcelByGardenIdRequest
@@ -107,7 +221,8 @@ export const extendedGardenAPI = api
         }),
         providesTags: ['garden-parcels'],
       }),
-      //DeleteParcel
+
+      //DeleteParcel >> OK
       DeleteOneParcelByParcelId: builder.mutation<
         void,
         DeleteOneParcelByParcelIdRequest
@@ -119,13 +234,102 @@ export const extendedGardenAPI = api
         }),
         invalidatesTags: ['garden-parcels'],
       }),
-      //EditParcel
 
-      //CreateNewGarden
+      //EditParcel >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-      //GetAllGardeByUserId
+      //CreateNewGarden >> OK
+      createNewGarden: builder.mutation<void, CreateNewGardenRequest>({
+        query: (arg) => ({
+          url: `/garden/`,
+          method: 'POST',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-gardens'],
+      }),
 
-      //EditGarden
+      //GetAllGardeByUserId >> OK
+      getAllGardenByUserId: builder.query<
+        GetAllGardenByUserIdResponse,
+        GetAllGardenByUserIdRequest
+      >({
+        query: (arg) => ({
+          url: `/garden/user/${arg.userId}`,
+          method: 'GET',
+        }),
+        providesTags: ['garden-gardens'],
+      }),
+
+      //GetOneGardenByGardenId >> OK + TO IMPLEMENT
+      getOneGardenByGardenId: builder.query<
+        GetOneGardenByGardenIdResponse,
+        GetOneGardenByGardenIdRequest
+      >({
+        query: (arg) => ({
+          url: `/${arg.gardenId}`,
+          method: 'GET',
+        }),
+        providesTags: ['garden-gardens'],
+      }),
+
+      //GetAllGardenByTags >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+      //EditGarden >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+      //CreateCropToLine >> OK
+      createCropToLine: builder.mutation<void, CreateCropToLineRequest>({
+        query: (arg) => ({
+          url: `/crops/line/${arg.lineId}`,
+          method: 'POST',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-crops'],
+      }),
+
+      //CreateCropToNursery >> OK + TO IMPLEMENT
+      createCropToNursery: builder.mutation<void, CreateCropToNurseryRequest>({
+        query: (arg) => ({
+          url: `/crops/nursery/${arg.nurseryId}`,
+          method: 'POST',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-crops'],
+      }),
+
+      //EditCropByCropId >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+      //GetCropByLineId >> OK
+      getCropByLineId: builder.query<
+        GetCropByLineIdResponse,
+        GetCropByLineIdRequest
+      >({
+        query: (arg) => ({
+          url: `/crops/line/${arg.lineId}`,
+          method: 'GET',
+        }),
+        providesTags: ['garden-crops'],
+      }),
+
+      //GetCropByNurseryId >> OK + TO IMPLEMENT
+      getCropByNurseryId: builder.query<
+        GetCropByNurseryIdResponse,
+        GetCropByNurseryIdRequest
+      >({
+        query: (arg) => ({
+          url: `/crops/nursery/${arg.nurseryId}`,
+          method: 'GET',
+        }),
+        providesTags: ['garden-crops'],
+      }),
+
+      //GetCropsByVegetableName >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+      //CreateNursery
+
+      //GetNurseryByGardenId
+
+      //EditNursery
+
+      //DeleteNursery
     }),
   });
 
@@ -136,4 +340,11 @@ export const {
   useCreateNewParcelMutation,
   useDeleteOneParcelByParcelIdMutation,
   useGetAllParcelByGardenIdQuery,
+  useCreateNewGardenMutation,
+  useGetAllGardenByUserIdQuery,
+  useGetOneGardenByGardenIdQuery,
+  useCreateCropToLineMutation,
+  useCreateCropToNurseryMutation,
+  useGetCropByLineIdQuery,
+  useGetCropByNurseryIdQuery,
 } = extendedGardenAPI;

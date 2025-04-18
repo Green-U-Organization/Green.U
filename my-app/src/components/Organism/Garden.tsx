@@ -3,19 +3,14 @@ import React, { FC, useEffect, useState } from 'react';
 import Parcel from './Parcel';
 import styles from '../../app/Assets.module.css';
 import { GardenProps, type Garden } from '@/utils/types';
-import { useParcelList } from '@/app/hooks/useParcelList';
 import MenuSandwich from '../Molecule/MenuSandwich';
 import Submenu from '../Molecule/Submenu';
 import NewParcelForm from '../Molecule/NewParcelForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setFullscreen, setGraphicMode } from '../../redux/garden/gardenSlice';
-// import { useGardenList } from '../../app/hooks/useGardenList';
 import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
-import {
-  useDeleteOneParcelByParcelIdMutation,
-  useGetAllParcelByGardenIdQuery,
-} from '@/slice/garden';
+import { useGetAllParcelByGardenIdQuery } from '@/slice/garden';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks
@@ -39,8 +34,6 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   } = useGetAllParcelByGardenIdQuery({
     gardenId: garden.id,
   });
-
-  // const [createNewParcel] = useCreateNewParcelMutation;
 
   // const [listDisplay, setListDisplay] = useState<boolean>(false);
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);

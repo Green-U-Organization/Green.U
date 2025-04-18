@@ -4,8 +4,12 @@ import React, { FC } from 'react';
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
 import { GardenCardHeaderProps } from '@/utils/types';
-import { useGardenList } from '../../app/hooks/useGardenList';
+import { setSelectedGarden } from '@/redux/garden/gardenSlice';
+// import { useGardenList } from '../../app/hooks/useGardenList';
 import H1 from '../Atom/H1';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetAllGardenByUserIdQuery } from '@/slice/garden';
+import { RootState } from '@/redux/store';
 
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   containerName,
@@ -14,49 +18,52 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
 }) => {
   // const [selectedGarden, setSelectedGarden] = useState<Garden>();
   const router = useRouter();
-  const {
-    gardens,
-    loading,
-    error,
-    isEmpty,
-    selectedGarden,
-    setSelectedGarden,
-  } = useGardenList(1); //IL FAUDRA CHOPPER L'ID du USER DANS LES COOKIES !!!!!!!!
+  const dispatch = useDispatch();
 
-  console.log('Gardens from useGardenList:', gardens);
-  console.log('Selected Garden from useGardenList:', selectedGarden);
-  //#region FETCHING GARDEN DATA
+  //RTK Query
+  const {
+    data: gardens,
+    isLoading: gardensIsLoading,
+    isError: gardensIsError,
+  } = useGetAllGardenByUserIdQuery({
+    userId: 1, // CHANGER AVEC LE VRAI ID USER
+  }); // get de donnés des données
+  console.log('fetched gardens : ', gardens);
+
+  //Selectors
+  const selectedGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
+  );
 
   //#region HANDLER
   const handleGardenIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedGardenId = Number(e.target.value);
 
-    console.log('Selected garden ID from dropdown:', selectedGardenId);
+    // console.log('Selected garden ID from dropdown:', selectedGardenId);
 
-    const garden = gardens.find((g) => g.id === selectedGardenId);
+    const garden = gardens?.find((g) => g.id === selectedGardenId);
     console.log('Garden found in gardens array:', garden);
 
     if (garden) {
-      setSelectedGarden(garden);
+      dispatch(setSelectedGarden(garden));
       console.log('Updated selectedGarden:', garden);
     }
 
     // if (selectedGarden) {
     //   onGardenIdChange && onGardenIdChange(selectedGarden);
     // }
-    // race condition
+    //race condition
   };
-  //#endregion
 
   const gardenDescription = selectedGarden?.description;
 
-  if (loading) {
+  if (gardensIsLoading) {
     return <div>Loading...</div>;
   }
-  if (error) {
-    console.log('Error : ', { error });
+  if (gardensIsError) {
+    console.log('Error in gardens list');
   }
-  if (isEmpty) {
+  if (gardens?.length === 0) {
     console.log('Oups, no garden find...');
   }
 

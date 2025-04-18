@@ -1,9 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Card from '../Atom/Card';
 import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-import { addCropLine } from '@/utils/actions/crops/line/addCropLine';
+// import { addCropLine } from '@/utils/actions/crops/line/addCropLine';
+import {
+  useCreateCropToLineMutation,
+  // useCreateCropToNurseryMutation,
+} from '@/slice/garden';
+// import { getCropByLinelId } from '@/utils/actions/crops/line/getCropByLineId';
 
 interface AddCropPopup {
   handleYesClick?: () => void;
@@ -12,39 +17,51 @@ interface AddCropPopup {
 }
 
 const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
-  const handleSubmit = async () => {
-    const form = document.getElementById('addCrop') as HTMLFormElement;
-    if (form) {
-      const formData = new FormData(form);
+  const [plantationDistance, setPlantationDistance] = useState<number>(10);
 
-      const formatDate = (date: Date | null) => {
-        return date ? date.toISOString().split('T')[0] : null; // Formate la date en "YYYY-MM-DD"
-      };
+  //RTK Query
+  const [createCropToLine] = useCreateCropToLineMutation();
 
-      const sowing =
-        formData.get('cropAction') === 'sowing' ? formatDate(new Date()) : '';
-      const planting =
-        formData.get('cropAction') === 'planting' ? formatDate(new Date()) : '';
+  //Handlers
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-      const cropData = {
-        lineId: lineId,
-        vegetable: (formData.get('vegetable') as string) || '',
-        variety: (formData.get('variety') as string) || '',
-        sowing: sowing || '',
-        planting: planting || '',
-        harvesting: '',
-      };
+    const formData = new FormData(event.currentTarget);
 
-      console.log(cropData);
+    const formatDate = (date: Date | null) => {
+      return date ? date.toISOString().split('T')[0] : null; // Formate la date en "YYYY-MM-DD"
+    };
+    const sowing =
+      formData.get('cropAction') === 'sowing' ? formatDate(new Date()) : '';
+    const planting =
+      formData.get('cropAction') === 'planting' ? formatDate(new Date()) : '';
 
-      await addCropLine(cropData);
+    const cropData = {
+      lineId: lineId,
+      vegetable: formData.get('vegetable') as string,
+      variety: formData.get('variety') as string,
+      icon: '',
+      sowing: sowing || '',
+      planting: planting || '',
+      harvesting: '',
+      distancePlantation: 1,
+      comments: '',
+    };
+
+    console.log('crops : ', cropData);
+    try {
+      await createCropToLine(cropData).unwrap();
+      console.log('crop created');
+      handleNoClick();
+    } catch {
+      console.log('Error creating crop');
     }
   };
 
   return (
     <Card className="flex w-[70vw] flex-col justify-center">
       <H2>Wich crop you want to add?</H2>
-      <form method="post" id="addCrop">
+      <form id="addCrop" onSubmit={handleSubmit}>
         <TextInput
           type="text"
           name="vegetable"
@@ -62,10 +79,41 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
           <option value="planting">Planting</option>
         </select>
         <br />
+        <div className="mx-[4vw] flex flex-col">
+          <label htmlFor="plantationDistance">
+            Plantation distance : {plantationDistance}cm
+          </label>
+          <div className="flex items-center justify-around">
+            <p onClick={() => setPlantationDistance(plantationDistance - 1)}>
+              -
+            </p>
+            <input
+              type="range"
+              name="plantationDistance"
+              min={1}
+              max={100}
+              step={1}
+              value={plantationDistance}
+              className={`bg-border h-2 cursor-cell appearance-none`}
+            />
+            <p onClick={() => setPlantationDistance(plantationDistance + 1)}>
+              +
+            </p>
+          </div>
+        </div>
+
+        <label className="mx-[4vw]" htmlFor="comments">
+          Comments :
+        </label>
+        <textarea
+          className="w-100% mx-[4vw] border-1"
+          name="comments"
+          id="comments"
+        ></textarea>
 
         <div className="flex items-center justify-center">
           <Button onClick={handleNoClick}>Back</Button>
-          <Button onClick={handleSubmit}>Plant</Button>
+          <Button type="submit">Plant</Button>
         </div>
       </form>
     </Card>

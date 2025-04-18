@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import Button from '../Atom/Button';
 import H2 from '../Atom/H2';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { createNewParcel } from '@/utils/actions/garden/parcel/createNewParcel';
-import { setReload } from '@/redux/garden/gardenSlice';
 // import { useRouter } from 'next/navigation';
 import { useCreateNewParcelMutation } from '@/slice/garden';
 
@@ -17,14 +15,13 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   //RTK Queries
   const [
     createNewParcel, // fetch de création de ligne
-    { isLoading: createNewParcelIsLoading },
+    //{ isLoading: createNewParcelIsLoading },
   ] = useCreateNewParcelMutation();
 
   //Selectors
   const actualGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
-  const dispatch = useDispatch();
   if (!displayCondition) return null;
 
   // const reload = useSelector((state: RootState) => state.garden.reload);

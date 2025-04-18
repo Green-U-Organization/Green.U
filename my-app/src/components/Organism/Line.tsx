@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { FC, useState } from 'react'; // <DraggableCore>
@@ -5,14 +6,15 @@ import React, { FC, useState } from 'react'; // <DraggableCore>
 import { LineProps } from '@/utils/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import Image from 'next/image';
 import H2 from '../Atom/H2';
-import { deleteOneLineByLineId } from '@/utils/actions/garden/parcel/line/deleteOneLineByLineId';
 import Confirmation from '../Molecule/Confirmation';
-import { getCropByLinelId } from '@/utils/actions/crops/line/getCropByLineId';
+// import { getCropByLinelId } from '@/utils/actions/crops/line/getCropByLineId';
 import AddCropPopup from '../Molecule/AddCropPopup';
 import ExistentCropPopup from '../Molecule/ExistentCropPopup';
-import { useDeleteOneLineByLineIdMutation } from '@/slice/garden';
+import {
+  useDeleteOneLineByLineIdMutation,
+  useGetCropByLineIdQuery,
+} from '@/slice/garden';
 
 const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);
@@ -23,8 +25,13 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
     useState<boolean>(false);
 
   //RTK Query
-  const [deleteLineMutation, { data: lines }] =
-    useDeleteOneLineByLineIdMutation();
+  const [
+    deleteLineMutation,
+    //  { data: lines }
+  ] = useDeleteOneLineByLineIdMutation();
+  const { data: crops } = useGetCropByLineIdQuery({
+    lineId: line.id,
+  });
 
   // Example usage of the mutation function:
   // deleteLineMutation({ lineId: line.id });
@@ -36,9 +43,6 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
 
   //Functions
   const deletingLine = () => {
-    // console.log(line.id);
-    // deleteOneLineByLineId(line.id);
-    // setDisplayDeletingLinePopup(false);
     try {
       deleteLineMutation({
         lineId: line.id,
@@ -114,11 +118,11 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
 
   //Handlers
   const handleClickAddCrop = async () => {
-    const actualCrops = await getCropByLinelId(line.id);
+    const actualCrops = crops;
     console.log(actualCrops);
-    if (actualCrops.content) {
+    if (actualCrops) {
       setCropIsPresent(true);
-    } else if (!actualCrops.content) {
+    } else if (!actualCrops) {
       console.log('empty line');
       setCropIsPresent(false);
     }

@@ -1,18 +1,17 @@
 'use client';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import Line from './Line';
 import styles from '../../app/Assets.module.css';
 import Image from 'next/image';
 import { ParcelProps, type Parcel } from '@/utils/types';
-import { useLineList } from '@/app/hooks/useLineList';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/Confirmation';
-import { deleteOneParcelByParcelId } from '@/utils/actions/garden/parcel/deleteOneParcelByParcelId';
 import {
   useCreateNewGardenLineMutation,
   useGetAllLinesByParcelIdQuery,
+  useDeleteOneParcelByParcelIdMutation,
 } from '@/slice/garden';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
@@ -21,19 +20,22 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
     useState<boolean>(false);
   // const { lines, loading, error, isEmpty } = useLineList(currentParcel.id);
 
+  //RTK Query
   const {
     data: lines,
     isLoading: linesIsLoading,
     isError: linesIsError,
-    refetch: refetchLines, // si tu as un boutton pour acutalisé: refetchLines()
+    // refetch: refetchLines, // si tu as un boutton pour acutalisé: refetchLines()
   } = useGetAllLinesByParcelIdQuery({
     parcelId: parcel.id,
   }); // get de donnés des données
 
   const [
     createNewLine, // fetch de création de ligne
-    { isLoading: createNewLineIsLoading },
+    // { isLoading: createNewLineIsLoading },
   ] = useCreateNewGardenLineMutation();
+
+  const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
 
   const parcelY = parcel?.length;
   const parcelX = parcel?.width;
@@ -42,11 +44,6 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
-
-  // useEffect(() => {
-  //   setCurrentParcel(parcel);
-  //   console.log(currentParcel.id);
-  // }, [parcel, currentParcel.id]);
 
   const addLine = () => {
     try {
@@ -61,9 +58,14 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   };
 
   const deletingParcel = () => {
-    console.log(parcel.id);
-    deleteOneParcelByParcelId(parcel.id);
-    setDisplayDeletingParcelPopup(false);
+    try {
+      deleteParcel({
+        parcelId: parcel.id,
+      }).unwrap();
+      console.log('parcel deleted');
+    } catch {
+      console.log('error deleting parcel');
+    }
   };
 
   if (linesIsLoading) {
