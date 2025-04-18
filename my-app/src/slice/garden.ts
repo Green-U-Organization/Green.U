@@ -152,6 +152,24 @@ type GetCropByNurseryIdRequest = {
   nurseryId: number;
 };
 
+type CreateNurseryRequest = {
+  gardenId: number;
+  Name: string;
+  Type: string[];
+};
+
+type GetNurseryByGardenIdResponse = {
+  id: number;
+};
+
+type GetNurseryByGardenIdRequest = {
+  gardenId: number;
+};
+
+type DeleteOneNurseryByNurseryIdRequest = {
+  nurseryId: number;
+};
+
 export const extendedGardenAPI = api
   .enhanceEndpoints({
     addTagTypes: [
@@ -159,6 +177,7 @@ export const extendedGardenAPI = api
       'garden-parcels',
       'garden-gardens',
       'garden-crops',
+      'garden-nursery',
     ],
   })
   .injectEndpoints({
@@ -323,13 +342,42 @@ export const extendedGardenAPI = api
 
       //GetCropsByVegetableName >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-      //CreateNursery
+      //CreateNursery >> OK + TO IMPLEMENT
+      createNursery: builder.mutation<void, CreateNurseryRequest>({
+        query: (arg) => ({
+          url: `/nursery`,
+          method: 'POST',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-nursery'],
+      }),
 
-      //GetNurseryByGardenId
+      //GetNurseryByGardenId >> OK + TO IMPLEMENT
+      getNurseryByGardenId: builder.query<
+        GetNurseryByGardenIdResponse,
+        GetNurseryByGardenIdRequest
+      >({
+        query: (arg) => ({
+          url: `/plantnursery/${arg.gardenId}`,
+          method: 'GET',
+        }),
+        providesTags: ['garden-nursery'],
+      }),
 
-      //EditNursery
+      //EditNursery >> TO DO
 
-      //DeleteNursery
+      //DeleteNursery >> OK + TO IMPLEMENT
+      DeleteOneNurseryByNurseryId: builder.mutation<
+        void,
+        DeleteOneNurseryByNurseryIdRequest
+      >({
+        query: (arg) => ({
+          url: `/plantnursery/${arg.nurseryId}`,
+          method: 'DELETE',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-nursery'],
+      }),
     }),
   });
 
@@ -347,4 +395,7 @@ export const {
   useCreateCropToNurseryMutation,
   useGetCropByLineIdQuery,
   useGetCropByNurseryIdQuery,
+  useCreateNurseryMutation,
+  useGetNurseryByGardenIdQuery,
+  useDeleteOneNurseryByNurseryIdMutation,
 } = extendedGardenAPI;

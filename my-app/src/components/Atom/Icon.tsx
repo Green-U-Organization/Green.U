@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Image from 'next/image';
 
@@ -14,12 +15,10 @@ const Icon = ({ icon }: { icon: IconProps }) => {
       style={{ height: '80%' }}
       onClick={() => icon.handleClick()} // Gestion du clic
     >
-      <Image
+      <img
         src={icon.src}
         alt={icon.alt}
-        width={8}
-        height={32}
-        style={{ height: '100%', width: '100%' }} // Ajustement pour occuper tout l'espace
+        style={{ height: '100%', width: '100%' }}
       />
     </div>
   );

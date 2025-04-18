@@ -44,8 +44,8 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
       sowing: sowing || '',
       planting: planting || '',
       harvesting: '',
-      distancePlantation: 1,
-      comments: '',
+      distancePlantation: parseFloat(plantationDistance.toFixed(2)),
+      comments: formData.get('comments') as string,
     };
 
     console.log('crops : ', cropData);
@@ -56,6 +56,13 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
     } catch {
       console.log('Error creating crop');
     }
+  };
+
+  const handlePlantationDistanceChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const selectedPlantationDistance = Number(e.target.value);
+    setPlantationDistance(selectedPlantationDistance);
   };
 
   return (
@@ -89,11 +96,11 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
             </p>
             <input
               type="range"
-              name="plantationDistance"
-              min={1}
-              max={100}
-              step={1}
+              min="10"
+              max="100"
+              step="10"
               value={plantationDistance}
+              onChange={handlePlantationDistanceChange}
               className={`bg-border h-2 cursor-cell appearance-none`}
             />
             <p onClick={() => setPlantationDistance(plantationDistance + 1)}>

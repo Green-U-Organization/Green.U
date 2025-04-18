@@ -25,7 +25,8 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   if (!displayCondition) return null;
 
   // const reload = useSelector((state: RootState) => state.garden.reload);
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const newParcel = {
       gardenId: actualGarden?.id ?? 0,
       length: length,
