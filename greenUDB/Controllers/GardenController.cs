@@ -198,23 +198,23 @@ namespace GreenUApi.Controllers
             [HttpPatch("delete/{id}")]
         public async Task<IActionResult> DeleteGarden(long id)
         {
-            try
-            {
-                var garden = await _db.Gardens.FindAsync(id);
-                if (garden == null)
-                {
-                    return NotFound();
-                }
+            var garden = await _db.Gardens.FindAsync(id);
 
-                garden.Deleted = true;
-                await _db.SaveChangesAsync();
-            }
-            catch (Exception ex)
+            if (garden == null)
             {
-                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message ?? ex.Message}");
+                return BadRequest(new { isEmpty = true, message = "The id is bad."});
             }
 
-            return NoContent();
+            if (garden.Deleted)
+            {
+                return Conflict(new { isEmpty = true, message = "The garden is already deleted " });
+            }
+
+            garden.Deleted = true;
+            _db.Gardens.Update(garden);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "This garden are deleted", content = garden });
         }
     }
 

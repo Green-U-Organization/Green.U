@@ -83,6 +83,8 @@ namespace GreenUApi.Controllers
         [HttpPost("line/{id}")]
         public async Task<ActionResult<Crop>> PostCropLine(long id, [FromBody] Crop crop)
         {
+            if (crop == null) return BadRequest(new { isEmpty = true, message = "The body does not look like the model..." });
+             
             crop.LineId = id;
 
             if (!crop.LineId.HasValue)
@@ -98,7 +100,8 @@ namespace GreenUApi.Controllers
                 if (ExistingLine == null) return BadRequest(new {isEmpty = true, message = "Line id is incorrect" });
 
                 var ExistingCropLine = await _db.Crops
-                    .FindAsync(crop.LineId);
+                    .Where(c => c.LineId == crop.LineId)
+                    .FirstOrDefaultAsync();
 
                 if (ExistingCropLine != null) return Conflict(new { isEmpty = true, message = "This line have a crop..." });
             }
