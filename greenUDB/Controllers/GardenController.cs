@@ -133,7 +133,7 @@ namespace GreenUApi.Controllers
             _db.Update(garden);
             await _db.SaveChangesAsync();
 
-            return Ok(); 
+            return Ok(new { isEmpty = false, message = "The garden is modified !", content = garden}); 
         }
 
         [HttpPost]
@@ -147,6 +147,11 @@ namespace GreenUApi.Controllers
             var ExsistingGarden = await _db.Gardens
                 .Where(g => g.Name == garden.Name)
                 .FirstOrDefaultAsync();
+
+            if (garden.AuthorId == 0)
+            {
+                return BadRequest(new { isEmpty = true, message = "Need Author ID !" });
+            }
 
             if (ExsistingGarden != null)
             {
@@ -183,6 +188,10 @@ namespace GreenUApi.Controllers
                 return BadRequest(new { isEmpty = true, message = "The garden width need to be above 0" });
             }
 
+            _db.Gardens.Add(garden);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "Your garden are created !", content = garden});
 
         }
 
@@ -206,11 +215,6 @@ namespace GreenUApi.Controllers
             }
 
             return NoContent();
-        }
-
-        private bool GardenExists(long id)
-        {
-            return _db.Gardens.Any(e => e.Id == id);
         }
     }
 
