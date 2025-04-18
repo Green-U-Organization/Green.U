@@ -195,7 +195,7 @@ namespace GreenUApi.Controllers
 
         }
 
-            [HttpPatch("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGarden(long id)
         {
             var garden = await _db.Gardens.FindAsync(id);
@@ -208,6 +208,33 @@ namespace GreenUApi.Controllers
             if (garden.Deleted)
             {
                 return Conflict(new { isEmpty = true, message = "The garden is already deleted " });
+            }
+
+            var allParcel = await _db.Parcels
+                .Where(p => p.GardenId == id)
+                .ToListAsync();
+
+            // Need to check that if is a good practice i'm not sure... ^^"
+            foreach(var parcel in allParcel)
+            {
+                var parcelId = parcel.Id;
+
+                var lines = await _db.Lines
+                .Where(l => l.ParcelId == parcelId)
+                .ToListAsync();
+
+                foreach (var line in lines)
+                {
+                    var crops = await _db.Crops
+                        .Where(c => c.LineId == line.Id)
+                        .ToListAsync();
+                    foreach (var crop in crops)
+                    {
+                        crop.LineId = null;
+                    }
+                    _db.Lines.Remove(line);
+                }
+                _db.Parcels.Remove(parcel);
             }
 
             garden.Deleted = true;

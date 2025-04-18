@@ -100,7 +100,7 @@ namespace GreenUApi.Controllers
                     var crops = await _db.Crops.Where(c => c.LineId == line.Id).ToListAsync();
                     foreach (var crop in crops)
                     {
-                        _db.Crops.Remove(crop); 
+                        crop.LineId = null; 
                     }
                     _db.Lines.Remove(line);
                 }
