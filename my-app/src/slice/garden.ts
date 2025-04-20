@@ -34,7 +34,6 @@ type CreateNewParcelRequest = {
 };
 
 type CreateNewGardenRequest = {
-  id: number;
   authorId: number;
   name: string;
   description: string;
@@ -44,7 +43,7 @@ type CreateNewGardenRequest = {
   width: number;
   privacy: number;
   type: number;
-  hashtags: [];
+  hashtags: string[];
 };
 
 type GetAllParcelByGardenIdRequest = {
@@ -64,18 +63,22 @@ type GetAllParcelByGardenIdResponse = {
 }[];
 
 type GetAllGardenByUserIdResponse = {
-  id: number;
-  authorId: number;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  length: number;
-  width: number;
-  privacy: number;
-  type: number;
-  hashtags: [];
-}[];
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    authorId: number;
+    name: string;
+    description: string;
+    latitude: number;
+    longitude: number;
+    length: number;
+    width: number;
+    privacy: number;
+    type: number;
+    hashtags: [];
+  }[];
+};
 
 type GetAllGardenByUserIdRequest = {
   userId: number;

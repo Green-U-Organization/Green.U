@@ -28,7 +28,8 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   } = useGetAllGardenByUserIdQuery({
     userId: 1, // CHANGER AVEC LE VRAI ID USER
   }); // get de donnés des données
-  console.log('fetched gardens : ', gardens);
+  console.log('fetched gardens : ', gardens?.content);
+  console.log('coucou');
 
   //Selectors
   const selectedGarden = useSelector(
@@ -41,7 +42,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
 
     // console.log('Selected garden ID from dropdown:', selectedGardenId);
 
-    const garden = gardens?.find((g) => g.id === selectedGardenId);
+    const garden = gardens?.content.find((g) => g.id === selectedGardenId);
     console.log('Garden found in gardens array:', garden);
 
     if (garden) {
@@ -63,7 +64,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   if (gardensIsError) {
     console.log('Error in gardens list');
   }
-  if (gardens?.length === 0) {
+  if (gardens?.content.length === 0) {
     console.log('Oups, no garden find...');
   }
 
@@ -93,8 +94,8 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
             {' '}
             <option value="" disabled></option>
             {gardens &&
-              Array.isArray(gardens) &&
-              gardens.map((garden, index) => (
+              Array.isArray(gardens.content) &&
+              gardens.content.map((garden, index) => (
                 <option key={index} value={garden.id}>
                   {garden.name}
                 </option>
