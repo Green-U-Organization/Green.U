@@ -104,15 +104,25 @@ namespace GreenUApi.Controllers
         public async Task<IActionResult> DeleteLine(long id)
         {
             var line = await _db.Lines.FindAsync(id);
+
             if (line == null)
             {
-                return NotFound();
+                return BadRequest(new { isEmpty = true, message = "The id of line is incorrect" });
+            }
+
+            var crop = await _db.Crops
+                .Where(c => c.LineId == id)
+                .FirstOrDefaultAsync();
+
+            if (crop != null)
+            {
+                crop.LineId = null;
             }
 
             _db.Lines.Remove(line);
             await _db.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { isEmpty = false, message = "This line is deleted", content = line });
         }
         
         private bool LineExists(long id)
