@@ -7,7 +7,7 @@ import { LineProps } from '@/utils/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
-import Confirmation from '../Molecule/Confirmation';
+import Confirmation from '../Molecule/ConfirmationPopup';
 // import { getCropByLinelId } from '@/utils/actions/crops/line/getCropByLineId';
 import AddCropPopup from '../Molecule/AddCropPopup';
 import ExistentCropPopup from '../Molecule/ExistentCropPopup';

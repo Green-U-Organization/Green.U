@@ -18,7 +18,7 @@ const MenuIcon: React.FC<MenuIconProps> = ({
   subMenuIconList,
 }) => {
   return (
-    <>
+    <div className="m-50 py-[50%]">
       {menuIconList.map((menuIcon, index) => (
         <div key={index}>
           <Icon
@@ -38,7 +38,7 @@ const MenuIcon: React.FC<MenuIconProps> = ({
           />
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

@@ -9,6 +9,7 @@ import { useCreateNewParcelMutation } from '@/slice/garden';
 const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
 }) => {
+  const [isVisible, setIsVisible] = useState<boolean>(displayCondition);
   const [length, setLength] = useState<number>(1);
   const [width, setWidth] = useState<number>(1);
   const [repeat, setRepeat] = useState<number>(1);
@@ -23,9 +24,8 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   const actualGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
-  if (!displayCondition) return null;
+  if (!isVisible) return null;
 
-  // const reload = useSelector((state: RootState) => state.garden.reload);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newParcel = {
@@ -48,6 +48,7 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
         console.log('error creating parcel');
       }
     }
+    setIsVisible(false);
   };
 
   const handleLengthChange = (e: { target: { value: string } }) => {
@@ -66,7 +67,12 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   };
 
   return (
-    <div className="bg-cardbackground flex h-[auto] w-[60vw] flex-col items-center justify-between rounded-xl border-2 p-4">
+    <div
+      style={{
+        display: isVisible ? 'flex' : 'none',
+      }}
+      className="bg-cardbackground flex h-[auto] w-[70vw] flex-col items-center justify-between rounded-xl border-2 p-4"
+    >
       <H2>Add parcel</H2>
       <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         {/* <TextInput label="Length"></TextInput> */}
@@ -129,7 +135,10 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
           </p>
         </div>
 
-        <Button type="submit">Create!</Button>
+        <div className="flex">
+          <Button onClick={() => setIsVisible(false)}>Back</Button>
+          <Button type="submit">Create!</Button>
+        </div>
       </form>
     </div>
   );

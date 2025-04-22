@@ -156,14 +156,14 @@ type GetCropByNurseryIdRequest = {
 };
 
 type CreateNurseryRequest = {
-  gardenId: number;
-  Name: string;
-  Type: string[];
+  gardenId?: number;
+  name: string;
+  type: string[];
 };
 
 type GetNurseryByGardenIdResponse = {
   id: number;
-};
+}[];
 
 type GetNurseryByGardenIdRequest = {
   gardenId: number;
@@ -348,7 +348,7 @@ export const extendedGardenAPI = api
       //CreateNursery >> OK + TO IMPLEMENT
       createNursery: builder.mutation<void, CreateNurseryRequest>({
         query: (arg) => ({
-          url: `/nursery`,
+          url: `/plantnursery`,
           method: 'POST',
           body: arg,
         }),

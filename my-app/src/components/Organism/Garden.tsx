@@ -5,13 +5,17 @@ import styles from '../../app/Assets.module.css';
 import { GardenProps, type Garden } from '@/utils/types';
 import MenuSandwich from '../Molecule/MenuSandwich';
 import Submenu from '../Molecule/Submenu';
-import NewParcelForm from '../Molecule/NewParcelForm';
+import NewParcelForm from '../Molecule/AddParcelPopup';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setFullscreen, setGraphicMode } from '../../redux/garden/gardenSlice';
-import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
-import { useGetAllParcelByGardenIdQuery } from '@/slice/garden';
+import NewGreenhouseForm from '../Molecule/AddGreenhousePopup';
+import {
+  useGetAllParcelByGardenIdQuery,
+  useGetNurseryByGardenIdQuery,
+} from '@/slice/garden';
 import H1 from '../Atom/H1';
+import AddNurseryPopup from '../Molecule/AddNurseryPopup';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks
@@ -33,6 +37,13 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     isLoading: parcelsIsLoading,
     isError: parcelsIsError,
   } = useGetAllParcelByGardenIdQuery({
+    gardenId: garden.id,
+  });
+  const {
+    data: nurseries,
+    isLoading: nurseriesIsLoading,
+    isError: nurseriesIsError,
+  } = useGetNurseryByGardenIdQuery({
     gardenId: garden.id,
   });
 
@@ -85,7 +96,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
       alt: 'Add nuursery',
       handleClick: handleAddParcel,
       displayCondition: true,
-      form: <div>Nursery Form</div>,
+      form: <AddNurseryPopup displayCondition={true} />,
     },
     {
       src: '/image/icons/todo.png',
@@ -149,7 +160,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   return (
     <section className="mb-10 ml-10 flex flex-col">
       <MenuSandwich iconList={iconList}>
-        <NewParcelForm displayCondition={false}></NewParcelForm>
+        {/* <NewParcelForm displayCondition={false}></NewParcelForm> */}
       </MenuSandwich>
 
       <section
@@ -232,6 +243,11 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
             </div>
           ))
         )}
+        {nurseries?.map((nursery, index) => (
+          <div className="relative z-10" key={nursery.id}>
+            <Nursery></Nursery>
+          </div>
+        ))}
       </section>
     </section>
   );

@@ -3,12 +3,7 @@ import Card from '../Atom/Card';
 import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-// import { addCropLine } from '@/utils/actions/crops/line/addCropLine';
-import {
-  useCreateCropToLineMutation,
-  // useCreateCropToNurseryMutation,
-} from '@/slice/garden';
-// import { getCropByLinelId } from '@/utils/actions/crops/line/getCropByLineId';
+import { useCreateCropToLineMutation } from '@/slice/garden';
 
 interface AddCropPopup {
   handleYesClick?: () => void;
@@ -91,7 +86,13 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
             Plantation distance : {plantationDistance}cm
           </label>
           <div className="flex items-center justify-around">
-            <p onClick={() => setPlantationDistance(plantationDistance - 1)}>
+            <p
+              onClick={() =>
+                plantationDistance === 0
+                  ? 0
+                  : setPlantationDistance(plantationDistance - 1)
+              }
+            >
               -
             </p>
             <input
@@ -103,7 +104,13 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
               onChange={handlePlantationDistanceChange}
               className={`bg-border h-2 cursor-cell appearance-none`}
             />
-            <p onClick={() => setPlantationDistance(plantationDistance + 1)}>
+            <p
+              onClick={() =>
+                plantationDistance === 100
+                  ? 100
+                  : setPlantationDistance(plantationDistance + 1)
+              }
+            >
               +
             </p>
           </div>

@@ -7,7 +7,7 @@ import { ParcelProps, type Parcel } from '@/utils/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
-import Confirmation from '../Molecule/Confirmation';
+import Confirmation from '../Molecule/ConfirmationPopup';
 import {
   useCreateNewGardenLineMutation,
   useGetAllLinesByParcelIdQuery,
