@@ -11,7 +11,7 @@ public partial class Parcel
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long? Id { get; set; }
 
-    public long? GardenId { get; set; }
+    public long GardenId { get; set; }
 
     public double? Length { get; set; }
 

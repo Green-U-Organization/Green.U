@@ -74,14 +74,14 @@ namespace GreenUApi.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
-                    b.Property<double?>("Distance_plantation")
-                        .HasColumnType("double");
+                    b.Property<int?>("Distance_plantation")
+                        .HasColumnType("int");
 
                     b.Property<DateOnly?>("Harvesting")
                         .HasColumnType("date");
 
-                    b.Property<long?>("Icon")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Icon")
+                        .HasColumnType("longtext");
 
                     b.Property<long?>("LineId")
                         .HasColumnType("bigint")
@@ -319,7 +319,7 @@ namespace GreenUApi.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
-                    b.Property<long?>("GardenId")
+                    b.Property<long>("GardenId")
                         .HasColumnType("bigint")
                         .HasColumnName("Garden_id");
 
@@ -358,6 +358,12 @@ namespace GreenUApi.Migrations
 
                     b.Property<long?>("GardenId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
@@ -592,6 +598,8 @@ namespace GreenUApi.Migrations
                     b.HasOne("GreenUApi.Models.Garden", "Garden")
                         .WithMany("Parcels")
                         .HasForeignKey("GardenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_Parcel_Garden_id");
 
                     b.Navigation("Garden");

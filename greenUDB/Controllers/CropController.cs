@@ -19,7 +19,7 @@ namespace GreenUApi.Controllers
 
         public string? Variety { get; set; }
 
-        public long? Icon { get; set; }
+        public string? Icon { get; set; }
 
         public DateOnly? Sowing { get; set; }
 

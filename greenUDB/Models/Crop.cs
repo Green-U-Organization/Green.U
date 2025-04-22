@@ -19,14 +19,14 @@ public partial class Crop
 
     public string? Variety { get; set; }
 
-    public long? Icon { get; set; }
+    public string? Icon { get; set; }
 
     public DateOnly? Sowing { get; set; }
 
     public DateOnly? Planting { get; set; }
 
     public DateOnly? Harvesting { get; set; }
-    public double? Distance_plantation { get; set; }
+    public int? Distance_plantation { get; set; }
     public string? Comments { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
