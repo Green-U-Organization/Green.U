@@ -9,8 +9,9 @@ import { useCreateNewParcelMutation } from '@/slice/garden';
 const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
 }) => {
-  const [length, setLength] = useState(1);
-  const [width, setWidth] = useState(1);
+  const [length, setLength] = useState<number>(1);
+  const [width, setWidth] = useState<number>(1);
+  const [repeat, setRepeat] = useState<number>(1);
 
   //RTK Queries
   const [
@@ -38,12 +39,14 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
       parcel_angle: 0,
     };
 
-    console.log(newParcel);
-    try {
-      createNewParcel(newParcel).unwrap();
-      console.log('parcel created');
-    } catch {
-      console.log('error creating parcel');
+    for (let i = 0; i < repeat; i++) {
+      console.log(newParcel);
+      try {
+        createNewParcel(newParcel).unwrap();
+        console.log('parcel created');
+      } catch {
+        console.log('error creating parcel');
+      }
     }
   };
 
@@ -57,30 +60,42 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
     setWidth(newValue);
     console.log(length);
   };
+  const handleRepeatChange = (e: { target: { value: string } }) => {
+    const newValue = Number(e.target.value);
+    setRepeat(newValue);
+  };
 
   return (
     <div className="bg-cardbackground flex h-[auto] w-[60vw] flex-col items-center justify-between rounded-xl border-2 p-4">
       <H2>Add parcel</H2>
-      <form className="flex flex-col items-center">
+      <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         {/* <TextInput label="Length"></TextInput> */}
         <label htmlFor="">Length : {length}m</label>
         <div className="flex w-full items-center justify-around">
-          <p onClick={() => setLength((prev) => prev - 1)}>-</p>
+          <p onClick={() => setLength((prev) => (prev === 0 ? 0 : prev - 1))}>
+            -
+          </p>
           <input
             type="range"
             min="0"
             max="100"
-            step="0.5"
+            step="1"
             value={length}
             onChange={handleLengthChange}
             className={`bg-border mx-3 h-2 cursor-cell appearance-none`}
           />
-          <p onClick={() => setLength((prev) => prev + 1)}>+</p>
+          <p
+            onClick={() => setLength((prev) => (prev === 100 ? 100 : prev + 1))}
+          >
+            +
+          </p>
         </div>
         {/* <TextInput label="Width"></TextInput> */}
         <label htmlFor="">Width : {width}m</label>
         <div className="flex w-full items-center justify-around">
-          <p onClick={() => setWidth((prev) => prev - 0.5)}>-</p>
+          <p onClick={() => setWidth((prev) => (prev === 0 ? 0 : prev - 0.5))}>
+            -
+          </p>
           <input
             type="range"
             min="0"
@@ -90,10 +105,31 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
             onChange={handleWidthChange}
             className={`bg-border mx-3 h-2 cursor-cell appearance-none`}
           />
-          <p onClick={() => setWidth((prev) => prev + 0.5)}>+</p>
+          <p onClick={() => setWidth((prev) => (prev === 20 ? 20 : prev + 1))}>
+            +
+          </p>
         </div>
 
-        <Button onClick={handleSubmit}>Create!</Button>
+        <label htmlFor="">Repeat : {repeat} times</label>
+        <div className="flex w-full items-center justify-around">
+          <p onClick={() => setRepeat((prev) => (prev === 0 ? 0 : prev - 1))}>
+            -
+          </p>
+          <input
+            type="range"
+            min="0"
+            max="20"
+            step="1"
+            value={repeat}
+            onChange={handleRepeatChange}
+            className={`bg-border mx-3 h-2 cursor-cell appearance-none`}
+          />
+          <p onClick={() => setRepeat((prev) => (prev === 20 ? 20 : prev + 1))}>
+            +
+          </p>
+        </div>
+
+        <Button type="submit">Create!</Button>
       </form>
     </div>
   );

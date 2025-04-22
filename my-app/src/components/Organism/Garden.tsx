@@ -11,6 +11,7 @@ import { RootState } from '@/redux/store';
 import { setFullscreen, setGraphicMode } from '../../redux/garden/gardenSlice';
 import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
 import { useGetAllParcelByGardenIdQuery } from '@/slice/garden';
+import H1 from '../Atom/H1';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks
@@ -206,11 +207,31 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
           ></div>
         </div>
 
-        {parcels?.map((parcel, index) => (
+        {/* {parcels?.map((parcel, index) => (
           <div className="relative z-10" key={parcel.id}>
             <Parcel parcelKey={index + 1} parcel={parcel} scale={scale} />
           </div>
-        ))}
+        ))} */}
+        {!parcels || parcels.length === 0 ? (
+          <div className="flex w-[80vw] flex-col items-center justify-center">
+            <H1>
+              Hey, you don&apos;t have any parcels yet! Want to create one?
+            </H1>
+            <br />
+            <p>
+              You can just click on the icon on the bottom right of your screen,
+              then click on the &quot;+&quot; icon and select the parcel.
+              <br />
+              Easy isn&apos;t it?
+            </p>
+          </div>
+        ) : (
+          parcels.map((parcel, index) => (
+            <div className="relative z-10" key={parcel.id}>
+              <Parcel parcelKey={index + 1} parcel={parcel} scale={scale} />
+            </div>
+          ))
+        )}
       </section>
     </section>
   );

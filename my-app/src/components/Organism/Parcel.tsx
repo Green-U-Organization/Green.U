@@ -199,16 +199,26 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
             </section>
 
             {/* //Line map */}
-            {lines?.map((line, index) => (
+            {!lines ? (
               <div
-                key={index}
                 style={{
                   display: displayParcelInfo ? 'block' : 'none',
                 }}
               >
-                <Line lineKey={index} line={line} scale={scale} />
+                <H2>Oup&apos;s there is no line in this parcel.</H2>
               </div>
-            ))}
+            ) : (
+              lines?.map((line, index) => (
+                <div
+                  key={index}
+                  style={{
+                    display: displayParcelInfo ? 'block' : 'none',
+                  }}
+                >
+                  <Line lineKey={index} line={line} scale={scale} />
+                </div>
+              ))
+            )}
           </div>
 
           {/* //BorderRight */}
