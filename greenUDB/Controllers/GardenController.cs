@@ -47,6 +47,11 @@ namespace GreenUApi.Controllers
                 return NotFound(new { isEmpty = true, message = "The id is incorrect" });
             }
 
+            if (garden.Deleted)
+            {
+                return Conflict(new { isEmpty = true, message = "The garden is deleted " });
+            }
+
             return Ok(new { isEmpty = false, message = "The garden", content = garden });
         }
 
@@ -54,6 +59,7 @@ namespace GreenUApi.Controllers
         public async Task<ActionResult<Garden>> GetAllGardens()
         {
             var gardens = await _db.Gardens
+                .Where(g => !g.Deleted)
                 .ToListAsync();
 
             return Ok(new { isEmpty = false, message = "All garden", content = gardens });
@@ -63,7 +69,7 @@ namespace GreenUApi.Controllers
         public async Task<ActionResult<IEnumerable<Garden>>> GetGardensByUser(long id)
         {
             var gardens = await _db.Gardens
-                                        .Where(g => g.AuthorId == id)
+                                        .Where(g => g.AuthorId == id && !g.Deleted)
                                         .ToListAsync();
 
             if (gardens == null || gardens.Count == 0)
