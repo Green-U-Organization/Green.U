@@ -66,32 +66,30 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PutPlantNursery(long? id, PlantNursery plantNursery)
+        public async Task<ActionResult<PlantNursery>> PatchPlantNursery(long id, PlantNursery modifiedPlantNursery)
         {
-            if (id != plantNursery.Id)
+            var plantNursery = await _db.PlantNursery
+                .FirstOrDefaultAsync();
+
+            if (plantNursery == null)
             {
-                return BadRequest();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
             }
 
-            _db.Entry(plantNursery).State = EntityState.Modified;
-
-            try
+            if (modifiedPlantNursery.Name != null)
             {
-                await _db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlantNurseryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                plantNursery.Name = modifiedPlantNursery.Name;
             }
 
-            return NoContent();
+            if (modifiedPlantNursery.Type != null)
+            {
+                plantNursery.Type = modifiedPlantNursery.Type;
+            }
+
+            _db.Update(plantNursery);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "Plant Nursery is modified", content = plantNursery });
         }
 
         [HttpPost]
