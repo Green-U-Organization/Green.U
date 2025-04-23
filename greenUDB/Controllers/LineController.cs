@@ -65,21 +65,23 @@ namespace GreenUApi.Controllers
         }
 
        [HttpPost]
-        public async Task<ActionResult<Line>> PostLine(LineDto line)
+        public async Task<ActionResult<Line>> PostLine(Line line)
         {
-            var newLine = new Line{
-                Id = line.Id,
-                ParcelId = line.ParcelId,
-                PLantNurseryId = line.PlantNurseryId,
-                Length = line.Length
-            };
-            
+            var parcel = await _db.Parcels
+                .FindAsync(line.ParcelId);
 
-            _db.Lines.Add(newLine);
-            await _db.SaveChangesAsync();
+            if (parcel == null)
+            {
+                return BadRequest(new { isEmpty = true, message = "Parcel id is incorrect" });
+            }
 
-            // Retourner la réponse avec l'URL de la ressource créée
-            return Ok(newLine);
+            if (line.Length == null)
+            {
+                return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
+            }
+
+            return Ok(new { isEmpty = false, message = "The line is created !", content = line});
+
         }
 
         [HttpDelete("{id}")]
@@ -105,11 +107,6 @@ namespace GreenUApi.Controllers
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "This line is deleted", content = line });
-        }
-        
-        private bool LineExists(long id)
-        {
-            return _db.Lines.Any(e => e.Id == id);
         }
     }
 }
