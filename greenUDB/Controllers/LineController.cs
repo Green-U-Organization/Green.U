@@ -27,7 +27,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<LineDto>>> GetLine(long id)
+        public async Task<ActionResult<Line>> GetLines(long id)
         {
             var lines = await _db.Lines
                 .Where(l => l.ParcelId == id)
@@ -42,32 +42,26 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchLine(long id, Line line)
+        public async Task<ActionResult<Line>> PatchLine(long id, Line modifiedLine)
         {
-            if (id != line.Id)
+            var line = await _db.Lines
+                .FindAsync(id);
+
+            if (line == null)
             {
-                return BadRequest();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
             }
 
-            _db.Entry(line).State = EntityState.Modified;
-
-            try
+            if (modifiedLine.Length != null)
             {
-                await _db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LineExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                line.Length = modifiedLine.Length;
             }
 
-            return NoContent();
+            _db.Update(line);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "This line is modified", content = line});
+
         }
 
        [HttpPost]
