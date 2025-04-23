@@ -80,6 +80,9 @@ namespace GreenUApi.Controllers
                 return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
             }
 
+            _db.Add(line);
+            await _db.SaveChangesAsync();
+
             return Ok(new { isEmpty = false, message = "The line is created !", content = line});
 
         }
