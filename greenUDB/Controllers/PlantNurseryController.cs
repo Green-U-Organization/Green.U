@@ -29,7 +29,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PlantNursery>> GetPlantNurseryById(long? id)
+        public async Task<ActionResult<PlantNursery>> GetPlantNurseryById(long id)
         {
             var plantNursery = await _db.PlantNursery.FindAsync(id);
 
@@ -39,6 +39,22 @@ namespace GreenUApi.Controllers
             }
 
             return Ok(new { isEmpty = false, message = "The nursery", content = plantNursery});
+        }
+
+        [HttpGet("garden/{id}")]
+        public async Task<ActionResult<PlantNursery>> GetPlantNurseryByGardenId(long id)
+        {
+            var plantNursery = await _db.PlantNursery
+                .Where(p => p.GardenId == id)
+                .ToListAsync();
+
+            if (plantNursery.Count == 0)
+            {
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
+            }
+
+            return Ok(new { isEmpty = false, message = "The nursery", content = plantNursery });
+
         }
 
         [HttpPatch("{id}")]
