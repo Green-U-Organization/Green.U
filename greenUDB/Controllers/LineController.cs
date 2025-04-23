@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace GreenUApi.Controllers
 {
@@ -36,21 +31,14 @@ namespace GreenUApi.Controllers
         {
             var lines = await _db.Lines
                 .Where(l => l.ParcelId == id)
-                .Select(l => new LineDto
-                {
-                    Id = l.Id,
-                    ParcelId = l.ParcelId,
-                    PlantNurseryId = l.PLantNurseryId,
-                    Length = l.Length
-                })
                 .ToListAsync();
 
-            if (lines == null || !lines.Any())
+            if (lines.Count == 0)
             {
-                return NotFound();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
             }
 
-            return lines;
+            return Ok(new { isEmpty = false, message = "Every lines from the parcel id", content = lines});
         }
 
         [HttpPatch("{id}")]
