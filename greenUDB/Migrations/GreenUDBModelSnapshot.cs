@@ -74,6 +74,9 @@ namespace GreenUApi.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
                     b.Property<int?>("Distance_plantation")
                         .HasColumnType("int");
 
@@ -87,11 +90,17 @@ namespace GreenUApi.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("Line_id");
 
+                    b.Property<short?>("NPot")
+                        .HasColumnType("smallint");
+
                     b.Property<long?>("PlantNurseryId")
                         .HasColumnType("bigint");
 
                     b.Property<DateOnly?>("Planting")
                         .HasColumnType("date");
+
+                    b.Property<float?>("PotSize")
+                        .HasColumnType("float");
 
                     b.Property<DateOnly?>("Sowing")
                         .HasColumnType("date");
@@ -326,8 +335,8 @@ namespace GreenUApi.Migrations
                     b.Property<double?>("Length")
                         .HasColumnType("double");
 
-                    b.Property<double?>("NLine")
-                        .HasColumnType("double")
+                    b.Property<short?>("NLine")
+                        .HasColumnType("smallint")
                         .HasColumnName("N_line");
 
                     b.Property<double?>("ParcelAngle")

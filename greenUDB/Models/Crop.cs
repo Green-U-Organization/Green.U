@@ -18,6 +18,12 @@ public partial class Crop
     public string Vegetable { get; set; } = null!;
 
     public string? Variety { get; set; }
+    
+    public string? Description { get; set; }
+
+    public short? NPot { get; set; }
+
+    public float? PotSize { get; set; }
 
     public string? Icon { get; set; }
 
