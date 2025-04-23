@@ -98,27 +98,23 @@ namespace GreenUApi.Controllers
             _db.PlantNursery.Add(plantNursery);
             await _db.SaveChangesAsync();
 
-            return CreatedAtAction("GetPlantNursery", new { id = plantNursery.Id }, plantNursery);
+            return Ok(new { isEmpty = false, message = "A new nursery are created !", content = plantNursery });
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlantNursery(long? id)
         {
             var plantNursery = await _db.PlantNursery.FindAsync(id);
+
             if (plantNursery == null)
             {
-                return NotFound();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect !"});
             }
 
             _db.PlantNursery.Remove(plantNursery);
             await _db.SaveChangesAsync();
 
-            return NoContent();
-        }
-
-        private bool PlantNurseryExists(long? id)
-        {
-            return _db.PlantNursery.Any(e => e.Id == id);
+            return Ok(new { isEmpty = false, message = "This plant nursery are deleted", content = plantNursery});
         }
     }
 }

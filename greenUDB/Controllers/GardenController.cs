@@ -243,6 +243,18 @@ namespace GreenUApi.Controllers
                 _db.Parcels.Remove(parcel);
             }
 
+            var plantNurserys = await _db.PlantNursery
+                .Where(p => p.GardenId == id)
+                .ToListAsync();
+
+            if (plantNurserys.Count > 0)
+            {
+                foreach (var plantnursery in  plantNurserys)
+                {
+                    _db.Remove(plantnursery);
+                }
+            }
+
             garden.Deleted = true;
             _db.Gardens.Update(garden);
             await _db.SaveChangesAsync();
