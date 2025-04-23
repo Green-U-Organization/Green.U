@@ -38,32 +38,40 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PutParcel(long id, Parcel parcel)
+        public async Task<IActionResult> PatchParcel(long id, Parcel modifiedParcel)
         {
-            if (id != parcel.Id)
+            var parcel = await _db.Parcels
+                .FindAsync(id);
+
+            if (parcel == null)
             {
-                return BadRequest();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
             }
 
-            _db.Entry(parcel).State = EntityState.Modified;
-
-            try
+            if (modifiedParcel.Length != null)
             {
-                await _db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParcelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                parcel.Length = modifiedParcel.Length;
             }
 
-            return NoContent();
+            if (modifiedParcel.Width != null)
+            {
+                parcel.Width =  modifiedParcel.Width;
+            }
+
+            if (modifiedParcel.NLine != null)
+            {
+                parcel.NLine = modifiedParcel.NLine;
+            }
+
+            if (modifiedParcel.ParcelAngle != null)
+            {
+                parcel.ParcelAngle = modifiedParcel.ParcelAngle;
+            }
+            
+            _db.Update(parcel);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "Your parcel is modified", content = parcel });
         }
 
         [HttpPost]
