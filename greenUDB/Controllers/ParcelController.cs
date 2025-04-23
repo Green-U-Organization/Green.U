@@ -23,17 +23,18 @@ namespace GreenUApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Parcel>>> GetParcel(long id)
+        public async Task<ActionResult<IEnumerable<Parcel>>> GetParcelWithGardenId(long id)
         {
-            var parcel = await _db.Parcels.Where(g => g.GardenId == id)
-                                        .ToListAsync();;
+            var parcel = await _db.Parcels
+                .Where(g => g.GardenId == id)
+                .ToListAsync();
 
-            if (parcel == null)
+            if (parcel.Count == 0)
             {
-                return NotFound();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect"});
             }
 
-            return parcel;
+            return Ok(new { isEmpty = false, message = "All parcel for this garden", content = parcel});
         }
 
         [HttpPatch("{id}")]
