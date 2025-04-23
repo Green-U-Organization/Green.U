@@ -25,7 +25,15 @@ namespace GreenUApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlantNursery>>> GetPlantNursery()
         {
-            return await _db.PlantNursery.ToListAsync();
+            var plantNursery = await _db.PlantNursery
+                .ToListAsync();
+
+            if (plantNursery == null)
+            {
+                return BadRequest(new { isEmpty = true, message = "No plantNursery..."});
+            }
+
+            return Ok(new { isEmpty = false, message = "All plant nursery", content = plantNursery});
         }
 
         [HttpGet("{id}")]
