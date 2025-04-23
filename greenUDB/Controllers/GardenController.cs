@@ -14,23 +14,23 @@ namespace GreenUApi.Controllers
         public class GardenDto{
             public long? Id { get; set; }
             
-            public long AuthorId { get; set; }
+            public long? AuthorId { get; set; }
 
-            public string Name { get; set; } = null!;
+            public string? Name { get; set; } = null!;
 
-            public string Description { get; set; } = null!;
+            public string? Description { get; set; } = null!;
 
-            public double Latitude { get; set; }
+            public double? Latitude { get; set; }
 
-            public double Longitude { get; set; }
+            public double? Longitude { get; set; }
 
-            public double Length { get; set; }
+            public double? Length { get; set; }
 
-            public double Width { get; set; }
+            public double? Width { get; set; }
 
-            public GardenPrivacy Privacy { get; set; } = GardenPrivacy.Public;
+            public GardenPrivacy? Privacy { get; set; } = GardenPrivacy.Public;
 
-            public GardenType Type { get; set; } = GardenType.Personnal;
+            public GardenType? Type { get; set; } = GardenType.Personnal;
 
         }
         private readonly GreenUDB _context;
