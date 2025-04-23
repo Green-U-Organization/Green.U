@@ -16,6 +16,7 @@ import {
 } from '@/slice/garden';
 import H1 from '../Atom/H1';
 import AddNurseryPopup from '../Molecule/AddNurseryPopup';
+import Nursery from './Nursery';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks
@@ -36,18 +37,19 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     data: parcels,
     isLoading: parcelsIsLoading,
     isError: parcelsIsError,
+    refetch: refetchParcels,
   } = useGetAllParcelByGardenIdQuery({
     gardenId: garden.id,
   });
   const {
     data: nurseries,
-    isLoading: nurseriesIsLoading,
-    isError: nurseriesIsError,
+    isLoading: nurseryIsLoading,
+    isError: nurseryIsError,
+    refetch: refetchNurseries,
   } = useGetNurseryByGardenIdQuery({
     gardenId: garden.id,
   });
 
-  // const [listDisplay, setListDisplay] = useState<boolean>(false);
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
 
   // Handlers
@@ -148,15 +150,34 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     setCurrentGarden(garden);
   }, [garden]);
 
+  useEffect(() => {
+    refetchNurseries();
+  }, [garden.id, refetchNurseries]);
+
+  useEffect(() => {
+    refetchParcels();
+  }, [garden.id, refetchParcels]);
+
   if (parcelsIsLoading) {
     return <div>Loading...</div>;
   }
   if (parcelsIsError) {
     console.log('Error in current Garden : ', garden.id);
   }
-  if (parcels?.length === 0) {
+  if (parcels?.isEmpty) {
     console.log('Oups, no parcel find..');
   }
+
+  if (nurseryIsLoading) {
+    return <div>Loading...</div>;
+  }
+  if (nurseryIsError) {
+    console.log('Error in current Garden fetching nursery : ', garden.id);
+  }
+  if (nurseries?.isEmpty) {
+    console.log('Oups, no parcel find..');
+  }
+
   return (
     <section className="mb-10 ml-10 flex flex-col">
       <MenuSandwich iconList={iconList}>
@@ -223,7 +244,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
             <Parcel parcelKey={index + 1} parcel={parcel} scale={scale} />
           </div>
         ))} */}
-        {!parcels || parcels.length === 0 ? (
+        {parcelsIsError ? (
           <div className="flex w-[80vw] flex-col items-center justify-center">
             <H1>
               Hey, you don&apos;t have any parcels yet! Want to create one?
@@ -237,17 +258,28 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
             </p>
           </div>
         ) : (
-          parcels.map((parcel, index) => (
+          parcels?.content.map((parcel, index) => (
             <div className="relative z-10" key={parcel.id}>
               <Parcel parcelKey={index + 1} parcel={parcel} scale={scale} />
             </div>
           ))
         )}
-        {nurseries?.map((nursery, index) => (
-          <div className="relative z-10" key={nursery.id}>
-            <Nursery></Nursery>
+
+        {nurseryIsError ? (
+          <div className="flex w-[80vw] flex-col items-center justify-center">
+            <p>You don't have any nursery here. Want to create one?</p>
           </div>
-        ))}
+        ) : (
+          nurseries?.content.map((nursery, index) => (
+            <div className="relative z-10" key={nursery.id}>
+              <Nursery
+                nursery={nursery}
+                scale={scale}
+                nurseryKey={index + 1}
+              ></Nursery>
+            </div>
+          ))
+        )}
       </section>
     </section>
   );

@@ -74,9 +74,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   if (linesIsError) {
     console.log('error in currentparcel : ', parcel.id);
   }
-  if (lines?.length === 0) {
-    console.log('Oups, no lines find...');
-  }
+  // if (lines?. === 0) {
+  //   console.log('Oups, no lines find...');
+  // }
 
   return (
     <section className="z-10 ml-5">
@@ -208,7 +208,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 <H2>Oup&apos;s there is no line in this parcel.</H2>
               </div>
             ) : (
-              lines?.map((line, index) => (
+              lines?.content.map((line, index) => (
                 <div
                   key={index}
                   style={{

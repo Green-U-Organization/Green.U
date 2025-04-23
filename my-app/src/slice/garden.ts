@@ -10,11 +10,15 @@ type GetAllLinesByParcelIdRequest = {
 };
 
 type GetAllLinesByParcelIdResponse = {
-  id: number;
-  parcelId: number;
-  length: number;
-  createdAt: string;
-}[];
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    parcelId: number;
+    length: number;
+    createdAt: string;
+  }[];
+};
 
 type DeleteOneLineByLineIdRequest = {
   lineId: number;
@@ -51,16 +55,20 @@ type GetAllParcelByGardenIdRequest = {
 };
 
 type GetAllParcelByGardenIdResponse = {
-  id: number;
-  gardenId: number;
-  length: number;
-  width: number;
-  nLine: number;
-  parcelAngle: number;
-  createdAt: string;
-  lines: [];
-  logs: [];
-}[];
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    gardenId: number;
+    length: number;
+    width: number;
+    nLine: number;
+    parcelAngle: number;
+    createdAt: string;
+    lines: [];
+    logs: [];
+  }[];
+};
 
 type GetAllGardenByUserIdResponse = {
   isEmpty: boolean;
@@ -149,7 +157,7 @@ type GetCropByNurseryIdResponse = {
   harvesting: string;
   distance_plantation: number;
   comments: string;
-};
+}[];
 
 type GetCropByNurseryIdRequest = {
   nurseryId: number;
@@ -162,8 +170,15 @@ type CreateNurseryRequest = {
 };
 
 type GetNurseryByGardenIdResponse = {
-  id: number;
-}[];
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    name: string;
+    comments: string;
+    type: string;
+  }[];
+};
 
 type GetNurseryByGardenIdRequest = {
   gardenId: number;
@@ -361,7 +376,7 @@ export const extendedGardenAPI = api
         GetNurseryByGardenIdRequest
       >({
         query: (arg) => ({
-          url: `/plantnursery/${arg.gardenId}`,
+          url: `/plantnursery/garden/${arg.gardenId}`,
           method: 'GET',
         }),
         providesTags: ['garden-nursery'],

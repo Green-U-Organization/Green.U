@@ -140,3 +140,16 @@ export type ZoomSliderProps = {
   scale: number;
   className?: string;
 };
+
+export type NurceryProps = {
+  nursery: Nurcery;
+  scale: number;
+  nurseryKey: number;
+};
+
+export type Nurcery = {
+  id: number;
+  name: string;
+  comments: string;
+  type: string;
+};
