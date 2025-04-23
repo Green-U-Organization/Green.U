@@ -70,7 +70,7 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale, nurseryKey }) => {
         className={`${graphicMode ? styles.parcelBackground : 'mb-[2vh] ml-5 flex min-h-[5vh] flex-col justify-center rounded-2xl bg-sky-200'} `}
         style={{
           height: graphicMode ? 20 * scale : undefined,
-          width: graphicMode ? 10 * scale : '70vw',
+          width: graphicMode ? 10 * scale : '90vw',
         }}
       >
         {/* //Nursery Title + icons */}
@@ -111,21 +111,21 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale, nurseryKey }) => {
               }
             />
             <Image
-              className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+              className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
               src="/image/icons/edit.png"
               alt="Edit nursery"
               width={50}
               height={50}
             />
             <Image
-              className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+              className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
               src="/image/icons/info.png"
               alt="Display info about nursery"
               width={50}
               height={50}
             />
             <Image
-              className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+              className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
               src="/image/icons/trash.png"
               alt="Deleting nursery"
               width={50}

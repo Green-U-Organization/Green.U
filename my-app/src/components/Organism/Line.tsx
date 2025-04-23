@@ -190,7 +190,7 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
           <H2>Line {lineKey + 1}</H2>
           <div className="mr-[5vw] flex">
             <img
-              className="mr-[2vw]"
+              className="mx-[3vw]"
               src="/image/icons/add.png"
               alt="Add crop"
               style={{
@@ -200,7 +200,7 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
               onClick={() => handleClickAddCrop()}
             />
             <img
-              className="mr-[2vw]"
+              className="mx-[3vw]"
               src="/image/icons/edit.png"
               alt="Edit line"
               style={{
@@ -209,7 +209,7 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
               }}
             />
             <img
-              className="mr-[2vw]"
+              className="mx-[3vw]"
               src="/image/icons/info.png"
               alt="Display info about line"
               style={{
@@ -218,7 +218,7 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
               }}
             />
             <img
-              className="mr-[2vw]"
+              className="mx-[3vw]"
               src="/image/icons/trash.png"
               alt="Delete line"
               style={{

@@ -132,7 +132,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
             className={`${graphicMode ? styles.parcelBackground : 'mb-[2vh] min-h-[5vh] rounded-2xl bg-emerald-200'} flex flex-col justify-center`}
             style={{
               height: graphicMode ? parcelX * scale : undefined,
-              width: graphicMode ? parcelY * scale : '70vw',
+              width: graphicMode ? parcelY * scale : '90vw',
             }}
           >
             {/* //Parcel Title + icons */}
@@ -154,7 +154,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
               </div>
               <div className="flex items-center">
                 <Image
-                  className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
                   src="/image/icons/add.png"
                   alt="Add line"
                   width={50}
@@ -162,21 +162,21 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                   onClick={addLine}
                 />
                 <Image
-                  className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
                   src="/image/icons/edit.png"
                   alt="Edit parcel"
                   width={50}
                   height={50}
                 />
                 <Image
-                  className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
                   src="/image/icons/info.png"
                   alt="Display info about parcel"
                   width={50}
                   height={50}
                 />
                 <Image
-                  className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
                   src="/image/icons/trash.png"
                   alt="Deleting parcel"
                   width={50}

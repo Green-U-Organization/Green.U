@@ -54,7 +54,7 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
         display: display ? 'flex' : 'none',
       }}
     >
-      <Card className="flex w-[70vw] flex-col justify-center">
+      <Card className="flex w-[90vw] flex-col justify-center">
         <form onSubmit={handleSubmit} className="m-[3vw]">
           <TextInput
             type="text"
@@ -130,6 +130,8 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
               +
             </p>
           </div>
+
+          <p className="">Choose icon</p>
 
           <div className="flex justify-center">
             <Button
