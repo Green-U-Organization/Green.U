@@ -1,3 +1,4 @@
+'use client';
 import React, { FC, useState } from 'react';
 import Card from '../Atom/Card';
 import H2 from '../Atom/H2';
