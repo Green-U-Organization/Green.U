@@ -82,6 +82,22 @@ namespace GreenUApi.Controllers
 
             if (parcel == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
 
+            var lines = await _db.Lines
+                .Where(l => l.ParcelId == id)
+                .ToListAsync();
+
+            foreach (var line in lines)
+            {
+                var crops = await _db.Crops
+                    .Where(c => c.LineId == line.Id)
+                    .ToListAsync();
+                foreach (var crop in crops)
+                {
+                    crop.LineId = null;
+                }
+                _db.Lines.Remove(line);
+            }
+
             _db.Remove(parcel);
             await _db.SaveChangesAsync();
 
