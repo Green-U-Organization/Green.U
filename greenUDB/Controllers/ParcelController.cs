@@ -82,53 +82,32 @@ namespace GreenUApi.Controllers
 
             if (GardenExist == null)
             {
-                return BadRequest(new { message = "Garden id is incorrect..."});
+                return BadRequest(new { isEmpty = true, message = "Garden id is incorrect..."});
             }
 
             _db.Parcels.Add(parcel);
             await _db.SaveChangesAsync();
             
-            return CreatedAtAction("GetParcel", new { id = parcel.Id }, parcel);
+            return Ok(new { isEmpty = false, message = "The parcel is created !", content = parcel});
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParcel(long id)
         {
-            try
+            var parcel = await _db.Parcels
+                .FindAsync(id);
+
+            if (parcel == null)
             {
-                var parcel = await _db.Parcels.FindAsync(id);
-                if (parcel == null)
-                {
-                    return NotFound();
-                }
-
-                var lines = await _db.Lines.Where(l => l.ParcelId == parcel.Id).ToListAsync();
-
-                foreach(var line in lines)
-                {
-                    var crops = await _db.Crops.Where(c => c.LineId == line.Id).ToListAsync();
-                    foreach (var crop in crops)
-                    {
-                        crop.LineId = null; 
-                    }
-                    _db.Lines.Remove(line);
-                }
-
-                _db.Parcels.Remove(parcel);
-                await _db.SaveChangesAsync();
-
-                return NoContent();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
             }
-            catch (Exception ex)
-            {
-                // Log l'exception pour obtenir plus d'informations
-                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message ?? ex.Message}");
-            }
+
+            _db.Remove(parcel);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, messsage = "This parcel is deleted", content = parcel });
+
         }
 
-        private bool ParcelExists(long id)
-        {
-            return _db.Parcels.Any(e => e.Id == id);
-        }
     }
 }
