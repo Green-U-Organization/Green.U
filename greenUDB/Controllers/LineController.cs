@@ -33,10 +33,7 @@ namespace GreenUApi.Controllers
                 .Where(l => l.ParcelId == id)
                 .ToListAsync();
 
-            if (lines.Count == 0)
-            {
-                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
-            }
+            if (lines.Count == 0) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
 
             return Ok(new { isEmpty = false, message = "Every lines from the parcel id", content = lines});
         }
@@ -47,15 +44,9 @@ namespace GreenUApi.Controllers
             var line = await _db.Lines
                 .FindAsync(id);
 
-            if (line == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
-            }
+            if (line == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
 
-            if (modifiedLine.Length != null)
-            {
-                line.Length = modifiedLine.Length;
-            }
+            if (modifiedLine.Length != null) line.Length = modifiedLine.Length;
 
             _db.Update(line);
             await _db.SaveChangesAsync();
@@ -70,15 +61,9 @@ namespace GreenUApi.Controllers
             var parcel = await _db.Parcels
                 .FindAsync(line.ParcelId);
 
-            if (parcel == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "Parcel id is incorrect" });
-            }
+            if (parcel == null) return BadRequest(new { isEmpty = true, message = "Parcel id is incorrect" });
 
-            if (line.Length == null)
-            {
-                return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
-            }
+            if (line.Length == null) return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
 
             _db.Add(line);
             await _db.SaveChangesAsync();
@@ -92,10 +77,7 @@ namespace GreenUApi.Controllers
         {
             var line = await _db.Lines.FindAsync(id);
 
-            if (line == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "The id of line is incorrect" });
-            }
+            if (line == null) return BadRequest(new { isEmpty = true, message = "The id of line is incorrect" });
 
             var crop = await _db.Crops
                 .Where(c => c.LineId == id)

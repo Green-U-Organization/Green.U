@@ -71,20 +71,11 @@ namespace GreenUApi.Controllers
             var plantNursery = await _db.PlantNursery
                 .FirstOrDefaultAsync();
 
-            if (plantNursery == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
-            }
+            if (plantNursery == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
 
-            if (modifiedPlantNursery.Name != null)
-            {
-                plantNursery.Name = modifiedPlantNursery.Name;
-            }
+            if (modifiedPlantNursery.Name != null) plantNursery.Name = modifiedPlantNursery.Name;
 
-            if (modifiedPlantNursery.Type != null)
-            {
-                plantNursery.Type = modifiedPlantNursery.Type;
-            }
+            if (modifiedPlantNursery.Type != null) plantNursery.Type = modifiedPlantNursery.Type;
 
             _db.Update(plantNursery);
             await _db.SaveChangesAsync();
@@ -106,10 +97,7 @@ namespace GreenUApi.Controllers
         {
             var plantNursery = await _db.PlantNursery.FindAsync(id);
 
-            if (plantNursery == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "The id is incorrect !"});
-            }
+            if (plantNursery == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect !"});
 
             _db.PlantNursery.Remove(plantNursery);
             await _db.SaveChangesAsync();

@@ -65,16 +65,23 @@ namespace GreenUApi.Controllers
         public async Task<IActionResult> PatchCrop(long id, [FromBody] CropDto crop)
         {
             var existingCrop = await _db.Crops.FindAsync(id);
+
             if (existingCrop == null) return BadRequest(new { isEmpty = true, message = "The crop id is incorrect" });
+
             if (crop.Vegetable != null) existingCrop.Vegetable = crop.Vegetable;
+
             if (crop.Variety != null) existingCrop.Variety = crop.Variety;
+
             if (crop.LineId != 0) existingCrop.LineId = crop.LineId;
+
             if (crop.Icon != null) existingCrop.Icon = crop.Icon;
+
             if (crop.Sowing != null) existingCrop.Sowing = crop.Sowing;
+
             if (crop.Planting != null) existingCrop.Planting = crop.Planting;
+
             if (crop.Harvesting != null) existingCrop.Harvesting = crop.Harvesting;
 
-           
             await _db.SaveChangesAsync();
             return Ok(new { isEmpty = false, message = "This crop is edited", content = existingCrop});
   

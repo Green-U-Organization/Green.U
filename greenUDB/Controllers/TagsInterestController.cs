@@ -23,28 +23,19 @@ namespace GreenUApi.Controllers
 
             var User = await _db.Users.FindAsync(id);
 
-            if (User == null)
-            {
-                return NotFound(new { isEmpty = true, message = "User not found" });
-            }
+            if (User == null) return NotFound(new { isEmpty = true, message = "User not found" });
 
             bool tagExists = await _db.TagsInterests
                 .AnyAsync(t => t.UserId == id && t.Hashtag == Tag.Hashtag);
 
-            if (!tagExists)
-            {
+            if (tagExists) return Conflict(new { isEmpty = false, message = "The tag with this user is already exist", content = tagExists });
 
-                Tag.UserId = id;
+            Tag.UserId = id;
 
-                _db.TagsInterests.Add(Tag);
-                await _db.SaveChangesAsync();
+            _db.TagsInterests.Add(Tag);
+            await _db.SaveChangesAsync();
 
-                return Ok(new { isEmpty = true, message = "User tag created !"});
-            }
-            else
-            {
-                return Conflict(new { isEmpty = false, message = "The tag with this user is already exist", content = tagExists });
-            }
+            return Ok(new { isEmpty = true, message = "User tag created !"});
           
         }
 
@@ -52,10 +43,7 @@ namespace GreenUApi.Controllers
         public async Task<ActionResult<TagsInterest>> CreateUserTagWithList(long id, [FromBody] HashtagContainer container)
         {
             var user = await _db.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound(new { isEmpty = true, message = "User not found" });
-            }
+            if (user == null) return NotFound(new { isEmpty = true, message = "User not found" });
 
             // Create all entities with Select and add all tags with AddRange()
             // https://learn.microsoft.com/fr-fr/dotnet/api/system.collections.generic.list-1.addrange?view=net-8.0
@@ -88,10 +76,7 @@ namespace GreenUApi.Controllers
            .Select(t => t.Hashtag)
            .ToArrayAsync();
 
-            if (UserTags.Length == 0)
-            {
-                return NotFound(new { message = "This user doesn't have tags" });
-            }
+            if (UserTags.Length == 0) return NotFound(new { message = "This user doesn't have tags" });
 
             return Ok(new { isEmpty = false, message = "User Tag", content = UserTags});
         }
@@ -104,10 +89,7 @@ namespace GreenUApi.Controllers
                     .Where(t => t.UserId == id && t.Hashtag == Tag.Hashtag)
                     .FirstOrDefaultAsync();
 
-                if (tagExists == null)
-                {
-                    return NotFound(new { isEmpty = true, message = "User tag not found" });
-                }
+                if (tagExists == null) return NotFound(new { isEmpty = true, message = "User tag not found" });
 
                 _db.TagsInterests.Remove(tagExists);
                 await _db.SaveChangesAsync();
@@ -123,16 +105,12 @@ namespace GreenUApi.Controllers
         {
             var Garden = await _db.Gardens.FindAsync(id);
 
-            if (Garden == null)
-            {
-                return NotFound(new { isEmpty = true, message = "Garden not found" });
-            }
+            if (Garden == null) return NotFound(new { isEmpty = true, message = "Garden not found" });
 
             bool tagExists = await _db.TagsInterests
                 .AnyAsync(t => t.GardenId == id && t.Hashtag == Tag.Hashtag);
 
-            if (!tagExists)
-            {
+            if (tagExists) return Conflict(new { isEmpty = true, message = "The tag with this garden is already exist" });
 
                 Tag.GardenId = id;
 
@@ -140,11 +118,6 @@ namespace GreenUApi.Controllers
                 await _db.SaveChangesAsync();
 
                 return Ok(new { isEmpty = false, message = "Garden tag created !", content = Tag });
-            }
-            else
-            {
-                return Conflict(new { isEmpty = true, message = "The tag with this garden is already exist" });
-            }
 
         }
 
@@ -152,10 +125,7 @@ namespace GreenUApi.Controllers
         public async Task<ActionResult<TagsInterest>> CreateGardenTagWithList(long id, [FromBody] HashtagContainer container)
         {
             var Garden = await _db.Gardens.FindAsync(id);
-            if (Garden == null)
-            {
-                return NotFound(new { isEmpty = true, message = "Garden not found" });
-            }
+            if (Garden == null) return NotFound(new { isEmpty = true, message = "Garden not found" });
 
             // Create all entities with Select and add all tags with AddRange()
             // https://learn.microsoft.com/fr-fr/dotnet/api/system.collections.generic.list-1.addrange?view=net-8.0
@@ -178,20 +148,14 @@ namespace GreenUApi.Controllers
 
             var User = await _db.Gardens.FindAsync(id);
 
-            if (User == null)
-            {
-                return NotFound("Garden not found");
-            }
+            if (User == null) return NotFound("Garden not found");
 
             var UserTags = await _db.TagsInterests
            .Where(t => t.GardenId == id)
            .Select(t => t.Hashtag)
            .ToArrayAsync();
 
-            if (UserTags.Length == 0)
-            {
-                return NotFound(new { message = "This garden doesn't have tags" });
-            }
+            if (UserTags.Length == 0) return NotFound(new { message = "This garden doesn't have tags" });
 
             return Ok(UserTags);
         }
@@ -199,29 +163,16 @@ namespace GreenUApi.Controllers
         [HttpDelete("garden/{id}")]
         public async Task<ActionResult<TagsInterest>> DeleteGardenTag(long id, TagsInterest Tag)
         {
-
-            try
-            {
-                TagsInterest tagExists = await _db.TagsInterests
+                var tagExists = await _db.TagsInterests
                     .Where(t => t.GardenId == id && t.Hashtag == Tag.Hashtag)
-                    .FirstAsync();
+                    .FirstOrDefaultAsync();
 
-                if (tagExists == null)
-                {
-                    return NotFound(new { message = "Garden tag not found" });
-                }
+                if (tagExists == null) return NotFound(new { message = "Garden tag not found" });
 
                 _db.TagsInterests.Remove(tagExists);
                 await _db.SaveChangesAsync();
 
                 return Ok(new { message = "Tag Deleted !" });
-
-            }
-            catch (Exception)
-            {
-                return BadRequest(new { message = "Tag not found" });
-            }
-
         }
     }
 }

@@ -43,30 +43,16 @@ namespace GreenUApi.Controllers
             var parcel = await _db.Parcels
                 .FindAsync(id);
 
-            if (parcel == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
-            }
+            if (parcel == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
 
-            if (modifiedParcel.Length != null)
-            {
-                parcel.Length = modifiedParcel.Length;
-            }
+            if (modifiedParcel.Length != null) parcel.Length = modifiedParcel.Length;
 
-            if (modifiedParcel.Width != null)
-            {
-                parcel.Width =  modifiedParcel.Width;
-            }
 
-            if (modifiedParcel.NLine != null)
-            {
-                parcel.NLine = modifiedParcel.NLine;
-            }
+            if (modifiedParcel.Width != null) parcel.Width =  modifiedParcel.Width;
 
-            if (modifiedParcel.ParcelAngle != null)
-            {
-                parcel.ParcelAngle = modifiedParcel.ParcelAngle;
-            }
+            if (modifiedParcel.NLine != null) parcel.NLine = modifiedParcel.NLine;
+
+            if (modifiedParcel.ParcelAngle != null) parcel.ParcelAngle = modifiedParcel.ParcelAngle;
             
             _db.Update(parcel);
             await _db.SaveChangesAsync();
@@ -80,10 +66,7 @@ namespace GreenUApi.Controllers
             var GardenExist = await _db.Gardens
                 .FirstOrDefaultAsync(garden => garden.Id == parcel.GardenId);
 
-            if (GardenExist == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "Garden id is incorrect..."});
-            }
+            if (GardenExist == null) return BadRequest(new { isEmpty = true, message = "Garden id is incorrect..."});
 
             _db.Parcels.Add(parcel);
             await _db.SaveChangesAsync();
@@ -97,10 +80,7 @@ namespace GreenUApi.Controllers
             var parcel = await _db.Parcels
                 .FindAsync(id);
 
-            if (parcel == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
-            }
+            if (parcel == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
 
             _db.Remove(parcel);
             await _db.SaveChangesAsync();

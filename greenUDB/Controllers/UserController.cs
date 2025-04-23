@@ -48,15 +48,9 @@ public class UserController(GreenUDB db) : ControllerBase
     {
         var user = await _db.Users.FindAsync(id);
 
-        if (user == null)
-        {
-            return NotFound(new { isEmpty = true, message = "User not found" });
-        }
+        if (user == null) return NotFound(new { isEmpty = true, message = "User not found" });
 
-        if (user.Deleted)
-        {
-            return NotFound(new { isEmpty = true, message = "This user is deleted" });
-        }
+        if (user.Deleted) return NotFound(new { isEmpty = true, message = "This user is deleted" });
         
         return Ok(new { isEmpty = false, message = "This is the user data", content = user});
     }
@@ -69,15 +63,9 @@ public class UserController(GreenUDB db) : ControllerBase
            .Select(u => new User { Username = u.Username })
            .ToArrayAsync();
 
-        if (userDbData.Length != 0)
-        {
-            return Conflict(new { isEmpty = true, message = "This username already exists" });
-        }
+        if (userDbData.Length != 0) return Conflict(new { isEmpty = true, message = "This username already exists" });
 
-        if (user.Password == null)
-        {
-            return BadRequest(new { isEmpty = true, message = "Password is missing"});
-        }
+        if (user.Password == null) return BadRequest(new { isEmpty = true, message = "Password is missing"});
 
         string[] hashSalt = Authentification.Hasher(user.Password, null);
         user.Password = hashSalt[0];
@@ -94,26 +82,14 @@ public class UserController(GreenUDB db) : ControllerBase
     {
         var user = await _db.Users.FindAsync(id);
 
-        if (user == null)
-        {
-            return NotFound(new { isEmpty = true, message = "This user no longer exists" });
-        }
+        if (user == null) return NotFound(new { isEmpty = true, message = "This user no longer exists" });
 
-        if (user.Deleted == true)
-        {
-            return BadRequest(new { isEmpty = true, message = "The user is deleted"});
-        }
+        if (user.Deleted == true) return BadRequest(new { isEmpty = true, message = "The user is deleted"});
 
-        if (!string.IsNullOrEmpty(modification.Username))
-        {
-            user.Username = modification.Username;
-        }
+        if (!string.IsNullOrEmpty(modification.Username)) user.Username = modification.Username;
 
 
-        if (!string.IsNullOrEmpty(modification.Salt))
-        {
-            return BadRequest(new { isEmpty = true, message = "You can't modify SALT !! Modify password ! La bise fieux"});
-        }
+        if (!string.IsNullOrEmpty(modification.Salt)) return BadRequest(new { isEmpty = true, message = "You can't modify SALT !! Modify password ! La bise fieux"});
 
         if (!string.IsNullOrEmpty(modification.Password))
         {
@@ -124,55 +100,25 @@ public class UserController(GreenUDB db) : ControllerBase
             user.Salt = hashSalt[1];
         }
 
-        if (modification.IsAdmin.HasValue)
-        {
-            user.IsAdmin = modification.IsAdmin.Value;
-        }
+        if (modification.IsAdmin.HasValue) user.IsAdmin = modification.IsAdmin.Value;
 
-        if (!string.IsNullOrEmpty(modification.Firstname))
-        {
-            user.Firstname = modification.Firstname;
-        }
+        if (!string.IsNullOrEmpty(modification.Firstname)) user.Firstname = modification.Firstname;
 
-        if (!string.IsNullOrEmpty(modification.Lastname))
-        {
-            user.Lastname = modification.Lastname;
-        }
+        if (!string.IsNullOrEmpty(modification.Lastname)) user.Lastname = modification.Lastname;
 
-        if (!string.IsNullOrEmpty(modification.Email))
-        {
-            user.Email = modification.Email;
-        }
+        if (!string.IsNullOrEmpty(modification.Email)) user.Email = modification.Email;
 
-        if (!string.IsNullOrEmpty(modification.PostalCode))
-        {
-            user.PostalCode = modification.PostalCode;
-        }
+        if (!string.IsNullOrEmpty(modification.PostalCode)) user.PostalCode = modification.PostalCode;
 
-        if (!string.IsNullOrEmpty(modification.Country))
-        {
-            user.Country = modification.Country;
-        }
+        if (!string.IsNullOrEmpty(modification.Country)) user.Country = modification.Country;
 
-        if (!string.IsNullOrEmpty(modification.Gender))
-        {
-            user.Gender = modification.Gender;
-        }
+        if (!string.IsNullOrEmpty(modification.Gender)) user.Gender = modification.Gender;
 
-        if (modification.Birthday != default)
-        {
-            user.Birthday = modification.Birthday;
-        }
+        if (modification.Birthday != default) user.Birthday = modification.Birthday;
 
-        if (!string.IsNullOrEmpty(modification.ProfileImage))
-        {
-            user.ProfileImage = modification.ProfileImage;
-        }
+        if (!string.IsNullOrEmpty(modification.ProfileImage)) user.ProfileImage = modification.ProfileImage;
 
-        if (!string.IsNullOrEmpty(modification.Bio))
-        {
-            user.Bio = modification.Bio;
-        }
+        if (!string.IsNullOrEmpty(modification.Bio)) user.Bio = modification.Bio;
 
         _db.Users.Update(user);
         await _db.SaveChangesAsync();
@@ -185,15 +131,9 @@ public class UserController(GreenUDB db) : ControllerBase
     {
         var user = await _db.Users.FindAsync(id);
 
-        if (user == null)
-        {
-            return NotFound(new { isEmpty = true, message = "Incorrect ID" });
-        }
+        if (user == null) return NotFound(new { isEmpty = true, message = "Incorrect ID" });
 
-        if ( user.Deleted == true )
-        {
-            return BadRequest(new { isEmpty = true, message = "The user it's already deleted" });
-        }
+        if ( user.Deleted == true ) return BadRequest(new { isEmpty = true, message = "The user it's already deleted" });
 
         user.Username = null;
         user.Password = null;

@@ -42,15 +42,9 @@ namespace GreenUApi.Controllers
         {
             var garden = await _db.Gardens.FindAsync(id);
 
-            if (garden == null)
-            {
-                return NotFound(new { isEmpty = true, message = "The id is incorrect" });
-            }
+            if (garden == null) return NotFound(new { isEmpty = true, message = "The id is incorrect" });
 
-            if (garden.Deleted)
-            {
-                return Conflict(new { isEmpty = true, message = "The garden is deleted " });
-            }
+            if (garden.Deleted) return Conflict(new { isEmpty = true, message = "The garden is deleted " });
 
             return Ok(new { isEmpty = false, message = "The garden", content = garden });
         }
@@ -72,10 +66,7 @@ namespace GreenUApi.Controllers
                                         .Where(g => g.AuthorId == id && !g.Deleted)
                                         .ToListAsync();
 
-            if (gardens == null || gardens.Count == 0)
-            {
-                return NotFound(new { isEmpty = true, message = "This user didn't have garden or user doesn't exist" });
-            }
+            if (gardens == null || gardens.Count == 0) return NotFound(new { isEmpty = true, message = "This user didn't have garden or user doesn't exist" });
 
             return Ok(new { isEmpty = false, message = "All garden by user ID", content = gardens});
         }
@@ -86,55 +77,26 @@ namespace GreenUApi.Controllers
             var garden = await _db.Gardens
                 .FindAsync(id);
 
-            if (garden == null)
-            {
-                return NotFound(new { isEmpty = true, message = "The garden id is incorrect" });
-            }
+            if (garden == null) return NotFound(new { isEmpty = true, message = "The garden id is incorrect" });
 
-            if (garden.Deleted)
-            {
-                return BadRequest(new { isEmpty = true, message = "This garden is deleted" });
-            }
+            if (garden.Deleted) return BadRequest(new { isEmpty = true, message = "This garden is deleted" });
 
-            if (!string.IsNullOrEmpty(modification.Name))
-            {
-                garden.Name = modification.Name;
-            }
+            if (!string.IsNullOrEmpty(modification.Name)) garden.Name = modification.Name;
 
-            if (!string.IsNullOrEmpty(modification.Description))
-            {
-                garden.Description = modification.Description;
-            }
+            if (!string.IsNullOrEmpty(modification.Description)) garden.Description = modification.Description;
 
-            if (modification.Latitude.HasValue)
-            {
-                garden.Latitude = modification.Latitude.Value;
-            }
+            if (modification.Latitude.HasValue) garden.Latitude = modification.Latitude.Value;
 
-            if (modification.Longitude.HasValue)
-            {
-                garden.Longitude = modification.Longitude.Value;
-            }
+            if (modification.Longitude.HasValue) garden.Longitude = modification.Longitude.Value;
 
-            if (modification.Length.HasValue)
-            {
-                garden.Length = modification.Length.Value;
-            }
+            if (modification.Length.HasValue) garden.Length = modification.Length.Value;
 
-            if (modification.Width.HasValue)
-            {
-                garden.Width = modification.Width.Value;
-            }
+            if (modification.Width.HasValue) garden.Width = modification.Width.Value;
 
-            if (modification.Privacy.HasValue)
-            {
-                garden.Privacy = modification.Privacy.Value;
-            }
+            if (modification.Privacy.HasValue) garden.Privacy = modification.Privacy.Value;
 
-            if (modification.Type.HasValue)
-            {
-                garden.Type = modification.Type.Value;
-            }
+            if (modification.Type.HasValue) garden.Type = modification.Type.Value;
+
 
             _db.Update(garden);
             await _db.SaveChangesAsync();
@@ -154,45 +116,22 @@ namespace GreenUApi.Controllers
                 .Where(g => g.Name == garden.Name)
                 .FirstOrDefaultAsync();
 
-            if (garden.AuthorId == 0)
-            {
-                return BadRequest(new { isEmpty = true, message = "Need Author ID !" });
-            }
+            if (garden.AuthorId == 0) return BadRequest(new { isEmpty = true, message = "Need Author ID !" });
 
-            if (ExsistingGarden != null)
-            {
-                return Conflict(new { isEmpty = true, message = "This garden name is taken..." });
-            }
+            if (ExsistingGarden != null) return Conflict(new { isEmpty = true, message = "This garden name is taken..." });
 
-            if (string.IsNullOrWhiteSpace(garden.Name))
-            {
-                return BadRequest(new { isEmpty = true, message = "Need garden Name" });
-            }
+            if (string.IsNullOrWhiteSpace(garden.Name)) return BadRequest(new { isEmpty = true, message = "Need garden Name" });
 
-            if (string.IsNullOrWhiteSpace(garden.Description))
-            {
-                return BadRequest(new { isEmpty = true, message = "Description garden is required" });
-            }
+            if (string.IsNullOrWhiteSpace(garden.Description)) return BadRequest(new { isEmpty = true, message = "Description garden is required" });
 
-            if (garden.Latitude < -90 || garden.Latitude > 90)
-            {
-                return BadRequest(new { isEmpty = true, message = "The latitude need a double in this range -90 or 90" });
-            }
+            if (garden.Latitude < -90 || garden.Latitude > 90) return BadRequest(new { isEmpty = true, message = "The latitude need a double in this range -90 or 90" });
 
-            if (garden.Longitude < -180 || garden.Longitude > 180)
-            {
-                return BadRequest(new { isEmpty = true, message = "The longitude need a double in this range -180 or 180" });
-            }
+            if (garden.Longitude < -180 || garden.Longitude > 180) return BadRequest(new { isEmpty = true, message = "The longitude need a double in this range -180 or 180" });
 
-            if (garden.Length <= 0)
-            {
-                return BadRequest(new { isEmpty = true, message = "The garden length need to be above 0" });
-            }
+            if (garden.Length <= 0) return BadRequest(new { isEmpty = true, message = "The garden length need to be above 0" });
 
-            if (garden.Width <= 0)
-            {
-                return BadRequest(new { isEmpty = true, message = "The garden width need to be above 0" });
-            }
+            if (garden.Width <= 0) return BadRequest(new { isEmpty = true, message = "The garden width need to be above 0" });
+
 
             _db.Gardens.Add(garden);
             await _db.SaveChangesAsync();
@@ -206,15 +145,9 @@ namespace GreenUApi.Controllers
         {
             var garden = await _db.Gardens.FindAsync(id);
 
-            if (garden == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "The id is bad."});
-            }
+            if (garden == null) return BadRequest(new { isEmpty = true, message = "The id is bad."});
 
-            if (garden.Deleted)
-            {
-                return Conflict(new { isEmpty = true, message = "The garden is already deleted " });
-            }
+            if (garden.Deleted) return Conflict(new { isEmpty = true, message = "The garden is already deleted " });
 
             var allParcel = await _db.Parcels
                 .Where(p => p.GardenId == id)
