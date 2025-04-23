@@ -73,7 +73,8 @@ const CreateGardenForm = () => {
     setGardenWidth(Number(e.target.value));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const form = document.getElementById('createGarden') as HTMLFormElement;
     if (form) {
       const formData = new FormData(form);
@@ -113,7 +114,11 @@ const CreateGardenForm = () => {
           {translations.gardenCreator}
         </h1>
 
-        <form method="post" id="createGarden" className="flex flex-col">
+        <form
+          onSubmit={handleSubmit}
+          id="createGarden"
+          className="flex flex-col"
+        >
           <TextInput
             type="text"
             label={translations.gardenName}
@@ -206,7 +211,7 @@ const CreateGardenForm = () => {
             <Button onClick={() => router.push('/garden-manager')}>
               {translations.back}
             </Button>
-            <Button onClick={handleSubmit}>{translations.create}</Button>
+            <Button type="submit">{translations.create}</Button>
           </div>
         </form>
       </Card>

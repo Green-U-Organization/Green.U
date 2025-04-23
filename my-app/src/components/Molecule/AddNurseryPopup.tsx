@@ -25,11 +25,30 @@ const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-
+    let type = '';
+    if (formData.get('indoor') === 'on') {
+      type = type + 'Indoor, ';
+    }
+    if (formData.get('outdoor') === 'on') {
+      type = type + 'Outdoor, ';
+    }
+    if (formData.get('hotwire') === 'on') {
+      type = type + 'Hotwire, ';
+    }
+    if (formData.get('hotbed') === 'on') {
+      type = type + 'Hotbed, ';
+    }
+    if (formData.get('lamp') === 'on') {
+      type = type + 'Lamp, ';
+    }
+    if (formData.get('greenhouse') === 'on') {
+      type = type + 'Greenhouse, ';
+    }
+    console.log(type);
     const newNursery = {
       gardenId: actualGarden?.id,
       name: formData.get('nurseryName') as string,
-      type: ['couche chaude'],
+      type: type,
     };
 
     try {
@@ -46,7 +65,7 @@ const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
       style={{
         display: isVisible ? 'flex' : 'none',
       }}
-      className="bg-cardbackground flex h-[80vw] w-[70vw] flex-col items-center justify-between rounded-xl border-2 p-4"
+      className="bg-cardbackground flex w-[70vw] flex-col items-center justify-between rounded-xl border-2 p-4"
     >
       <H2>Add Nursery</H2>
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
@@ -65,6 +84,33 @@ const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
           id="comments"
         ></textarea>
 
+        <H2>Nursery type :</H2>
+        <div className="mx-auto flex w-[60vw] flex-wrap justify-around">
+          <div>
+            <label htmlFor="indoor">Indoor</label>
+            <input type="checkbox" name="indoor" className="mx-[1vw]" />
+          </div>
+          <div>
+            <label htmlFor="outdoor">Outdoor</label>
+            <input type="checkbox" name="outdoor" className="mx-[1vw]" />
+          </div>
+          <div>
+            <label htmlFor="hotwire">Hot Wire</label>
+            <input type="checkbox" name="hotwire" className="mx-[1vw]" />
+          </div>
+          <div>
+            <label htmlFor="hotbed">Hot Bed</label>
+            <input type="checkbox" name="hotbed" className="mx-[1vw]" />
+          </div>
+          <div>
+            <label htmlFor="lamp">Lamp</label>
+            <input type="checkbox" name="lamp" className="mx-[1vw]" />
+          </div>
+          <div>
+            <label htmlFor="greenhouse">Greenhouse</label>
+            <input type="checkbox" name="greenhouse" className="mx-[1vw]" />
+          </div>
+        </div>
         <div className="flex">
           <Button onClick={() => setIsVisible(false)}>Back</Button>
           <Button type="submit">Create!</Button>

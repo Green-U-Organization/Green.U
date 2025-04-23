@@ -158,7 +158,7 @@ type GetCropByNurseryIdRequest = {
 type CreateNurseryRequest = {
   gardenId?: number;
   name: string;
-  type: string[];
+  type: string;
 };
 
 type GetNurseryByGardenIdResponse = {
