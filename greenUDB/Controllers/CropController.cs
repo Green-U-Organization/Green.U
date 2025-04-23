@@ -19,6 +19,12 @@ namespace GreenUApi.Controllers
 
         public string? Variety { get; set; }
 
+        public string? Description { get; set; }
+
+        public short? NPot { get; set; }
+
+        public float? PotSize { get; set; }
+
         public string? Icon { get; set; }
 
         public DateOnly? Sowing { get; set; }
@@ -123,6 +129,8 @@ namespace GreenUApi.Controllers
         [HttpPost("plantnursery/{id}")]
         public async Task<ActionResult<Crop>> PostCropPlantnursery(long id, [FromBody] Crop crop)
         {
+            if (crop == null) return BadRequest(new { isEmpty = true, message = "The body is incorrect" });
+
             crop.PlantNurseryId = id;
 
             if (!crop.PlantNurseryId.HasValue)
