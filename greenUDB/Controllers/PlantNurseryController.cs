@@ -86,10 +86,17 @@ namespace GreenUApi.Controllers
         [HttpPost]
         public async Task<ActionResult<PlantNursery>> PostPlantNursery(PlantNursery plantNursery)
         {
+            if (plantNursery.GardenId == null) return BadRequest(new { isEmpty = true, message = "The gardenId is required" });
+
+            bool gardenExist = await _db.Gardens
+                .AnyAsync(g => g.Id == plantNursery.GardenId);
+
+            if (!gardenExist) return BadRequest(new { isEmpty = true, message = "The specified garden does not exist" });
+
             _db.PlantNursery.Add(plantNursery);
             await _db.SaveChangesAsync();
 
-            return Ok(new { isEmpty = false, message = "A new nursery are created !", content = plantNursery });
+            return Ok(new { isEmpty = false, message = "A new nursery is created!", content = plantNursery });
         }
 
         [HttpDelete("{id}")]
