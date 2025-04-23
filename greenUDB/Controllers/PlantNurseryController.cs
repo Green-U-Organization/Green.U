@@ -28,17 +28,17 @@ namespace GreenUApi.Controllers
             return await _db.PlantNursery.ToListAsync();
         }
 
-        [HttpGet("{id}", Name = "GetPlantNursery")]
-        public async Task<ActionResult<PlantNursery>> GetPlantNursery(long? id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PlantNursery>> GetPlantNurseryById(long? id)
         {
             var plantNursery = await _db.PlantNursery.FindAsync(id);
 
             if (plantNursery == null)
             {
-                return NotFound();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect"});
             }
 
-            return plantNursery;
+            return Ok(new { isEmpty = false, message = "The nursery", content = plantNursery});
         }
 
         [HttpPatch("{id}")]
