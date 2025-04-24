@@ -4,7 +4,7 @@ import Line from './Line';
 import styles from '../../app/Assets.module.css';
 import Image from 'next/image';
 import { ParcelProps, type Parcel } from '@/utils/types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/Confirmation_Popup';
@@ -15,43 +15,47 @@ import {
   // useGetCropByLineIdQuery,
 } from '@/slice/garden';
 import VegetableIcon from '../Atom/VegetableIcon';
+import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
+import { setEditParcelPopup } from '@/redux/display/displaySlice';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
+  //Local Variable
   const [displayParcelInfo, setDisplayParcelInfo] = useState<boolean>(false);
   const [displayDeletingParcelPopup, setDisplayDeletingParcelPopup] =
     useState<boolean>(false);
-  // const { lines, loading, error, isEmpty } = useLineList(currentParcel.id);
+
+  const parcelY = parcel?.length;
+  const parcelX = parcel?.width;
+
+  //Hooks
+  const dispatch = useDispatch();
 
   //RTK Query
   const {
     data: lines,
     isLoading: linesIsLoading,
     isError: linesIsError,
-    // refetch: refetchLines, // si tu as un boutton pour acutalisé: refetchLines()
   } = useGetAllLinesByParcelIdQuery({
     parcelId: parcel.id,
-  }); // get de donnés des données
+  });
 
+  const [createNewLine] = useCreateNewGardenLineMutation();
+  const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
   // const line_id: number = 0;
   // const { data: crops, refetch: refetchCrops } = useGetCropByLineIdQuery({
   //   lineId: line_id,
   // });
 
-  const [
-    createNewLine, // fetch de création de ligne
-    // { isLoading: createNewLineIsLoading },
-  ] = useCreateNewGardenLineMutation();
-
-  const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
-
-  const parcelY = parcel?.length;
-  const parcelX = parcel?.width;
-
   //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
+  const editParcelPopupDisplay = useSelector(
+    (state: RootState) => state.display.editParcelPopup
+  );
+  const id = useSelector((state: RootState) => state.display.id);
 
+  //Fetch
   const addLine = () => {
     try {
       createNewLine({
@@ -177,7 +181,14 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                     alt="Edit parcel"
                     width={50}
                     height={50}
-                    // onClick={}
+                    onClick={() =>
+                      dispatch(
+                        setEditParcelPopup({
+                          state: true,
+                          id: Number(parcel.id),
+                        })
+                      )
+                    }
                   />
                   <Image
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
@@ -210,6 +221,17 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                   handleYesClick={deletingParcel}
                   handleNoClick={() => setDisplayDeletingParcelPopup(false)}
                 />
+              </div>
+
+              <div
+                style={{
+                  display:
+                    editParcelPopupDisplay && id === parcel.id
+                      ? 'block'
+                      : 'none',
+                }}
+              >
+                <EditParcelPopup parcel={parcel} />
               </div>
             </section>
 

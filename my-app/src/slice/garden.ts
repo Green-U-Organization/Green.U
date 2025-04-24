@@ -37,6 +37,15 @@ type CreateNewParcelRequest = {
   parcel_angle: number;
 };
 
+type EditParcelRequest = {
+  parcelId: number;
+  length?: number;
+  width?: number;
+  x_position?: number;
+  y_position?: number;
+  parcel_angle?: number;
+};
+
 type CreateNewGardenRequest = {
   authorId: number;
   name: string;
@@ -288,6 +297,14 @@ export const extendedGardenAPI = api
       }),
 
       //EditParcel >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      editParcel: builder.mutation<void, EditParcelRequest>({
+        query: (arg) => ({
+          url: `/garden/parcel/${arg.parcelId}`,
+          method: 'PATCH',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-parcels'],
+      }),
 
       //CreateNewGarden >> OK
       createNewGarden: builder.mutation<void, CreateNewGardenRequest>({
@@ -431,4 +448,5 @@ export const {
   useCreateNurseryMutation,
   useGetNurseryByGardenIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
+  useEditParcelMutation,
 } = extendedGardenAPI;

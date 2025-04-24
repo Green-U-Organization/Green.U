@@ -9,6 +9,8 @@ import { useCreateNewParcelMutation } from '@/slice/garden';
 const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
 }) => {
+  //Local Variables
+
   const [isVisible, setIsVisible] = useState<boolean>(displayCondition);
   const [length, setLength] = useState<number>(1);
   const [width, setWidth] = useState<number>(1);

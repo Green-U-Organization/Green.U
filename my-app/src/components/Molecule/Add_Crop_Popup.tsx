@@ -36,7 +36,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   const dispatch = useDispatch();
 
   //Selectors
-  const display = useSelector((state: RootState) => state.display.addCropPopup);
+  // const display = useSelector((state: RootState) => state.display.addCropPopup);
 
   //RTK Query
   const [createCropToLine] = useCreateCropToLineMutation();
