@@ -209,7 +209,9 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
       >
         <div className="flex items-center justify-between">
           <H2>Line {lineKey + 1}</H2>
-          <img src={crops?.content[0].icon} alt="" />
+          {crops?.content[0]?.icon && crops.content[0].icon !== '' && (
+            <img src={crops.content[0].icon} alt="" />
+          )}
           <div className="mr-[5vw] flex">
             <img
               className="mx-[3vw]"

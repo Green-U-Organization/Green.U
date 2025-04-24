@@ -12,7 +12,7 @@ import {
   useCreateNewGardenLineMutation,
   useGetAllLinesByParcelIdQuery,
   useDeleteOneParcelByParcelIdMutation,
-  useGetCropByLineIdQuery,
+  // useGetCropByLineIdQuery,
 } from '@/slice/garden';
 import VegetableIcon from '../Atom/VegetableIcon';
 
@@ -32,10 +32,10 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
     parcelId: parcel.id,
   }); // get de donnés des données
 
-  const line_id: number = 0;
-  const { data: crops, refetch: refetchCrops } = useGetCropByLineIdQuery({
-    lineId: line_id,
-  });
+  // const line_id: number = 0;
+  // const { data: crops, refetch: refetchCrops } = useGetCropByLineIdQuery({
+  //   lineId: line_id,
+  // });
 
   const [
     createNewLine, // fetch de création de ligne
