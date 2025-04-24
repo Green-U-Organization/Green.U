@@ -29,11 +29,18 @@ namespace GreenUApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Line>> GetLines(long id)
         {
+
+            bool ParcelExist = await _db.Parcels
+                .Where(p => p.Id == id)
+                .AnyAsync();
+
+            if (!ParcelExist) return BadRequest(new { isEmpty = true, message = "The parcel Id is incorrect" });
+
             var lines = await _db.Lines
                 .Where(l => l.ParcelId == id)
                 .ToListAsync();
 
-            if (lines.Count == 0) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
+            if (lines.Count == 0) return Ok(new { isEmpty = true, message = "No line in this parcel", content = lines });
 
             return Ok(new { isEmpty = false, message = "Every lines from the parcel id", content = lines});
         }
