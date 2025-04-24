@@ -45,24 +45,26 @@ namespace GreenUApi.Controllers
             _db = context;
         }
 
-        [HttpGet("line/{lineId}")]
-        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByline(long lineId){
-            var crops = await _db.Crops.Where(c => c.LineId == lineId).ToListAsync();
-            if(!crops.Any())
-            {
-                return BadRequest(new { isEmpty = true, message = "No crop here..." });
-            }
+        [HttpGet("line/{id}")]
+        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByline(long id){
+
+            var crops = await _db.Crops
+                .Where(c => c.LineId == id)
+                .ToListAsync();
+
+            if(crops.Count == 0) return BadRequest(new { isEmpty = true, message = "No crop here..." });
 
             return Ok(new { isEmpty = false, message = "All crops with line id", content = crops});
         }
 
-        [HttpGet("plantNursery/{plantNursery}")]
-        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByPlantNursery(long line){
-            var crops = await _db.Crops.Where(c => c.PlantNurseryId == line).ToListAsync();
-            if(!crops.Any())
-            {
-                return BadRequest(new { isEmpty = true, message = "No crops..." });
-            }
+        [HttpGet("plantNursery/{id}")]
+        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByPlantNursery(long id){
+
+            var crops = await _db.Crops
+                .Where(c => c.PlantNurseryId == id)
+                .ToListAsync();
+
+            if(crops.Count == 0) return BadRequest(new { isEmpty = true, message = "No crops..." });
 
             return Ok(new { isEmpty = false, message = "All crops with plant nursery id", content = crops });
         }
