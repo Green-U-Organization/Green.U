@@ -7,7 +7,7 @@ import { ParcelProps, type Parcel } from '@/utils/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
-import Confirmation from '../Molecule/ConfirmationPopup';
+import Confirmation from '../Molecule/Confirmation_Popup';
 import {
   useCreateNewGardenLineMutation,
   useGetAllLinesByParcelIdQuery,
@@ -177,6 +177,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                     alt="Edit parcel"
                     width={50}
                     height={50}
+                    // onClick={}
                   />
                   <Image
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"

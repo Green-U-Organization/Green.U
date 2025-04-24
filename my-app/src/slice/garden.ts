@@ -157,17 +157,22 @@ type GetCropByLineIdRequest = {
 };
 
 type GetCropByNurseryIdResponse = {
-  id: number;
-  vegetable: string;
-  variety: string;
-  sowing: string;
-  planting: string;
-  harvesting: string;
-  npot: number;
-  potsize: number;
-  distance_plantation: number;
-  comments: string;
-}[];
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    vegetable: string;
+    variety: string;
+    sowing: string;
+    icon: string;
+    planting: string;
+    harvesting: string;
+    nPot: number;
+    potSize: number;
+    distance_plantation: number;
+    comments: string;
+  }[];
+};
 
 type GetCropByNurseryIdRequest = {
   nurseryId: number;

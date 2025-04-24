@@ -5,17 +5,17 @@ import styles from '../../app/Assets.module.css';
 import { GardenProps, type Garden } from '@/utils/types';
 import MenuSandwich from '../Molecule/MenuSandwich';
 import Submenu from '../Molecule/Submenu';
-import NewParcelForm from '../Molecule/AddParcelPopup';
+import NewParcelForm from '../Molecule/Add_Parcel_Popup';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setFullscreen, setGraphicMode } from '../../redux/garden/gardenSlice';
-import NewGreenhouseForm from '../Molecule/AddGreenhousePopup';
+import NewGreenhouseForm from '../Molecule/Add_Greenhouse_Popup';
 import {
   useGetAllParcelByGardenIdQuery,
   useGetNurseryByGardenIdQuery,
 } from '@/slice/garden';
 import H1 from '../Atom/H1';
-import AddNurseryPopup from '../Molecule/AddNurseryPopup';
+import AddNurseryPopup from '../Molecule/Add_Nursery_Popup';
 import Nursery from './Nursery';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {

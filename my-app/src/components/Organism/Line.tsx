@@ -7,10 +7,10 @@ import { LineProps } from '@/utils/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
-import Confirmation from '../Molecule/ConfirmationPopup';
+import Confirmation from '../Molecule/Confirmation_Popup';
 // import { getCropByLinelId } from '@/utils/actions/crops/line/getCropByLineId';
-import AddCropPopup from '../Molecule/AddCropPopup';
-import ExistentCropPopup from '../Molecule/ExistentCropPopup';
+import AddCropPopup from '../Molecule/Add_Crop_Popup';
+import ExistentCropPopup from '../Molecule/ExistentCrop_Popup';
 import {
   useDeleteOneLineByLineIdMutation,
   useGetCropByLineIdQuery,
