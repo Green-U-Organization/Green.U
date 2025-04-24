@@ -12,6 +12,7 @@ import api from '@/slice/api';
 import gardenReducer from './garden/gardenSlice';
 import parcelReducer from './parcel/parcelSlice';
 import lineReducer from './line/lineSlice';
+import displayReducer from './display/displaySlice';
 
 // Augment middleware to consider Immutable.JS iterables serializable
 const isSerializable = (value: Date) => value instanceof Date || isPlain(value);
@@ -21,6 +22,7 @@ export const store = configureStore({
     garden: gardenReducer,
     parcel: parcelReducer,
     line: lineReducer,
+    display: displayReducer,
 
     // API reducer
     api: api.reducer,

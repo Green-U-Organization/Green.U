@@ -11,7 +11,7 @@ const Checkbox = ({ checked, onChange }: CheckboxProps) => {
   const handleClick = () => {
     const newChecked = !clicked;
     setClicked(newChecked);
-    onChange?.(newChecked); //Informe le parent du changement
+    onChange?.(newChecked);
   };
 
   return (

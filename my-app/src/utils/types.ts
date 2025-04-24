@@ -1,43 +1,44 @@
-export interface BentoCardHeaderProps {
+export type BentoCardHeaderProps = {
   containerName: string;
   className?: string;
   children?: React.ReactNode;
-}
+};
 
-export interface ButtonProps {
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  disabled?: boolean;
-}
+// export type ButtonProps =
+//   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+//   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+//   disabled?: boolean;
+// }
 
-export interface CardProps {
+export type CardProps = {
   children: React.ReactNode;
   className?: string;
-}
+};
 
-export interface CheckboxProps {
+export type CheckboxProps = {
   checked: boolean;
   onChange: (checked: boolean) => void;
-}
+};
 
-export interface DropdownSelectProps<T> {
+export type DropdownSelectProps<T> = {
   label: string;
   placeholder: string;
   options: T[]; // Liste d'options générique
   selectedValue: T;
   setSelectedValue: (value: T) => void;
   error?: boolean;
-}
+};
 
-export interface FileUploadProps {
+export type FileUploadProps = {
   onFileChange: (file: File) => void;
-}
+};
 
-export interface GardenProps {
+export type GardenProps = {
   garden: Garden;
   scale: number;
-}
+};
 
-export interface Garden {
+export type Garden = {
   id: number;
   authorId: number;
   name: string;
@@ -48,9 +49,9 @@ export interface Garden {
   width: number;
   privacy: number;
   type: number;
-}
+};
 
-export interface Parcel {
+export type Parcel = {
   id: number;
   gardenId: number;
   length: number;
@@ -61,24 +62,24 @@ export interface Parcel {
   garden?: string;
   lines: [];
   logs: [];
-}
+};
 
-export interface GardenCardHeaderProps {
+export type GardenCardHeaderProps = {
   containerName: string;
   className?: string;
   children?: React.ReactNode;
   onGardenIdChange?: (selectedGarden: Garden) => void;
   onScaleChange?: (scale: number) => void;
   type: 'display' | 'edit';
-}
+};
 
-export interface LineProps {
+export type LineProps = {
   line: Line;
   scale: number;
   lineKey: number;
-}
+};
 
-export interface LocationPickerProps {
+export type LocationPickerProps = {
   initialLat?: number;
   initialLng?: number;
   onLocationChange?: (lat: number, lng: number) => void;
@@ -86,29 +87,29 @@ export interface LocationPickerProps {
   multipleMarkers?: { lat: number; lng: number }[];
   enableRadius?: boolean;
   showUserPosition?: boolean;
-}
+};
 
-export interface ParcelProps {
+export type ParcelProps = {
   parcel: Parcel;
   scale: number;
   parcelKey: number;
-}
+};
 
-export interface Line {
+export type Line = {
   id: number;
   parcelId: number;
   length: number;
   // crop: string;
   // status: string;
-}
+};
 
-export interface RadioProps {
+export type RadioProps = {
   name: string;
   value: string;
   checked?: boolean;
   id: string;
   onChange?: (value: string) => void;
-}
+};
 
 export type TextInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
@@ -118,7 +119,7 @@ export type TextInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   className?: string; // Explicitly include className
 };
 
-export interface TodosProps {
+export type TodosProps = {
   status: number;
   content: string;
   added: string;
@@ -132,10 +133,23 @@ export interface TodosProps {
   className?: string;
   onStatusChange: (id: string, newStatus: number) => void;
   handleEdit: (e: React.FormEvent) => void;
-}
+};
 
-export interface ZoomSliderProps {
+export type ZoomSliderProps = {
   handleChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   scale: number;
   className?: string;
-}
+};
+
+export type NurceryProps = {
+  nursery: Nurcery;
+  scale: number;
+  nurseryKey: number;
+};
+
+export type Nurcery = {
+  id: number;
+  name: string;
+  comments: string;
+  type: string;
+};

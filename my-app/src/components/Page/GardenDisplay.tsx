@@ -1,5 +1,4 @@
 'use client';
-
 import Card from '@/components/Atom/Card';
 import Garden from '../Organism/Garden';
 import React from 'react';

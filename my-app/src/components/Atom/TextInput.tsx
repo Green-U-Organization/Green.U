@@ -21,6 +21,8 @@ const TextInput: FC<TextInputProps> = ({
         </label>
       )}
       <input
+        id={props.id || props.name}
+        name={props.name}
         {...props} // Toutes les props natives passées directement
         className={`w-full pl-3 ${error || errorPassChar || errorPassMatch ? 'border-txterror border' : 'bg-bginput'} `}
       />
