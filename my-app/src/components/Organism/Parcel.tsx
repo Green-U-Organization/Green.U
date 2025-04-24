@@ -38,6 +38,8 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   } = useGetAllLinesByParcelIdQuery({
     parcelId: parcel.id,
   });
+  //Debug
+  console.log('lines : ', lines);
 
   const [createNewLine] = useCreateNewGardenLineMutation();
   const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
@@ -151,8 +153,8 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
               <div className="flex items-center justify-between">
                 <H2>Parcel {parcelKey}</H2>
 
-                {lines?.content.map((line, index) => (
-                  <VegetableIcon id={line.id} key={index} />
+                {lines?.content.map((line) => (
+                  <VegetableIcon id={line.id} key={line.id} />
                 ))}
 
                 <Image
@@ -247,12 +249,12 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
             ) : (
               lines?.content.map((line, index) => (
                 <div
-                  key={index}
+                  key={line.id}
                   style={{
                     display: displayParcelInfo ? 'block' : 'none',
                   }}
                 >
-                  <Line lineKey={index} line={line} scale={scale} />
+                  <Line line={line} lineIndex={index + 1} scale={scale} />
                 </div>
               ))
             )}

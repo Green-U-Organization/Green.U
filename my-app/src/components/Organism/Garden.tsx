@@ -50,6 +50,9 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     gardenId: garden.id,
   });
 
+  //Debug
+  console.log('parcels : ', parcels);
+
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
 
   // Handlers

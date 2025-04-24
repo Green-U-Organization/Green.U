@@ -20,7 +20,7 @@ import {
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
 
-const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
+const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);
   const [displayDeletingLinePopup, setDisplayDeletingLinePopup] =
     useState<boolean>(false);
@@ -208,7 +208,7 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
         }}
       >
         <div className="flex items-center justify-between">
-          <H2>Line {lineKey + 1}</H2>
+          <H2>Line {lineIndex}</H2>
           {crops?.content[0]?.icon && crops.content[0].icon !== '' && (
             <img src={crops.content[0].icon} alt="" />
           )}
