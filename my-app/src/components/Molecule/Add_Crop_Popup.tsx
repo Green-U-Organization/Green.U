@@ -5,8 +5,7 @@ import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
 import { useCreateCropToLineMutation } from '@/slice/garden';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch } from 'react-redux';
 import { setAddCropPopup } from '@/redux/display/displaySlice';
 
 interface AddCropPopup {
