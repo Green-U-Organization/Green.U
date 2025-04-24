@@ -12,7 +12,9 @@ import {
   useCreateNewGardenLineMutation,
   useGetAllLinesByParcelIdQuery,
   useDeleteOneParcelByParcelIdMutation,
+  useGetCropByLineIdQuery,
 } from '@/slice/garden';
+import VegetableIcon from '../Atom/VegetableIcon';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   const [displayParcelInfo, setDisplayParcelInfo] = useState<boolean>(false);
@@ -29,6 +31,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   } = useGetAllLinesByParcelIdQuery({
     parcelId: parcel.id,
   }); // get de donnés des données
+
+  const line_id: number = 0;
+  const { data: crops, refetch: refetchCrops } = useGetCropByLineIdQuery({
+    lineId: line_id,
+  });
 
   const [
     createNewLine, // fetch de création de ligne
@@ -139,9 +146,10 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
             <section className="flex flex-col">
               <div className="flex items-center justify-between">
                 <H2>Parcel {parcelKey}</H2>
-                <p className="text-lg italic">
-                  {parcel.length}m x {parcel.width}m
-                </p>
+
+                {lines?.content.map((line, index) => (
+                  <VegetableIcon id={line.id} key={index} />
+                ))}
 
                 <Image
                   onClick={() => setDisplayParcelInfo((prev) => !prev)}
@@ -152,37 +160,43 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                   height={50}
                 />
               </div>
-              <div className="flex items-center">
-                <Image
-                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                  src="/image/icons/add.png"
-                  alt="Add line"
-                  width={50}
-                  height={50}
-                  onClick={addLine}
-                />
-                <Image
-                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                  src="/image/icons/edit.png"
-                  alt="Edit parcel"
-                  width={50}
-                  height={50}
-                />
-                <Image
-                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                  src="/image/icons/info.png"
-                  alt="Display info about parcel"
-                  width={50}
-                  height={50}
-                />
-                <Image
-                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                  src="/image/icons/trash.png"
-                  alt="Deleting parcel"
-                  width={50}
-                  height={50}
-                  onClick={() => setDisplayDeletingParcelPopup(true)}
-                />
+
+              <div className="flex w-full justify-between">
+                <div className="flex items-center">
+                  <Image
+                    className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
+                    src="/image/icons/add.png"
+                    alt="Add line"
+                    width={50}
+                    height={50}
+                    onClick={addLine}
+                  />
+                  <Image
+                    className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
+                    src="/image/icons/edit.png"
+                    alt="Edit parcel"
+                    width={50}
+                    height={50}
+                  />
+                  <Image
+                    className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
+                    src="/image/icons/info.png"
+                    alt="Display info about parcel"
+                    width={50}
+                    height={50}
+                  />
+                  <Image
+                    className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
+                    src="/image/icons/trash.png"
+                    alt="Deleting parcel"
+                    width={50}
+                    height={50}
+                    onClick={() => setDisplayDeletingParcelPopup(true)}
+                  />
+                </div>
+                <p className="mr-[3vw] text-lg italic">
+                  {parcel.length}m x {parcel.width}m
+                </p>
               </div>
 
               <div

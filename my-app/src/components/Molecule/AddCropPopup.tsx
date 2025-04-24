@@ -5,15 +5,15 @@ import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
 import { useCreateCropToLineMutation } from '@/slice/garden';
-import AddIconPopup from './AddIconPopup';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { setAddCropPopup } from '@/redux/display/displaySlice';
 
 interface AddCropPopup {
-  handleYesClick?: () => void;
-  handleNoClick: () => void;
   lineId: number;
 }
 
-const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
+const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   const [plantationDistance, setPlantationDistance] = useState<number>(10);
   const [selectedIcon, setSelectedIcon] = useState<string>('');
 
@@ -31,6 +31,12 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
     '/image/assets/vegetables/icon/tomato.png',
   ];
   const baseURL = 'http://localhost:3000';
+
+  //Hooks
+  const dispatch = useDispatch();
+
+  //Selectors
+  const display = useSelector((state: RootState) => state.display.addCropPopup);
 
   //RTK Query
   const [createCropToLine] = useCreateCropToLineMutation();
@@ -53,7 +59,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
       lineId: lineId,
       vegetable: formData.get('vegetable') as string,
       variety: formData.get('variety') as string,
-      icon: '',
+      icon: selectedIcon,
       sowing: sowing || '',
       planting: planting || '',
       harvesting: '',
@@ -61,11 +67,15 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
       comments: formData.get('comments') as string,
     };
 
-    console.log('crops : ', cropData);
     try {
       await createCropToLine(cropData).unwrap();
       console.log('crop created');
-      handleNoClick();
+      dispatch(
+        setAddCropPopup({
+          state: false,
+          id: Number(lineId),
+        })
+      );
     } catch {
       console.log('Error creating crop');
     }
@@ -80,7 +90,6 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
 
   const handleClickIcon = (e: React.MouseEvent<HTMLImageElement>) => {
     setSelectedIcon(e.currentTarget.src);
-    console.log('icon : ', selectedIcon);
   };
 
   return (
@@ -155,6 +164,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
         <H2>Choose your crop icon :</H2>
         <div className="flex flex-wrap items-center justify-center">
           {iconList.map((icon, key) => (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={icon}
               alt={`icon-${key}`}
@@ -166,7 +176,18 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId, handleNoClick }) => {
         </div>
 
         <div className="flex items-center justify-center">
-          <Button onClick={handleNoClick}>Back</Button>
+          <Button
+            onClick={() =>
+              dispatch(
+                setAddCropPopup({
+                  state: false,
+                  id: Number(lineId),
+                })
+              )
+            }
+          >
+            Back
+          </Button>
           <Button type="submit">Plant</Button>
         </div>
       </form>

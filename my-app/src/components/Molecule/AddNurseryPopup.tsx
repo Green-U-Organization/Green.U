@@ -44,7 +44,7 @@ const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
     if (formData.get('greenhouse') === 'on') {
       type = type + 'Greenhouse, ';
     }
-    console.log(type);
+
     const newNursery = {
       gardenId: actualGarden?.id,
       name: formData.get('nurseryName') as string,

@@ -28,8 +28,6 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   } = useGetAllGardenByUserIdQuery({
     userId: 1, // CHANGER AVEC LE VRAI ID USER
   }); // get de donnés des données
-  console.log('fetched gardens : ', gardens?.content);
-  console.log('coucou');
 
   //Selectors
   const selectedGarden = useSelector(
@@ -40,14 +38,10 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   const handleGardenIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedGardenId = Number(e.target.value);
 
-    // console.log('Selected garden ID from dropdown:', selectedGardenId);
-
     const garden = gardens?.content.find((g) => g.id === selectedGardenId);
-    console.log('Garden found in gardens array:', garden);
 
     if (garden) {
       dispatch(setSelectedGarden(garden));
-      console.log('Updated selectedGarden:', garden);
     }
 
     // if (selectedGarden) {

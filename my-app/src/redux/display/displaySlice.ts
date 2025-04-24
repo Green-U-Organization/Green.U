@@ -7,6 +7,7 @@ type displayState = {
   addCreenhousePopup: boolean;
   addNurseryPopup: boolean;
   addParcelPopup: boolean;
+  existantCropPopup: boolean;
 };
 
 type payloadType = {
@@ -21,6 +22,7 @@ const initialState: displayState = {
   addCreenhousePopup: false,
   addNurseryPopup: false,
   addParcelPopup: false,
+  existantCropPopup: false,
 };
 
 const displaySlice = createSlice({
@@ -31,17 +33,25 @@ const displaySlice = createSlice({
       state.addCropNurseryPopup = action.payload.state;
       state.id = action.payload.id;
     },
-    setAddCropPopup: (state, action: PayloadAction<boolean>) => {
-      state.addCropPopup = action.payload;
+    setAddCropPopup: (state, action: PayloadAction<payloadType>) => {
+      state.addCropPopup = action.payload.state;
+      state.id = action.payload.id;
     },
-    setAddGreenhousePopup: (state, action: PayloadAction<boolean>) => {
-      state.addCreenhousePopup = action.payload;
+    setAddGreenhousePopup: (state, action: PayloadAction<payloadType>) => {
+      state.addCreenhousePopup = action.payload.state;
+      state.id = action.payload.id;
     },
-    setAddNurseryPopup: (state, action: PayloadAction<boolean>) => {
-      state.addNurseryPopup = action.payload;
+    setAddNurseryPopup: (state, action: PayloadAction<payloadType>) => {
+      state.addNurseryPopup = action.payload.state;
+      state.id = action.payload.id;
     },
-    setAddParcelPopup: (state, action: PayloadAction<boolean>) => {
-      state.addParcelPopup = action.payload;
+    setAddParcelPopup: (state, action: PayloadAction<payloadType>) => {
+      state.addParcelPopup = action.payload.state;
+      state.id = action.payload.id;
+    },
+    setExistantCropPopup: (state, action: PayloadAction<payloadType>) => {
+      state.existantCropPopup = action.payload.state;
+      state.id = action.payload.id;
     },
   },
 });
@@ -52,5 +62,6 @@ export const {
   setAddGreenhousePopup,
   setAddNurseryPopup,
   setAddParcelPopup,
+  setExistantCropPopup,
 } = displaySlice.actions;
 export default displaySlice.reducer;

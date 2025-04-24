@@ -54,13 +54,10 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
 
   // Handlers
   const handleAdd = () => {
-    console.log('Add garden');
     setAddSubmenu((prev) => !prev);
   };
 
-  useEffect(() => {
-    console.log('addSubmenu updated:', addSubmenu);
-  }, [addSubmenu]);
+  useEffect(() => {}, [addSubmenu]);
 
   //TODO:
   const handleEditGarden = () => {
@@ -245,7 +242,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
           </div>
         ))} */}
         {parcelsIsError ? (
-          <div className="flex w-[80vw] flex-col items-center justify-center">
+          <div className="ml-[3vw] flex w-[80vw] flex-col items-center justify-center">
             <H1>
               Hey, you don&apos;t have any parcels yet! Want to create one?
             </H1>
@@ -266,8 +263,8 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
         )}
 
         {nurseryIsError ? (
-          <div className="flex w-[80vw] flex-col items-center justify-center">
-            <p>You don't have any nursery here. Want to create one?</p>
+          <div className="mt-[2vh] ml-[3vw] flex w-[80vw] flex-col items-center justify-center">
+            <p>You don&apos;t have any nursery here. Want to create one?</p>
           </div>
         ) : (
           nurseries?.content.map((nursery, index) => (

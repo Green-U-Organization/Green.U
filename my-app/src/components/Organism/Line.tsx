@@ -4,7 +4,7 @@
 import React, { FC, useState } from 'react'; // <DraggableCore>
 // import styles from '../../app/Assets.module.css';
 import { LineProps } from '@/utils/types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/ConfirmationPopup';
@@ -15,14 +15,16 @@ import {
   useDeleteOneLineByLineIdMutation,
   useGetCropByLineIdQuery,
 } from '@/slice/garden';
+import {
+  setAddCropPopup,
+  setExistantCropPopup,
+} from '@/redux/display/displaySlice';
 
 const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
   const [displayInfo, SetDisplayInfo] = useState(false);
   const [displayDeletingLinePopup, setDisplayDeletingLinePopup] =
     useState<boolean>(false);
   const [cropIsPresent, setCropIsPresent] = useState<boolean>(false);
-  const [displayAddCropPopup, setDisplayAddCropPopup] =
-    useState<boolean>(false);
 
   //RTK Query
   const [
@@ -33,13 +35,20 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
     lineId: line.id,
   });
 
-  // Example usage of the mutation function:
-  // deleteLineMutation({ lineId: line.id });
+  //Hooks
+  const dispatch = useDispatch();
 
   //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
+  const addCropPopupDisplay = useSelector(
+    (state: RootState) => state.display.addCropPopup
+  );
+  const ExistantCropPopupDisplay = useSelector(
+    (state: RootState) => state.display.existantCropPopup
+  );
+  const id = useSelector((state: RootState) => state.display.id);
 
   //Functions
   const deletingLine = () => {
@@ -51,6 +60,7 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
     } catch {
       console.log('error deleting line');
     }
+    setDisplayDeletingLinePopup(false);
   };
 
   // const cropIcon: { [key: string]: string } = {
@@ -117,16 +127,27 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
   //const selectedCrop = line.crop.icon;
 
   //Handlers
+
   const handleClickAddCrop = async () => {
     const actualCrops = crops;
-    console.log(actualCrops);
+
     if (actualCrops) {
       setCropIsPresent(true);
-    } else if (!actualCrops) {
-      console.log('empty line');
+      dispatch(
+        setExistantCropPopup({
+          state: true,
+          id: Number(line.id),
+        })
+      );
+    } else {
       setCropIsPresent(false);
+      dispatch(
+        setAddCropPopup({
+          state: true,
+          id: Number(line.id),
+        })
+      );
     }
-    setDisplayAddCropPopup(true);
   };
 
   const handleMouseEnter = () => {
@@ -188,6 +209,7 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
       >
         <div className="flex items-center justify-between">
           <H2>Line {lineKey + 1}</H2>
+          <img src={crops?.content[0].icon} alt="" />
           <div className="mr-[5vw] flex">
             <img
               className="mx-[3vw]"
@@ -246,23 +268,24 @@ const Line: FC<LineProps> = ({ line, scale, lineKey }) => {
 
       <div
         style={{
-          display: displayAddCropPopup && !cropIsPresent ? 'block' : 'none',
+          display:
+            id === line.id && addCropPopupDisplay && !cropIsPresent
+              ? 'block'
+              : 'none',
         }}
       >
-        <AddCropPopup
-          lineId={line.id}
-          handleNoClick={() => setDisplayAddCropPopup(false)}
-        />
+        <AddCropPopup lineId={line.id} />
       </div>
 
       <div
         style={{
-          display: displayAddCropPopup && cropIsPresent ? 'block' : 'none',
+          display:
+            id === line.id && ExistantCropPopupDisplay && cropIsPresent
+              ? 'block'
+              : 'none',
         }}
       >
-        <ExistentCropPopup
-          handleClickOk={() => setDisplayAddCropPopup(false)}
-        />
+        <ExistentCropPopup lineId={line.id} />
       </div>
     </>
   );

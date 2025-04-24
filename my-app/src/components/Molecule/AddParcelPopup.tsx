@@ -40,7 +40,6 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
     };
 
     for (let i = 0; i < repeat; i++) {
-      console.log(newParcel);
       try {
         createNewParcel(newParcel).unwrap();
         console.log('parcel created');
@@ -54,12 +53,10 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   const handleLengthChange = (e: { target: { value: string } }) => {
     const newValue = parseFloat(e.target.value);
     setLength(newValue);
-    console.log(length);
   };
   const handleWidthChange = (e: { target: { value: string } }) => {
     const newValue = parseFloat(e.target.value);
     setWidth(newValue);
-    console.log(length);
   };
   const handleRepeatChange = (e: { target: { value: string } }) => {
     const newValue = Number(e.target.value);

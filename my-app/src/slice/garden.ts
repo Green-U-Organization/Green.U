@@ -126,22 +126,30 @@ type CreateCropToNurseryRequest = {
   nurseryId: number;
   vegetable: string;
   variety: string;
+  description: string;
+  icon: string;
+  npot: number;
+  potsize: number;
   sowing: string;
   planting: string;
   harvesting: string;
   distance_plantation: number;
-  comments: string;
 };
 
 type GetCropByLineIdResponse = {
-  id: number;
-  vegetable: string;
-  variety: string;
-  sowing: string;
-  planting: string;
-  harvesting: string;
-  distance_plantation: number;
-  comments: string;
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    vegetable: string;
+    variety: string;
+    icon: string;
+    sowing: string;
+    planting: string;
+    harvesting: string;
+    distance_plantation: number;
+    comments: string;
+  }[];
 };
 
 type GetCropByLineIdRequest = {
@@ -155,6 +163,8 @@ type GetCropByNurseryIdResponse = {
   sowing: string;
   planting: string;
   harvesting: string;
+  npot: number;
+  potsize: number;
   distance_plantation: number;
   comments: string;
 }[];
@@ -325,7 +335,7 @@ export const extendedGardenAPI = api
       //CreateCropToNursery >> OK + TO IMPLEMENT
       createCropToNursery: builder.mutation<void, CreateCropToNurseryRequest>({
         query: (arg) => ({
-          url: `/crops/nursery/${arg.nurseryId}`,
+          url: `/crops/plantnursery/${arg.nurseryId}`,
           method: 'POST',
           body: arg,
         }),
@@ -352,7 +362,7 @@ export const extendedGardenAPI = api
         GetCropByNurseryIdRequest
       >({
         query: (arg) => ({
-          url: `/crops/nursery/${arg.nurseryId}`,
+          url: `/crops/plantnursery/${arg.nurseryId}`,
           method: 'GET',
         }),
         providesTags: ['garden-crops'],
