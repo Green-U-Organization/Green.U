@@ -10,7 +10,6 @@ import type { AddCropPopup } from '@/utils/types';
 import { setAddCropPopup } from '@/redux/display/displaySlice';
 
 const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
-
   //Local State
   const [plantationDistance, setPlantationDistance] = useState<number>(10);
   const [selectedIcon, setSelectedIcon] = useState<string>('');
@@ -29,7 +28,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
     '/image/assets/vegetables/icon/potato.png',
     '/image/assets/vegetables/icon/tomato.png',
   ];
-  const baseURL = 'http://localhost:3000';
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
   //Hooks
   const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import { store, useDispatch, useSelector } from '../../redux/store';
+import { useDispatch, useSelector } from '../../redux/store';
 import { useCallback, useEffect } from 'react';
 import { Garden } from '@/utils/types';
 import {

@@ -5,7 +5,7 @@ const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API,
-    prepareHeaders: async (headers, api) => {
+    prepareHeaders: async (headers) => {
       // const accessToken = // from cookie
 
       // if (accessToken) {
