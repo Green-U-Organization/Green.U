@@ -1,11 +1,9 @@
 'use client';
 import React, { FC } from 'react';
-
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
 import { GardenCardHeaderProps } from '@/utils/types';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
-// import { useGardenList } from '../../app/hooks/useGardenList';
 import H1 from '../Atom/H1';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetAllGardenByUserIdQuery } from '@/slice/garden';
@@ -16,7 +14,8 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   className,
   type,
 }) => {
-  // const [selectedGarden, setSelectedGarden] = useState<Garden>();
+  
+  //Hooks
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -34,7 +33,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
     (state: RootState) => state.garden.selectedGarden
   );
 
-  //#region HANDLER
+  //Handlers
   const handleGardenIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedGardenId = Number(e.target.value);
 
@@ -43,15 +42,12 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
     if (garden) {
       dispatch(setSelectedGarden(garden));
     }
-
-    // if (selectedGarden) {
-    //   onGardenIdChange && onGardenIdChange(selectedGarden);
-    // }
-    //race condition
   };
 
+  //Variables
   const gardenDescription = selectedGarden?.description;
 
+  //Loading and Error Handling
   if (gardensIsLoading) {
     return <div>Loading...</div>;
   }

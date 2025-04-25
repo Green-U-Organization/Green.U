@@ -19,6 +19,11 @@ import AddNurseryPopup from '../Molecule/Add_Nursery_Popup';
 import Nursery from './Nursery';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
+  //Local State
+  const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
+  const [gardenLock, setGardenLock] = useState<boolean>(true);
+  const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
+
   // Hooks
   const dispatch = useDispatch();
 
@@ -27,10 +32,6 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     (state: RootState) => state.garden.graphicMode
   );
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
-
-  // State
-  const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
-  const [gardenLock, setGardenLock] = useState<boolean>(true);
 
   //RTK Query
   const {
@@ -53,14 +54,10 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   //Debug
   console.log('parcels : ', parcels);
 
-  const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
-
   // Handlers
   const handleAdd = () => {
     setAddSubmenu((prev) => !prev);
   };
-
-  useEffect(() => {}, [addSubmenu]);
 
   //TODO:
   const handleEditGarden = () => {
@@ -78,6 +75,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     dispatch(setFullscreen(!fullscreen));
   };
 
+  //Variables
   const addSubmenuIcon = [
     {
       src: '/image/icons/parcel.png',
@@ -146,9 +144,12 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   const gardenX = currentGarden?.length;
   const gardenY = currentGarden?.width;
 
+  //UseEffect
   useEffect(() => {
     setCurrentGarden(garden);
   }, [garden]);
+
+  useEffect(() => {}, [addSubmenu]);
 
   useEffect(() => {
     refetchNurseries();
@@ -158,6 +159,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     refetchParcels();
   }, [garden.id, refetchParcels]);
 
+  //Loading and Error handling
   if (parcelsIsLoading) {
     return <div>Loading...</div>;
   }

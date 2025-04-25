@@ -16,31 +16,35 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   const dispatch = useDispatch();
   const reload = useSelector((state) => state.garden.reload);
 
-  // State
+  // Local State
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
   const [gardenLock, setGardenLock] = useState<boolean>(true);
-  // const [listDisplay, setListDisplay] = useState<boolean>(false);
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
   const { parcels, loading, error, isEmpty } = useParcelList(currentGarden.id);
 
   // Selectors
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
 
-  // Handlers
-  const handleAdd = () => {
-    console.log('Add garden');
-    setAddSubmenu((prev) => !prev);
-  };
-
+  // UseEffect
   useEffect(() => {
     console.log('addSubmenu updated:', addSubmenu);
   }, [addSubmenu]);
+
+  useEffect(() => {
+    setCurrentGarden(garden);
+  }, [garden]);
 
   useEffect(() => {
     console.log(reload);
     console.log("that's where i'm suppose to reload");
     setCurrentGarden(garden);
   }, [reload, dispatch, garden]);
+
+  // Handlers
+  const handleAdd = () => {
+    console.log('Add garden');
+    setAddSubmenu((prev) => !prev);
+  };
 
   //TODO:
   const handleEditGarden = () => {
@@ -58,6 +62,7 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
     dispatch(setFullscreen(!fullscreen));
   };
 
+  // Variables
   const addSubmenuIcon = [
     {
       src: '/image/icons/parcel.png',
@@ -126,10 +131,7 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   const gardenX = currentGarden?.length;
   const gardenY = currentGarden?.width;
 
-  useEffect(() => {
-    setCurrentGarden(garden);
-  }, [garden]);
-
+  // Loading and Error Handling
   if (loading) {
     return <div>Loading...</div>;
   }
