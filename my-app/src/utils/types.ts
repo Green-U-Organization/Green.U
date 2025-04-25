@@ -153,3 +153,24 @@ export type Nurcery = {
   comments: string;
   type: string;
 };
+
+export type SelectOption = {
+  value: string | number;
+  label: string;
+};
+
+export type SelectInputProps = {
+  label: string;
+  name: string;
+  options: SelectOption[];
+  value?: string | number;
+  defaultValue?: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+};
+
+export type VegetableIconProps = {
+  id: number;
+};

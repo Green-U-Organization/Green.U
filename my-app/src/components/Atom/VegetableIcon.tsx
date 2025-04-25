@@ -1,8 +1,5 @@
 import { useGetCropByLineIdQuery } from '@/slice/garden';
-
-interface VegetableIconProps {
-  id: number;
-}
+import { VegetableIconProps } from '@/utils/types';
 
 const VegetableIcon = ({ id }: VegetableIconProps) => {
   const { data: crops } = useGetCropByLineIdQuery({
@@ -12,7 +9,6 @@ const VegetableIcon = ({ id }: VegetableIconProps) => {
   return (
     <>
       {crops?.content[0]?.icon && crops.content[0].icon !== '' && (
-        // eslint-disable-next-line @next/next/no-img-element
         <img src={crops.content[0].icon} alt="" className="w-[6vw]" />
       )}
     </>
