@@ -4,47 +4,60 @@ import Line from './Line';
 import styles from '../../app/Assets.module.css';
 import Image from 'next/image';
 import { ParcelProps, type Parcel } from '@/utils/types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
-import Confirmation from '../Molecule/ConfirmationPopup';
+import Confirmation from '../Molecule/Confirmation_Popup';
 import {
   useCreateNewGardenLineMutation,
   useGetAllLinesByParcelIdQuery,
   useDeleteOneParcelByParcelIdMutation,
+  // useGetCropByLineIdQuery,
 } from '@/slice/garden';
+import VegetableIcon from '../Atom/VegetableIcon';
+import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
+import { setEditParcelPopup } from '@/redux/display/displaySlice';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
+  //Local Variable
   const [displayParcelInfo, setDisplayParcelInfo] = useState<boolean>(false);
   const [displayDeletingParcelPopup, setDisplayDeletingParcelPopup] =
     useState<boolean>(false);
-  // const { lines, loading, error, isEmpty } = useLineList(currentParcel.id);
+
+  const parcelY = parcel?.length;
+  const parcelX = parcel?.width;
+
+  //Hooks
+  const dispatch = useDispatch();
 
   //RTK Query
   const {
     data: lines,
     isLoading: linesIsLoading,
     isError: linesIsError,
-    // refetch: refetchLines, // si tu as un boutton pour acutalisé: refetchLines()
   } = useGetAllLinesByParcelIdQuery({
     parcelId: parcel.id,
-  }); // get de donnés des données
+  });
+  //Debug
+  console.log('lines : ', lines);
 
-  const [
-    createNewLine, // fetch de création de ligne
-    // { isLoading: createNewLineIsLoading },
-  ] = useCreateNewGardenLineMutation();
-
+  const [createNewLine] = useCreateNewGardenLineMutation();
   const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
-
-  const parcelY = parcel?.length;
-  const parcelX = parcel?.width;
+  // const line_id: number = 0;
+  // const { data: crops, refetch: refetchCrops } = useGetCropByLineIdQuery({
+  //   lineId: line_id,
+  // });
 
   //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
+  const editParcelPopupDisplay = useSelector(
+    (state: RootState) => state.display.editParcelPopup
+  );
+  const id = useSelector((state: RootState) => state.display.id);
 
+  //Fetch
   const addLine = () => {
     try {
       createNewLine({
@@ -139,9 +152,10 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
             <section className="flex flex-col">
               <div className="flex items-center justify-between">
                 <H2>Parcel {parcelKey}</H2>
-                <p className="text-lg italic">
-                  {parcel.length}m x {parcel.width}m
-                </p>
+
+                {lines?.content.map((line) => (
+                  <VegetableIcon id={line.id} key={line.id} />
+                ))}
 
                 <Image
                   onClick={() => setDisplayParcelInfo((prev) => !prev)}
@@ -152,37 +166,51 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                   height={50}
                 />
               </div>
-              <div className="flex items-center">
-                <Image
-                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                  src="/image/icons/add.png"
-                  alt="Add line"
-                  width={50}
-                  height={50}
-                  onClick={addLine}
-                />
-                <Image
-                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                  src="/image/icons/edit.png"
-                  alt="Edit parcel"
-                  width={50}
-                  height={50}
-                />
-                <Image
-                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                  src="/image/icons/info.png"
-                  alt="Display info about parcel"
-                  width={50}
-                  height={50}
-                />
-                <Image
-                  className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                  src="/image/icons/trash.png"
-                  alt="Deleting parcel"
-                  width={50}
-                  height={50}
-                  onClick={() => setDisplayDeletingParcelPopup(true)}
-                />
+
+              <div className="flex w-full justify-between">
+                <div className="flex items-center">
+                  <Image
+                    className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
+                    src="/image/icons/add.png"
+                    alt="Add line"
+                    width={50}
+                    height={50}
+                    onClick={addLine}
+                  />
+                  <Image
+                    className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
+                    src="/image/icons/edit.png"
+                    alt="Edit parcel"
+                    width={50}
+                    height={50}
+                    onClick={() =>
+                      dispatch(
+                        setEditParcelPopup({
+                          state: true,
+                          id: Number(parcel.id),
+                        })
+                      )
+                    }
+                  />
+                  <Image
+                    className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
+                    src="/image/icons/info.png"
+                    alt="Display info about parcel"
+                    width={50}
+                    height={50}
+                  />
+                  <Image
+                    className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
+                    src="/image/icons/trash.png"
+                    alt="Deleting parcel"
+                    width={50}
+                    height={50}
+                    onClick={() => setDisplayDeletingParcelPopup(true)}
+                  />
+                </div>
+                <p className="mr-[3vw] text-lg italic">
+                  {parcel.length}m x {parcel.width}m
+                </p>
               </div>
 
               <div
@@ -195,6 +223,17 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                   handleYesClick={deletingParcel}
                   handleNoClick={() => setDisplayDeletingParcelPopup(false)}
                 />
+              </div>
+
+              <div
+                style={{
+                  display:
+                    editParcelPopupDisplay && id === parcel.id
+                      ? 'block'
+                      : 'none',
+                }}
+              >
+                <EditParcelPopup parcel={parcel} />
               </div>
             </section>
 
@@ -210,12 +249,12 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
             ) : (
               lines?.content.map((line, index) => (
                 <div
-                  key={index}
+                  key={line.id}
                   style={{
                     display: displayParcelInfo ? 'block' : 'none',
                   }}
                 >
-                  <Line lineKey={index} line={line} scale={scale} />
+                  <Line line={line} lineIndex={index + 1} scale={scale} />
                 </div>
               ))
             )}

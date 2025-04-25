@@ -5,17 +5,17 @@ import styles from '../../app/Assets.module.css';
 import { GardenProps, type Garden } from '@/utils/types';
 import MenuSandwich from '../Molecule/MenuSandwich';
 import Submenu from '../Molecule/Submenu';
-import NewParcelForm from '../Molecule/AddParcelPopup';
+import NewParcelForm from '../Molecule/Add_Parcel_Popup';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setFullscreen, setGraphicMode } from '../../redux/garden/gardenSlice';
-import NewGreenhouseForm from '../Molecule/AddGreenhousePopup';
+import NewGreenhouseForm from '../Molecule/Add_Greenhouse_Popup';
 import {
   useGetAllParcelByGardenIdQuery,
   useGetNurseryByGardenIdQuery,
 } from '@/slice/garden';
 import H1 from '../Atom/H1';
-import AddNurseryPopup from '../Molecule/AddNurseryPopup';
+import AddNurseryPopup from '../Molecule/Add_Nursery_Popup';
 import Nursery from './Nursery';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
@@ -50,17 +50,17 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     gardenId: garden.id,
   });
 
+  //Debug
+  console.log('parcels : ', parcels);
+
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
 
   // Handlers
   const handleAdd = () => {
-    console.log('Add garden');
     setAddSubmenu((prev) => !prev);
   };
 
-  useEffect(() => {
-    console.log('addSubmenu updated:', addSubmenu);
-  }, [addSubmenu]);
+  useEffect(() => {}, [addSubmenu]);
 
   //TODO:
   const handleEditGarden = () => {
@@ -245,7 +245,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
           </div>
         ))} */}
         {parcelsIsError ? (
-          <div className="flex w-[80vw] flex-col items-center justify-center">
+          <div className="ml-[3vw] flex w-[80vw] flex-col items-center justify-center">
             <H1>
               Hey, you don&apos;t have any parcels yet! Want to create one?
             </H1>
@@ -266,8 +266,8 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
         )}
 
         {nurseryIsError ? (
-          <div className="flex w-[80vw] flex-col items-center justify-center">
-            <p>You don't have any nursery here. Want to create one?</p>
+          <div className="mt-[2vh] ml-[3vw] flex w-[80vw] flex-col items-center justify-center">
+            <p>You don&apos;t have any nursery here. Want to create one?</p>
           </div>
         ) : (
           nurseries?.content.map((nursery, index) => (

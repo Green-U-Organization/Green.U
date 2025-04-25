@@ -9,6 +9,8 @@ import { useCreateNewParcelMutation } from '@/slice/garden';
 const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
 }) => {
+  //Local Variables
+
   const [isVisible, setIsVisible] = useState<boolean>(displayCondition);
   const [length, setLength] = useState<number>(1);
   const [width, setWidth] = useState<number>(1);
@@ -40,7 +42,6 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
     };
 
     for (let i = 0; i < repeat; i++) {
-      console.log(newParcel);
       try {
         createNewParcel(newParcel).unwrap();
         console.log('parcel created');
@@ -54,12 +55,10 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   const handleLengthChange = (e: { target: { value: string } }) => {
     const newValue = parseFloat(e.target.value);
     setLength(newValue);
-    console.log(length);
   };
   const handleWidthChange = (e: { target: { value: string } }) => {
     const newValue = parseFloat(e.target.value);
     setWidth(newValue);
-    console.log(length);
   };
   const handleRepeatChange = (e: { target: { value: string } }) => {
     const newValue = Number(e.target.value);

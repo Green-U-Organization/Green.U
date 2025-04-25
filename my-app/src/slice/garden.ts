@@ -37,6 +37,15 @@ type CreateNewParcelRequest = {
   parcel_angle: number;
 };
 
+type EditParcelRequest = {
+  parcelId: number;
+  length?: number;
+  width?: number;
+  x_position?: number;
+  y_position?: number;
+  parcel_angle?: number;
+};
+
 type CreateNewGardenRequest = {
   authorId: number;
   name: string;
@@ -126,22 +135,30 @@ type CreateCropToNurseryRequest = {
   nurseryId: number;
   vegetable: string;
   variety: string;
+  description: string;
+  icon: string;
+  npot: number;
+  potsize: number;
   sowing: string;
   planting: string;
   harvesting: string;
   distance_plantation: number;
-  comments: string;
 };
 
 type GetCropByLineIdResponse = {
-  id: number;
-  vegetable: string;
-  variety: string;
-  sowing: string;
-  planting: string;
-  harvesting: string;
-  distance_plantation: number;
-  comments: string;
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    vegetable: string;
+    variety: string;
+    icon: string;
+    sowing: string;
+    planting: string;
+    harvesting: string;
+    distance_plantation: number;
+    comments: string;
+  }[];
 };
 
 type GetCropByLineIdRequest = {
@@ -149,15 +166,22 @@ type GetCropByLineIdRequest = {
 };
 
 type GetCropByNurseryIdResponse = {
-  id: number;
-  vegetable: string;
-  variety: string;
-  sowing: string;
-  planting: string;
-  harvesting: string;
-  distance_plantation: number;
-  comments: string;
-}[];
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    vegetable: string;
+    variety: string;
+    sowing: string;
+    icon: string;
+    planting: string;
+    harvesting: string;
+    nPot: number;
+    potSize: number;
+    distance_plantation: number;
+    comments: string;
+  }[];
+};
 
 type GetCropByNurseryIdRequest = {
   nurseryId: number;
@@ -273,6 +297,14 @@ export const extendedGardenAPI = api
       }),
 
       //EditParcel >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      editParcel: builder.mutation<void, EditParcelRequest>({
+        query: (arg) => ({
+          url: `/garden/parcel/${arg.parcelId}`,
+          method: 'PATCH',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-parcels'],
+      }),
 
       //CreateNewGarden >> OK
       createNewGarden: builder.mutation<void, CreateNewGardenRequest>({
@@ -325,7 +357,7 @@ export const extendedGardenAPI = api
       //CreateCropToNursery >> OK + TO IMPLEMENT
       createCropToNursery: builder.mutation<void, CreateCropToNurseryRequest>({
         query: (arg) => ({
-          url: `/crops/nursery/${arg.nurseryId}`,
+          url: `/crops/plantnursery/${arg.nurseryId}`,
           method: 'POST',
           body: arg,
         }),
@@ -352,7 +384,7 @@ export const extendedGardenAPI = api
         GetCropByNurseryIdRequest
       >({
         query: (arg) => ({
-          url: `/crops/nursery/${arg.nurseryId}`,
+          url: `/crops/plantnursery/${arg.nurseryId}`,
           method: 'GET',
         }),
         providesTags: ['garden-crops'],
@@ -416,4 +448,5 @@ export const {
   useCreateNurseryMutation,
   useGetNurseryByGardenIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
+  useEditParcelMutation,
 } = extendedGardenAPI;
