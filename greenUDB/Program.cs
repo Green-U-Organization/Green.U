@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using static System.Net.WebRequestMethods;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -51,7 +52,7 @@ builder.Services.AddDbContext<GreenUDB>(options =>
 );
 
 // Use Cors with .env
-var allowedOrigins = new string[] { "http://localhost:3000", "http://192.168.0.71:3000" };
+var allowedOrigins = new string[] { "http://localhost:3000", "http://192.168.0.71:3000", "http://greenu.83.228.193.186.sslip.io" };
 Console.WriteLine("Allowed Origins:");
 foreach (var origin in allowedOrigins)
 {
