@@ -76,7 +76,7 @@ export type GardenCardHeaderProps = {
 export type LineProps = {
   line: Line;
   scale: number;
-  lineKey: number;
+  lineIndex: number;
 };
 
 export type LocationPickerProps = {

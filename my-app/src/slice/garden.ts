@@ -37,6 +37,15 @@ type CreateNewParcelRequest = {
   parcel_angle: number;
 };
 
+type EditParcelRequest = {
+  parcelId: number;
+  length?: number;
+  width?: number;
+  x_position?: number;
+  y_position?: number;
+  parcel_angle?: number;
+};
+
 type CreateNewGardenRequest = {
   authorId: number;
   name: string;
@@ -157,17 +166,22 @@ type GetCropByLineIdRequest = {
 };
 
 type GetCropByNurseryIdResponse = {
-  id: number;
-  vegetable: string;
-  variety: string;
-  sowing: string;
-  planting: string;
-  harvesting: string;
-  npot: number;
-  potsize: number;
-  distance_plantation: number;
-  comments: string;
-}[];
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    vegetable: string;
+    variety: string;
+    sowing: string;
+    icon: string;
+    planting: string;
+    harvesting: string;
+    nPot: number;
+    potSize: number;
+    distance_plantation: number;
+    comments: string;
+  }[];
+};
 
 type GetCropByNurseryIdRequest = {
   nurseryId: number;
@@ -283,6 +297,14 @@ export const extendedGardenAPI = api
       }),
 
       //EditParcel >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      editParcel: builder.mutation<void, EditParcelRequest>({
+        query: (arg) => ({
+          url: `/garden/parcel/${arg.parcelId}`,
+          method: 'PATCH',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-parcels'],
+      }),
 
       //CreateNewGarden >> OK
       createNewGarden: builder.mutation<void, CreateNewGardenRequest>({
@@ -426,4 +448,5 @@ export const {
   useCreateNurseryMutation,
   useGetNurseryByGardenIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
+  useEditParcelMutation,
 } = extendedGardenAPI;

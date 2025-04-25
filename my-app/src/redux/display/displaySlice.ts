@@ -8,6 +8,9 @@ type displayState = {
   addNurseryPopup: boolean;
   addParcelPopup: boolean;
   existantCropPopup: boolean;
+  editParcelPopup: boolean;
+  editGardenPopup: boolean;
+  editLinePopup: boolean;
 };
 
 type payloadType = {
@@ -23,6 +26,9 @@ const initialState: displayState = {
   addNurseryPopup: false,
   addParcelPopup: false,
   existantCropPopup: false,
+  editParcelPopup: false,
+  editGardenPopup: false,
+  editLinePopup: false,
 };
 
 const displaySlice = createSlice({
@@ -53,6 +59,18 @@ const displaySlice = createSlice({
       state.existantCropPopup = action.payload.state;
       state.id = action.payload.id;
     },
+    setEditParcelPopup: (state, action: PayloadAction<payloadType>) => {
+      state.editParcelPopup = action.payload.state;
+      state.id = action.payload.id;
+    },
+    setEditGardenPopup: (state, action: PayloadAction<payloadType>) => {
+      state.editGardenPopup = action.payload.state;
+      state.id = action.payload.id;
+    },
+    setEditLinePopup: (state, action: PayloadAction<payloadType>) => {
+      state.editLinePopup = action.payload.state;
+      state.id = action.payload.id;
+    },
   },
 });
 
@@ -63,5 +81,8 @@ export const {
   setAddNurseryPopup,
   setAddParcelPopup,
   setExistantCropPopup,
+  setEditGardenPopup,
+  setEditLinePopup,
+  setEditParcelPopup,
 } = displaySlice.actions;
 export default displaySlice.reducer;

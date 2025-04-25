@@ -1,15 +1,16 @@
+/* eslint-disable @next/next/no-img-element */
 import { RootState, useDispatch, useSelector } from '@/redux/store';
 import styles from '../../app/Assets.module.css';
 import React, { FC, useState } from 'react';
 import Image from 'next/image';
 import H2 from '../Atom/H2';
-import Confirmation from '../Molecule/ConfirmationPopup';
+import Confirmation from '../Molecule/Confirmation_Popup';
 import {
   useGetCropByNurseryIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
 } from '@/slice/garden';
 import { NurceryProps } from '@/utils/types';
-import AddCropNurseryPopup from '../Molecule/AddCropNurseryPopup';
+import AddCropNurseryPopup from '../Molecule/Add_CropNursery_Popup';
 import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';
 
 const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
@@ -25,7 +26,8 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
   } = useGetCropByNurseryIdQuery({ nurseryId: nursery.id });
   const [deleteNursery] = useDeleteOneNurseryByNurseryIdMutation();
 
-  //Debug
+  //Debug,
+  console.log('nurseryId : ', nursery.id);
   console.log('crops : ', crops);
 
   //Hooks
@@ -57,7 +59,7 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
   if (cropsIsError) {
     console.log('error in current nursery : ', nursery.id);
   }
-  if (crops?.length === 0) {
+  if (crops?.isEmpty) {
     console.log('Oups, no crops find...');
   }
 
@@ -88,7 +90,7 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
           <div className="flex w-full justify-between">
             <div className="flex items-center">
               <Image
-                className="mb-[2vw] ml-[3vw] h-[5vw] w-[5vw]"
+                className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
                 src="/image/icons/add.png"
                 alt="Add crop"
                 width={50}
@@ -155,6 +157,7 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
           </div>
 
           {/* //crops map */}
+
           {!crops ? (
             <div
               style={{
@@ -164,18 +167,66 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
               <H2>Oup&apos;s there is no crop on this nursery.</H2>
             </div>
           ) : (
-            crops?.map((crop, index) => (
-              <div
-                key={index}
-                style={{
-                  display: displayNurseryInfo ? 'block' : 'none',
-                }}
-              >
-                <p>
-                  {crop.vegetable} - {crop.variety}
-                </p>
-              </div>
-            ))
+            <div
+              style={{
+                display: displayNurseryInfo ? 'block' : 'none',
+              }}
+              className="overflow-x-auto"
+            >
+              <table className="min-w-full">
+                <thead>
+                  <tr className="border-1">
+                    <th className="border-1 p-1">Icon</th>
+                    <th className="border-1 p-1">Veg.</th>
+                    <th className="border-1 p-1">Var.</th>
+                    <th className="border-1 p-1">nPot</th>
+                    <th className="border-1 p-1">Size</th>
+                    <th className="border-1 p-1">Info</th>
+                    <th className="border-1 p-1">Del.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {crops?.content.map((crop, index) => (
+                    <tr key={index}>
+                      <td className="border-1 p-1">
+                        <img src={crop.icon} alt="" className="mx-auto" />
+                      </td>
+                      <td className="border-1 p-1">{crop.vegetable}</td>
+                      <td className="border-1 p-1">{crop.variety}</td>
+                      <td className="border-1 p-1">{crop.nPot}</td>
+                      <td className="border-1 p-1">
+                        {crop.potSize}x{crop.potSize}
+                      </td>
+                      <td className="border-1 p-1">
+                        <img
+                          className="mx-auto"
+                          src="/image/icons/info.png"
+                          alt="Display info about line"
+                          style={{
+                            width: '5vw',
+                            height: '5vw',
+                          }}
+                        />
+                      </td>
+                      <td className="border-1 p-1">
+                        <img
+                          className="mx-auto"
+                          src="/image/icons/trash.png"
+                          alt="Delete line"
+                          style={{
+                            width: '5vw',
+                            height: '5vw',
+                          }}
+                          // onClick={() => setDisplayDeletingLinePopup(true)}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* crops?.content.map((crop, index) => ( */}
+            </div>
           )}
         </section>
       </section>
