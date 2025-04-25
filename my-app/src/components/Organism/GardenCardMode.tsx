@@ -6,10 +6,10 @@ import { GardenProps, type Garden } from '@/utils/types';
 import { useParcelList } from '@/app/hooks/useParcelList';
 import MenuSandwich from '../Molecule/MenuSandwich';
 import Submenu from '../Molecule/Submenu';
-import NewParcelForm from '../Molecule/AddParcelPopup';
+import NewParcelForm from '../Molecule/Add_Parcel_Popup';
 import { RootState, useSelector, useDispatch } from '@/redux/store';
 import { setFullscreen } from '../../redux/garden/gardenSlice';
-import NewGreenhouseForm from '../Molecule/AddGreenhousePopup';
+import NewGreenhouseForm from '../Molecule/Add_Greenhouse_Popup';
 
 const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks

@@ -5,8 +5,10 @@ import { useGardenList } from '../../app/hooks/useGardenList';
 import React from 'react';
 
 const ZoomSlider = ({ className }: ZoomSliderProps) => {
+  //Local State
   const { scale, setScale } = useGardenList(1); //IL FAUDRA CHOPPER L'ID du USER DANS LES COOKIES !!!!!!!!
 
+  //Handlers
   const handleScaleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedScale = Number(e.target.value);
     setScale(selectedScale);

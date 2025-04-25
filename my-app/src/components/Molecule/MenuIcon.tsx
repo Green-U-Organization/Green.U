@@ -1,17 +1,7 @@
 import React from 'react';
 import Icon from '../Atom/Icon';
 import Submenu from './Submenu';
-
-interface MenuIconProps {
-  menuIconList: { src: string; alt: string; handleClick: () => void }[];
-  subMenuIconList: {
-    src: string;
-    alt: string;
-    handleClick: () => void;
-    displayCondition: boolean;
-    form: React.ReactNode;
-  }[];
-}
+import { MenuIconProps } from '@/utils/types';
 
 const MenuIcon: React.FC<MenuIconProps> = ({
   menuIconList,

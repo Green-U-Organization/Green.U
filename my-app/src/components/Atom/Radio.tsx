@@ -9,8 +9,10 @@ const Radio: React.FC<RadioProps> = ({
   id,
   onChange,
 }) => {
+  //Local State
   const [hover, setHover] = useState(false);
 
+  //Handlers
   const handleClick = () => {
     if (onChange) {
       onChange(value);
