@@ -15,6 +15,7 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   const [typeOfAction, setTypeOfAction] = useState<string>('sowing');
   const [selectedIcon, setSelectedIcon] = useState<string>('');
 
+  //Variables
   const iconList = [
     '/image/assets/vegetables/icon/broccoli.png',
     '/image/assets/vegetables/icon/cabbage.png',

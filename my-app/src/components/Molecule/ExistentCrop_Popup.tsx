@@ -4,10 +4,7 @@ import H2 from '../Atom/H2';
 import Button from '../Atom/Button';
 import { useDispatch } from 'react-redux';
 import { setExistantCropPopup } from '@/redux/display/displaySlice';
-
-interface ExistentCropPopupProps {
-  lineId: number;
-}
+import { ExistentCropPopupProps } from '@/utils/types';
 
 const ExistentCropPopup: React.FC<ExistentCropPopupProps> = ({ lineId }) => {
   //Hooks

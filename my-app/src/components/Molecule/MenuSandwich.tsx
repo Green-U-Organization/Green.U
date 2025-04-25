@@ -4,17 +4,10 @@ import Icon from '../Atom/Icon';
 import ZoomSlider from '../Atom/ZoomSlider';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { MenuSandwichProps } from '@/utils/types';
 
-interface MenuSandwichProps {
-  iconList: {
-    src: string;
-    alt: string;
-    handleClick: () => void;
-    submenu?: React.ReactNode;
-  }[];
-  children?: React.ReactNode;
-}
 const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
+  //Local State
   const [clickMenuDisplay, setClickMenuDisplay] = useState<boolean>(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 

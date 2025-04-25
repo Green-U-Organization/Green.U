@@ -2,12 +2,7 @@ import React from 'react';
 import H2 from '../Atom/H2';
 import Card from '../Atom/Card';
 import Button from '../Atom/Button';
-
-interface ConfirmationProps {
-  element: string;
-  handleYesClick: () => void;
-  handleNoClick: () => void;
-}
+import { ConfirmationProps } from '@/utils/types';
 
 const Confirmation = ({
   element,

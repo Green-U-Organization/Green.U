@@ -2,6 +2,7 @@
 import React from 'react';
 
 const AddIconPopup = () => {
+  //Variables
   const iconList = [
     '/image/assets/vegetables/icon/broccoli.png',
     '/image/assets/vegetables/icon/cabbage.png',

@@ -6,16 +6,16 @@ import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
 import { useCreateCropToLineMutation } from '@/slice/garden';
 import { useDispatch } from 'react-redux';
+import type { AddCropPopup } from '@/utils/types';
 import { setAddCropPopup } from '@/redux/display/displaySlice';
 
-interface AddCropPopup {
-  lineId: number;
-}
-
 const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
+
+  //Local State
   const [plantationDistance, setPlantationDistance] = useState<number>(10);
   const [selectedIcon, setSelectedIcon] = useState<string>('');
 
+  //Variables
   const iconList = [
     '/image/assets/vegetables/icon/broccoli.png',
     '/image/assets/vegetables/icon/cabbage.png',
