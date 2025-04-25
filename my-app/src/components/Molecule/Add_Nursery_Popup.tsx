@@ -8,6 +8,7 @@ import { RootState, useSelector } from '@/redux/store';
 const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
 }) => {
+  //Local State
   const [isVisible, setIsVisible] = useState<boolean>(displayCondition);
 
   //RTK Queries

@@ -9,7 +9,9 @@ const DropdownSelect = <T extends string | number>({
   setSelectedValue,
   error,
 }: DropdownSelectProps<T>) => {
+  //Hooks
   const { translations } = useLanguage();
+
   return (
     <section className="mb-4 flex flex-col">
       <label className="mb-1 font-medium">{label}</label>

@@ -3,9 +3,11 @@ import { CheckboxProps } from '@/utils/types';
 import React, { useState } from 'react';
 
 const Checkbox = ({ checked, onChange }: CheckboxProps) => {
+  //Local State
   const [inside, setInside] = useState(false);
   const [clicked, setClicked] = useState(checked || false);
 
+  //Handlers
   const handleEnter = () => setInside(true);
   const handleLeave = () => setInside(false);
   const handleClick = () => {

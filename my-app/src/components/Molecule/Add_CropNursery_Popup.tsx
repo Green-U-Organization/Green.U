@@ -15,6 +15,7 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   const [typeOfAction, setTypeOfAction] = useState<string>('sowing');
   const [selectedIcon, setSelectedIcon] = useState<string>('');
 
+  //Variables
   const iconList = [
     '/image/assets/vegetables/icon/broccoli.png',
     '/image/assets/vegetables/icon/cabbage.png',
@@ -28,7 +29,7 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
     '/image/assets/vegetables/icon/potato.png',
     '/image/assets/vegetables/icon/tomato.png',
   ];
-  const baseURL = 'http://localhost:3000';
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
   //Hooks
   const dispatch = useDispatch();

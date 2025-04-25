@@ -8,6 +8,7 @@ const NewGreenhouseForm: React.FC<{ displayCondition: boolean }> = ({
 }) => {
   if (!displayCondition) return null;
 
+  //Handlers
   const handleSubmit = () => {
     console.log('create');
   };

@@ -11,6 +11,7 @@ const TextInput: FC<TextInputProps> = ({
   className = '',
   ...props
 }) => {
+  //Hooks
   const { translations } = useLanguage();
 
   return (

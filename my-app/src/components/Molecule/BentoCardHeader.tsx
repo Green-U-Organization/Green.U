@@ -10,6 +10,7 @@ const BentoCardHeader: FC<PropsWithChildren<BentoCardHeaderProps>> = ({
   className,
   children,
 }) => {
+  //Variables
   const pageLink = containerName.toLocaleLowerCase();
 
   return (

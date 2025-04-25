@@ -153,3 +153,75 @@ export type Nurcery = {
   comments: string;
   type: string;
 };
+
+export type SelectOption = {
+  value: string | number;
+  label: string;
+};
+
+export type SelectInputProps = {
+  label: string;
+  name: string;
+  options: SelectOption[];
+  value?: string | number;
+  defaultValue?: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+};
+
+export type VegetableIconProps = {
+  id: number;
+};
+
+export type AddCropPopup = {
+  lineId: number;
+};
+
+export type ConfirmationProps = {
+  element: string;
+  handleYesClick: () => void;
+  handleNoClick: () => void;
+};
+
+export type EditParcelPopup = {
+  parcel: Parcel;
+};
+
+export type ExistentCropPopupProps = {
+  lineId: number;
+};
+
+export type MenuIconProps = {
+  menuIconList: { src: string; alt: string; handleClick: () => void }[];
+  subMenuIconList: {
+    src: string;
+    alt: string;
+    handleClick: () => void;
+    displayCondition: boolean;
+    form: React.ReactNode;
+  }[];
+};
+
+export type MenuSandwichProps = {
+  iconList: {
+    src: string;
+    alt: string;
+    handleClick: () => void;
+    submenu?: React.ReactNode;
+  }[];
+  children?: React.ReactNode;
+};
+
+export type SubmenuProps = {
+  iconList: {
+    src: string;
+    alt: string;
+    handleClick: () => void;
+    displayCondition: boolean;
+    form: React.ReactNode;
+  }[];
+  displayCondition: boolean;
+  children?: React.ReactNode;
+};

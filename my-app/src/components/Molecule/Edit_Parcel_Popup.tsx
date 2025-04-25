@@ -4,12 +4,8 @@ import { useDispatch } from 'react-redux';
 import H2 from '../Atom/H2';
 import Card from '../Atom/Card';
 import Button from '../Atom/Button';
-import { Parcel } from '@/utils/types';
+import type { EditParcelPopup } from '@/utils/types';
 import { useEditParcelMutation } from '@/slice/garden';
-
-type EditParcelPopup = {
-  parcel: Parcel;
-};
 
 const EditParcelPopup: FC<EditParcelPopup> = ({ parcel }) => {
   //Local Variables

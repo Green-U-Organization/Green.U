@@ -4,10 +4,11 @@ import Button from '../Atom/Button';
 import { FileUploadProps } from '@/utils/types';
 
 const FileUpload: React.FC<FileUploadProps> = ({ onFileChange }) => {
+  //Hooks
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { translations } = useLanguage();
-  // const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
+  //Handlers
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       onFileChange(event.target.files[0]);
