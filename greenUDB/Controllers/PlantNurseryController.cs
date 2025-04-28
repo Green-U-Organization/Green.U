@@ -15,137 +15,96 @@ namespace GreenUApi.Controllers
     // [Authorize]
     public class PlantNurseryController : ControllerBase
     {
-        private readonly GreenUDB _context;
+        private readonly GreenUDB _db;
 
         public PlantNurseryController(GreenUDB context)
         {
-            _context = context;
+            _db = context;
         }
 
-        /// <summary>
-        /// Récupère toutes les pépinières de plantes.
-        /// </summary>
-        /// <returns>Retourne une liste d'objets PlantNursery ou HTTP 404 Not Found si aucune pépinière n'est trouvée.</returns>
-        /// <remarks>
-        /// Exemple de requête GET pour récupérer toutes les pépinières de plantes :
-        ///
-        /// GET /plantnursery
-        /// </remarks>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlantNursery>>> GetPlantNursery()
         {
-            return await _context.PlantNursery.ToListAsync();
-        }
-
-        /// <summary>
-        /// Récupère une pépinière de plantes par son ID.
-        /// </summary>
-        /// <param name="id">L'ID de la pépinière à récupérer.</param>
-        /// <returns>Retourne une pépinière de plantes ou HTTP 404 Not Found si la pépinière n'existe pas.</returns>
-        /// <remarks>
-        /// Exemple de requête GET pour récupérer une pépinière spécifique par son ID :
-        ///
-        /// GET /plantnursery/{id}
-        /// </remarks>
-        [HttpGet("{id}", Name = "GetPlantNursery")]
-        public async Task<ActionResult<PlantNursery>> GetPlantNursery(long? id)
-        {
-            var plantNursery = await _context.PlantNursery.FindAsync(id);
+            var plantNursery = await _db.PlantNursery
+                .ToListAsync();
 
             if (plantNursery == null)
             {
-                return NotFound();
+                return BadRequest(new { isEmpty = true, message = "No plantNursery..."});
             }
 
-            return plantNursery;
+            return Ok(new { isEmpty = false, message = "All plant nursery", content = plantNursery});
         }
 
-        /// <summary>
-        /// Met à jour les informations d'une pépinière de plantes existante.
-        /// </summary>
-        /// <param name="id">L'ID de la pépinière à mettre à jour.</param>
-        /// <param name="plantNursery">L'objet PlantNursery avec les nouvelles informations.</param>
-        /// <returns>Retourne HTTP 204 No Content si la mise à jour est réussie, ou HTTP 404 Not Found si la pépinière n'existe pas.</returns>
-        /// <remarks>
-        /// Exemple de requête PATCH pour mettre à jour une pépinière de plantes :
-        ///
-        /// PATCH /api/plantnursery/{id}
-        /// Body:
-        /// {
-        ///     "gardenId": 5,
-        /// }
-        /// </remarks>
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PutPlantNursery(long? id, PlantNursery plantNursery)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PlantNursery>> GetPlantNurseryById(long id)
         {
-            if (id != plantNursery.Id)
+            var plantNursery = await _db.PlantNursery.FindAsync(id);
+
+            if (plantNursery == null)
             {
-                return BadRequest();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect"});
             }
 
-            _context.Entry(plantNursery).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlantNurseryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(new { isEmpty = false, message = "The nursery", content = plantNursery});
         }
 
-        /// <summary>
-        /// Crée une nouvelle pépinière de plantes.
-        /// </summary>
-        /// <param name="plantNursery">L'objet PlantNursery à ajouter.</param>
-        /// <returns>Retourne HTTP 201 Created avec l'objet PlantNursery créé et un lien vers la ressource créée.</returns>
-        /// <remarks>
-        /// Exemple de requête POST pour ajouter une pépinière de plantes :
-        ///
-        /// POST /plantnursery
-        /// Body:
-        /// {
-        ///     "gardenId": 2,
-        /// }
-        /// </remarks>
+        [HttpGet("garden/{id}")]
+        public async Task<ActionResult<PlantNursery>> GetPlantNurseryByGardenId(long id)
+        {
+            var plantNursery = await _db.PlantNursery
+                .Where(p => p.GardenId == id)
+                .ToListAsync();
+
+            if (plantNursery.Count == 0)
+            {
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
+            }
+
+            return Ok(new { isEmpty = false, message = "The nursery", content = plantNursery });
+
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<PlantNursery>> PatchPlantNursery(long id, PlantNursery modifiedPlantNursery)
+        {
+            var plantNursery = await _db.PlantNursery
+                .FirstOrDefaultAsync();
+
+            if (plantNursery == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
+
+            if (modifiedPlantNursery.Name != null) plantNursery.Name = modifiedPlantNursery.Name;
+
+            if (modifiedPlantNursery.Type != null) plantNursery.Type = modifiedPlantNursery.Type;
+
+            _db.Update(plantNursery);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "Plant Nursery is modified", content = plantNursery });
+        }
+
         [HttpPost]
         public async Task<ActionResult<PlantNursery>> PostPlantNursery(PlantNursery plantNursery)
         {
-            _context.PlantNursery.Add(plantNursery);
-            await _context.SaveChangesAsync();
+            if (plantNursery.GardenId == null) return BadRequest(new { isEmpty = true, message = "The gardenId is required" });
 
-            return CreatedAtAction("GetPlantNursery", new { id = plantNursery.Id }, plantNursery);
+            bool gardenExist = await _db.Gardens
+                .AnyAsync(g => g.Id == plantNursery.GardenId);
+
+            if (!gardenExist) return BadRequest(new { isEmpty = true, message = "The specified garden does not exist" });
+
+            _db.PlantNursery.Add(plantNursery);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "A new nursery is created!", content = plantNursery });
         }
 
-        /// <summary>
-        /// Supprime une pépinière de plantes par son ID.
-        /// </summary>
-        /// <param name="id">L'ID de la pépinière à supprimer.</param>
-        /// <returns>Retourne HTTP 204 No Content si la suppression est réussie, ou HTTP 404 Not Found si la pépinière n'existe pas.</returns>
-        /// <remarks>
-        /// Exemple de requête DELETE pour supprimer une pépinière de plantes :
-        ///
-        /// DELETE /plantnursery/{id}
-        /// </remarks>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlantNursery(long? id)
         {
-            var plantNursery = await _context.PlantNursery.FindAsync(id);
-            if (plantNursery == null)
-            {
-                return NotFound();
-            }
+            var plantNursery = await _db.PlantNursery.FindAsync(id);
 
+<<<<<<< HEAD
             var lines = await _context.Lines.Where(l => l.PLantNurseryId == plantNursery.Id).ToListAsync();
 
             foreach(var line in lines){
@@ -154,21 +113,14 @@ namespace GreenUApi.Controllers
 
             _context.PlantNursery.Remove(plantNursery);
             await _context.SaveChangesAsync();
+=======
+            if (plantNursery == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect !"});
+>>>>>>> backend-dev
 
-            return NoContent();
-        }
+            _db.PlantNursery.Remove(plantNursery);
+            await _db.SaveChangesAsync();
 
-        /// <summary>
-        /// Vérifie si une pépinière de plantes existe dans la base de données.
-        /// </summary>
-        /// <param name="id">L'ID de la pépinière à vérifier.</param>
-        /// <returns>Retourne true si la pépinière existe, sinon false.</returns>
-        /// <remarks>
-        /// /// Cette méthode est utilisée pour vérifier la présence d'une pépinière avant de tenter une mise à jour ou une suppression.
-        /// </remarks>
-        private bool PlantNurseryExists(long? id)
-        {
-            return _context.PlantNursery.Any(e => e.Id == id);
+            return Ok(new { isEmpty = false, message = "This plant nursery are deleted", content = plantNursery});
         }
     }
 }

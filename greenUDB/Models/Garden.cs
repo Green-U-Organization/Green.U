@@ -37,7 +37,7 @@ public partial class Garden
 
     public double Width { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public GardenPrivacy Privacy { get; set; } = GardenPrivacy.Public;
 

@@ -51,12 +51,16 @@ builder.Services.AddDbContext<GreenUDB>(options =>
 );
 
 // Use Cors with .env
-var allowedOrigin = Environment.GetEnvironmentVariable("API") ?? "http://localhost:3000";
-Console.WriteLine($"Allowed Origin: {allowedOrigin}");
-builder.Services.AddCors(options =>
+var allowedOrigins = new string[] { "http://localhost:3000", "http://192.168.0.71:3000" };
+Console.WriteLine("Allowed Origins:");
+foreach (var origin in allowedOrigins)
+{
+    Console.WriteLine(origin);
+}
+    builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
-    policy => policy.WithOrigins(allowedOrigin)
+    policy => policy.WithOrigins(allowedOrigins)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
@@ -83,7 +87,7 @@ var app = builder.Build();
 app.UseCors("AllowSpecificOrigin");
 
 app.UseRouting();
-//app.UseAuthorization();
+// app.UseAuthorization();
 
 app.MapControllers();
 

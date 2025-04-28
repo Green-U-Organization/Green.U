@@ -16,6 +16,7 @@ public partial class TagsInterest
     public long? GardenId { get; set; }
 
     public string Hashtag { get; set; } = null!;
+    public DateTime Created_at { get; set; } = DateTime.Now;
 
     public virtual Garden? Garden { get; set; }
 

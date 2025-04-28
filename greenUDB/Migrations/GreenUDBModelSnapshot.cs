@@ -67,25 +67,40 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("Distance_plantation")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly?>("Harvesting")
                         .HasColumnType("date");
 
-                    b.Property<long?>("Icon")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Icon")
+                        .HasColumnType("longtext");
 
                     b.Property<long?>("LineId")
                         .HasColumnType("bigint")
                         .HasColumnName("Line_id");
+
+                    b.Property<short?>("NPot")
+                        .HasColumnType("smallint");
 
                     b.Property<long?>("PlantNurseryId")
                         .HasColumnType("bigint");
 
                     b.Property<DateOnly?>("Planting")
                         .HasColumnType("date");
+
+                    b.Property<float?>("PotSize")
+                        .HasColumnType("float");
 
                     b.Property<DateOnly?>("Sowing")
                         .HasColumnType("date");
@@ -115,6 +130,9 @@ namespace GreenUApi.Migrations
                         .HasColumnName("id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created_at")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long>("FollowerId")
                         .HasColumnType("bigint")
@@ -210,7 +228,7 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
@@ -253,8 +271,8 @@ namespace GreenUApi.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("text");
 
-                    b.Property<long?>("CreatedAt")
-                        .HasColumnType("bigint")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("Created_at");
 
                     b.Property<long?>("CropId")
@@ -306,19 +324,19 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
-                    b.Property<long?>("GardenId")
+                    b.Property<long>("GardenId")
                         .HasColumnType("bigint")
                         .HasColumnName("Garden_id");
 
                     b.Property<double?>("Length")
                         .HasColumnType("double");
 
-                    b.Property<double?>("NLine")
-                        .HasColumnType("double")
+                    b.Property<short?>("NLine")
+                        .HasColumnType("smallint")
                         .HasColumnName("N_line");
 
                     b.Property<double?>("ParcelAngle")
@@ -344,8 +362,17 @@ namespace GreenUApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<DateTime>("Created_at")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<long?>("GardenId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
@@ -361,6 +388,9 @@ namespace GreenUApi.Migrations
                         .HasColumnName("id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created_at")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<long?>("GardenId")
                         .HasColumnType("bigint")
@@ -425,9 +455,6 @@ namespace GreenUApi.Migrations
                     b.Property<string>("Lastname")
                         .HasColumnType("text");
 
-                    b.Property<long>("Level")
-                        .HasColumnType("bigint");
-
                     b.Property<bool>("Newsletter")
                         .HasColumnType("tinyint(1)");
 
@@ -444,6 +471,9 @@ namespace GreenUApi.Migrations
 
                     b.Property<string>("Salt")
                         .HasColumnType("text");
+
+                    b.Property<byte>("Skill_level")
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<bool>("Tou")
                         .HasColumnType("tinyint(1)");
@@ -577,6 +607,8 @@ namespace GreenUApi.Migrations
                     b.HasOne("GreenUApi.Models.Garden", "Garden")
                         .WithMany("Parcels")
                         .HasForeignKey("GardenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_Parcel_Garden_id");
 
                     b.Navigation("Garden");

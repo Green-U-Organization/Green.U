@@ -11,17 +11,17 @@ public partial class Parcel
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long? Id { get; set; }
 
-    public long? GardenId { get; set; }
+    public long GardenId { get; set; }
 
     public double? Length { get; set; }
 
     public double? Width { get; set; }
 
-    public double? NLine { get; set; }
+    public short? NLine { get; set; }
 
     public double? ParcelAngle { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public virtual Garden? Garden { get; set; }
 

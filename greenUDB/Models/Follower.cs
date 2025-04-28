@@ -16,6 +16,7 @@ public partial class Follower
     public long? UserId { get; set; }
 
     public long? GardenId { get; set; }
+    public DateTime Created_at { get; set; } = DateTime.Now;
 
     public virtual Garden? Garden { get; set; }
 
