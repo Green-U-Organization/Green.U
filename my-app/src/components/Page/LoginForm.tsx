@@ -6,7 +6,6 @@ import Card from '@/components/Atom/Card';
 import TextInput from '@/components/Atom/TextInput';
 import Button from '@/components/Atom/Button';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { setCredentials } from '../../slice/authSlice';
 
@@ -15,7 +14,6 @@ import { useLoginUserMutation } from '@/slice/fetch';
 import { useDispatch } from '@/redux/store';
 
 const LoginForm = () => {
-  const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +25,6 @@ const LoginForm = () => {
   const dispatch = useDispatch();
 
   // A DEGAGER
-  console.log(userId);
 
   //RTK Queries
   const [loginUser] = useLoginUserMutation();
@@ -35,14 +32,12 @@ const LoginForm = () => {
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     setErrorEmail(false);
-    setUserId(null);
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setErrorPassword(false);
     const newPassword = e.target.value;
     setPassword(newPassword);
-    setUserId(null);
     // checkPassword(newPassword);
   };
 

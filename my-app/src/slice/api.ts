@@ -16,7 +16,7 @@ const api = createApi({
     // },
   }),
   endpoints: (builder) => ({
-    loginUser: builder.mutation({
+    loginUserEndpoint: builder.mutation({
       query: (credentials) => ({
         url: '/login',
         method: 'POST',
