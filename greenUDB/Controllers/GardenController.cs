@@ -218,7 +218,6 @@ namespace GreenUApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Garden>> PostGarden([FromBody] GardenDto garden)
         {
-
             var newGarden = new Garden {
                 AuthorId = garden.AuthorId,
                 Name = garden.Name,
