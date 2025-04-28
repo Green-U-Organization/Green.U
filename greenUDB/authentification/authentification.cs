@@ -54,7 +54,7 @@ namespace GreenUApi.authentification
 
             if (User.Password == hashedPassword)
             {
-                var JwtRes = Jwt.GenerateJwtToken(new User { Id = User.Id, Username = User.Username });
+                var JwtRes = JwtController.JwtController.GenerateJwtToken(new User { Id = User.Id, Username = User.Username });
 
                 return JwtRes;
             }

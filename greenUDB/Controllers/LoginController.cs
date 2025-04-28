@@ -35,7 +35,7 @@ namespace GreenUApi.Controllers
         [HttpPost("verifyjwt")]
         public IActionResult VerifyJwt([FromBody] string token)
         {
-            bool isValid = Jwt.VerifyJwtToken(token);
+            bool isValid = JwtController.JwtController.VerifyJwtToken(token);
             
             if (!isValid) return Unauthorized();
 

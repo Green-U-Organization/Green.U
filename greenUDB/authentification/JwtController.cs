@@ -23,7 +23,7 @@ public class UserDTO
     public string? Username { get; set; }
 }
 
-public class Jwt
+public class JwtController
 {
     public static JwtResponse<UserDTO> GenerateJwtToken(User user)
     {
