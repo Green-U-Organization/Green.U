@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
-using Token;
+using JwtController;
 using GreenUApi.Models;
 
 namespace GreenUApi.authentification

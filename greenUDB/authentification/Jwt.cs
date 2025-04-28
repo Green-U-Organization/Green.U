@@ -7,7 +7,7 @@ using GreenUApi.Models;
 using System.Text;
 
 
-namespace Token;
+namespace JwtController;
 public class JwtResponse<T>
 {
     
@@ -54,7 +54,7 @@ public class Jwt
         return new JwtResponse<UserDTO> { isEmpty = false, message = "Your token are created !" ,token = theToken, content = new UserDTO { Id = user.Id, Username = user.Username } };
     }
 
-    public bool VerifyJwtToken(string token)
+    public static bool VerifyJwtToken(string token)
     {
         Env.Load();
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -69,13 +69,10 @@ public class Jwt
             ClockSkew = TimeSpan.Zero
         };
 
-        try{
-            SecurityToken validatedToken;
-            var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+        var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
 
-            return true;
-        }catch{
-            return false;
-        }
+        if (principal == null) return false;
+
+        return true;
     }
 }
