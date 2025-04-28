@@ -1,70 +1,64 @@
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore;
-using Token;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using DotNetEnv;
 using GreenUApi.Models;
+using System.Text;
 
-namespace GreenUApi.authentification
+namespace Token;
+public class Jwt
 {
-    public class Authentification
+    public static string GenerateJwtToken(User user)
     {
-        public static string[] Hasher(string password, byte[]? salty)
+
+        if (string.IsNullOrEmpty(user.Username) || user.Id == null || user.Id == 0)
         {
-            // Generate a 128-bit salt using a sequence of
-            // cryptographically strong random bytes.
-            byte[] salt;
-            if(salty != null){
-                salt = salty;
-            }
-            else{
-                salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
-            }
-
-            // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: password!,
-            salt: salt,
-            prf: KeyDerivationPrf.HMACSHA256,
-            iterationCount: 100000,
-            numBytesRequested: 256 / 8));
-
-            return [hashed, Convert.ToBase64String(salt)];
+            return "Id and username are null or invalid";
 
         }
 
-    public static async Task<(bool success, string? token, string? message)> Login(string Email, string password, GreenUDB db)
+        Env.Load();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "");
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            var User = await db.Users
-            .Where(u => u.Email == Email)
-            .Select(u => new User
+            Subject = new ClaimsIdentity(new[]
             {
-                Id = u.Id,
-                Username = u.Username,
-                Password = u.Password,
-                Salt = u.Salt
-            })
-            .FirstOrDefaultAsync();
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("userId", user.Id.ToString() ?? string.Empty)
+            }),
+            Expires = DateTime.UtcNow.AddHours(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
 
-            if (User == null)
-            {
-                return (false, null, "User not found !!!");
-            }
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
 
+    public bool VerifyJwtToken(string token)
+    {
+        Env.Load();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "");
 
-            String hashedPassword = "";
-            if(User.Salt != null)
-                hashedPassword = Hasher(password, Convert.FromBase64String(User.Salt))[0];
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
 
-            if (User.Password == hashedPassword)
-            {
-                var token = Jwt.GenerateJwtToken(User);
+        try{
+            SecurityToken validatedToken;
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
 
-                return (true, token, "Bienvenue !!!");
-            }
-
-            return (false, null, "Combinaison mot de passe/username invalide !!!");
+            return true;
+        }catch{
+            return false;
         }
-
-
     }
 }

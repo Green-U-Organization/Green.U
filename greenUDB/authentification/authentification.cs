@@ -1,64 +1,70 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using DotNetEnv;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
+using Token;
 using GreenUApi.Models;
-using System.Text;
 
-namespace Token;
-public class Jwt
+namespace GreenUApi.authentification
 {
-    public static string GenerateJwtToken(User user)
+    public class Authentification
     {
-
-        if (string.IsNullOrEmpty(user.Username) || user.Id == null || user.Id == 0)
+        public static string[] Hasher(string password, byte[]? salty)
         {
-            return "Id and username are null or invalid";
+            // Generate a 128-bit salt using a sequence of
+            // cryptographically strong random bytes.
+            byte[] salt;
+            if(salty != null){
+                salt = salty;
+            }
+            else{
+                salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
+            }
+
+            // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: password!,
+            salt: salt,
+            prf: KeyDerivationPrf.HMACSHA256,
+            iterationCount: 100000,
+            numBytesRequested: 256 / 8));
+
+            return [hashed, Convert.ToBase64String(salt)];
 
         }
 
-        Env.Load();
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "");
-        var tokenDescriptor = new SecurityTokenDescriptor
+    public static async Task<(bool success, string? token)> Login(string Email, string password, GreenUDB db)
         {
-            Subject = new ClaimsIdentity(new[]
+            var User = await db.Users
+            .Where(u => u.Email == Email)
+            .Select(u => new User
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("userId", user.Id.ToString() ?? string.Empty)
-            }),
-            Expires = DateTime.UtcNow.AddHours(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
+                Id = u.Id,
+                Username = u.Username,
+                Password = u.Password,
+                Salt = u.Salt
+            })
+            .FirstOrDefaultAsync();
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
+            if (User == null)
+            {
+                return (false, null);
+            }
 
-    public bool VerifyJwtToken(string token)
-    {
-        Env.Load();
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "");
 
-        var validationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ClockSkew = TimeSpan.Zero
-        };
+            string hashedPassword = "";
+            if(User.Salt != null)
+                hashedPassword = Hasher(password, Convert.FromBase64String(User.Salt))[0];
 
-        try{
-            SecurityToken validatedToken;
-            var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+            if (User.Password == hashedPassword)
+            {
+                var token = Jwt.GenerateJwtToken(User);
 
-            return true;
-        }catch{
-            return false;
+                return (true, token);
+            }
+
+            return (false, null, "Combinaison mot de passe/username invalide !!!");
         }
+
+
     }
 }

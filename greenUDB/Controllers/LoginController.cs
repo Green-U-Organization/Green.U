@@ -3,6 +3,12 @@ using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+public class LoginModel
+{
+    public string Email { get; set; } = "";
+    public string Password { get; set; } = "";
+}
+
 namespace GreenUApi.Controllers
 {
     [ApiController]
@@ -17,19 +23,13 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("login")]
-
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var (success, token, message) = await Authentification.Login(model.Email, model.Password, _db);
+            var (success, token) = await Authentification.Login(model.Email, model.Password, _db);
             
-            if (success)
-            {
-                return Ok(new { message, token });
-            }
-            else
-            {
-                return Unauthorized(new { message });
-            }
+            if (success) return Ok(new { token });
+
+            else return Unauthorized(new {  });
         }
 
         [HttpPost("register")]
@@ -62,9 +62,4 @@ namespace GreenUApi.Controllers
         }
     }
 
-    public class LoginModel
-    {
-        public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
 }

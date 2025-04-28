@@ -11,23 +11,23 @@ using static System.Net.WebRequestMethods;
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuerSigningKey = true,
-//            IssuerSigningKey = new SymmetricSecurityKey(
-//                Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "")),
-//            ValidateIssuer = false,
-//            ValidateAudience = false,
-//            ClockSkew = TimeSpan.Zero
-//        };
-//    });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "")),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
-//builder.Services.AddAuthorization();
+builder.Services.AddAuthorization();
 
-// Autres services
+//Autres services
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
