@@ -5,6 +5,7 @@ const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API,
+    mode: 'no-cors',
     credentials: 'include',
     // prepareHeaders: async (headers) => {
     //   const accessToken = localStorage.getItem('token'); // A VOIR PIOUR LES CHOPER DES COOKIES
