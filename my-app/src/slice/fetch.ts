@@ -213,21 +213,6 @@ type DeleteOneNurseryByNurseryIdRequest = {
   nurseryId: number;
 };
 
-type LoginUserRequest = {
-  email: string;
-  password: string;
-};
-
-type LoginUserResponse = {
-  isEmpty: boolean;
-  message: string;
-  content: {
-    id: number;
-    username: string;
-  };
-  token: string;
-};
-
 type RegisterUserRequest = {
   username: string;
   password: string;
@@ -460,14 +445,14 @@ export const extendedGardenAPI = api
         invalidatesTags: ['garden-nursery'],
       }),
 
-      // USER CONNECTION
-      loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
-        query: (arg) => ({
-          url: `/login`,
-          method: 'POST',
-          body: arg,
-        }),
-      }),
+      // // USER CONNECTION
+      // loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
+      //   query: (arg) => ({
+      //     url: `/login`,
+      //     method: 'POST',
+      //     body: arg,
+      //   }),
+      // }),
       registerUser: builder.mutation<void, RegisterUserRequest>({
         query: (arg) => ({
           url: `/user`,

@@ -2,6 +2,7 @@
 import React, { FC } from 'react';
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 import { GardenCardHeaderProps } from '@/utils/types';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
 import H1 from '../Atom/H1';
@@ -19,13 +20,19 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   const router = useRouter();
   const dispatch = useDispatch();
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const username = userCookie?.username;
+  const id = Number(userCookie?.id);
+
   //RTK Query
   const {
     data: gardens,
     isLoading: gardensIsLoading,
     isError: gardensIsError,
   } = useGetAllGardenByUserIdQuery({
-    userId: 1, // CHANGER AVEC LE VRAI ID USER
+    userId: id,
   }); // get de donnés des données
 
   //Selectors

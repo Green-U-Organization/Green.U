@@ -7,6 +7,7 @@ import Button from '../Atom/Button';
 import SelectInput from '../Atom/SelectInput';
 import HashtagInput from '../HashtagInput';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 import LocationPicker from '../UI/LocationPicker';
 import { useLanguage } from '../../app/contexts/LanguageProvider';
 import { useCreateNewGardenMutation } from '@/slice/fetch';
@@ -37,6 +38,13 @@ const CreateGardenForm = () => {
   //   privacy: 0,
   //   type: 0,
   // });
+
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const username = userCookie?.username;
+  const id = Number(userCookie?.id);
+  console.log('id : ', typeof id, id);
 
   // RTHK Query
   const [createNewGarden] = useCreateNewGardenMutation();
@@ -72,7 +80,7 @@ const CreateGardenForm = () => {
       const formData = new FormData(form);
 
       const gardenData: GardenType = {
-        authorId: 1, //CETTE DONNEE DEVRA ETRE CORRIGEE !!!!
+        authorId: id,
         name: formData.get('gardenName') as string,
         description: formData.get('gardenDescription') as string,
         latitude: parseFloat(formData.get('latitude') as string),

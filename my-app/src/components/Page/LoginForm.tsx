@@ -8,10 +8,12 @@ import Button from '@/components/Atom/Button';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import { useRouter } from 'next/navigation';
 import { setCredentials } from '../../slice/authSlice';
+import { setCookie } from '../utils/cookies';
 
 //LIGNE A SUPPRIMER UNE FOIS QUE LA ROUTE AURA ETE MISE EN PLACE
 import { useLoginUserMutation } from '@/slice/fetch';
 import { useDispatch } from '@/redux/store';
+import { setAuthCookies } from '@/utils/authCookies';
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
@@ -60,8 +62,8 @@ const LoginForm = () => {
       setErrorPassword(false);
 
       // ça fonctionne. Prévoir la route pour log in!
-      console.log(email);
-      console.log(password);
+      console.log(typeof email, email);
+      console.log(typeof password, password);
 
       const user = {
         email: email,
@@ -74,9 +76,20 @@ const LoginForm = () => {
 
         dispatch(
           setCredentials({
-            user: response.user,
+            id: response.content.id,
+            user: response.content.username,
             token: response.token,
           })
+        );
+
+        setAuthCookies(
+          {
+            accessToken: response.token,
+          },
+          {
+            username: response.content.username,
+            id: response.content.id,
+          }
         );
 
         router.push('./landing');
