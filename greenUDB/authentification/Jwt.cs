@@ -6,15 +6,31 @@ using DotNetEnv;
 using GreenUApi.Models;
 using System.Text;
 
+
 namespace Token;
+public class JwtResponse<T>
+{
+    
+    public required bool isEmpty { get; set; }
+    public string? message { get; set; }
+    public string? token {  get; set; }
+    public T? content { get; set; }
+}
+
+public class UserDTO
+{
+    public long? Id { get; set; }
+    public string? Username { get; set; }
+}
+
 public class Jwt
 {
-    public static string GenerateJwtToken(User user)
+    public static JwtResponse<UserDTO> GenerateJwtToken(User user)
     {
 
         if (string.IsNullOrEmpty(user.Username) || user.Id == null || user.Id == 0)
         {
-            return "Id and username are null or invalid";
+            return new JwtResponse<UserDTO> { isEmpty = true };
 
         }
 
@@ -29,12 +45,13 @@ public class Jwt
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("userId", user.Id.ToString() ?? string.Empty)
             }),
-            Expires = DateTime.UtcNow.AddHours(1),
+            Expires = DateTime.UtcNow.AddMinutes(15),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        var createToken = tokenHandler.CreateToken(tokenDescriptor);
+        var theToken = tokenHandler.WriteToken(createToken);
+        return new JwtResponse<UserDTO> { isEmpty = false, message = "Your token are created !" ,token = theToken, content = new UserDTO { Id = user.Id, Username = user.Username } };
     }
 
     public bool VerifyJwtToken(string token)

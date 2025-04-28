@@ -25,11 +25,11 @@ namespace GreenUApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var (success, token) = await Authentification.Login(model.Email, model.Password, _db);
+            var jwt = await Authentification.Login(model.Email, model.Password, _db);
             
-            if (success) return Ok(new { token });
+            if (!jwt.isEmpty) return Ok(jwt);
 
-            else return Unauthorized(new {  });
+            else return Unauthorized(jwt);
         }
 
         [HttpPost("register")]

@@ -32,7 +32,7 @@ namespace GreenUApi.authentification
 
         }
 
-    public static async Task<(bool success, string? token)> Login(string Email, string password, GreenUDB db)
+        public static async Task<JwtResponse<UserDTO>> Login(string Email, string password, GreenUDB db)
         {
             var User = await db.Users
             .Where(u => u.Email == Email)
@@ -45,26 +45,22 @@ namespace GreenUApi.authentification
             })
             .FirstOrDefaultAsync();
 
-            if (User == null)
-            {
-                return (false, null);
-            }
+            if (User == null) return new JwtResponse<UserDTO> { isEmpty = true, message = "The Email is bad..." };
 
 
             string hashedPassword = "";
-            if(User.Salt != null)
+            if (User.Salt != null)
                 hashedPassword = Hasher(password, Convert.FromBase64String(User.Salt))[0];
 
             if (User.Password == hashedPassword)
             {
-                var token = Jwt.GenerateJwtToken(User);
+                var JwtRes = Jwt.GenerateJwtToken(new User { Id = User.Id, Username = User.Username });
 
-                return (true, token);
+                return JwtRes;
             }
 
-            return (false, null, "Combinaison mot de passe/username invalide !!!");
+            return new JwtResponse<UserDTO> { isEmpty = true, message = "The pass is wrong" };
         }
-
 
     }
 }
