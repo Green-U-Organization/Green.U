@@ -6,7 +6,7 @@ import { GardenCardHeaderProps } from '@/utils/types';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
 import H1 from '../Atom/H1';
 import { useSelector, useDispatch } from 'react-redux';
-import { useGetAllGardenByUserIdQuery } from '@/slice/garden';
+import { useGetAllGardenByUserIdQuery } from '@/slice/fetch';
 import { RootState } from '@/redux/store';
 
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
@@ -14,7 +14,6 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   className,
   type,
 }) => {
-  
   //Hooks
   const router = useRouter();
   const dispatch = useDispatch();

@@ -13,7 +13,7 @@ import NewGreenhouseForm from '../Molecule/Add_Greenhouse_Popup';
 import {
   useGetAllParcelByGardenIdQuery,
   useGetNurseryByGardenIdQuery,
-} from '@/slice/garden';
+} from '@/slice/fetch';
 import H1 from '../Atom/H1';
 import AddNurseryPopup from '../Molecule/Add_Nursery_Popup';
 import Nursery from './Nursery';

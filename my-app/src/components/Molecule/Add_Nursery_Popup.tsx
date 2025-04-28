@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-import { useCreateNurseryMutation } from '@/slice/garden';
+import { useCreateNurseryMutation } from '@/slice/fetch';
 import { RootState, useSelector } from '@/redux/store';
 
 const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
@@ -53,7 +53,7 @@ const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
     };
 
     try {
-      createNewNursery(newNurse ry).unwrap();
+      createNewNursery(newNursery).unwrap();
       console.log('nursery created');
     } catch {
       console.log('error creating nursery');

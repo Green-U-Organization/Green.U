@@ -1,3 +1,4 @@
+import { emitWarning } from 'process';
 import api from './api';
 
 type CreateNewGardenLineRequest = {
@@ -212,6 +213,35 @@ type DeleteOneNurseryByNurseryIdRequest = {
   nurseryId: number;
 };
 
+type LoginUserRequest = {
+  email: string;
+  password: string;
+};
+
+type LoginUserResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    username: string;
+  };
+  token: string;
+};
+
+type RegisterUserRequest = {
+  username: string;
+  password: string;
+  isAdmin: boolean;
+  firstname: string;
+  lastname: string;
+  email: string;
+  country: string;
+  gender: string;
+  birthday: string;
+  newsletter: boolean;
+  skill_level: number;
+};
+
 export const extendedGardenAPI = api
   .enhanceEndpoints({
     addTagTypes: [
@@ -220,6 +250,7 @@ export const extendedGardenAPI = api
       'garden-gardens',
       'garden-crops',
       'garden-nursery',
+      'connection - login',
     ],
   })
   .injectEndpoints({
@@ -428,6 +459,22 @@ export const extendedGardenAPI = api
         }),
         invalidatesTags: ['garden-nursery'],
       }),
+
+      // USER CONNECTION
+      loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
+        query: (arg) => ({
+          url: `/login`,
+          method: 'POST',
+          body: arg,
+        }),
+      }),
+      registerUser: builder.mutation<void, RegisterUserRequest>({
+        query: (arg) => ({
+          url: `/user`,
+          method: 'POST',
+          body: arg,
+        }),
+      }),
     }),
   });
 
@@ -449,4 +496,6 @@ export const {
   useGetNurseryByGardenIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
   useEditParcelMutation,
+  useLoginUserMutation,
+  useRegisterUserMutation,
 } = extendedGardenAPI;

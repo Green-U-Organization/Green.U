@@ -8,9 +8,11 @@ import Button from '@/components/Atom/Button';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import { setCredentials } from '../../slice/authSlice';
 
 //LIGNE A SUPPRIMER UNE FOIS QUE LA ROUTE AURA ETE MISE EN PLACE
-import { getUserById } from '@/utils/actions/user/getUserById';
+import { useLoginUserMutation } from '@/slice/fetch';
+import { useDispatch } from '@/redux/store';
 
 const LoginForm = () => {
   const [userId, setUserId] = useState<string | null>(null);
@@ -22,9 +24,13 @@ const LoginForm = () => {
   const { translations } = useLanguage();
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   // A DEGAGER
   console.log(userId);
+
+  //RTK Queries
+  const [loginUser] = useLoginUserMutation();
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -62,43 +68,55 @@ const LoginForm = () => {
       console.log(email);
       console.log(password);
 
-      //A REMPLACER PAR L'OBJET USER
+      const user = {
+        email: email,
+        password: password,
+      };
+
       try {
-        const response = await getUserById(1);
+        const response = await loginUser(user).unwrap();
+        console.log('login sucess');
 
-        if (!response) {
-          throw new Error('User not found');
-        }
+        dispatch(
+          setCredentials({
+            user: response.user,
+            token: response.token,
+          })
+        );
 
-        const userId = String(response.id);
+        router.push('./landing');
+      } catch {
+        console.log('error login');
+      }
 
-        // Définir la date d'expiration du cookie (10 minutes)
-        const minutes = 10; //Délais d'expiration du cookie
-        const expirationInDays = minutes / (60 * 24); // Conversion des minutes en jours (obligatoire)
+      // Définir la date d'expiration du cookie (10 minutes)
 
-        /* Définition du cookie
+      // const minutes = 10; //Délais d'expiration du cookie
+      // const expirationInDays = minutes / (60 * 24); // Conversion des minutes en jours (obligatoire)
+
+      /* Définition du cookie
 				expires  : la période d'expiration du cookie (en jours)
 				secure   : le cookie ne sera envoyé qu'en https (si true)
 				sameSite : le cookie ne sera pas envoyé si la requête vient d'un autre site (si Strict)
 				*/
-        Cookies.set('userId', userId, {
-          expires: expirationInDays,
-          secure: true,
-          sameSite: 'Strict',
-        });
 
-        // Mettre à jour l'ID utilisateur dans l'état
-        setUserId(userId);
-        setError(null);
+      // Cookies.set('userId', userId, {
+      //   expires: expirationInDays,
+      //   secure: true,
+      //   sameSite: 'Strict',
+      // });
 
-        //Redirige vers la page du dashboard
-        router.push('/landing');
-      } catch (error) {
-        console.error("Erreur lors du chargement de l'utilisateur :", error);
-        setError(
-          error instanceof Error ? error.message : 'Une erreur est survenue'
-        );
-      }
+      // Mettre à jour l'ID utilisateur dans l'état
+
+      // setUserId(userId);
+      // setError(null);
+
+      // } catch (error) {
+      //   console.error("Erreur lors du chargement de l'utilisateur :", error);
+      //   setError(
+      //     error instanceof Error ? error.message : 'Une erreur est survenue'
+      //   );
+      // }
     }
   };
   return (

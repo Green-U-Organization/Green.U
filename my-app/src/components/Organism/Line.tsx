@@ -11,7 +11,7 @@ import ExistentCropPopup from '../Molecule/ExistentCrop_Popup';
 import {
   useDeleteOneLineByLineIdMutation,
   useGetCropByLineIdQuery,
-} from '@/slice/garden';
+} from '@/slice/fetch';
 import {
   setAddCropPopup,
   setExistantCropPopup,

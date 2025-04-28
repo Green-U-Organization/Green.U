@@ -5,7 +5,7 @@ import H2 from '../Atom/H2';
 import Card from '../Atom/Card';
 import Button from '../Atom/Button';
 import type { EditParcelPopup } from '@/utils/types';
-import { useEditParcelMutation } from '@/slice/garden';
+import { useEditParcelMutation } from '@/slice/fetch';
 
 const EditParcelPopup: FC<EditParcelPopup> = ({ parcel }) => {
   //Local Variables

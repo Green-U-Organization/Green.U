@@ -9,7 +9,7 @@ import HashtagInput from '../HashtagInput';
 import { useRouter } from 'next/navigation';
 import LocationPicker from '../UI/LocationPicker';
 import { useLanguage } from '../../app/contexts/LanguageProvider';
-import { useCreateNewGardenMutation } from '@/slice/garden';
+import { useCreateNewGardenMutation } from '@/slice/fetch';
 import { GardenType } from '@/utils/types';
 
 const CreateGardenForm = () => {
