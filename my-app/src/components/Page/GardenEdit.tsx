@@ -6,13 +6,16 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
 const GardenEdit = () => {
+  // LocalState
   const [currentScale, setCurrentScale] = useState<number>(10);
 
+  // Handlers
   const handleScaleChange = (scale: number) => {
     setCurrentScale(scale);
     console.log(currentScale);
   };
 
+  // Selectors
   const garden = useSelector((state: RootState) => state.garden.selectedGarden);
 
   return (

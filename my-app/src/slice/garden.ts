@@ -402,7 +402,7 @@ export const extendedGardenAPI = api
         invalidatesTags: ['garden-nursery'],
       }),
 
-      //GetNurseryByGardenId >> OK + TO IMPLEMENT
+      //GetNurseryByGardenId >> OK
       getNurseryByGardenId: builder.query<
         GetNurseryByGardenIdResponse,
         GetNurseryByGardenIdRequest

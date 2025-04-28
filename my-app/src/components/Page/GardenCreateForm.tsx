@@ -10,28 +10,17 @@ import { useRouter } from 'next/navigation';
 import LocationPicker from '../UI/LocationPicker';
 import { useLanguage } from '../../app/contexts/LanguageProvider';
 import { useCreateNewGardenMutation } from '@/slice/garden';
-
-type gardenType = {
-  authorId: number;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  length: number;
-  width: number;
-  privacy: number;
-  type: number;
-  hashtags: string[];
-};
+import { GardenType } from '@/utils/types';
 
 const CreateGardenForm = () => {
+  // Hooks
   const { translations } = useLanguage();
-
   // const [location, setLocation] = useState<{
   //   latitude: number;
   //   longitude: number;
   // } | null>(null);
 
+  // Local State
   const [gardenLength, setGardenLength] = useState<number>(10);
   const [gardenWidth, setGardenWidth] = useState<number>(10);
   const [selectedType, setSelectedType] = useState<number>(0);
@@ -49,12 +38,15 @@ const CreateGardenForm = () => {
   //   type: 0,
   // });
 
-  //RTH Query
+  // RTHK Query
   const [createNewGarden] = useCreateNewGardenMutation();
 
+  //Variables
   const rows = 5;
   const cols = 33;
   const router = useRouter();
+
+  // Handlers
 
   // const handleLocationSelect = (selectedLocation: {
   //   latitude: number;
@@ -79,7 +71,7 @@ const CreateGardenForm = () => {
     if (form) {
       const formData = new FormData(form);
 
-      const gardenData: gardenType = {
+      const gardenData: GardenType = {
         authorId: 1, //CETTE DONNEE DEVRA ETRE CORRIGEE !!!!
         name: formData.get('gardenName') as string,
         description: formData.get('gardenDescription') as string,

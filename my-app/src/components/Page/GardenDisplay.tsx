@@ -9,9 +9,12 @@ import { RootState } from '@/redux/store';
 // import Draggable from 'react-draggable';
 
 const GardenDisplay = () => {
+  // Selectors
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
+
+  // Local State
   const scale = useSelector((state: RootState) => state.garden.scale);
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
 

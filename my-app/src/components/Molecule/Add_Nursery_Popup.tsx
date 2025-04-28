@@ -53,7 +53,7 @@ const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
     };
 
     try {
-      createNewNursery(newNursery).unwrap();
+      createNewNursery(newNurse ry).unwrap();
       console.log('nursery created');
     } catch {
       console.log('error creating nursery');
