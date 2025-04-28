@@ -50,20 +50,19 @@ builder.Services.AddDbContext<GreenUDB>(options =>
 );
 
 // Use Cors with .env
-var allowedOriginsWithNull = new string?[] { 
+var allowedOriginsWithNull = new string?[] {
     Environment.GetEnvironmentVariable("ALLOWED_HOST1"),
     Environment.GetEnvironmentVariable("ALLOWED_HOST2"),
     Environment.GetEnvironmentVariable("ALLOWED_HOST3")
 };
 
-var allowedOrigins = allowedOriginsWithNull.Where(origin => origin != null).ToArray();
 
-Console.WriteLine("Allowed Origins:");
-foreach (var origin in allowedOrigins)
-{
-    Console.WriteLine(origin);
-}
-    builder.Services.AddCors(options =>
+var allowedOrigins = allowedOriginsWithNull
+    .Where(origin => origin != null)
+    .Select(origin => origin!) 
+    .ToArray();
+
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
     policy => policy.WithOrigins(allowedOrigins)
@@ -71,7 +70,6 @@ foreach (var origin in allowedOrigins)
                     .AllowAnyMethod()
                     .AllowCredentials());
 });
-
 // Add other services
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
