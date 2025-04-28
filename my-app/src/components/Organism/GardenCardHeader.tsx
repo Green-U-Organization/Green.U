@@ -8,6 +8,7 @@ import H1 from '../Atom/H1';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetAllGardenByUserIdQuery } from '@/slice/fetch';
 import { RootState } from '@/redux/store';
+import Loading from '../Atom/Loading';
 
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   containerName,
@@ -48,7 +49,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
 
   //Loading and Error Handling
   if (gardensIsLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (gardensIsError) {
     console.log('Error in gardens list');
