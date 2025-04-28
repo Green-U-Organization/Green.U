@@ -1,31 +1,18 @@
 'use client';
-import { ButtonProps } from '@/utils/types';
-import React, {
-  FC,
-  FormEvent,
-  MouseEvent,
-  PropsWithChildren,
-  useState,
-} from 'react';
+import React, { FC, FormEvent, PropsWithChildren, useState } from 'react';
 
-const Button: FC<PropsWithChildren<ButtonProps>> = ({
-  children,
-  onClick,
-  disabled = false,
-}) => {
+const Button: FC<
+  PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>>
+> = ({ children, disabled, ...props }) => {
+  //Local State
   const [buttonPush, setButtonPush] = useState(false);
   const [inside, setInside] = useState(false);
 
+  //Handlers
   const handleDown = () => {
     if (disabled) return;
     setButtonPush(true);
     new Event('action') as unknown as FormEvent<HTMLButtonElement>;
-  };
-
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    if (disabled) return;
-    e.preventDefault();
-    onClick(e);
   };
 
   const handleUp = () => {
@@ -51,10 +38,10 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
       onMouseUp={handleUp}
       onMouseLeave={handleLeave}
       onMouseEnter={handleEnter}
-      onClick={handleClick}
       onTouchStart={handleDown}
       onTouchEnd={handleUp}
       disabled={disabled}
+      {...props}
     >
       <div
         className={`bg-extbutton absolute top-0 left-0 h-2 w-full`}

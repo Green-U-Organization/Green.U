@@ -1,24 +1,14 @@
 import React from 'react';
 import Icon from '../Atom/Icon';
 import Submenu from './Submenu';
-
-interface MenuIconProps {
-  menuIconList: { src: string; alt: string; handleClick: () => void }[];
-  subMenuIconList: {
-    src: string;
-    alt: string;
-    handleClick: () => void;
-    displayCondition: boolean;
-    form: React.ReactNode;
-  }[];
-}
+import { MenuIconProps } from '@/utils/types';
 
 const MenuIcon: React.FC<MenuIconProps> = ({
   menuIconList,
   subMenuIconList,
 }) => {
   return (
-    <>
+    <div className="m-50 py-[50%]">
       {menuIconList.map((menuIcon, index) => (
         <div key={index}>
           <Icon
@@ -38,7 +28,7 @@ const MenuIcon: React.FC<MenuIconProps> = ({
           />
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

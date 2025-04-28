@@ -1,20 +1,13 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Icon from '../Atom/Icon';
 import ZoomSlider from '../Atom/ZoomSlider';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { MenuSandwichProps } from '@/utils/types';
 
-interface MenuSandwichProps {
-  iconList: {
-    src: string;
-    alt: string;
-    handleClick: () => void;
-    submenu?: React.ReactNode;
-  }[];
-  children?: React.ReactNode;
-}
 const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
+  //Local State
   const [clickMenuDisplay, setClickMenuDisplay] = useState<boolean>(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
@@ -54,12 +47,10 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
       >
         <ZoomSlider className="z-50 -rotate-90" scale={0} />
       </div>
-      <Image
+      <img
         className="h-[9vw] w-[9vw] rounded-md p-1"
         src="/image/icons/display.png"
         alt="Open Menu"
-        width={40}
-        height={40}
         onClick={() => handleClickMenu()}
       />
       <div
@@ -67,7 +58,7 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
         style={{ display: clickMenuDisplay ? 'flex' : 'none' }}
       >
         {iconList.map((icon, index) => (
-          <div className="relative" key={index}>
+          <div className="relative flex justify-center" key={index}>
             <Icon
               icon={{
                 src: icon.src,

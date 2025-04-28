@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
 import Icon from '../Atom/Icon';
-
-interface SubmenuProps {
-  iconList: {
-    src: string;
-    alt: string;
-    handleClick: () => void;
-    displayCondition: boolean;
-    form: React.ReactNode;
-  }[];
-  displayCondition: boolean;
-  children?: React.ReactNode;
-}
+import { SubmenuProps } from '@/utils/types';
 
 const Submenu: React.FC<SubmenuProps> = ({ iconList }) => {
+  //Local State
   const [activeForm, setActiveForm] = useState<string | null>(null);
 
+  //Handlers
   const handleIconClick = (icon: {
     alt: string;
     handleClick: () => void;

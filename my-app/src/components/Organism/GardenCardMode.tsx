@@ -6,11 +6,10 @@ import { GardenProps, type Garden } from '@/utils/types';
 import { useParcelList } from '@/app/hooks/useParcelList';
 import MenuSandwich from '../Molecule/MenuSandwich';
 import Submenu from '../Molecule/Submenu';
-import NewParcelForm from '../Molecule/NewParcelForm';
+import NewParcelForm from '../Molecule/Add_Parcel_Popup';
 import { RootState, useSelector, useDispatch } from '@/redux/store';
 import { setFullscreen } from '../../redux/garden/gardenSlice';
-// import { useGardenList } from '../../app/hooks/useGardenList';
-import NewGreenhouseForm from '../Molecule/NewGreenhouseForm';
+import NewGreenhouseForm from '../Molecule/Add_Greenhouse_Popup';
 
 const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks
@@ -41,7 +40,6 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
     console.log(reload);
     console.log("that's where i'm suppose to reload");
     setCurrentGarden(garden);
-    // dispatch(setReload());
   }, [reload, dispatch, garden]);
 
   //TODO:

@@ -1,22 +1,6 @@
 'use client';
+import { SelectInputProps } from '@/utils/types';
 import React from 'react';
-
-type SelectOption = {
-  value: string | number;
-  label: string;
-};
-
-type SelectInputProps = {
-  label: string;
-  name: string;
-  options: SelectOption[];
-  value?: string | number;
-  defaultValue?: string | number;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  required?: boolean;
-  disabled?: boolean;
-  className?: string;
-};
 
 const SelectInput: React.FC<SelectInputProps> = ({
   label,

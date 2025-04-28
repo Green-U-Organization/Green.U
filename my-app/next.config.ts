@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  output: 'standalone',
   experimental: {
     allowedDevOrigins: [
       'http://192.168.0.110:3000',
@@ -11,7 +12,7 @@ const nextConfig: NextConfig = {
     ],
   },
 };
-
+  
 module.exports = {
   images: {
     remotePatterns: [
