@@ -11,7 +11,7 @@ namespace JwtController;
 public class JwtResponse<T>
 {
     
-    public required bool isEmpty { get; set; }
+    public bool? isEmpty { get; set; }
     public string? message { get; set; }
     public string? token {  get; set; }
     public T? content { get; set; }
@@ -19,6 +19,8 @@ public class JwtResponse<T>
 
 public class UserDTO
 {
+    public bool? error { get; set; }
+    public string? message { get; set; }
     public long? Id { get; set; }
     public string? Username { get; set; }
 }
