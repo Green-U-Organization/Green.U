@@ -9,6 +9,11 @@ public class LoginModel
     public string Password { get; set; } = "";
 }
 
+public class TokenVerfyModel
+{
+    public required string Token { get; set; }
+}
+
 namespace GreenUApi.Controllers
 {
     [ApiController]
@@ -33,13 +38,14 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("verifyjwt")]
-        public IActionResult VerifyJwt([FromBody] string token)
+        public IActionResult VerifyJwt([FromBody] TokenVerfyModel Token)
         {
-            bool isValid = JwtController.JwtController.VerifyJwtToken(token);
+            Console.WriteLine(Token.Token);
+            bool isValid = JwtController.JwtController.VerifyJwtToken(Token.Token);
             
             if (!isValid) return Unauthorized();
 
-            return Ok(new { isEmpty = false, message = "token is valid !", token = token});
+            return Ok(new { isEmpty = false, message = "token is valid !", Token});
         }
 
     }
