@@ -7,6 +7,26 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 Env.Load();
+
+// OLD JWT VERIF
+//var builder = WebApplication.CreateBuilder(args);
+
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateIssuerSigningKey = true,
+//            IssuerSigningKey = new SymmetricSecurityKey(
+//                Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "")),
+//            ValidateIssuer = false,
+//            ValidateAudience = false,
+//            ClockSkew = TimeSpan.Zero
+//        };
+//    });
+
+//builder.Services.AddAuthorization();
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -14,18 +34,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT") ?? "")),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ClockSkew = TimeSpan.Zero
+            ValidIssuer = "yourdomain.com",
+            ValidAudience = "yourdomain.com",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your_super_secret_key"))
         };
     });
 
 builder.Services.AddAuthorization();
 
-//Autres services
+// Other services
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -56,7 +77,6 @@ var allowedOriginsWithNull = new string?[] {
     Environment.GetEnvironmentVariable("ALLOWED_HOST3")
 };
 
-
 var allowedOrigins = allowedOriginsWithNull
     .Where(origin => origin != null)
     .Select(origin => origin!) 
@@ -74,8 +94,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;  // Ignore les boucles de référence
-        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;  // Ignore les valeurs null
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;  // Ignore reference loops
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;  // Ignore null value
     });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddEndpointsApiExplorer();
@@ -91,8 +111,9 @@ var app = builder.Build();
 app.UseCors("AllowSpecificOrigin");
 
 app.UseRouting();
-//app.UseAuthorization();
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 if (app.Environment.IsDevelopment())
