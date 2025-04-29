@@ -55,14 +55,15 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel cred)
+        public async Task<IActionResult> Login([FromBody] LoginModel cred)
         {
             
+            UserDTO userData = await Authentification.VerifyCredentials(cred.Email, cred.Password, _db);
 
-            if (cred.Email == "admin" && cred.Password == "password")
+            if (userData.error == null)
             {
                 var token = GenerateJwtToken(cred.Email);
-                return Ok(new { token });
+                return Ok(new { isEmpty = false, message = "Token are created !", token = token, content = userData});
             }
             return Unauthorized();
         }
