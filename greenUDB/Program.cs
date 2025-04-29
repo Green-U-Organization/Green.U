@@ -29,17 +29,28 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
+string? secret = Environment.GetEnvironmentVariable("SECRET_JWT");
+string? apiLink = Environment.GetEnvironmentVariable("ISSUER");
+string? prodLink = Environment.GetEnvironmentVariable("AUDIENCE");
+if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(apiLink) || string.IsNullOrEmpty(prodLink))
+{
+    throw new InvalidOperationException("Environment variable 'SECRET' is not set.");
+}
+
+// REBUIL DEFAULT AUTHORI
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
+
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "yourdomain.com",
-            ValidAudience = "yourdomain.com",
+            ValidIssuer = apiLink,
+            ValidAudience = prodLink,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your_super_secret_key"))
         };
     });

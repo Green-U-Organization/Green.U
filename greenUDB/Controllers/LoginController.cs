@@ -88,11 +88,11 @@ namespace GreenUApi.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: apiLink,
-                audience: prodLink,
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(15),
-                signingCredentials: creds);
+            issuer: apiLink,
+            audience: prodLink,
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(15),
+            signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
