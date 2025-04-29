@@ -7,7 +7,7 @@ import { RootState } from '@/redux/store';
 import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';
 import { Nurcery } from '@/utils/types';
 import H2 from '../Atom/H2';
-import { useCreateCropToNurseryMutation } from '@/slice/garden';
+import { useCreateCropToNurseryMutation } from '@/slice/fetch';
 
 const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   //Local State

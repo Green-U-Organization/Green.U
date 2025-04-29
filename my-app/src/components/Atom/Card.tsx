@@ -24,6 +24,22 @@ const Card: React.FC<CardProps> = ({ children, className }) => {
       <div className="absolute bottom-0 left-0 h-1 w-1 bg-white"></div>
       <div className="absolute right-0 bottom-0 h-1 w-1 bg-white"></div>
 
+      <div className="absolute -top-0 left-1 z-50 h-1 w-1 bg-white"></div>
+      <div className="absolute top-1 left-0 z-50 h-1 w-1 bg-white"></div>
+      <div className="absolute -top-0 left-0 z-50 h-1 w-1 bg-white"></div>
+
+      <div className="absolute -bottom-0 left-1 z-50 h-1 w-1 bg-white"></div>
+      <div className="absolute bottom-1 left-0 z-50 h-1 w-1 bg-white"></div>
+      <div className="absolute -bottom-0 left-0 z-50 h-1 w-1 bg-white"></div>
+
+      <div className="absolute -top-0 right-1 z-50 h-1 w-1 bg-white"></div>
+      <div className="absolute top-1 right-0 z-50 h-1 w-1 bg-white"></div>
+      <div className="absolute -top-0 right-0 z-50 h-1 w-1 bg-white"></div>
+
+      <div className="absolute right-1 -bottom-0 z-50 h-1 w-1 bg-white"></div>
+      <div className="absolute right-0 bottom-1 z-50 h-1 w-1 bg-white"></div>
+      <div className="absolute right-0 -bottom-0 z-50 h-1 w-1 bg-white"></div>
+
       {/* Pixels extérieur */}
       <div className="absolute top-1 left-0 h-1 w-1 bg-white"></div>
       <div className="absolute top-1 right-0 h-1 w-1 bg-white"></div>

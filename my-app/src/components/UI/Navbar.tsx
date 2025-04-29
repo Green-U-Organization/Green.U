@@ -4,12 +4,25 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import Cookies from 'js-cookie';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../slice/authSlice';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { locale, setLocale } = useLanguage();
   const { translations } = useLanguage();
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    console.log('logout successful');
+    setIsOpen(false);
+  };
+
+  console.log('access token', Cookies.get('access_token'));
   return (
     <nav className="fixed top-0 left-0 z-100 w-full bg-gray-800 p-4 text-white shadow-md">
       <div className="container mx-auto flex items-center justify-between">
@@ -75,15 +88,19 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Menu */}
         <div className="hidden space-x-6 md:flex">
-          <Link href="/login" className="hover:text-gray-600">
-            {translations.login}
-          </Link>
-          <Link href="/signin" className="hover:text-gray-600">
-            {translations.signup}
-          </Link>
-          <Link href="/landing" className="hover:text-gray-600">
-            {translations.landing}
-          </Link>
+          {typeof Cookies.get('access_token') === 'string' ? (
+            <Link href="/login" className="hover:text-gray-600">
+              {translations.login}
+            </Link>
+          ) : (
+            <Link href="/login">logout</Link>
+          )}
+          {Cookies.get('access_token') ? null : (
+            <Link href="/landing" className="hover:text-gray-600">
+              {translations.landing}
+            </Link>
+          )}
+
           <Link href="/map" className="hover:text-gray-600">
             {translations.map}
           </Link>
@@ -105,20 +122,32 @@ const Navbar: React.FC = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="mt-4 flex flex-col space-y-4 md:hidden">
-          <Link
-            href="/login"
-            className="hover:text-gray-600"
-            onClick={() => setIsOpen(false)}
-          >
-            {translations.login}
-          </Link>
-          <Link
-            href="/signin"
-            className="hover:text-gray-600"
-            onClick={() => setIsOpen(false)}
-          >
-            {translations.signup}
-          </Link>
+          {Cookies.get('access_token') ? (
+            <Link
+              href="/login"
+              className="hover:text-gray-600"
+              onClick={() => handleLogout()}
+            >
+              logout
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="hover:text-gray-600"
+              onClick={() => setIsOpen(false)}
+            >
+              {translations.login}
+            </Link>
+          )}
+          {Cookies.get('access_token') ? null : (
+            <Link
+              href="/signin"
+              className="hover:text-gray-600"
+              onClick={() => setIsOpen(false)}
+            >
+              {translations.signup}
+            </Link>
+          )}
           <Link
             href="/landing"
             className="hover:text-gray-600"

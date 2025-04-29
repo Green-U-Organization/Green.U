@@ -12,18 +12,19 @@ import {
   useCreateNewGardenLineMutation,
   useGetAllLinesByParcelIdQuery,
   useDeleteOneParcelByParcelIdMutation,
-  // useGetCropByLineIdQuery,
-} from '@/slice/garden';
+} from '@/slice/fetch';
 import VegetableIcon from '../Atom/VegetableIcon';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
 import { setEditParcelPopup } from '@/redux/display/displaySlice';
+import Loading from '../Atom/Loading';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
-  //Local Variable
+  //Local State
   const [displayParcelInfo, setDisplayParcelInfo] = useState<boolean>(false);
   const [displayDeletingParcelPopup, setDisplayDeletingParcelPopup] =
     useState<boolean>(false);
 
+  // Variables
   const parcelY = parcel?.length;
   const parcelX = parcel?.width;
 
@@ -38,15 +39,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   } = useGetAllLinesByParcelIdQuery({
     parcelId: parcel.id,
   });
-  //Debug
-  console.log('lines : ', lines);
-
   const [createNewLine] = useCreateNewGardenLineMutation();
   const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
-  // const line_id: number = 0;
-  // const { data: crops, refetch: refetchCrops } = useGetCropByLineIdQuery({
-  //   lineId: line_id,
-  // });
+
+  //Debug
+  console.log('lines : ', lines);
 
   //Selectors
   const graphicMode = useSelector(
@@ -81,8 +78,10 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
     }
   };
 
+  // Loading and Error Handling
+
   if (linesIsLoading) {
-    return <div className="m-10">Loading...</div>;
+    return <Loading />;
   }
   if (linesIsError) {
     console.log('error in currentparcel : ', parcel.id);

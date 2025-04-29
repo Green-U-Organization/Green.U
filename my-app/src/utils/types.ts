@@ -225,3 +225,16 @@ export type SubmenuProps = {
   displayCondition: boolean;
   children?: React.ReactNode;
 };
+
+export type GardenType = {
+  authorId: number;
+  name: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  privacy: number;
+  type: number;
+  hashtags: string[];
+};

@@ -1,26 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-
 import React, { FC, useState } from 'react'; // <DraggableCore>
-// import styles from '../../app/Assets.module.css';
 import { LineProps } from '@/utils/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/Confirmation_Popup';
-// import { getCropByLinelId } from '@/utils/actions/crops/line/getCropByLineId';
 import AddCropPopup from '../Molecule/Add_Crop_Popup';
 import ExistentCropPopup from '../Molecule/ExistentCrop_Popup';
 import {
   useDeleteOneLineByLineIdMutation,
   useGetCropByLineIdQuery,
-} from '@/slice/garden';
+} from '@/slice/fetch';
 import {
   setAddCropPopup,
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
 
 const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
+  // Local State
   const [displayInfo, SetDisplayInfo] = useState(false);
   const [displayDeletingLinePopup, setDisplayDeletingLinePopup] =
     useState<boolean>(false);
@@ -50,7 +48,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   );
   const id = useSelector((state: RootState) => state.display.id);
 
-  //Functions
+  // Fetch
   const deletingLine = () => {
     try {
       deleteLineMutation({
@@ -127,7 +125,6 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   //const selectedCrop = line.crop.icon;
 
   //Handlers
-
   const handleClickAddCrop = async () => {
     const actualCrops = crops;
 

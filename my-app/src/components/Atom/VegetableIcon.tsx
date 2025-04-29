@@ -1,4 +1,4 @@
-import { useGetCropByLineIdQuery } from '@/slice/garden';
+import { useGetCropByLineIdQuery } from '@/slice/fetch';
 import { VegetableIconProps } from '@/utils/types';
 
 const VegetableIcon = ({ id }: VegetableIconProps) => {

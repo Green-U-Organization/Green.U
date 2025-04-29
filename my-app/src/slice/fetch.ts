@@ -1,3 +1,4 @@
+import { emitWarning } from 'process';
 import api from './api';
 
 type CreateNewGardenLineRequest = {
@@ -212,6 +213,25 @@ type DeleteOneNurseryByNurseryIdRequest = {
   nurseryId: number;
 };
 
+type RegisterUserRequest = {
+  username: string;
+  password: string;
+  isAdmin: boolean;
+  firstname: string;
+  lastname: string;
+  email: string;
+  country: string;
+  gender: string;
+  birthday: string;
+  newsletter: boolean;
+  skill_level: number;
+};
+
+type CreateTagsListByUserRequest = {
+  userId: number;
+  hashtags: string[];
+};
+
 export const extendedGardenAPI = api
   .enhanceEndpoints({
     addTagTypes: [
@@ -220,6 +240,8 @@ export const extendedGardenAPI = api
       'garden-gardens',
       'garden-crops',
       'garden-nursery',
+      'connection - login',
+      'tags-user',
     ],
   })
   .injectEndpoints({
@@ -402,7 +424,7 @@ export const extendedGardenAPI = api
         invalidatesTags: ['garden-nursery'],
       }),
 
-      //GetNurseryByGardenId >> OK + TO IMPLEMENT
+      //GetNurseryByGardenId >> OK
       getNurseryByGardenId: builder.query<
         GetNurseryByGardenIdResponse,
         GetNurseryByGardenIdRequest
@@ -428,6 +450,34 @@ export const extendedGardenAPI = api
         }),
         invalidatesTags: ['garden-nursery'],
       }),
+
+      // // USER CONNECTION
+      // loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
+      //   query: (arg) => ({
+      //     url: `/login`,
+      //     method: 'POST',
+      //     body: arg,
+      //   }),
+      // }),
+      registerUser: builder.mutation<void, RegisterUserRequest>({
+        query: (arg) => ({
+          url: `/user`,
+          method: 'POST',
+          body: arg,
+        }),
+      }),
+
+      //CreateTagsListByUser >>
+      createTagsListByUser: builder.mutation<void, CreateTagsListByUserRequest>(
+        {
+          query: (arg) => ({
+            url: `/tags/list/user/${arg.userId}`,
+            method: 'POST',
+            body: arg,
+          }),
+          invalidatesTags: ['tags-user'],
+        }
+      ),
     }),
   });
 
@@ -449,4 +499,7 @@ export const {
   useGetNurseryByGardenIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
   useEditParcelMutation,
+  useLoginUserMutation,
+  useRegisterUserMutation,
+  useCreateTagsListByUserMutation,
 } = extendedGardenAPI;

@@ -8,17 +8,18 @@ import Confirmation from '../Molecule/Confirmation_Popup';
 import {
   useGetCropByNurseryIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
-} from '@/slice/garden';
+} from '@/slice/fetch';
 import { NurceryProps } from '@/utils/types';
 import AddCropNurseryPopup from '../Molecule/Add_CropNursery_Popup';
 import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';
 
 const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
+  // Local State
   const [displayNurseryInfo, setDisplayNurseryInfo] = useState<boolean>(false);
   const [displayDeletingNurseryPopup, setDisplayDeletingNurseryPopup] =
     useState<boolean>(false);
 
-  //RTK Query
+  // RTK Query
   const {
     data: crops,
     isLoading: cropsIsLoading,
@@ -26,14 +27,14 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
   } = useGetCropByNurseryIdQuery({ nurseryId: nursery.id });
   const [deleteNursery] = useDeleteOneNurseryByNurseryIdMutation();
 
-  //Debug,
+  // Debug,
   console.log('nurseryId : ', nursery.id);
   console.log('crops : ', crops);
 
-  //Hooks
+  // Hooks
   const dispatch = useDispatch();
 
-  //Selectors
+  // Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
@@ -42,6 +43,7 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
   );
   const id = useSelector((state: RootState) => state.display.id);
 
+  // Fetch
   const deletingNursery = () => {
     try {
       deleteNursery({
@@ -53,6 +55,7 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
     }
   };
 
+  // Loading and Error Handling
   if (cropsIsLoading) {
     return <div className="m-10">Loading...</div>;
   }
