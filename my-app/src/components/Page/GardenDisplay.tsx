@@ -20,7 +20,7 @@ const GardenDisplay = () => {
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
 
   return (
-    <section className="flex min-h-screen items-center justify-center">
+    <section className="bg-cardbackground flex min-h-screen items-center justify-center">
       <Card className="min-h-screen overflow-auto">
         <div
           style={{

@@ -113,8 +113,15 @@ const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
           </div>
         </div>
         <div className="flex">
-          <Button onClick={() => setIsVisible(false)}>Back</Button>
-          <Button type="submit">Create!</Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={() => setIsVisible(false)}
+          >
+            Back
+          </Button>
+          <Button className="bg-bgbutton relative m-5 px-6 py-2" type="submit">
+            Create!
+          </Button>
         </div>
       </form>
     </div>

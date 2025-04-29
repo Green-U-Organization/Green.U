@@ -21,7 +21,7 @@ const TodoPopUp = () => {
 
   return (
     <section className="flex min-h-[calc(100vh-15px)] items-center justify-center overflow-auto">
-      <Card className={'max-w-5xl px-8 pt-5'}>
+      <Card className={'bg-cardbackground max-w-5xl px-8 pt-5'}>
         <form id="todoPopup">
           <div>
             <TextInput
@@ -34,7 +34,12 @@ const TodoPopUp = () => {
               error={false}
             ></TextInput>
           </div>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
         </form>
       </Card>
     </section>

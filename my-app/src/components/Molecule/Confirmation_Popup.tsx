@@ -10,11 +10,21 @@ const Confirmation = ({
   handleNoClick,
 }: ConfirmationProps) => {
   return (
-    <Card className="w-[70vw]">
+    <Card className="bg-cardbackground w-[70vw]">
       <H2>Do you really want to delete this {element}?</H2>
 
-      <Button onClick={handleYesClick}>Yes !</Button>
-      <Button onClick={handleNoClick}>No !!</Button>
+      <Button
+        className="bg-bgbutton relative m-5 px-6 py-2"
+        onClick={handleYesClick}
+      >
+        Yes !
+      </Button>
+      <Button
+        className="bg-bgbutton relative m-5 px-6 py-2"
+        onClick={handleNoClick}
+      >
+        No !!
+      </Button>
     </Card>
   );
 };

@@ -109,7 +109,7 @@ const CreateGardenForm = () => {
 
   return (
     <>
-      <Card className="h-full max-w-screen px-8 pt-5 pb-10">
+      <Card className="bg-cardbackground h-full max-w-screen px-8 pt-5 pb-10">
         <h1 className="mb-5 text-center text-4xl">
           {translations.gardenCreator}
         </h1>
@@ -208,10 +208,18 @@ const CreateGardenForm = () => {
           />
 
           <div className="flex justify-center">
-            <Button onClick={() => router.push('/garden-manager')}>
+            <Button
+              className="bg-bgbutton relative m-5 px-6 py-2"
+              onClick={() => router.push('/garden-manager')}
+            >
               {translations.back}
             </Button>
-            <Button type="submit">{translations.create}</Button>
+            <Button
+              className="bg-bgbutton relative m-5 px-6 py-2"
+              type="submit"
+            >
+              {translations.create}
+            </Button>
           </div>
         </form>
       </Card>

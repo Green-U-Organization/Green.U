@@ -33,7 +33,7 @@ const Button: FC<
 
   return (
     <button
-      className={`bg-button px-3 py-3 text-2xl select-none ${inside ? 'bg-bgbutton' : 'bg-cardbackground'} cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`cursor-pointer px-3 py-3 text-2xl select-none disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       onMouseDown={handleDown}
       onMouseUp={handleUp}
       onMouseLeave={handleLeave}

@@ -110,7 +110,7 @@ const Landing = () => {
         {/* TodoList */}
         <Card
           className={
-            'col-start-1 col-end-5 row-start-2 row-end-4 grid h-full w-full grid-cols-2 grid-rows-6 gap-2 px-3'
+            'bg-cardbackground col-start-1 col-end-5 row-start-2 row-end-4 grid h-full w-full grid-cols-2 grid-rows-6 gap-2 px-3'
           }
         >
           <BentoCardHeader
@@ -139,7 +139,7 @@ const Landing = () => {
         </Card>
 
         {/* Garden */}
-        <Card className="col-start-1 col-end-3 row-start-4 row-end-7 h-full w-full px-3">
+        <Card className="bg-cardbackground col-start-1 col-end-3 row-start-4 row-end-7 h-full w-full px-3">
           <BentoCardHeader
             className="col-start-1 col-end-3 row-start-1 row-end-2"
             containerName={'Garden-manager'}
@@ -147,7 +147,7 @@ const Landing = () => {
         </Card>
 
         {/* Message */}
-        <Card className="col-start-1 col-end-3 row-start-7 row-end-8 h-full w-full px-3">
+        <Card className="bg-cardbackground col-start-1 col-end-3 row-start-7 row-end-8 h-full w-full px-3">
           <BentoCardHeader
             className="col-start-1 col-end-3 row-start-1 row-end-2"
             containerName={'Message'}
@@ -157,7 +157,7 @@ const Landing = () => {
         </Card>
 
         {/* Feed */}
-        <Card className="col-start-3 col-end-5 row-start-4 row-end-8 h-full w-full px-3">
+        <Card className="bg-cardbackground col-start-3 col-end-5 row-start-4 row-end-8 h-full w-full px-3">
           <BentoCardHeader
             className="col-start-1 col-end-3 row-start-1 row-end-2"
             containerName={'Feed'}

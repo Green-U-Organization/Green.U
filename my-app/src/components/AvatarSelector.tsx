@@ -95,7 +95,12 @@ function AvatarSelector({ onSelect, isOpen, onClose }: AvatarSelectorProps) {
         <AvatarUpload />
 
         <div className="sticky flex justify-center">
-          <Button onClick={onClose}>{translations.close}</Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={onClose}
+          >
+            {translations.close}
+          </Button>
         </div>
       </Card>
     </div>

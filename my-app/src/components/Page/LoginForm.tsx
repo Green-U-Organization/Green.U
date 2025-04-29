@@ -84,7 +84,7 @@ const LoginForm = () => {
   };
   return (
     <section className="flex max-h-[calc(100vh-15px)] items-center justify-center overflow-auto">
-      <Card className={'max-w-screen px-8 pt-7'}>
+      <Card className={'bg-cardbackground max-w-screen px-8 pt-7'}>
         {/*}flex flex-col p-5 max-w-150*/}
         <form id="loginForm" onSubmit={handleSubmit}>
           <div className="flex flex-col items-center justify-center">
@@ -123,7 +123,7 @@ const LoginForm = () => {
             <br />
             <div className="flex flex-row justify-between pb-5">
               <Button
-                className="relative"
+                className="bg-bgbutton relative m-5 px-6 py-2"
                 onClick={(e) => {
                   e.preventDefault();
                   handleSubmit(e as unknown as FormEvent<HTMLFormElement>);
@@ -132,7 +132,7 @@ const LoginForm = () => {
                 {translations.login}
               </Button>
               <Button
-                className="relative"
+                className="bg-bgbutton relative m-5 px-6 py-2"
                 onClick={() => router.push('/signin')}
               >
                 {translations.signup}

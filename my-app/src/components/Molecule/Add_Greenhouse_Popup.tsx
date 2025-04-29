@@ -21,7 +21,12 @@ const NewGreenhouseForm: React.FC<{ displayCondition: boolean }> = ({
 
         <TextInput label="Width"></TextInput>
 
-        <Button onClick={handleSubmit}>Create!</Button>
+        <Button
+          className="bg-bgbutton relative m-5 px-6 py-2"
+          onClick={handleSubmit}
+        >
+          Create!
+        </Button>
       </form>
     </div>
   );
