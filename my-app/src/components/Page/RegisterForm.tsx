@@ -14,6 +14,7 @@ import Checkbox from '@/components/Atom/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useRegisterUserMutation } from '@/slice/fetch';
 // import { addUser } from '@/utils/actions/user/addUser';
 type Value = CalendarProps['value'];
 
@@ -27,7 +28,7 @@ type FormData = {
   postalCode: string;
   gender: string;
   birthDate: string;
-  skillLevel: string;
+  skillLevel: number;
   interests: string[];
   newsletter: boolean;
   tou: boolean;
@@ -69,7 +70,7 @@ const RegisterForm = () => {
     postalCode: '',
     gender: 'M',
     birthDate: '',
-    skillLevel: '',
+    skillLevel: 0,
     interests: [],
     newsletter: false,
     tou: false,
@@ -99,6 +100,9 @@ const RegisterForm = () => {
   const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
   const [isCheckedNewsletter, setIsCheckedNewsletter] = useState(false);
   const [isCheckedToU, setIsCheckedToU] = useState(false);
+
+  // RTK Query
+  const [registerUser] = useRegisterUserMutation();
 
   //#endregion
 
@@ -365,55 +369,57 @@ const RegisterForm = () => {
       setIsSubmitting(true);
       setSubmitError(null); // reset errors
 
-      const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bodyRequest),
-      });
+      registerUser(bodyRequest);
+      console.log('user created');
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        setSubmitError(
-          `${translations.serverError} : ${response.status} - ${errorText}`
-        );
-        return; // STOP LA REDIRECTION
-      }
-      console.log('User created!');
+      // const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(bodyRequest),
+      // });
+
+      // if (!response.ok) {
+      //   const errorText = await response.text();
+      //   setSubmitError(
+      //     `${translations.serverError} : ${response.status} - ${errorText}`
+      //   );
+      //   return; // STOP LA REDIRECTION
+      // }
 
       //------------------------------------------
       // A ADAPTER SELON LA METHODE UTILISEE
-      const userData = await response.json();
-      const userId = userData?.id || 1;
+      // const userData = await response.json();
+      // const userId = userData?.id || 1;
       //------------------------------------------
 
       //Ajout des hashtags
-      if (formDataRegister.interests.length > 0) {
-        console.log(
-          'hashtags = ',
-          JSON.stringify({ hashtags: formDataRegister.interests })
-        );
-        const hashtagResponse = await fetch(
-          process.env.NEXT_PUBLIC_API + `/tags/list/user/${userId}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ hashtags: formDataRegister.interests }),
-          }
-        );
+      // if (formDataRegister.interests.length > 0) {
+      //   console.log(
+      //     'hashtags = ',
+      //     JSON.stringify({ hashtags: formDataRegister.interests })
+      //   );
+      //   const hashtagResponse = await fetch(
+      //     process.env.NEXT_PUBLIC_API + `/tags/list/user/${userId}`,
+      //     {
+      //       method: 'POST',
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //       body: JSON.stringify({ hashtags: formDataRegister.interests }),
+      //     }
+      //   );
 
-        if (!hashtagResponse.ok) {
-          const errorText = await hashtagResponse.text();
-          setSubmitError(
-            `⚠️ ${translations.userCreatedButNotHashtags} : ${errorText}`
-          );
-          return; // STOP LA REDIRECTION
-        }
-        console.log('Hashtags added!');
-      }
+      //   if (!hashtagResponse.ok) {
+      //     const errorText = await hashtagResponse.text();
+      //     setSubmitError(
+      //       `⚠️ ${translations.userCreatedButNotHashtags} : ${errorText}`
+      //     );
+      //     return; // STOP LA REDIRECTION
+      //   }
+      //   console.log('Hashtags added!');
+      // }
       //Redirige vers la page du dashboard
       router.push('/landing');
     } catch (error: unknown) {
