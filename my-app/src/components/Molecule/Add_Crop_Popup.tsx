@@ -4,7 +4,7 @@ import Card from '../Atom/Card';
 import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-import { useCreateCropToLineMutation } from '@/slice/garden';
+import { useCreateCropToLineMutation } from '@/slice/fetch';
 import { useDispatch } from 'react-redux';
 import type { AddCropPopup } from '@/utils/types';
 import { setAddCropPopup } from '@/redux/display/displaySlice';

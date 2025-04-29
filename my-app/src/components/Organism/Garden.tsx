@@ -13,10 +13,11 @@ import NewGreenhouseForm from '../Molecule/Add_Greenhouse_Popup';
 import {
   useGetAllParcelByGardenIdQuery,
   useGetNurseryByGardenIdQuery,
-} from '@/slice/garden';
+} from '@/slice/fetch';
 import H1 from '../Atom/H1';
 import AddNurseryPopup from '../Molecule/Add_Nursery_Popup';
 import Nursery from './Nursery';
+import Loading from '../Atom/Loading';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   //Local State
@@ -161,7 +162,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
 
   //Loading and Error handling
   if (parcelsIsLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (parcelsIsError) {
     console.log('Error in current Garden : ', garden.id);
@@ -171,7 +172,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   }
 
   if (nurseryIsLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (nurseryIsError) {
     console.log('Error in current Garden fetching nursery : ', garden.id);

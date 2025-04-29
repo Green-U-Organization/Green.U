@@ -12,10 +12,11 @@ import {
   useCreateNewGardenLineMutation,
   useGetAllLinesByParcelIdQuery,
   useDeleteOneParcelByParcelIdMutation,
-} from '@/slice/garden';
+} from '@/slice/fetch';
 import VegetableIcon from '../Atom/VegetableIcon';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
 import { setEditParcelPopup } from '@/redux/display/displaySlice';
+import Loading from '../Atom/Loading';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   //Local State
@@ -80,7 +81,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   // Loading and Error Handling
 
   if (linesIsLoading) {
-    return <div className="m-10">Loading...</div>;
+    return <Loading />;
   }
   if (linesIsError) {
     console.log('error in currentparcel : ', parcel.id);

@@ -8,7 +8,7 @@ import Confirmation from '../Molecule/Confirmation_Popup';
 import {
   useGetCropByNurseryIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
-} from '@/slice/garden';
+} from '@/slice/fetch';
 import { NurceryProps } from '@/utils/types';
 import AddCropNurseryPopup from '../Molecule/Add_CropNursery_Popup';
 import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';

@@ -5,7 +5,7 @@ const userId = 1;
 
 getAllGardenByUserId(userId);
 const Page = () => {
-  return <GardenDisplay></GardenDisplay>;
+  return <GardenDisplay />;
 };
 
 export default Page;

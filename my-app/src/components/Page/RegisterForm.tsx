@@ -256,7 +256,8 @@ const RegisterForm = () => {
   };
 
   // Fonction permettant de reculer dans les pages
-  const handlePrevStep = () => {
+  const handlePrevStep = (e: React.FormEvent) => {
+    e.preventDefault();
     setStep((prev) => prev - 1);
   };
   //#endregion
@@ -323,7 +324,8 @@ const RegisterForm = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const isValid = step2Validation();
     console.log('Submit -> is valid: ', isValid);
     if (!isValid) {
@@ -342,20 +344,18 @@ const RegisterForm = () => {
 
     console.log('FORM OK');
     const bodyRequest = {
-      Username: formDataRegister.login,
-      Password: formDataRegister.password,
-      Firstname: formDataRegister.firstname,
-      Lastname: formDataRegister.lastname,
-      Email: formDataRegister.email,
-      Postal_code: formDataRegister.postalCode,
-      Country: 'Belgium',
-      Sexe: formDataRegister.gender,
-      Birthdate: formDataRegister.birthDate,
-      Hashtag: formDataRegister.interests,
-      Skill_level: selectedSkillLevel,
-      Newsletter: isCheckedNewsletter,
-      Tou: isCheckedToU,
-      //isAdmin: formDataRegister.isAdmin,
+      username: formDataRegister.login,
+      password: formDataRegister.password,
+      isAdmin: false,
+      firstname: formDataRegister.firstname,
+      lastname: formDataRegister.lastname,
+      email: formDataRegister.email,
+      // Postal_code: formDataRegister.postalCode, // AJOUTER POSTAL CODE DANS API
+      country: 'Belgium',
+      gender: formDataRegister.gender,
+      birthday: formDataRegister.birthDate,
+      newsletter: isCheckedNewsletter,
+      skill_level: selectedSkillLevel,
     };
     console.log('formJson page 2: ', bodyRequest);
 

@@ -2,22 +2,29 @@
 import React, { FC } from 'react';
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 import { GardenCardHeaderProps } from '@/utils/types';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
 import H1 from '../Atom/H1';
 import { useSelector, useDispatch } from 'react-redux';
-import { useGetAllGardenByUserIdQuery } from '@/slice/garden';
+import { useGetAllGardenByUserIdQuery } from '@/slice/fetch';
 import { RootState } from '@/redux/store';
+import Loading from '../Atom/Loading';
 
 const GardenCardHeader: FC<GardenCardHeaderProps> = ({
   containerName,
   className,
   type,
 }) => {
-  
   //Hooks
   const router = useRouter();
   const dispatch = useDispatch();
+
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const username = userCookie?.username;
+  const id = Number(userCookie?.id);
 
   //RTK Query
   const {
@@ -25,7 +32,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
     isLoading: gardensIsLoading,
     isError: gardensIsError,
   } = useGetAllGardenByUserIdQuery({
-    userId: 1, // CHANGER AVEC LE VRAI ID USER
+    userId: id,
   }); // get de donnés des données
 
   //Selectors
@@ -49,7 +56,7 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
 
   //Loading and Error Handling
   if (gardensIsLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (gardensIsError) {
     console.log('Error in gardens list');
