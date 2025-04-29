@@ -58,12 +58,17 @@ public class UserController(GreenUDB db) : ControllerBase
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser(User user)
     {
-        var userDbData = await _db.Users
-           .Where(u => u.Username == user.Username)
-           .Select(u => new User { Username = u.Username })
-           .ToArrayAsync();
+        bool mailExist = await _db.Users
+            .Where(u => u.Email == user.Email)
+            .AnyAsync();
 
-        if (userDbData.Length != 0) return Conflict(new { isEmpty = true, message = "This username already exists" });
+        if (mailExist) return Conflict(new { isEmpty = true, message = "This email is already exists" });
+
+        bool userExist = await _db.Users
+           .Where(u => u.Username == user.Username)
+           .AnyAsync();
+
+        if (userExist) return Conflict(new { isEmpty = true, message = "This username is already exists" });
 
         if (user.Password == null) return BadRequest(new { isEmpty = true, message = "Password is missing"});
 
