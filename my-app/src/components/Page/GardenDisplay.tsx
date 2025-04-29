@@ -5,6 +5,7 @@ import React from 'react';
 import GardenCardHeader from '@/components/Organism/GardenCardHeader';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import MenuSandwich from '../Molecule/MenuSandwich';
 
 // import Draggable from 'react-draggable';
 
@@ -38,6 +39,7 @@ const GardenDisplay = () => {
             <Garden garden={currentGarden} scale={scale}></Garden>
           )}
         </div>
+        <MenuSandwich iconList={[]}></MenuSandwich>
       </Card>
     </section>
   );

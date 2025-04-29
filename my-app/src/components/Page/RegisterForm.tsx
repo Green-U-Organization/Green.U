@@ -611,7 +611,9 @@ const RegisterForm = () => {
           setIsValidPostalCode={setIsValidPostalCode}
         />
         <div className="flex justify-center pb-5">
-          <Button onClick={handleNextStep}>{translations.next}</Button>
+          <Button className="relative" onClick={handleNextStep}>
+            {translations.next}
+          </Button>
         </div>
       </form>
 
@@ -683,8 +685,14 @@ const RegisterForm = () => {
           <p className="text-txterror">{translations.errorNotCheckedToU}</p>
         )}
         <div className="flex justify-center pb-5">
-          <Button onClick={handlePrevStep}>{translations.previous}</Button>
-          <Button onClick={handleSubmit} disabled={isSubmitting}>
+          <Button className="relative" onClick={handlePrevStep}>
+            {translations.previous}
+          </Button>
+          <Button
+            className="relative"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
             {translations.sign}
           </Button>
         </div>

@@ -72,9 +72,9 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
       >
         <div className="flex items-center justify-center">
           <H1>{containerName}</H1>
-          <Button onClick={() => router.push('/garden-manager/create')}>
+          {/* <Button onClick={() => router.push('/garden-manager/create')}>
             +
-          </Button>
+          </Button> */}
         </div>
 
         <div

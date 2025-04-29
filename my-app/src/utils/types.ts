@@ -13,6 +13,7 @@ export type BentoCardHeaderProps = {
 export type CardProps = {
   children: React.ReactNode;
   className?: string;
+  variant?: string;
 };
 
 export type CheckboxProps = {

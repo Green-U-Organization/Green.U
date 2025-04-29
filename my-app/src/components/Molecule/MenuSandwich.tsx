@@ -5,6 +5,8 @@ import ZoomSlider from '../Atom/ZoomSlider';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { MenuSandwichProps } from '@/utils/types';
+import Button from '../Atom/Button';
+import Card from '../Atom/Card';
 
 const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
   //Local State
@@ -27,8 +29,30 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
   };
 
   return (
+    // <section className="fixed right-3 bottom-4">
+    //   <Button className="relative h-[15vw] w-[15vw]" onClick={handleClickMenu}>
+    //     <img
+    //       src={
+    //         clickMenuDisplay
+    //           ? '/image/icons/chevronBas.png'
+    //           : '/image/icons/add.png'
+    //       }
+    //       className="h-[5vh] w-auto"
+    //       alt=""
+    //     />
+
+    //     <div
+    //       style={{
+    //         display: clickMenuDisplay ? 'block' : 'none',
+    //       }}
+    //       className="absolute -top-[53vw] right-[3.2vw] h-[25vh] w-[15vw]"
+    //     >
+    //       <Card variant="bottom">yo</Card>
+    //     </div>
+    //   </Button>
+    // </section>
     <section
-      className="_MENU_SANDWICH_ bg-cardbackground relative flex flex-row-reverse items-center rounded-b-xl border-2"
+      className="_MENU_SANDWICH_ relative flex flex-row-reverse items-center rounded-b-xl border-2 bg-amber-100"
       style={{
         height: '10vw',
         width: clickMenuDisplay ? '100vw' : '10vw',

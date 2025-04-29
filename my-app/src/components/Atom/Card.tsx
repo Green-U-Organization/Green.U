@@ -1,7 +1,7 @@
 import { CardProps } from '@/utils/types';
 import React from 'react';
 
-const Card: React.FC<CardProps> = ({ children, className }) => {
+const Card: React.FC<CardProps> = ({ children, variant, className }) => {
   return (
     <section
       className={`bg-cardbackground relative m-auto w-4xl font-(family-name:--font-jersey) text-2xl ${className}`}
@@ -10,6 +10,7 @@ const Card: React.FC<CardProps> = ({ children, className }) => {
       <div className="bg-border absolute top-0 left-0 z-50 h-full w-2"></div>
       <div className="bg-border absolute top-0 right-0 z-50 h-full w-2"></div>
       <div className="bg-border absolute top-0 left-0 z-50 h-2 w-full"></div>
+
       <div className="bg-border absolute bottom-0 left-0 z-50 h-2 w-full"></div>
 
       {/* Pixels intérieurs */}

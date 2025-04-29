@@ -183,10 +183,6 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
 
   return (
     <section className="mb-10 flex flex-col">
-      <MenuSandwich iconList={iconList}>
-        {/* <NewParcelForm displayCondition={false}></NewParcelForm> */}
-      </MenuSandwich>
-
       <section
         className={`_GARDEN_ ${graphicMode ? 'bg-gardenBG' : 'bg-cardbackground'} relative rounded-xl`}
         style={{

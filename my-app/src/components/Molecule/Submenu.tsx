@@ -18,7 +18,7 @@ const Submenu: React.FC<SubmenuProps> = ({ iconList }) => {
 
   return (
     <section
-      className="_SUBMENU_SANDWICH_ bg-cardbackground absolute -top-0.5 -left-0.5 flex flex-col-reverse items-center justify-center rounded-t-xl border-2 border-b-0"
+      className="_SUBMENU_SANDWICH_ absolute -top-0.5 -left-0.5 flex flex-col-reverse items-center justify-center rounded-t-xl border-2 border-b-0 bg-amber-100"
       style={{
         height: '50vw',
         width: '10vw',

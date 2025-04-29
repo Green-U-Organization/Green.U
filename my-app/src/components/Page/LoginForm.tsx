@@ -123,6 +123,7 @@ const LoginForm = () => {
             <br />
             <div className="flex flex-row justify-between pb-5">
               <Button
+                className="relative"
                 onClick={(e) => {
                   e.preventDefault();
                   handleSubmit(e as unknown as FormEvent<HTMLFormElement>);
@@ -130,7 +131,10 @@ const LoginForm = () => {
               >
                 {translations.login}
               </Button>
-              <Button onClick={() => router.push('/signin')}>
+              <Button
+                className="relative"
+                onClick={() => router.push('/signin')}
+              >
                 {translations.signup}
               </Button>
             </div>
