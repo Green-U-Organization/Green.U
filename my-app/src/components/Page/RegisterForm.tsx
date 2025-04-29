@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   useCreateTagsListByUserMutation,
+  useLoginUserMutation,
   useRegisterUserMutation,
 } from '@/slice/fetch';
 // import { addUser } from '@/utils/actions/user/addUser';
@@ -106,6 +107,7 @@ const RegisterForm = () => {
 
   // RTK Query
   const [registerUser] = useRegisterUserMutation();
+  const [loginUser] = useLoginUserMutation();
   const [createTagsListByUser] = useCreateTagsListByUserMutation();
 
   //#endregion
@@ -380,6 +382,19 @@ const RegisterForm = () => {
 
       registerUser(bodyRequest);
       console.log('user created');
+      //Ajout des hashtags
+      createTagsListByUser(bodyHashTagsRequest);
+      console.log('hashtags user created');
+
+      try {
+        loginUser({
+          email: bodyRequest.email,
+          password: bodyRequest.password,
+        });
+        console.log('user connected');
+      } catch {
+        console.log('error connecting user');
+      }
 
       // const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
       //   method: 'POST',
@@ -402,10 +417,6 @@ const RegisterForm = () => {
       // const userData = await response.json();
       // const userId = userData?.id || 1;
       //------------------------------------------
-
-      //Ajout des hashtags
-
-      createTagsListByUser(bodyHashTagsRequest);
 
       // if (formDataRegister.interests.length > 0) {
       //   console.log(
@@ -433,7 +444,8 @@ const RegisterForm = () => {
       //   console.log('Hashtags added!');
       // }
       //Redirige vers la page du dashboard
-      router.push('/login');
+
+      router.push('/landing');
     } catch (error: unknown) {
       console.error('Network error :', error);
       setSubmitError(translations.networkErrorRetry);

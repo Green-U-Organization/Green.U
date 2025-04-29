@@ -6,7 +6,14 @@ import type { NextRequest } from 'next/server';
 export function middleware(req: NextRequest) {
   const token = req.cookies.get('access_token');
 
-  const protectedRoutes = ['/map'];
+  const protectedRoutes = [
+    '/map',
+    '/editProfile',
+    '/garden-manager',
+    '/landing',
+    '/profile',
+    '/todo',
+  ];
   const pathname = req.nextUrl.pathname;
 
   const isProtected = protectedRoutes.some((route) =>
