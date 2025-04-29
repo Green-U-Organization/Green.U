@@ -227,6 +227,11 @@ type RegisterUserRequest = {
   skill_level: number;
 };
 
+type CreateTagsListByUserRequest = {
+  userId: number;
+  hashtags: string[];
+};
+
 export const extendedGardenAPI = api
   .enhanceEndpoints({
     addTagTypes: [
@@ -236,6 +241,7 @@ export const extendedGardenAPI = api
       'garden-crops',
       'garden-nursery',
       'connection - login',
+      'tags-user',
     ],
   })
   .injectEndpoints({
@@ -460,6 +466,18 @@ export const extendedGardenAPI = api
           body: arg,
         }),
       }),
+
+      //CreateTagsListByUser >>
+      createTagsListByUser: builder.mutation<void, CreateTagsListByUserRequest>(
+        {
+          query: (arg) => ({
+            url: `/tags/list/user/${arg.userId}`,
+            method: 'POST',
+            body: arg,
+          }),
+          invalidatesTags: ['tags-user'],
+        }
+      ),
     }),
   });
 
@@ -483,4 +501,5 @@ export const {
   useEditParcelMutation,
   useLoginUserMutation,
   useRegisterUserMutation,
+  useCreateTagsListByUserMutation,
 } = extendedGardenAPI;
