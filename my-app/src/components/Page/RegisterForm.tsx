@@ -421,7 +421,7 @@ const RegisterForm = () => {
       //   console.log('Hashtags added!');
       // }
       //Redirige vers la page du dashboard
-      router.push('/landing');
+      router.push('/login');
     } catch (error: unknown) {
       console.error('Network error :', error);
       setSubmitError(translations.networkErrorRetry);
