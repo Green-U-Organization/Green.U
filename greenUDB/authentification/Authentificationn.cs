@@ -6,7 +6,7 @@ using GreenUApi.Models;
 
 namespace GreenUApi.authentification
 {
-    public class Authentification
+    public class Authentificationn
     {
         public static string[] Hasher(string password, byte[]? salty)
         {
@@ -32,7 +32,7 @@ namespace GreenUApi.authentification
 
         }
 
-        public static async Task<JwtResponse<UserDTO>> Login(string Email, string password, GreenUDB db)
+        public static async Task<UserDTO> VerifyCredentials(string Email, string password, GreenUDB db)
         {
             var User = await db.Users
             .Where(u => u.Email == Email)
@@ -45,7 +45,7 @@ namespace GreenUApi.authentification
             })
             .FirstOrDefaultAsync();
 
-            if (User == null) return new JwtResponse<UserDTO> { isEmpty = true, message = "The Email is bad..." };
+            if (User == null) return new UserDTO { error = true, message = "Email is wrong"};
 
 
             string hashedPassword = "";
@@ -54,12 +54,10 @@ namespace GreenUApi.authentification
 
             if (User.Password == hashedPassword)
             {
-                var JwtRes = JwtController.JwtController.GenerateJwtToken(new User { Id = User.Id, Username = User.Username });
-
-                return JwtRes;
+                return new UserDTO { Id = User.Id, Username = User.Username };
             }
 
-            return new JwtResponse<UserDTO> { isEmpty = true, message = "The pass is wrong" };
+            return new UserDTO { error = true, message = "Pass is wrong" };
         }
 
     }

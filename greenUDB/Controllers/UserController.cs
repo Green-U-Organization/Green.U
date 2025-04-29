@@ -67,7 +67,7 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (user.Password == null) return BadRequest(new { isEmpty = true, message = "Password is missing"});
 
-        string[] hashSalt = Authentification.Hasher(user.Password, null);
+        string[] hashSalt = Authentificationn.Hasher(user.Password, null);
         user.Password = hashSalt[0];
         user.Salt = hashSalt[1];
 
@@ -93,7 +93,7 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (!string.IsNullOrEmpty(modification.Password))
         {
-            string[] hashSalt = Authentification.Hasher(modification.Password, null);
+            string[] hashSalt = Authentificationn.Hasher(modification.Password, null);
             modification.Password = hashSalt[0];
             modification.Salt = hashSalt[1];
             user.Password = modification.Password;

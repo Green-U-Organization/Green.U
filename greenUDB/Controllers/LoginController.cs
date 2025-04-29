@@ -57,6 +57,8 @@ namespace GreenUApi.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModel cred)
         {
+            
+
             if (cred.Email == "admin" && cred.Password == "password")
             {
                 var token = GenerateJwtToken(cred.Email);
@@ -74,7 +76,9 @@ namespace GreenUApi.Controllers
            };
 
             string? secret = Environment.GetEnvironmentVariable("SECRET_JWT");
-            if (string.IsNullOrEmpty(secret))
+            string? apiLink = Environment.GetEnvironmentVariable("ISSUER");
+            string? prodLink = Environment.GetEnvironmentVariable("AUDIENCE");  
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(apiLink) || string.IsNullOrEmpty(prodLink))
             {
                 throw new InvalidOperationException("Environment variable 'SECRET' is not set.");
             }
@@ -83,10 +87,10 @@ namespace GreenUApi.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: "yourdomain.com",
-                audience: "yourdomain.com",
+                issuer: apiLink,
+                audience: prodLink,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
