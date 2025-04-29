@@ -14,7 +14,11 @@ import Checkbox from '@/components/Atom/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useLoginUserMutation, useRegisterUserMutation } from '@/slice/fetch';
+import {
+  useCreateTagsListByUserMutation,
+  useLoginUserMutation,
+  useRegisterUserMutation,
+} from '@/slice/fetch';
 // import { addUser } from '@/utils/actions/user/addUser';
 type Value = CalendarProps['value'];
 
@@ -104,6 +108,7 @@ const RegisterForm = () => {
   // RTK Query
   const [registerUser] = useRegisterUserMutation();
   const [loginUser] = useLoginUserMutation();
+  const [createTagsListByUser] = useCreateTagsListByUserMutation();
 
   //#endregion
 
@@ -366,12 +371,21 @@ const RegisterForm = () => {
 
     //addUser(bodyRequest);
 
+    const bodyHashTagsRequest = {
+      userId: 8,
+      hashtags: formDataRegister.interests,
+    };
+
     try {
       setIsSubmitting(true);
       setSubmitError(null); // reset errors
 
       registerUser(bodyRequest);
       console.log('user created');
+      //Ajout des hashtags
+      createTagsListByUser(bodyHashTagsRequest);
+      console.log('hashtags user created');
+
       try {
         loginUser({
           email: bodyRequest.email,
@@ -404,7 +418,6 @@ const RegisterForm = () => {
       // const userId = userData?.id || 1;
       //------------------------------------------
 
-      //Ajout des hashtags
       // if (formDataRegister.interests.length > 0) {
       //   console.log(
       //     'hashtags = ',
