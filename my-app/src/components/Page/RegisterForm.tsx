@@ -14,6 +14,11 @@ import Checkbox from '@/components/Atom/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import {
+  useCreateTagsListByUserMutation,
+  useLoginUserMutation,
+  useRegisterUserMutation,
+} from '@/slice/fetch';
 // import { addUser } from '@/utils/actions/user/addUser';
 type Value = CalendarProps['value'];
 
@@ -27,7 +32,7 @@ type FormData = {
   postalCode: string;
   gender: string;
   birthDate: string;
-  skillLevel: string;
+  skillLevel: number;
   interests: string[];
   newsletter: boolean;
   tou: boolean;
@@ -69,7 +74,7 @@ const RegisterForm = () => {
     postalCode: '',
     gender: 'M',
     birthDate: '',
-    skillLevel: '',
+    skillLevel: 0,
     interests: [],
     newsletter: false,
     tou: false,
@@ -99,6 +104,11 @@ const RegisterForm = () => {
   const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
   const [isCheckedNewsletter, setIsCheckedNewsletter] = useState(false);
   const [isCheckedToU, setIsCheckedToU] = useState(false);
+
+  // RTK Query
+  const [registerUser] = useRegisterUserMutation();
+  const [loginUser] = useLoginUserMutation();
+  const [createTagsListByUser] = useCreateTagsListByUserMutation();
 
   //#endregion
 
@@ -256,7 +266,8 @@ const RegisterForm = () => {
   };
 
   // Fonction permettant de reculer dans les pages
-  const handlePrevStep = () => {
+  const handlePrevStep = (e: React.FormEvent) => {
+    e.preventDefault();
     setStep((prev) => prev - 1);
   };
   //#endregion
@@ -323,7 +334,8 @@ const RegisterForm = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const isValid = step2Validation();
     console.log('Submit -> is valid: ', isValid);
     if (!isValid) {
@@ -342,79 +354,97 @@ const RegisterForm = () => {
 
     console.log('FORM OK');
     const bodyRequest = {
-      Username: formDataRegister.login,
-      Password: formDataRegister.password,
-      Firstname: formDataRegister.firstname,
-      Lastname: formDataRegister.lastname,
-      Email: formDataRegister.email,
-      Postal_code: formDataRegister.postalCode,
-      Country: 'Belgium',
-      Sexe: formDataRegister.gender,
-      Birthdate: formDataRegister.birthDate,
-      Hashtag: formDataRegister.interests,
-      Skill_level: selectedSkillLevel,
-      Newsletter: isCheckedNewsletter,
-      Tou: isCheckedToU,
-      //isAdmin: formDataRegister.isAdmin,
+      username: formDataRegister.login,
+      password: formDataRegister.password,
+      isAdmin: false,
+      firstname: formDataRegister.firstname,
+      lastname: formDataRegister.lastname,
+      email: formDataRegister.email,
+      // Postal_code: formDataRegister.postalCode, // AJOUTER POSTAL CODE DANS API
+      country: 'Belgium',
+      gender: formDataRegister.gender,
+      birthday: formDataRegister.birthDate,
+      newsletter: isCheckedNewsletter,
+      skill_level: selectedSkillLevel,
     };
     console.log('formJson page 2: ', bodyRequest);
 
     //addUser(bodyRequest);
 
+    const bodyHashTagsRequest = {
+      userId: 8,
+      hashtags: formDataRegister.interests,
+    };
+
     try {
       setIsSubmitting(true);
       setSubmitError(null); // reset errors
 
-      const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bodyRequest),
-      });
+      registerUser(bodyRequest);
+      console.log('user created');
+      //Ajout des hashtags
+      createTagsListByUser(bodyHashTagsRequest);
+      console.log('hashtags user created');
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        setSubmitError(
-          `${translations.serverError} : ${response.status} - ${errorText}`
-        );
-        return; // STOP LA REDIRECTION
+      try {
+        loginUser({
+          email: bodyRequest.email,
+          password: bodyRequest.password,
+        });
+        console.log('user connected');
+      } catch {
+        console.log('error connecting user');
       }
-      console.log('User created!');
+
+      // const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(bodyRequest),
+      // });
+
+      // if (!response.ok) {
+      //   const errorText = await response.text();
+      //   setSubmitError(
+      //     `${translations.serverError} : ${response.status} - ${errorText}`
+      //   );
+      //   return; // STOP LA REDIRECTION
+      // }
 
       //------------------------------------------
       // A ADAPTER SELON LA METHODE UTILISEE
-      const userData = await response.json();
-      const userId = userData?.id || 1;
+      // const userData = await response.json();
+      // const userId = userData?.id || 1;
       //------------------------------------------
 
-      //Ajout des hashtags
-      if (formDataRegister.interests.length > 0) {
-        console.log(
-          'hashtags = ',
-          JSON.stringify({ hashtags: formDataRegister.interests })
-        );
-        const hashtagResponse = await fetch(
-          process.env.NEXT_PUBLIC_API + `/tags/list/user/${userId}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ hashtags: formDataRegister.interests }),
-          }
-        );
+      // if (formDataRegister.interests.length > 0) {
+      //   console.log(
+      //     'hashtags = ',
+      //     JSON.stringify({ hashtags: formDataRegister.interests })
+      //   );
+      //   const hashtagResponse = await fetch(
+      //     process.env.NEXT_PUBLIC_API + `/tags/list/user/${userId}`,
+      //     {
+      //       method: 'POST',
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //       body: JSON.stringify({ hashtags: formDataRegister.interests }),
+      //     }
+      //   );
 
-        if (!hashtagResponse.ok) {
-          const errorText = await hashtagResponse.text();
-          setSubmitError(
-            `⚠️ ${translations.userCreatedButNotHashtags} : ${errorText}`
-          );
-          return; // STOP LA REDIRECTION
-        }
-        console.log('Hashtags added!');
-      }
+      //   if (!hashtagResponse.ok) {
+      //     const errorText = await hashtagResponse.text();
+      //     setSubmitError(
+      //       `⚠️ ${translations.userCreatedButNotHashtags} : ${errorText}`
+      //     );
+      //     return; // STOP LA REDIRECTION
+      //   }
+      //   console.log('Hashtags added!');
+      // }
       //Redirige vers la page du dashboard
+
       router.push('/landing');
     } catch (error: unknown) {
       console.error('Network error :', error);

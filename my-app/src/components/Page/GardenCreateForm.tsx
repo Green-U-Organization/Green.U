@@ -7,31 +7,21 @@ import Button from '../Atom/Button';
 import SelectInput from '../Atom/SelectInput';
 import HashtagInput from '../HashtagInput';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 import LocationPicker from '../UI/LocationPicker';
 import { useLanguage } from '../../app/contexts/LanguageProvider';
-import { useCreateNewGardenMutation } from '@/slice/garden';
-
-type gardenType = {
-  authorId: number;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  length: number;
-  width: number;
-  privacy: number;
-  type: number;
-  hashtags: string[];
-};
+import { useCreateNewGardenMutation } from '@/slice/fetch';
+import { GardenType } from '@/utils/types';
 
 const CreateGardenForm = () => {
+  // Hooks
   const { translations } = useLanguage();
-
   // const [location, setLocation] = useState<{
   //   latitude: number;
   //   longitude: number;
   // } | null>(null);
 
+  // Local State
   const [gardenLength, setGardenLength] = useState<number>(10);
   const [gardenWidth, setGardenWidth] = useState<number>(10);
   const [selectedType, setSelectedType] = useState<number>(0);
@@ -49,12 +39,22 @@ const CreateGardenForm = () => {
   //   type: 0,
   // });
 
-  //RTH Query
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const username = userCookie?.username;
+  const id = Number(userCookie?.id);
+  console.log('id : ', typeof id, id);
+
+  // RTHK Query
   const [createNewGarden] = useCreateNewGardenMutation();
 
+  //Variables
   const rows = 5;
   const cols = 33;
   const router = useRouter();
+
+  // Handlers
 
   // const handleLocationSelect = (selectedLocation: {
   //   latitude: number;
@@ -79,8 +79,8 @@ const CreateGardenForm = () => {
     if (form) {
       const formData = new FormData(form);
 
-      const gardenData: gardenType = {
-        authorId: 1, //CETTE DONNEE DEVRA ETRE CORRIGEE !!!!
+      const gardenData: GardenType = {
+        authorId: id,
         name: formData.get('gardenName') as string,
         description: formData.get('gardenDescription') as string,
         latitude: parseFloat(formData.get('latitude') as string),

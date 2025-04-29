@@ -6,11 +6,12 @@ import Card from '@/components/Atom/Card';
 import Button from '@/components/Atom/Button';
 
 const CGU = () => {
+  // Hooks
   const router = useRouter();
   const { translations } = useLanguage();
 
+  // Handlers
   const handleCloseTab = () => {
-    // Tente de fermer l'onglet
     window.close();
     // Si "window.close()" échoue (car l'onglet n'a pas été ouvert par JavaScript), on redirige vers une autre page
     router.push('/signin');

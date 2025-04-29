@@ -3,12 +3,11 @@ import Button from '../Atom/Button';
 import H2 from '../Atom/H2';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useCreateNewParcelMutation } from '@/slice/garden';
+import { useCreateNewParcelMutation } from '@/slice/fetch';
 
 const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   displayCondition,
 }) => {
-
   //Local Variables
   const [isVisible, setIsVisible] = useState<boolean>(displayCondition);
   const [length, setLength] = useState<number>(1);
