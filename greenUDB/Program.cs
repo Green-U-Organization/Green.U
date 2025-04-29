@@ -47,7 +47,7 @@ var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};
 // Load the DB context 
 builder.Services.AddDbContext<GreenUDB>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-);
+);      
 
 // Use Cors with .env
 var allowedOriginsWithNull = new string?[] { 
