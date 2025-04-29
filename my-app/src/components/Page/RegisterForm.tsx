@@ -14,7 +14,7 @@ import Checkbox from '@/components/Atom/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useRegisterUserMutation } from '@/slice/fetch';
+import { useLoginUserMutation, useRegisterUserMutation } from '@/slice/fetch';
 // import { addUser } from '@/utils/actions/user/addUser';
 type Value = CalendarProps['value'];
 
@@ -103,6 +103,7 @@ const RegisterForm = () => {
 
   // RTK Query
   const [registerUser] = useRegisterUserMutation();
+  const [loginUser] = useLoginUserMutation();
 
   //#endregion
 
@@ -371,6 +372,15 @@ const RegisterForm = () => {
 
       registerUser(bodyRequest);
       console.log('user created');
+      try {
+        loginUser({
+          email: bodyRequest.email,
+          password: bodyRequest.password,
+        });
+        console.log('user connected');
+      } catch {
+        console.log('error connecting user');
+      }
 
       // const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
       //   method: 'POST',
@@ -421,7 +431,8 @@ const RegisterForm = () => {
       //   console.log('Hashtags added!');
       // }
       //Redirige vers la page du dashboard
-      router.push('/login');
+
+      router.push('/landing');
     } catch (error: unknown) {
       console.error('Network error :', error);
       setSubmitError(translations.networkErrorRetry);
