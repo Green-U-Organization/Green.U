@@ -6,7 +6,7 @@ using GreenUApi.Models;
 
 namespace GreenUApi.authentification
 {
-    public class Authentificationn
+    public class Authentification
     {
         public static string[] Hasher(string password, byte[]? salty)
         {
