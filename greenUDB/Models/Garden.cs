@@ -6,8 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace GreenUApi.Models;
 
 public enum GardenPrivacy{
-    Public,
-    Private
+    Private,
+    SemiPrivate,
+    Public
 }
 
 public enum GardenType{
