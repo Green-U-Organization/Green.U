@@ -39,7 +39,5 @@ public partial class Crop
 
     public virtual Line? Line { get; set; }
 
-    public virtual ICollection<Log> Logs { get; set; } = new List<Log>();
-
     public virtual PlantNursery? PlantNursery { get; set; }
 }
