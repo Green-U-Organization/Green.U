@@ -305,8 +305,13 @@ namespace GreenUApi.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id")
                         .HasName("PRIMARY");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex(new[] { "AuthorId" }, "fk_Logs_Author_id");
 
@@ -572,40 +577,25 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Log", b =>
                 {
-                    b.HasOne("GreenUApi.Models.User", "Author")
+                    b.HasOne("GreenUApi.Models.Crop", null)
                         .WithMany("Logs")
-                        .HasForeignKey("AuthorId")
-                        .HasConstraintName("fk_Logs_Author_id");
+                        .HasForeignKey("CropId");
 
-                    b.HasOne("GreenUApi.Models.Crop", "Crop")
+                    b.HasOne("GreenUApi.Models.Garden", null)
                         .WithMany("Logs")
-                        .HasForeignKey("CropId")
-                        .HasConstraintName("fk_Logs_Crop_id");
+                        .HasForeignKey("GardenId");
 
-                    b.HasOne("GreenUApi.Models.Garden", "Garden")
+                    b.HasOne("GreenUApi.Models.Line", null)
                         .WithMany("Logs")
-                        .HasForeignKey("GardenId")
-                        .HasConstraintName("fk_Logs_Garden_id");
+                        .HasForeignKey("LineId");
 
-                    b.HasOne("GreenUApi.Models.Line", "Line")
+                    b.HasOne("GreenUApi.Models.Parcel", null)
                         .WithMany("Logs")
-                        .HasForeignKey("LineId")
-                        .HasConstraintName("fk_Logs_Line_id");
+                        .HasForeignKey("ParcelId");
 
-                    b.HasOne("GreenUApi.Models.Parcel", "Parcel")
+                    b.HasOne("GreenUApi.Models.User", null)
                         .WithMany("Logs")
-                        .HasForeignKey("ParcelId")
-                        .HasConstraintName("fk_Logs_Parcel_id");
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Crop");
-
-                    b.Navigation("Garden");
-
-                    b.Navigation("Line");
-
-                    b.Navigation("Parcel");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("GreenUApi.Models.Parcel", b =>

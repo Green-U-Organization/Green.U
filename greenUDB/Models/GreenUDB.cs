@@ -213,26 +213,6 @@ public partial class GreenUDB : DbContext
             entity.Property(e => e.LineId).HasColumnName("Line_id");
             entity.Property(e => e.ParcelId).HasColumnName("Parcel_id");
             entity.Property(e => e.Type).HasMaxLength(50);
-
-            entity.HasOne(d => d.Author).WithMany(p => p.Logs)
-                .HasForeignKey(d => d.AuthorId)
-                .HasConstraintName("fk_Logs_Author_id");
-
-            entity.HasOne(d => d.Crop).WithMany(p => p.Logs)
-                .HasForeignKey(d => d.CropId)
-                .HasConstraintName("fk_Logs_Crop_id");
-
-            entity.HasOne(d => d.Garden).WithMany(p => p.Logs)
-                .HasForeignKey(d => d.GardenId)
-                .HasConstraintName("fk_Logs_Garden_id");
-
-            entity.HasOne(d => d.Line).WithMany(p => p.Logs)
-                .HasForeignKey(d => d.LineId)
-                .HasConstraintName("fk_Logs_Line_id");
-
-            entity.HasOne(d => d.Parcel).WithMany(p => p.Logs)
-                .HasForeignKey(d => d.ParcelId)
-                .HasConstraintName("fk_Logs_Parcel_id");
         });
 
         modelBuilder.Entity<Parcel>(entity =>

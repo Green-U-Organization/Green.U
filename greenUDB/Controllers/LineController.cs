@@ -58,6 +58,7 @@ namespace GreenUApi.Controllers
 
             Log log = new Log
             {
+                GardenId = line.GardenId,
                 LineId = line.Id,
                 ParcelId = line.ParcelId,
                 PlantNurseryId = line.PLantNurseryId,
@@ -90,9 +91,12 @@ namespace GreenUApi.Controllers
 
             if (line.Length == null) return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
 
+            line.GardenId = parcel.GardenId;
+
             _db.Add(line);
 
             Log log = new Log {
+                GardenId = line.GardenId,
                 ParcelId = line.ParcelId,
                 PlantNurseryId = line.PLantNurseryId,
                 Action = "Create a new line",
@@ -123,7 +127,20 @@ namespace GreenUApi.Controllers
                 crop.LineId = null;
             }
 
+            Log log = new Log
+            {
+                GardenId = line.GardenId,
+                LineId = line.Id,
+                ParcelId = line.ParcelId,
+                PlantNurseryId = line.PLantNurseryId,
+                Action = $"Delete a line",
+                Type = "Automatic",
+            };
+            _db.Add(log);
             _db.Lines.Remove(line);
+
+
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "This line is deleted", content = line });
