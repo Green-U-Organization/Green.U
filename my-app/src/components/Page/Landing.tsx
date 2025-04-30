@@ -116,6 +116,7 @@ const Landing = () => {
           <BentoCardHeader
             className="col-start-1 col-end-3 row-start-1 row-end-2"
             containerName={'Todo'}
+            pageLink={'todo'}
           ></BentoCardHeader>
           {processedData.map((todo, index) => (
             <Todo
@@ -143,6 +144,7 @@ const Landing = () => {
           <BentoCardHeader
             className="col-start-1 col-end-3 row-start-1 row-end-2"
             containerName={'Garden-manager'}
+            pageLink={'garden'}
           ></BentoCardHeader>
         </Card>
 
@@ -151,6 +153,7 @@ const Landing = () => {
           <BentoCardHeader
             className="col-start-1 col-end-3 row-start-1 row-end-2"
             containerName={'Message'}
+            pageLink={'message'}
           >
             Choose your Garden
           </BentoCardHeader>
@@ -161,6 +164,7 @@ const Landing = () => {
           <BentoCardHeader
             className="col-start-1 col-end-3 row-start-1 row-end-2"
             containerName={'Feed'}
+            pageLink={'feed'}
           ></BentoCardHeader>
         </Card>
       </section>

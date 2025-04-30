@@ -1,31 +1,45 @@
 /* eslint-disable @next/next/no-img-element */
+'use client';
+
 import React, { useState } from 'react';
-import Icon from '../Atom/Icon';
-import ZoomSlider from '../Atom/ZoomSlider';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { RootState, useDispatch } from '@/redux/store';
 import { MenuSandwichProps } from '@/utils/types';
 import Button from '../Atom/Button';
 import Card from '../Atom/Card';
+import {
+  setAddGreenhousePopup,
+  setAddNurseryPopup,
+  setAddParcelPopup,
+} from '@/redux/display/displaySlice';
+import Add_Parcel_Popup from './Add_Parcel_Popup';
+import Add_Nursery_Popup from './Add_Nursery_Popup';
+import Add_Greenhouse_Popup from './Add_Greenhouse_Popup';
 
 const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
   //Local State
   const [clickMenuDisplay, setClickMenuDisplay] = useState<boolean>(false);
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+
+  //Hooks
+  const dispatch = useDispatch();
 
   //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
+  const addParcelDisplay = useSelector(
+    (state: RootState) => state.display.addParcelPopup
+  );
+  const addNurseryDisplay = useSelector(
+    (state: RootState) => state.display.addNurseryPopup
+  );
+  const addGreenhouseDisplay = useSelector(
+    (state: RootState) => state.display.addGreenhousePopup
+  );
 
+  //Handlers
   const handleClickMenu = () => {
     setClickMenuDisplay((prev) => !prev);
-    setActiveSubmenu(null);
-  };
-
-  const handleIconClick = (icon: { alt: string; handleClick: () => void }) => {
-    icon.handleClick();
-    setActiveSubmenu(activeSubmenu === icon.alt ? null : icon.alt);
   };
 
   return (
@@ -54,18 +68,111 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
           className="bg-bgbutton absolute top-0 right-0 flex h-[250px] w-[60px] flex-col items-center justify-between"
           variant="bottom"
         >
-          <div className="mt-3 rounded-full border-1 bg-fuchsia-200">
-            <p className="h-[40px] w-[40px] p-1 text-center text-2xl">G</p>
-          </div>
-          <div className="rounded-full border-1 bg-orange-200">
+          <div
+            onClick={() => {
+              addParcelDisplay
+                ? dispatch(
+                    setAddParcelPopup({
+                      state: false,
+                      id: 0,
+                    })
+                  )
+                : (dispatch(
+                    setAddGreenhousePopup({
+                      state: false,
+                      id: 0,
+                    })
+                  ),
+                  dispatch(
+                    setAddNurseryPopup({
+                      state: false,
+                      id: 0,
+                    })
+                  ),
+                  dispatch(
+                    setAddParcelPopup({
+                      state: true,
+                      id: 0,
+                    })
+                  ));
+            }}
+            className="bg-parcel my-5 rounded-full border-1"
+          >
             <p className="h-[40px] w-[40px] p-1 text-center text-2xl">P</p>
           </div>
-          <div className="rounded-full border-1 bg-amber-200">
+
+          <div
+            onClick={() => {
+              addNurseryDisplay
+                ? dispatch(
+                    setAddNurseryPopup({
+                      state: false,
+                      id: 0,
+                    })
+                  )
+                : (dispatch(
+                    setAddGreenhousePopup({
+                      state: false,
+                      id: 0,
+                    })
+                  ),
+                  dispatch(
+                    setAddNurseryPopup({
+                      state: true,
+                      id: 0,
+                    })
+                  ),
+                  dispatch(
+                    setAddParcelPopup({
+                      state: false,
+                      id: 0,
+                    })
+                  ));
+            }}
+            className="bg-nursery my-5 rounded-full border-1"
+          >
             <p className="h-[40px] w-[40px] p-1 text-center text-2xl">N</p>
           </div>
-          <div className="rounded-full border-1 bg-sky-200">
-            <p className="h-[40px] w-[40px] p-1 text-center text-2xl">S</p>
+          <div
+            onClick={() => {
+              addGreenhouseDisplay
+                ? dispatch(
+                    setAddGreenhousePopup({
+                      state: false,
+                      id: 0,
+                    })
+                  )
+                : (dispatch(
+                    setAddGreenhousePopup({
+                      state: true,
+                      id: 0,
+                    })
+                  ),
+                  dispatch(
+                    setAddNurseryPopup({
+                      state: false,
+                      id: 0,
+                    })
+                  ),
+                  dispatch(
+                    setAddParcelPopup({
+                      state: false,
+                      id: 0,
+                    })
+                  ));
+            }}
+            className="bg-greenhouse my-5 rounded-full border-1"
+          >
+            <p className="h-[40px] w-[40px] p-1 text-center text-2xl">G</p>
           </div>
+
+          <Add_Parcel_Popup display={addParcelDisplay}></Add_Parcel_Popup>
+
+          <Add_Nursery_Popup display={addNurseryDisplay}></Add_Nursery_Popup>
+
+          <Add_Greenhouse_Popup
+            display={addGreenhouseDisplay}
+          ></Add_Greenhouse_Popup>
         </Card>
       </div>
     </section>

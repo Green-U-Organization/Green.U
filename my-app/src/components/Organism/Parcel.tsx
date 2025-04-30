@@ -17,6 +17,7 @@ import VegetableIcon from '../Atom/VegetableIcon';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
 import { setEditParcelPopup } from '@/redux/display/displaySlice';
 import Loading from '../Atom/Loading';
+import SlimCard from '../Atom/SlimCard';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   //Local State
@@ -91,7 +92,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   // }
 
   return (
-    <section className="z-10 ml-5">
+    <section className="z-10 ml-[5vw]">
       <div className="flex flex-col">
         {/* //BorderTopGlobal */}
         <div
@@ -140,12 +141,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
           ></div>
 
           {/* //MainCore */}
-          <div
-            className={`${graphicMode ? styles.parcelBackground : 'mb-[2vh] min-h-[5vh] rounded-2xl bg-emerald-200'} flex flex-col justify-center`}
-            style={{
-              height: graphicMode ? parcelX * scale : undefined,
-              width: graphicMode ? parcelY * scale : '90vw',
-            }}
+          <SlimCard
+            bgColor="bg-cardbackground"
+            className="bg-parcel mb-[2vh] ml-[0vw] flex min-h-[5vh] w-[90vw] flex-col justify-center"
           >
             {/* //Parcel Title + icons */}
             <section className="flex flex-col">
@@ -257,7 +255,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 </div>
               ))
             )}
-          </div>
+          </SlimCard>
 
           {/* //BorderRight */}
           <div

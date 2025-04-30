@@ -11,7 +11,9 @@ import Cookies from 'js-cookie';
 import LocationPicker from '../UI/LocationPicker';
 import { useLanguage } from '../../app/contexts/LanguageProvider';
 import { useCreateNewGardenMutation } from '@/slice/fetch';
-import { GardenType } from '@/utils/types';
+import { Garden, GardenType } from '@/utils/types';
+import { useDispatch } from 'react-redux';
+import { setSelectedGarden } from '@/redux/garden/gardenSlice';
 
 const CreateGardenForm = () => {
   // Hooks
@@ -49,6 +51,9 @@ const CreateGardenForm = () => {
   // RTHK Query
   const [createNewGarden] = useCreateNewGardenMutation();
 
+  //Hooks
+  const dispatch = useDispatch();
+
   //Variables
   const rows = 5;
   const cols = 33;
@@ -79,7 +84,7 @@ const CreateGardenForm = () => {
     if (form) {
       const formData = new FormData(form);
 
-      const gardenData: GardenType = {
+      const gardenData: Garden = {
         authorId: id,
         name: formData.get('gardenName') as string,
         description: formData.get('gardenDescription') as string,
@@ -100,8 +105,9 @@ const CreateGardenForm = () => {
       } catch {
         console.log('Error creatng garden');
       }
+      dispatch(setSelectedGarden(gardenData));
 
-      router.push('/garden-manager');
+      router.push('/garden');
     } else {
       console.error('Form not found');
     }
@@ -203,14 +209,16 @@ const CreateGardenForm = () => {
               { value: 1, label: translations.semiPrivateGarden },
               { value: 2, label: translations.publicGarden },
             ]}
+            garden-manager
             value={selectedPrivacy}
             onChange={(e) => setSelectedPrivacy(Number(e.target.value))}
           />
 
           <div className="flex justify-center">
             <Button
+              type="button"
               className="bg-bgbutton relative m-5 px-6 py-2"
-              onClick={() => router.push('/garden-manager')}
+              onClick={() => router.push('/garden')}
             >
               {translations.back}
             </Button>
