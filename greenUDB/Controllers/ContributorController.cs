@@ -49,7 +49,7 @@ namespace GreenUApi.Controllers
 
         }
 
-        [HttpDelete()]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Contributor>> DeleteContributor(long id)
         {
 
@@ -64,7 +64,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = true, message = "Contribuor deleted !"});
         }
 
-        [HttpPatch()]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> PatchContributors(long id, ContributorDTO modification)
         {
             var contributor = await _db.Contributors
@@ -82,7 +82,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "The contributor is modified !", content = contributor}); 
         }
 
-        [HttpGet()]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Follower>> GetContributor(long id)
         {
 
