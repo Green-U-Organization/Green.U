@@ -4,7 +4,6 @@ using GreenUApi.Models;
 
 namespace GreenUApi.Controllers
 {
-
     public class ContributorDTO
     {
         public bool Admin { get; set; }
@@ -51,9 +50,40 @@ namespace GreenUApi.Controllers
 
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Contributor>> DeleteContributor(long id)
+        {
+
+            var contributorExist = await _db.Contributors
+                .FirstOrDefaultAsync(c => c.UserId == id);
+
+            if (contributorExist == null) return BadRequest(new { isEmpty = true, message = "We have an inccorect id" });
+
+            _db.Contributors.Remove(contributorExist);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = true, message = "Contribuor deleted !" });
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchContributors(long id, ContributorDTO modification)
+        {
+            var contributor = await _db.Contributors
+                .FindAsync(id);
+
+            if (contributor == null) return NotFound(new { isEmpty = true, message = "The id is incorrect" });
 
 
-        [HttpGet("user/{id}")]
+            contributor.Admin = modification.Admin;
+
+
+            _db.Update(contributor);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "The contributor is modified !", content = contributor });
+        }
+
+        [HttpGet("{id}")]
         public async Task<ActionResult<Follower>> GetContributor(long id)
         {
 
@@ -67,7 +97,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "The contributor", content = contributor });
         }
 
-        [HttpGet("garden/{id}")]
+        [HttpGet("/garden/{id}")]
         public async Task<IActionResult> GetContributorsGarden(long id)
         {
             var garden = await _db.Gardens.FindAsync(id);
@@ -95,8 +125,8 @@ namespace GreenUApi.Controllers
         }
 
 
-        [HttpGet("garden/user/{id}")]
-        public async Task<IActionResult> GetGardensByUser(long id)
+        [HttpGet("/user/{id}")]
+        public async Task<IActionResult> GetGardensByContributor(long id)
         {
             var user = await _db.Users.FindAsync(id);
 
@@ -123,38 +153,6 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "List of gardens where user contributes", content = gardens });
         }
 
-        [HttpPatch()]
-        public async Task<IActionResult> PatchGarden(long id, ContributorDTO modification)
-        {
-            var contributor = await _db.Contributors
-                .FindAsync(id);
-
-            if (contributor == null) return NotFound(new { isEmpty = true, message = "The id is incorrect" });
-
-
-            contributor.Admin = modification.Admin;
-
-
-            _db.Update(contributor);
-            await _db.SaveChangesAsync();
-
-            return Ok(new { isEmpty = false, message = "The contributor is modified !", content = contributor });
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Contributor>> DeleteContributor(long id)
-        {
-
-            var contributorExist = await _db.Contributors
-                .FirstOrDefaultAsync(c => c.UserId == id);
-
-            if (contributorExist == null) return BadRequest(new { isEmpty = true, message = "We have an inccorect id" });
-
-            _db.Contributors.Remove(contributorExist);
-            await _db.SaveChangesAsync();
-
-            return Ok(new { isEmpty = true, message = "Contribuor deleted !" });
-        }
 
     }
 }
