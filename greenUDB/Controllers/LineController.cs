@@ -53,9 +53,27 @@ namespace GreenUApi.Controllers
 
             if (line == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
 
-            if (modifiedLine.Length != null) line.Length = modifiedLine.Length;
+            if (modifiedLine.Length != null)
+            {
+
+            Log log = new Log
+            {
+                LineId = line.Id,
+                ParcelId = line.ParcelId,
+                PlantNurseryId = line.PLantNurseryId,
+                Action = $"Edit the length of line {line.Length} to {modifiedLine.Length}",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
+                line.Length = modifiedLine.Length;
+            }
 
             _db.Update(line);
+
+
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "This line is modified", content = line});
@@ -73,6 +91,16 @@ namespace GreenUApi.Controllers
             if (line.Length == null) return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
 
             _db.Add(line);
+
+            Log log = new Log {
+                ParcelId = line.ParcelId,
+                PlantNurseryId = line.PLantNurseryId,
+                Action = "Create a new line",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "The line is created !", content = line});

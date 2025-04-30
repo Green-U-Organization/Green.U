@@ -11,6 +11,8 @@ public partial class Line
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long? Id { get; set; }
 
+    public long? GardenId { get; set; }
+
     public long? ParcelId { get; set; }
 
     public long? PLantNurseryId { get; set; }

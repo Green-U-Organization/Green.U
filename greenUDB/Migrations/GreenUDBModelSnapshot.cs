@@ -235,6 +235,9 @@ namespace GreenUApi.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
 
+                    b.Property<long?>("GardenId")
+                        .HasColumnType("bigint");
+
                     b.Property<double?>("Length")
                         .HasColumnType("double");
 
