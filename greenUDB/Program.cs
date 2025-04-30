@@ -1,12 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using GreenUApi.Controllers;
 using GreenUApi.Models;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using static System.Net.WebRequestMethods;
 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
@@ -52,7 +50,14 @@ builder.Services.AddDbContext<GreenUDB>(options =>
 );
 
 // Use Cors with .env
-var allowedOrigins = new string[] { "http://localhost:3000", "http://192.168.0.71:3000", "http://greenu.83.228.193.186.sslip.io" };
+var allowedOriginsWithNull = new string?[] { 
+    Environment.GetEnvironmentVariable("ALLOWED_HOST1"),
+    Environment.GetEnvironmentVariable("ALLOWED_HOST2"),
+    Environment.GetEnvironmentVariable("ALLOWED_HOST3")
+};
+
+var allowedOrigins = allowedOriginsWithNull.Where(origin => origin != null).ToArray();
+
 Console.WriteLine("Allowed Origins:");
 foreach (var origin in allowedOrigins)
 {

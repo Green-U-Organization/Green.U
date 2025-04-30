@@ -1,7 +1,7 @@
 using GreenUApi.authentification;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using JwtController;
 
 public class LoginModel
 {
@@ -32,34 +32,16 @@ namespace GreenUApi.Controllers
             else return Unauthorized(jwt);
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        [HttpPost("verifyjwt")]
+        public IActionResult VerifyJwt([FromBody] string token)
         {
-            var userDbData = await _db.Users
-            .Where(u => u.Username == user.Username)
-            .Select(u => new User { Username = u.Username })
-            .ToArrayAsync();
+            bool isValid = JwtController.JwtController.VerifyJwtToken(token);
+            
+            if (!isValid) return Unauthorized();
 
-            if (userDbData.Length != 0)
-            {
-                return Conflict(new { message = "This username already exists" });
-            }
-
-
-            if (user.Password == null)
-            {
-                return BadRequest(new { message = "Password is missing" });
-            }
-
-            string[] hashSalt = Authentification.Hasher(user.Password, null);
-            user.Password = hashSalt[0];
-            user.Salt = hashSalt[1];
-
-            _db.Users.Add(user);
-            await _db.SaveChangesAsync();
-
-            return Ok(new { message = "User created !" });
+            return Ok(new { isEmpty = false, message = "token is valid !", token = token});
         }
+
     }
 
 }

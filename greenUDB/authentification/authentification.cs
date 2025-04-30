@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
-using Token;
+using JwtController;
 using GreenUApi.Models;
 
 namespace GreenUApi.authentification
@@ -54,7 +54,7 @@ namespace GreenUApi.authentification
 
             if (User.Password == hashedPassword)
             {
-                var JwtRes = Jwt.GenerateJwtToken(new User { Id = User.Id, Username = User.Username });
+                var JwtRes = JwtController.JwtController.GenerateJwtToken(new User { Id = User.Id, Username = User.Username });
 
                 return JwtRes;
             }
