@@ -29,6 +29,8 @@ public partial class Garden
 
     public string Description { get; set; } = null!;
 
+    public string? GardenColor { get; set; }
+
     public double Latitude { get; set; }
 
     public double Longitude { get; set; }
