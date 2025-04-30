@@ -28,7 +28,7 @@ public partial class Log
 
     public string? Comment { get; set; }
 
-    public string Status { get; set; } = null!;
+    public string Type { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
