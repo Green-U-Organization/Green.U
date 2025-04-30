@@ -66,7 +66,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPatch()]
-        public async Task<IActionResult> PatchGarden(long id, ContributorDTO modification)
+        public async Task<IActionResult> PatchContributors(long id, ContributorDTO modification)
         {
             var contributor = await _db.Contributors
                 .FindAsync(id);
@@ -83,7 +83,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "The contributor is modified !", content = contributor}); 
         }
 
-        [HttpGet("contributor")]
+        [HttpGet()]
         public async Task<ActionResult<Follower>> GetContributor(long id)
         {
 
@@ -97,7 +97,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "The contributor", content = contributor });
         }
 
-    [HttpGet("/contributors/garden/{id}")]
+    [HttpGet("/garden/{id}")]
     public async Task<IActionResult> GetContributorsGarden(long id)
     {
         var garden = await _db.Gardens.FindAsync(id);
@@ -125,8 +125,8 @@ namespace GreenUApi.Controllers
     }
 
     
-    [HttpGet("/contributors/user/{id}")]
-    public async Task<IActionResult> GetGardensByUser(long id)
+    [HttpGet("/user/{id}")]
+    public async Task<IActionResult> GetGardensByContributor(long id)
     {
         var user = await _db.Users.FindAsync(id);
 
