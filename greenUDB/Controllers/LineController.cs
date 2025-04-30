@@ -56,13 +56,14 @@ namespace GreenUApi.Controllers
             if (modifiedLine.Length != null)
             {
 
-            Log log = new Log
+            Log log = new()
             {
                 GardenId = line.GardenId,
                 LineId = line.Id,
                 ParcelId = line.ParcelId,
                 PlantNurseryId = line.PLantNurseryId,
-                Action = $"Edit the length of line {line.Length} to {modifiedLine.Length}",
+                Action = "Edit line",
+                Comment = $"Edit the length {line.Length} to {modifiedLine.Length}",
                 Type = "Automatic",
             };
 
@@ -95,7 +96,8 @@ namespace GreenUApi.Controllers
 
             _db.Add(line);
 
-            Log log = new Log {
+            Log log = new() 
+            {
                 GardenId = line.GardenId,
                 ParcelId = line.ParcelId,
                 PlantNurseryId = line.PLantNurseryId,
@@ -127,7 +129,7 @@ namespace GreenUApi.Controllers
                 crop.LineId = null;
             }
 
-            Log log = new Log
+            Log log = new()
             {
                 GardenId = line.GardenId,
                 LineId = line.Id,

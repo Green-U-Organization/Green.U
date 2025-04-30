@@ -49,8 +49,6 @@ public partial class Garden
 
     public virtual ICollection<Follower> Followers { get; set; } = new List<Follower>();
 
-    public virtual ICollection<Log> Logs { get; set; } = new List<Log>();
-
     public virtual ICollection<Parcel> Parcels { get; set; } = new List<Parcel>();
 
     public virtual ICollection<TagsInterest> TagsInterests { get; set; } = new List<TagsInterest>();

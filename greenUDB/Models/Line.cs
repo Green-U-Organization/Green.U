@@ -23,7 +23,5 @@ public partial class Line
 
     public virtual ICollection<Crop> Crops { get; set; } = new List<Crop>();
 
-    public virtual ICollection<Log> Logs { get; set; } = new List<Log>();
-
     public virtual Parcel? Parcel { get; set; }
 }

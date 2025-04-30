@@ -190,17 +190,6 @@ public partial class GreenUDB : DbContext
         modelBuilder.Entity<Log>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.HasIndex(e => e.AuthorId, "fk_Logs_Author_id");
-
-            entity.HasIndex(e => e.CropId, "fk_Logs_Crop_id");
-
-            entity.HasIndex(e => e.GardenId, "fk_Logs_Garden_id");
-
-            entity.HasIndex(e => e.LineId, "fk_Logs_Line_id");
-
-            entity.HasIndex(e => e.ParcelId, "fk_Logs_Parcel_id");
-
             entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("id");
