@@ -212,7 +212,7 @@ public partial class GreenUDB : DbContext
             entity.Property(e => e.GardenId).HasColumnName("Garden_id");
             entity.Property(e => e.LineId).HasColumnName("Line_id");
             entity.Property(e => e.ParcelId).HasColumnName("Parcel_id");
-            entity.Property(e => e.Status).HasMaxLength(50);
+            entity.Property(e => e.Type).HasMaxLength(50);
 
             entity.HasOne(d => d.Author).WithMany(p => p.Logs)
                 .HasForeignKey(d => d.AuthorId)

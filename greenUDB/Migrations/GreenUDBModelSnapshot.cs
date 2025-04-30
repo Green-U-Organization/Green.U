@@ -182,6 +182,9 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("GardenColor")
+                        .HasColumnType("longtext");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("double");
 
@@ -294,7 +297,7 @@ namespace GreenUApi.Migrations
                     b.Property<long?>("PlantNurseryId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
