@@ -1,11 +1,19 @@
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
-using JwtController;
 using GreenUApi.Models;
 
 namespace GreenUApi.authentification
 {
+
+    public class UserDTO
+    {
+        public bool? Error {  get; set; }
+        public string? Message { get; set; }
+        public long? Id { get; set; }
+        public string? Username { get; set; }
+    }
+
     public class Authentification
     {
         public static string[] Hasher(string password, byte[]? salty)
@@ -32,7 +40,7 @@ namespace GreenUApi.authentification
 
         }
 
-        public static async Task<JwtResponse<UserDTO>> Login(string Email, string password, GreenUDB db)
+        public static async Task<UserDTO> VerifyCredentials(string Email, string password, GreenUDB db)
         {
             var User = await db.Users
             .Where(u => u.Email == Email)
@@ -45,7 +53,7 @@ namespace GreenUApi.authentification
             })
             .FirstOrDefaultAsync();
 
-            if (User == null) return new JwtResponse<UserDTO> { isEmpty = true, message = "The Email is bad..." };
+            if (User == null) return new UserDTO { Error = true, Message = "Email is wrong"};
 
 
             string hashedPassword = "";
@@ -54,12 +62,10 @@ namespace GreenUApi.authentification
 
             if (User.Password == hashedPassword)
             {
-                var JwtRes = JwtController.JwtController.GenerateJwtToken(new User { Id = User.Id, Username = User.Username });
-
-                return JwtRes;
+                return new UserDTO { Id = User.Id, Username = User.Username };
             }
 
-            return new JwtResponse<UserDTO> { isEmpty = true, message = "The pass is wrong" };
+            return new UserDTO { Error = true, Message = "Pass is wrong" };
         }
 
     }

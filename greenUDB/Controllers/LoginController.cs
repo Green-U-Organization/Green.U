@@ -1,16 +1,19 @@
 using GreenUApi.authentification;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using JwtController;
-
-public class LoginModel
-{
-    public string Email { get; set; } = "";
-    public string Password { get; set; } = "";
-}
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace GreenUApi.Controllers
 {
+    public class LoginModel
+    {
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
     [ApiController]
     [Route("/")]
     public class AuthController : ControllerBase
@@ -23,23 +26,46 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel cred)
         {
-            var jwt = await Authentification.Login(model.Email, model.Password, _db);
             
-            if (!jwt.isEmpty) return Ok(jwt);
+            UserDTO userData = await Authentification.VerifyCredentials(cred.Email, cred.Password, _db);
 
-            else return Unauthorized(jwt);
+            if (userData.Error == null)
+            {
+                var token = GenerateJwtToken(cred.Email);
+                return Ok(new { isEmpty = false, message = "Token are created !", token = token, content = userData});
+            }
+            return Unauthorized();
         }
 
-        [HttpPost("verifyjwt")]
-        public IActionResult VerifyJwt([FromBody] string token)
+        private static string GenerateJwtToken(string email)
         {
-            bool isValid = JwtController.JwtController.VerifyJwtToken(token);
-            
-            if (!isValid) return Unauthorized();
+            var claims = new[]
+            {
+               new Claim(JwtRegisteredClaimNames.Sub, email),
+               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+           };
 
-            return Ok(new { isEmpty = false, message = "token is valid !", token = token});
+            string? secret = Environment.GetEnvironmentVariable("SECRET_JWT");
+            string? apiLink = Environment.GetEnvironmentVariable("ISSUER");
+            string? prodLink = Environment.GetEnvironmentVariable("AUDIENCE");  
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(apiLink) || string.IsNullOrEmpty(prodLink))
+            {
+                throw new InvalidOperationException("Environment variable 'SECRET' is not set.");
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+            issuer: apiLink,
+            audience: prodLink,
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(15),
+            signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
     }
