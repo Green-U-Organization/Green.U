@@ -15,6 +15,7 @@ export default function GardenerProfile() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
   const { translations } = useLanguage();
+  const [isEditMode, setIsEditMode] = useState(false);
 
   // Simuler les données d'XP, de badges et de likes
   const xp = 500; // XP actuel (NE PAS DEPASSER LE maxXp!!!)
@@ -205,7 +206,10 @@ export default function GardenerProfile() {
                 {translations.back}
               </Button>
               {/* ID DU USER A TRANSMETTRE POUR L'EDITION DU PROFILE */}
-              <Button onClick={() => router.push('/editProfile')}>
+              {/* <Button onClick={() => router.push('/editProfile')}>
+                {translations.edit}
+              </Button> */}
+              <Button onClick={() => setIsEditMode(true)}>
                 {translations.edit}
               </Button>
             </div>
