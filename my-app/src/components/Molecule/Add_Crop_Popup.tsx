@@ -91,7 +91,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   };
 
   return (
-    <Card className="flex w-[90vw] flex-col items-center justify-center">
+    <Card className="bg-cardbackground flex w-[90vw] flex-col items-center justify-center">
       <H2>Wich crop you want to add?</H2>
       <form
         className="flex flex-col items-center"
@@ -175,6 +175,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
 
         <div className="flex items-center justify-center">
           <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={() =>
               dispatch(
                 setAddCropPopup({
@@ -186,7 +187,9 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
           >
             Back
           </Button>
-          <Button type="submit">Plant</Button>
+          <Button className="bg-bgbutton relative m-5 px-6 py-2" type="submit">
+            Plant
+          </Button>
         </div>
       </form>
     </Card>

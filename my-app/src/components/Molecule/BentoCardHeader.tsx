@@ -10,12 +10,13 @@ const BentoCardHeader: FC<PropsWithChildren<BentoCardHeaderProps>> = ({
   containerName,
   className,
   children,
+  pageLink,
 }) => {
   //Variables
-  const pageLink = containerName.toLocaleLowerCase();
+  const pageLinkClass = pageLink;
 
   return (
-    <Link href={`/${pageLink}`}>
+    <Link href={`/${pageLinkClass}`}>
       <section
         className={`mx-2 mt-3 flex items-center justify-between ${className}`}
       >

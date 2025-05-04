@@ -3,7 +3,7 @@ import React, { FC, FormEvent, PropsWithChildren, useState } from 'react';
 
 const Button: FC<
   PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>>
-> = ({ children, disabled, ...props }) => {
+> = ({ children, className, disabled, ...props }) => {
   //Local State
   const [buttonPush, setButtonPush] = useState(false);
   const [inside, setInside] = useState(false);
@@ -33,7 +33,7 @@ const Button: FC<
 
   return (
     <button
-      className={`bg-button relative m-5 px-6 py-2 text-2xl select-none ${inside ? 'bg-bgbutton' : 'bg-cardbackground'} cursor-pointer disabled:cursor-not-allowed disabled:opacity-50`}
+      className={`cursor-pointer px-3 py-3 text-2xl select-none disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       onMouseDown={handleDown}
       onMouseUp={handleUp}
       onMouseLeave={handleLeave}

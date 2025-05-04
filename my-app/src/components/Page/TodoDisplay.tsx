@@ -73,13 +73,18 @@ const TodoDisplay = () => {
   };
 
   return (
-    <Card className="max-w-screen">
+    <Card className="bg-cardbackground max-w-screen">
       <section
         style={{ display: edit ? 'none' : 'block' }}
         className="bg-cardbackground flex items-center justify-center font-(family-name:--font-jersey) text-lg"
       >
         <div className="flex items-center justify-center">
-          <Button onClick={addTask}>Add task</Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={addTask}
+          >
+            Add task
+          </Button>
 
           <div className="mr-5 flex">
             <p>sort by :</p>

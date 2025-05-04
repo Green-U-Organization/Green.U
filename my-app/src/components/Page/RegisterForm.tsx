@@ -464,7 +464,7 @@ const RegisterForm = () => {
   //#endregion
 
   return (
-    <Card className={'h-full max-w-screen px-8 pt-5'}>
+    <Card className={'bg-cardbackground h-full max-w-screen px-8 pt-5'}>
       <h1 className="mb-5 text-4xl">{translations.signup}: </h1>
 
       <form
@@ -632,7 +632,12 @@ const RegisterForm = () => {
           setIsValidPostalCode={setIsValidPostalCode}
         />
         <div className="flex justify-center pb-5">
-          <Button onClick={handleNextStep}>{translations.next}</Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={handleNextStep}
+          >
+            {translations.next}
+          </Button>
         </div>
       </form>
 
@@ -713,8 +718,17 @@ const RegisterForm = () => {
           <p className="text-txterror">{translations.errorNotCheckedToU}</p>
         )}
         <div className="flex justify-center pb-5">
-          <Button onClick={handlePrevStep}>{translations.previous}</Button>
-          <Button onClick={handleSubmit} disabled={isSubmitting}>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={handlePrevStep}
+          >
+            {translations.previous}
+          </Button>
+          <Button
+            className="relative bg-bgbutton m-5 px-6 py-2"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
             {translations.sign}
           </Button>
         </div>

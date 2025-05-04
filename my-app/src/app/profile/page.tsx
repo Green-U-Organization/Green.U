@@ -64,7 +64,7 @@ export default function GardenerProfile() {
           /> */}
         </>
       ) : (
-        <Card className="flex max-w-5xl flex-col p-5">
+        <Card className="bg-cardbackground flex max-w-5xl flex-col p-5">
           <div id="profilePage">
             {/* Image du profil */}
             <div className="relative flex items-center space-x-4">
@@ -202,7 +202,10 @@ export default function GardenerProfile() {
 
             <div className="mt-auto flex justify-center p-2">
               {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
-              <Button onClick={() => router.push('/login')}>
+              <Button
+                className="bg-bgbutton relative m-5 px-6 py-2"
+                onClick={() => router.push('/login')}
+              >
                 {translations.back}
               </Button>
               {/* ID DU USER A TRANSMETTRE POUR L'EDITION DU PROFILE */}
