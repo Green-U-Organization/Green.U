@@ -28,6 +28,8 @@
   "gender": "Gender:",
   "email": "Email",
   "postalcode": "Postal Code:",
+  "bio": "Your biography:",
+  "giveaBio": "Add a biography",
   "yourinterests": "Your interests",
   "addahashtag": "Add a hashtag",
   "selectoption": "Select an option",
