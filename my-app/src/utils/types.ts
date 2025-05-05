@@ -16,6 +16,7 @@ export type CardProps = {
   className?: string;
   variant?: string;
   bgColor?: string;
+  ref?: React.Ref<HTMLDivElement>;
 };
 
 export type CheckboxProps = {

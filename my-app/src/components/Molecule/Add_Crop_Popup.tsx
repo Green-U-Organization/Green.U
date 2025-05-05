@@ -33,9 +33,6 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   //Hooks
   const dispatch = useDispatch();
 
-  //Selectors
-  // const display = useSelector((state: RootState) => state.display.addCropPopup);
-
   //RTK Query
   const [createCropToLine] = useCreateCropToLineMutation();
 
@@ -91,7 +88,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   };
 
   return (
-    <Card className="bg-cardbackground flex w-[90vw] flex-col items-center justify-center">
+    <Card className="bg-cardbackground flex w-[80vw] flex-col items-center justify-center">
       <H2>Wich crop you want to add?</H2>
       <form
         className="flex flex-col items-center"

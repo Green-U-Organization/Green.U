@@ -3,7 +3,6 @@ import React, { FC, useEffect, useState } from 'react';
 import Parcel from './Parcel';
 import styles from '../../app/Assets.module.css';
 import { GardenProps, type Garden } from '@/utils/types';
-import MenuSandwich from '../Molecule/MenuSandwich';
 import Submenu from '../Molecule/Submenu';
 import NewParcelForm from '../Molecule/Add_Parcel_Popup';
 import { useSelector, useDispatch } from 'react-redux';
@@ -105,39 +104,6 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
       handleClick: handleAddParcel,
       displayCondition: true,
       form: <div>Todo Form</div>,
-    },
-  ];
-
-  const iconList = [
-    {
-      src: '/image/icons/add.png',
-      alt: 'Add Parcel',
-      handleClick: handleAdd,
-      submenu: (
-        <Submenu displayCondition={addSubmenu} iconList={addSubmenuIcon} />
-      ),
-    },
-    {
-      src: '/image/icons/edit.png',
-      alt: 'Edit Garden',
-      handleClick: handleEditGarden,
-    },
-    {
-      src: !graphicMode ? '/image/icons/fence.png' : '/image/icons/list.png',
-      alt: 'switch Garden display mode',
-      handleClick: handleDisplayMode,
-    },
-    {
-      src: '/image/icons/fullscreen.png',
-      alt: 'switch in fullscreen mode',
-      handleClick: handleFullscreenSwitch,
-    },
-    {
-      src: gardenLock
-        ? '/image/icons/lockClose.png'
-        : '/image/icons/lockOpen.png',
-      alt: 'lock or unlock garden edition',
-      handleClick: () => setGardenLock((prev) => !prev),
     },
   ];
 

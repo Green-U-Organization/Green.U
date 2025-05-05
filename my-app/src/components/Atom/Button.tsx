@@ -6,7 +6,6 @@ const Button: FC<
 > = ({ children, className, disabled, ...props }) => {
   //Local State
   const [buttonPush, setButtonPush] = useState(false);
-  const [inside, setInside] = useState(false);
 
   //Handlers
   const handleDown = () => {
@@ -22,12 +21,10 @@ const Button: FC<
 
   const handleEnter = () => {
     if (disabled) return;
-    setInside(true);
   };
 
   const handleLeave = () => {
     if (disabled) return;
-    setInside(false);
     setButtonPush(false);
   };
 

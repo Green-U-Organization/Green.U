@@ -1,4 +1,3 @@
-import SlimCard from '@/components/Atom/SlimCard';
 import GardenSelector from '@/components/Page/GardenSelector';
 import React from 'react';
 

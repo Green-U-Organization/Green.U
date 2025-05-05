@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState, useDispatch } from '@/redux/store';
 import { MenuSandwichProps } from '@/utils/types';
@@ -15,18 +15,17 @@ import {
 import Add_Parcel_Popup from './Add_Parcel_Popup';
 import Add_Nursery_Popup from './Add_Nursery_Popup';
 import Add_Greenhouse_Popup from './Add_Greenhouse_Popup';
+import SlimCard from '../Atom/SlimCard';
 
-const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
+const MenuSandwich: React.FC<MenuSandwichProps> = () => {
   //Local State
   const [clickMenuDisplay, setClickMenuDisplay] = useState<boolean>(false);
 
   //Hooks
   const dispatch = useDispatch();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   //Selectors
-  const graphicMode = useSelector(
-    (state: RootState) => state.garden.graphicMode
-  );
   const addParcelDisplay = useSelector(
     (state: RootState) => state.display.addParcelPopup
   );
@@ -42,8 +41,24 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
     setClickMenuDisplay((prev) => !prev);
   };
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setClickMenuDisplay(false);
+      }
+    }
+
+    if (clickMenuDisplay) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [clickMenuDisplay]);
+
   return (
-    <section className="fixed right-[20px] bottom-[20px] z-50">
+    <section ref={menuRef} className="fixed right-[20px] bottom-[20px] z-50">
       <Button
         className="bg-bgbutton h-[60px] w-[60px]"
         onClick={handleClickMenu}
@@ -96,9 +111,14 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
                     })
                   ));
             }}
-            className="bg-parcel my-5 rounded-full border-1"
+            className="bg-parcel my-5"
           >
-            <p className="h-[40px] w-[40px] p-1 text-center text-2xl">P</p>
+            <SlimCard
+              bgColor="bg-bgbutton"
+              className="h-[40px] w-[40px] p-1 text-center text-2xl"
+            >
+              P
+            </SlimCard>
           </div>
 
           <div
@@ -129,9 +149,14 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
                     })
                   ));
             }}
-            className="bg-nursery my-5 rounded-full border-1"
+            className="bg-nursery my-5"
           >
-            <p className="h-[40px] w-[40px] p-1 text-center text-2xl">N</p>
+            <SlimCard
+              bgColor="bg-bgbutton"
+              className="h-[40px] w-[40px] p-1 text-center text-2xl"
+            >
+              N
+            </SlimCard>
           </div>
           <div
             onClick={() => {
@@ -161,9 +186,14 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
                     })
                   ));
             }}
-            className="bg-greenhouse my-5 rounded-full border-1"
+            className="bg-greenhouse my-5"
           >
-            <p className="h-[40px] w-[40px] p-1 text-center text-2xl">G</p>
+            <SlimCard
+              bgColor="bg-bgbutton"
+              className="h-[40px] w-[40px] p-1 text-center text-2xl"
+            >
+              G
+            </SlimCard>
           </div>
 
           <Add_Parcel_Popup display={addParcelDisplay}></Add_Parcel_Popup>
@@ -176,54 +206,6 @@ const MenuSandwich: React.FC<MenuSandwichProps> = ({ iconList, children }) => {
         </Card>
       </div>
     </section>
-
-    // OLD
-    // <section
-    //   className="_MENU_SANDWICH_ relative flex flex-row-reverse items-center rounded-b-xl border-2 bg-amber-100"
-    //   style={{
-    //     height: '10vw',
-    //     width: clickMenuDisplay ? '100vw' : '10vw',
-    //     bottom: '5%',
-    //     right: '5%',
-    //     zIndex: '100',
-    //     position: 'fixed',
-    //   }}
-    // >
-    //   <div className="absolute -top-45 left-25">{children}</div>
-    //   <div
-    //     className="bg-cardbackground absolute -top-[49.9vw] -right-0.5 flex h-[50vW] w-[10vw] flex-col items-center justify-between rounded-t-xl border-2 border-b-0"
-    //     style={{
-    //       display: graphicMode ? 'flex' : 'none',
-    //     }}
-    //   >
-    //     <ZoomSlider className="z-50 -rotate-90" scale={0} />
-    //   </div>
-    //   <img
-    //     className="h-[9vw] w-[9vw] rounded-md p-1"
-    //     src="/image/icons/display.png"
-    //     alt="Open Menu"
-    //     onClick={() => handleClickMenu()}
-    //   />
-    //   <div
-    //     className="w-[80%] flex-row justify-between px-4"
-    //     style={{ display: clickMenuDisplay ? 'flex' : 'none' }}
-    //   >
-    //     {iconList.map((icon, index) => (
-    //       <div className="relative flex justify-center" key={index}>
-    //         <Icon
-    //           icon={{
-    //             src: icon.src,
-    //             alt: icon.alt,
-    //             handleClick: () => handleIconClick(icon),
-    //           }}
-    //         />
-    //         {activeSubmenu === icon.alt && (
-    //           <div className="absolute -top-[50vw] left-0">{icon.submenu}</div>
-    //         )}
-    //       </div>
-    //     ))}
-    //   </div>
-    // </section>
   );
 };
 

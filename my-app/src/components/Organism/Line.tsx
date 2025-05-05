@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import React, { FC, useState } from 'react'; // <DraggableCore>
+import React, { FC, useEffect, useRef, useState } from 'react'; // <DraggableCore>
 import { LineProps } from '@/utils/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -35,6 +35,8 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
 
   //Hooks
   const dispatch = useDispatch();
+  const cropPopupRef = useRef<HTMLDivElement>(null);
+  const existantPopupRef = useRef<HTMLDivElement>(null);
 
   //Selectors
   const graphicMode = useSelector(
@@ -155,6 +157,55 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
     SetDisplayInfo(false);
   };
 
+  //Modal Closing
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        cropPopupRef.current &&
+        !cropPopupRef.current.contains(event.target as Node)
+      ) {
+        dispatch(
+          setAddCropPopup({
+            state: false,
+            id: Number(line.id),
+          })
+        );
+      }
+    }
+
+    if (addCropPopupDisplay) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [addCropPopupDisplay, dispatch, line.id]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        existantPopupRef.current &&
+        !existantPopupRef.current.contains(event.target as Node)
+      ) {
+        dispatch(
+          setExistantCropPopup({
+            state: false,
+            id: Number(line.id),
+          })
+        );
+      }
+    }
+
+    if (ExistantCropPopupDisplay) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [ExistantCropPopupDisplay, dispatch, line.id]);
+
   return (
     <>
       <div
@@ -266,6 +317,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
       </div>
 
       <div
+        ref={cropPopupRef}
         style={{
           display:
             id === line.id && addCropPopupDisplay && !cropIsPresent
@@ -277,6 +329,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
       </div>
 
       <div
+        ref={existantPopupRef}
         style={{
           display:
             id === line.id && ExistantCropPopupDisplay && cropIsPresent

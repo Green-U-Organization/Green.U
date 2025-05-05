@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { RootState, useDispatch, useSelector } from '@/redux/store';
-import styles from '../../app/Assets.module.css';
 import React, { FC, useState } from 'react';
 import Image from 'next/image';
 import H2 from '../Atom/H2';
@@ -14,7 +13,7 @@ import AddCropNurseryPopup from '../Molecule/Add_CropNursery_Popup';
 import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';
 import SlimCard from '../Atom/SlimCard';
 
-const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
+const Nursery: FC<NurceryProps> = ({ nursery }) => {
   // Local State
   const [displayNurseryInfo, setDisplayNurseryInfo] = useState<boolean>(false);
   const [displayDeletingNurseryPopup, setDisplayDeletingNurseryPopup] =
@@ -36,9 +35,6 @@ const Nursery: FC<NurceryProps> = ({ nursery, scale }) => {
   const dispatch = useDispatch();
 
   // Selectors
-  const graphicMode = useSelector(
-    (state: RootState) => state.garden.graphicMode
-  );
   const addCropPopupDisplay = useSelector(
     (state: RootState) => state.display.addCropNurseryPopup
   );

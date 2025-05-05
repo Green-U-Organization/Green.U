@@ -1,9 +1,7 @@
 'use client';
 import Link from 'next/link';
-import Image from 'next/image';
 import React, { FC, PropsWithChildren } from 'react';
 import { BentoCardHeaderProps } from '@/utils/types';
-import H1 from '../Atom/H1';
 import H2 from '../Atom/H2';
 
 const BentoCardHeader: FC<PropsWithChildren<BentoCardHeaderProps>> = ({

@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Jersey_15 } from 'next/font/google';
 import './globals.css';
 import ThemeApp from '@/components/ThemeApp';
-import Navbar from '@/components/UI/Navbar';
 import { LanguageProvider } from '@/app/contexts/LanguageProvider';
 import { StoreProvider } from '@/redux/StoreProvider';
 

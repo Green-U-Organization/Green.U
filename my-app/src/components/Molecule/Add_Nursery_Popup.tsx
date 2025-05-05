@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
