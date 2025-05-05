@@ -8,7 +8,11 @@ const SlimCard: React.FC<CardProps> = ({
   bgColor,
 }) => {
   let bgColorClass = 'bg-white';
-  bgColor ? (bgColorClass = bgColor) : (bgColorClass = 'bg-white');
+  if (bgColor) {
+    bgColorClass = bgColor;
+  } else {
+    bgColorClass = 'bg-white';
+  }
 
   return (
     <section

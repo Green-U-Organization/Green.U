@@ -3,35 +3,26 @@ import React, { FC, useEffect, useState } from 'react';
 import Parcel from './Parcel';
 import styles from '../../app/Assets.module.css';
 import { GardenProps, type Garden } from '@/utils/types';
-import Submenu from '../Molecule/Submenu';
-import NewParcelForm from '../Molecule/Add_Parcel_Popup';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { setFullscreen, setGraphicMode } from '../../redux/garden/gardenSlice';
-import NewGreenhouseForm from '../Molecule/Add_Greenhouse_Popup';
 import {
   useGetAllParcelByGardenIdQuery,
   useGetNurseryByGardenIdQuery,
 } from '@/slice/fetch';
 import H1 from '../Atom/H1';
-import AddNurseryPopup from '../Molecule/Add_Nursery_Popup';
 import Nursery from './Nursery';
 import Loading from '../Atom/Loading';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   //Local State
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
-  const [gardenLock, setGardenLock] = useState<boolean>(true);
-  const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
 
   // Hooks
-  const dispatch = useDispatch();
 
   //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
-  const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
 
   //RTK Query
   const {
@@ -40,7 +31,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     isError: parcelsIsError,
     refetch: refetchParcels,
   } = useGetAllParcelByGardenIdQuery({
-    gardenId: garden.id,
+    gardenId: garden.id ?? 0,
   });
   const {
     data: nurseries,
@@ -48,64 +39,13 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
     isError: nurseryIsError,
     refetch: refetchNurseries,
   } = useGetNurseryByGardenIdQuery({
-    gardenId: garden.id,
+    gardenId: garden.id ?? 0,
   });
 
   //Debug
   console.log('parcels : ', parcels);
 
-  // Handlers
-  const handleAdd = () => {
-    setAddSubmenu((prev) => !prev);
-  };
-
-  //TODO:
-  const handleEditGarden = () => {
-    console.log('Edit Garden');
-  };
-  //TODO:
-  const handleDisplayMode = () => {
-    dispatch(setGraphicMode());
-  };
-  const handleAddParcel = () => {
-    console.log('first');
-  };
-
-  const handleFullscreenSwitch = () => {
-    dispatch(setFullscreen(!fullscreen));
-  };
-
   //Variables
-  const addSubmenuIcon = [
-    {
-      src: '/image/icons/parcel.png',
-      alt: 'Add parcel',
-      handleClick: handleAddParcel,
-      displayCondition: true,
-      form: <NewParcelForm displayCondition={true} />,
-    },
-    {
-      src: '/image/icons/greenhouse.png',
-      alt: 'Add greenhouse',
-      handleClick: handleAddParcel,
-      displayCondition: true,
-      form: <NewGreenhouseForm displayCondition={true} />,
-    },
-    {
-      src: '/image/icons/nursery.png',
-      alt: 'Add nuursery',
-      handleClick: handleAddParcel,
-      displayCondition: true,
-      form: <AddNurseryPopup displayCondition={true} />,
-    },
-    {
-      src: '/image/icons/todo.png',
-      alt: 'Add Todo',
-      handleClick: handleAddParcel,
-      displayCondition: true,
-      form: <div>Todo Form</div>,
-    },
-  ];
 
   // Calcul des dimensions du jardin
   const gardenX = currentGarden?.length;
@@ -115,8 +55,6 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   useEffect(() => {
     setCurrentGarden(garden);
   }, [garden]);
-
-  useEffect(() => {}, [addSubmenu]);
 
   useEffect(() => {
     refetchNurseries();

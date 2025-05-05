@@ -7,7 +7,7 @@ import TextInput from '@/components/Atom/TextInput';
 import Button from '@/components/Atom/Button';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import { useRouter } from 'next/navigation';
-import { setCredentials, logout } from '../../slice/authSlice';
+import { setCredentials } from '../../slice/authSlice';
 import { useLoginUserMutation } from '@/slice/fetch';
 import { useDispatch } from '@/redux/store';
 import { setAuthCookies } from '@/utils/authCookies';

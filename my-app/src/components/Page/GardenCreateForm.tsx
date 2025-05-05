@@ -11,7 +11,7 @@ import Cookies from 'js-cookie';
 import LocationPicker from '../UI/LocationPicker';
 import { useLanguage } from '../../app/contexts/LanguageProvider';
 import { useCreateNewGardenMutation } from '@/slice/fetch';
-import { Garden, GardenType } from '@/utils/types';
+import { Garden } from '@/utils/types';
 import { useDispatch } from 'react-redux';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
 
@@ -44,7 +44,6 @@ const CreateGardenForm = () => {
   //USER info
   const userData = Cookies.get('user_data');
   const userCookie = userData ? JSON.parse(userData) : null;
-  const username = userCookie?.username;
   const id = Number(userCookie?.id);
   console.log('id : ', typeof id, id);
 

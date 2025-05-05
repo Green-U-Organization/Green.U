@@ -41,6 +41,96 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
     setClickMenuDisplay((prev) => !prev);
   };
 
+  const handleNurseryClick = () => {
+    if (addGreenhouseDisplay) {
+      dispatch(
+        setAddGreenhousePopup({
+          state: false,
+          id: 0,
+        })
+      );
+    } else {
+      dispatch(
+        setAddGreenhousePopup({
+          state: true,
+          id: 0,
+        })
+      );
+      dispatch(
+        setAddNurseryPopup({
+          state: false,
+          id: 0,
+        })
+      );
+      dispatch(
+        setAddParcelPopup({
+          state: false,
+          id: 0,
+        })
+      );
+    }
+  };
+
+  const handleParcelClick = () => {
+    if (addParcelDisplay) {
+      dispatch(
+        setAddParcelPopup({
+          state: false,
+          id: 0,
+        })
+      );
+    } else {
+      dispatch(
+        setAddGreenhousePopup({
+          state: false,
+          id: 0,
+        })
+      );
+      dispatch(
+        setAddNurseryPopup({
+          state: false,
+          id: 0,
+        })
+      );
+      dispatch(
+        setAddParcelPopup({
+          state: true,
+          id: 0,
+        })
+      );
+    }
+  };
+
+  const handleGreenhouseClick = () => {
+    if (addNurseryDisplay) {
+      dispatch(
+        setAddNurseryPopup({
+          state: false,
+          id: 0,
+        })
+      );
+    } else {
+      dispatch(
+        setAddGreenhousePopup({
+          state: false,
+          id: 0,
+        })
+      );
+      dispatch(
+        setAddNurseryPopup({
+          state: true,
+          id: 0,
+        })
+      );
+      dispatch(
+        setAddParcelPopup({
+          state: false,
+          id: 0,
+        })
+      );
+    }
+  };
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -83,36 +173,7 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
           className="bg-bgbutton absolute top-0 right-0 flex h-[250px] w-[60px] flex-col items-center justify-between"
           variant="bottom"
         >
-          <div
-            onClick={() => {
-              addParcelDisplay
-                ? dispatch(
-                    setAddParcelPopup({
-                      state: false,
-                      id: 0,
-                    })
-                  )
-                : (dispatch(
-                    setAddGreenhousePopup({
-                      state: false,
-                      id: 0,
-                    })
-                  ),
-                  dispatch(
-                    setAddNurseryPopup({
-                      state: false,
-                      id: 0,
-                    })
-                  ),
-                  dispatch(
-                    setAddParcelPopup({
-                      state: true,
-                      id: 0,
-                    })
-                  ));
-            }}
-            className="bg-parcel my-5"
-          >
+          <div onClick={handleParcelClick} className="bg-parcel my-5">
             <SlimCard
               bgColor="bg-bgbutton"
               className="h-[40px] w-[40px] p-1 text-center text-2xl"
@@ -121,36 +182,7 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
             </SlimCard>
           </div>
 
-          <div
-            onClick={() => {
-              addNurseryDisplay
-                ? dispatch(
-                    setAddNurseryPopup({
-                      state: false,
-                      id: 0,
-                    })
-                  )
-                : (dispatch(
-                    setAddGreenhousePopup({
-                      state: false,
-                      id: 0,
-                    })
-                  ),
-                  dispatch(
-                    setAddNurseryPopup({
-                      state: true,
-                      id: 0,
-                    })
-                  ),
-                  dispatch(
-                    setAddParcelPopup({
-                      state: false,
-                      id: 0,
-                    })
-                  ));
-            }}
-            className="bg-nursery my-5"
-          >
+          <div onClick={handleGreenhouseClick} className="bg-nursery my-5">
             <SlimCard
               bgColor="bg-bgbutton"
               className="h-[40px] w-[40px] p-1 text-center text-2xl"
@@ -158,36 +190,7 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
               N
             </SlimCard>
           </div>
-          <div
-            onClick={() => {
-              addGreenhouseDisplay
-                ? dispatch(
-                    setAddGreenhousePopup({
-                      state: false,
-                      id: 0,
-                    })
-                  )
-                : (dispatch(
-                    setAddGreenhousePopup({
-                      state: true,
-                      id: 0,
-                    })
-                  ),
-                  dispatch(
-                    setAddNurseryPopup({
-                      state: false,
-                      id: 0,
-                    })
-                  ),
-                  dispatch(
-                    setAddParcelPopup({
-                      state: false,
-                      id: 0,
-                    })
-                  ));
-            }}
-            className="bg-greenhouse my-5"
-          >
+          <div onClick={handleNurseryClick} className="bg-greenhouse my-5">
             <SlimCard
               bgColor="bg-bgbutton"
               className="h-[40px] w-[40px] p-1 text-center text-2xl"

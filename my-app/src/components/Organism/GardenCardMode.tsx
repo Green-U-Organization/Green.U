@@ -20,7 +20,9 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
   const [gardenLock, setGardenLock] = useState<boolean>(true);
   const [addSubmenu, setAddSubmenu] = useState<boolean>(false);
-  const { parcels, loading, error, isEmpty } = useParcelList(currentGarden.id);
+  const { parcels, loading, error, isEmpty } = useParcelList(
+    currentGarden.id ?? 0
+  );
 
   // Selectors
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
@@ -69,14 +71,14 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
       alt: 'Add parcel',
       handleClick: handleAddParcel,
       displayCondition: true,
-      form: <NewParcelForm displayCondition={true} />,
+      form: <NewParcelForm display={true} />,
     },
     {
       src: '/image/icons/greenhouse.png',
       alt: 'Add greenhouse',
       handleClick: handleAddParcel,
       displayCondition: true,
-      form: <NewGreenhouseForm displayCondition={true} />,
+      form: <NewGreenhouseForm display={true} />,
     },
     {
       src: '/image/icons/nursery.png',
@@ -144,7 +146,7 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   return (
     <section className="mb-10 ml-10 flex flex-col">
       <MenuSandwich iconList={iconList}>
-        <NewParcelForm displayCondition={false}></NewParcelForm>
+        <NewParcelForm display={false}></NewParcelForm>
       </MenuSandwich>
 
       <section

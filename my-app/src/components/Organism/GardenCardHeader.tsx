@@ -1,6 +1,5 @@
 'use client';
 import React, { FC } from 'react';
-import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { GardenCardHeaderProps } from '@/utils/types';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';

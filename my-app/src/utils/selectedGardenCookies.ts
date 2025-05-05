@@ -15,9 +15,9 @@ export const setSelectedGardenCookies = (garden: selectedGarden) => {
 };
 
 export const getSelectedGardenCookies = () => {
-  Cookies.get('selected_garden')
-    ? JSON.parse(Cookies.get('selected_garden')!)
-    : null;
+  if (Cookies.get('selected_garden')) {
+    JSON.parse(Cookies.get('selected_garden')!);
+  }
 };
 
 export const clearSelectedGardenCookies = () => {

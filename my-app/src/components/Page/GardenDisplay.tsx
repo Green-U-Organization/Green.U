@@ -9,7 +9,6 @@ import H1 from '../Atom/H1';
 import H2 from '../Atom/H2';
 import Cookies from 'js-cookie';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
-import Add_Parcel_Popup from '../Molecule/Add_Parcel_Popup';
 
 // import Draggable from 'react-draggable';
 
@@ -20,9 +19,6 @@ const GardenDisplay = () => {
   );
   const scale = useSelector((state: RootState) => state.garden.scale);
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
-  const AddParcelDisplay = useSelector(
-    (state: RootState) => state.display.addParcelPopup
-  );
   //Cookies
   const garden = Cookies.get('selected_garden');
 

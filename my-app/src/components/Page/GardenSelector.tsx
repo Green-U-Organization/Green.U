@@ -1,5 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
-import { RootState, useDispatch, useSelector } from '@/redux/store';
+import { useDispatch } from '@/redux/store';
 import { useGetAllGardenByUserIdQuery } from '@/slice/fetch';
 import Cookies from 'js-cookie';
 import React from 'react';
@@ -24,13 +25,9 @@ const GardenSelector = () => {
   //USER info
   const userData = Cookies.get('user_data');
   const userCookie = userData ? JSON.parse(userData) : null;
-  const username = userCookie?.username;
   const id = Number(userCookie?.id);
 
   //Selectors
-  const selectedGarden = useSelector(
-    (state: RootState) => state.garden.selectedGarden
-  );
 
   //RTK Query
   const {
@@ -40,8 +37,6 @@ const GardenSelector = () => {
   } = useGetAllGardenByUserIdQuery({
     userId: id,
   }); // get de donnés des données
-
-  const handleSelectGarden = () => {};
 
   if (gardensIsLoading) {
     return (
