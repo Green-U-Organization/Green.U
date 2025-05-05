@@ -4,7 +4,7 @@ type displayState = {
   id: number;
   addCropNurseryPopup: boolean;
   addCropPopup: boolean;
-  addCreenhousePopup: boolean;
+  addGreenhousePopup: boolean;
   addNurseryPopup: boolean;
   addParcelPopup: boolean;
   existantCropPopup: boolean;
@@ -22,7 +22,7 @@ const initialState: displayState = {
   id: 0,
   addCropNurseryPopup: false,
   addCropPopup: false,
-  addCreenhousePopup: false,
+  addGreenhousePopup: false,
   addNurseryPopup: false,
   addParcelPopup: false,
   existantCropPopup: false,
@@ -44,7 +44,7 @@ const displaySlice = createSlice({
       state.id = action.payload.id;
     },
     setAddGreenhousePopup: (state, action: PayloadAction<payloadType>) => {
-      state.addCreenhousePopup = action.payload.state;
+      state.addGreenhousePopup = action.payload.state;
       state.id = action.payload.id;
     },
     setAddNurseryPopup: (state, action: PayloadAction<payloadType>) => {

@@ -11,12 +11,13 @@ const ExistentCropPopup: React.FC<ExistentCropPopupProps> = ({ lineId }) => {
   const dispatch = useDispatch();
 
   return (
-    <Card className="flex w-[70vw] flex-col justify-center p-[1vw]">
+    <Card className="bg-cardbackground flex w-[80vw] flex-col justify-center p-[1vw]">
       <H2>
         You already have crops here! Harvest them before planting something
         else.
       </H2>
       <Button
+        className="bg-bgbutton relative m-5 px-6 py-2"
         onClick={() =>
           dispatch(
             setExistantCropPopup({

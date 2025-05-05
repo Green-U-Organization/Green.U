@@ -28,6 +28,8 @@
   "gender": "Genre:",
   "email": "E-mail",
   "postalcode": "Code Postal:",
+  "bio": "Votre biographie:",
+  "giveaBio": "Ajouter une biographie",
   "yourinterests": "Vos centres d'intérêt",
   "addahashtag": "Ajouter un hashtag",
   "selectoption": "Sélectionner une option",

@@ -105,7 +105,7 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
         display: display ? 'flex' : 'none',
       }}
     >
-      <Card className="flex w-[90vw] flex-col justify-center">
+      <Card className="bg-cardbackground flex w-[80vw] flex-col justify-center">
         <form onSubmit={handleSubmit} className="m-[3vw]">
           <TextInput
             type="text"
@@ -185,6 +185,7 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
 
           <div className="flex justify-center">
             <Button
+              className="bg-bgbutton relative m-5 px-6 py-2"
               onClick={() =>
                 dispatch(
                   setAddCropNurseryPopup({
@@ -196,7 +197,12 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
             >
               Back
             </Button>
-            <Button type="submit">Crop</Button>
+            <Button
+              className="bg-bgbutton relative m-5 px-6 py-2"
+              type="submit"
+            >
+              Crop
+            </Button>
           </div>
         </form>
       </Card>

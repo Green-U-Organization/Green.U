@@ -22,7 +22,6 @@ const Navbar: React.FC = () => {
     setIsOpen(false);
   };
 
-  console.log('access token', Cookies.get('access_token'));
   return (
     <nav className="fixed top-0 left-0 z-100 w-full bg-gray-800 p-4 text-white shadow-md">
       <div className="container mx-auto flex items-center justify-between">

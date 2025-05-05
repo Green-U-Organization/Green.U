@@ -2,6 +2,7 @@ export type BentoCardHeaderProps = {
   containerName: string;
   className?: string;
   children?: React.ReactNode;
+  pageLink: string;
 };
 
 // export type ButtonProps =
@@ -13,6 +14,9 @@ export type BentoCardHeaderProps = {
 export type CardProps = {
   children: React.ReactNode;
   className?: string;
+  variant?: string;
+  bgColor?: string;
+  ref?: React.Ref<HTMLDivElement>;
 };
 
 export type CheckboxProps = {
@@ -39,7 +43,7 @@ export type GardenProps = {
 };
 
 export type Garden = {
-  id: number;
+  id?: number;
   authorId: number;
   name: string;
   description: string;
@@ -49,6 +53,7 @@ export type Garden = {
   width: number;
   privacy: number;
   type: number;
+  hashtags: string[];
 };
 
 export type Parcel = {

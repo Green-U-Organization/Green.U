@@ -13,6 +13,11 @@
   --bgbutton: #fee685;
   --bginput: #fee685;
   --txterror: #e7000b;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 /* Printemps */
@@ -25,6 +30,11 @@
   --bginput: #7bf1a8;
   --txterror: #e7000b;
   --gardenBG: #2f8136;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 /* Été */
@@ -36,6 +46,11 @@
   --bgbutton: #bee5eb;
   --bginput: #8ec5ff;
   --txterror: #e7000b;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 /* Automne */
@@ -47,6 +62,11 @@
   --bgbutton: #fee685;
   --bginput: #ffb86a;
   --txterror: #e7000b;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 /* Hiver */
@@ -58,6 +78,11 @@
   --bgbutton: #e9ecef;
   --bginput: #d1d5dc;
   --txterror: #e7000b;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 @theme {
@@ -74,6 +99,11 @@
   --color-bginput: var(--bginput);
   --color-txterror: var(--txterror);
   --color-gardenBG: var(--gardenBG);
+
+  --color-garden: var(--garden);
+  --color-parcel: var(--parcel);
+  --color-nursery: var(--nursery);
+  --color-greenhouse: var(--greenhouse);
 }
 
 @media (prefers-color-scheme: dark) {

@@ -33,6 +33,7 @@ type FormData = {
   gender: string;
   birthDate: string;
   skillLevel: number;
+  bio: string;
   interests: string[];
   newsletter: boolean;
   tou: boolean;
@@ -75,6 +76,7 @@ const RegisterForm = () => {
     gender: 'M',
     birthDate: '',
     skillLevel: 0,
+    bio: '',
     interests: [],
     newsletter: false,
     tou: false,
@@ -97,8 +99,12 @@ const RegisterForm = () => {
     errorSpecialCharPassword: false,
   });
 
+  //Variables
+  const rows = 5;
+  const cols = 65;
+
   const [isValidPostalCode, setIsValidPostalCode] = useState(true);
-  const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"
+  const [step, setStep] = useState(2); //Pour gérer l'affichage des "pages"
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVerify, setShowPasswordVerify] = useState(false);
   const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
@@ -224,6 +230,7 @@ const RegisterForm = () => {
       email: formJson.email as string,
       gender: formJson.gender as string,
       postalCode: formJson.postalCode as string,
+      bio: formJson.bio as string,
     }));
 
     if (step === 1) {
@@ -366,6 +373,7 @@ const RegisterForm = () => {
       birthday: formDataRegister.birthDate,
       newsletter: isCheckedNewsletter,
       skill_level: selectedSkillLevel,
+      bio: formDataRegister.bio,
     };
     console.log('formJson page 2: ', bodyRequest);
 
@@ -456,7 +464,7 @@ const RegisterForm = () => {
   //#endregion
 
   return (
-    <Card className={'h-full max-w-screen px-8 pt-5'}>
+    <Card className={'bg-cardbackground h-full max-w-screen px-8 pt-5'}>
       <h1 className="mb-5 text-4xl">{translations.signup}: </h1>
 
       <form
@@ -624,7 +632,12 @@ const RegisterForm = () => {
           setIsValidPostalCode={setIsValidPostalCode}
         />
         <div className="flex justify-center pb-5">
-          <Button onClick={handleNextStep}>{translations.next}</Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={handleNextStep}
+          >
+            {translations.next}
+          </Button>
         </div>
       </form>
 
@@ -633,6 +646,15 @@ const RegisterForm = () => {
         className="flex flex-col"
         style={{ display: step === 2 ? 'block' : 'none' }}
       >
+        <label htmlFor="bio">{translations.bio}</label>
+        <textarea
+          name="bio"
+          placeholder={translations.giveaBio}
+          rows={Number(rows)}
+          cols={Number(cols)}
+          className="mb-5 rounded-md border-1 pl-3"
+        ></textarea>
+
         {/* Vos intérêts */}
         <HashtagInput
           label={translations.yourinterests}
@@ -643,8 +665,8 @@ const RegisterForm = () => {
         />
 
         {/* Affichage des hashtags pour vérifier 
-						<p>Hashtags sélectionnés : {interests.join(", ")}</p>
-						*/}
+              <p>Hashtags sélectionnés : {interests.join(", ")}</p>
+              */}
 
         {/* Niveau du jardinier */}
         <SelectInput
@@ -661,13 +683,13 @@ const RegisterForm = () => {
         />
 
         {/* <DropDown
-							label={translations.yourlevel}
-							placeholder={translations.enteryourlevel}
-							options={gardenerLevels}
-							selectedValue={formData.gardenerLevel}
-							setSelectedValue={setGardenerLevel}
-							error={errorForm.errorEmptyGardenerLevel}
-						/> */}
+                label={translations.yourlevel}
+                placeholder={translations.enteryourlevel}
+                options={gardenerLevels}
+                selectedValue={formData.gardenerLevel}
+                setSelectedValue={setGardenerLevel}
+                error={errorForm.errorEmptyGardenerLevel}
+              /> */}
 
         {/* Newsletter & Condition Générale d'Utilisation */}
         <div className="mb-2 flex items-start">
@@ -696,8 +718,17 @@ const RegisterForm = () => {
           <p className="text-txterror">{translations.errorNotCheckedToU}</p>
         )}
         <div className="flex justify-center pb-5">
-          <Button onClick={handlePrevStep}>{translations.previous}</Button>
-          <Button onClick={handleSubmit} disabled={isSubmitting}>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={handlePrevStep}
+          >
+            {translations.previous}
+          </Button>
+          <Button
+            className="relative bg-bgbutton m-5 px-6 py-2"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
             {translations.sign}
           </Button>
         </div>

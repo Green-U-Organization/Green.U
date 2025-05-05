@@ -125,7 +125,11 @@ export default function AvatarUpload() {
         <FileUpload onFileChange={handleFileChange} />
 
         {file && (
-          <Button onClick={uploadImage} disabled={uploading}>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={uploadImage}
+            disabled={uploading}
+          >
             {uploading ? translations.uploading : translations.upload}
           </Button>
         )}

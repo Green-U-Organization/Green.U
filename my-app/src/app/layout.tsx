@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Jersey_15 } from 'next/font/google';
 import './globals.css';
 import ThemeApp from '@/components/ThemeApp';
-import Navbar from '@/components/UI/Navbar';
 import { LanguageProvider } from '@/app/contexts/LanguageProvider';
 import { StoreProvider } from '@/redux/StoreProvider';
 
@@ -37,10 +36,10 @@ export default function RootLayout({
     <StoreProvider>
       <html lang="en" className="bg-white">
         <body
-          className={`pt-15 ${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
         >
           <LanguageProvider>
-            <Navbar />
+            {/* <Navbar /> */}
             <ThemeApp>{children}</ThemeApp>
           </LanguageProvider>
         </body>

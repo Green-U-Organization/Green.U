@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
 import { useCreateNurseryMutation } from '@/slice/fetch';
-import { RootState, useSelector } from '@/redux/store';
+import { RootState, useDispatch, useSelector } from '@/redux/store';
+import { setAddNurseryPopup } from '@/redux/display/displaySlice';
 
-const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
-  displayCondition,
-}) => {
+const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
   //Local State
-  const [isVisible, setIsVisible] = useState<boolean>(displayCondition);
 
   //RTK Queries
   const [createNewNursery] = useCreateNurseryMutation();
+
+  //Hooks
+  const dispatch = useDispatch();
 
   //Selectors
   const actualGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
-
-  if (!isVisible) return null;
 
   //Handlers
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,15 +57,15 @@ const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
     } catch {
       console.log('error creating nursery');
     }
-    setIsVisible(false);
+    dispatch(setAddNurseryPopup({ state: false, id: 0 }));
   };
 
   return (
     <div
       style={{
-        display: isVisible ? 'flex' : 'none',
+        display: display ? 'flex' : 'none',
       }}
-      className="bg-cardbackground flex w-[70vw] flex-col items-center justify-between rounded-xl border-2 p-4"
+      className="bg-cardbackground fixed bottom-[2vh] left-[8vw] flex w-[70vw] flex-col items-center justify-between rounded-xl border-2 p-4"
     >
       <H2>Add Nursery</H2>
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
@@ -113,8 +112,18 @@ const AddNurseryPopup: React.FC<{ displayCondition: boolean }> = ({
           </div>
         </div>
         <div className="flex">
-          <Button onClick={() => setIsVisible(false)}>Back</Button>
-          <Button type="submit">Create!</Button>
+          <Button
+            type="button"
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={() =>
+              dispatch(setAddNurseryPopup({ state: false, id: 0 }))
+            }
+          >
+            Back
+          </Button>
+          <Button className="bg-bgbutton relative m-5 px-6 py-2" type="submit">
+            Create!
+          </Button>
         </div>
       </form>
     </div>

@@ -7,7 +7,7 @@ import TextInput from '@/components/Atom/TextInput';
 import Button from '@/components/Atom/Button';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import { useRouter } from 'next/navigation';
-import { setCredentials, logout } from '../../slice/authSlice';
+import { setCredentials } from '../../slice/authSlice';
 import { useLoginUserMutation } from '@/slice/fetch';
 import { useDispatch } from '@/redux/store';
 import { setAuthCookies } from '@/utils/authCookies';
@@ -84,7 +84,7 @@ const LoginForm = () => {
   };
   return (
     <section className="flex max-h-[calc(100vh-15px)] items-center justify-center overflow-auto">
-      <Card className={'max-w-screen px-8 pt-7'}>
+      <Card className={'bg-cardbackground max-w-screen px-8 pt-7'}>
         {/*}flex flex-col p-5 max-w-150*/}
         <form id="loginForm" onSubmit={handleSubmit}>
           <div className="flex flex-col items-center justify-center">
@@ -123,6 +123,7 @@ const LoginForm = () => {
             <br />
             <div className="flex flex-row justify-between pb-5">
               <Button
+                className="bg-bgbutton relative m-5 px-6 py-2"
                 onClick={(e) => {
                   e.preventDefault();
                   handleSubmit(e as unknown as FormEvent<HTMLFormElement>);
@@ -130,7 +131,10 @@ const LoginForm = () => {
               >
                 {translations.login}
               </Button>
-              <Button onClick={() => router.push('/signin')}>
+              <Button
+                className="bg-bgbutton relative m-5 px-6 py-2"
+                onClick={() => router.push('/signin')}
+              >
                 {translations.signup}
               </Button>
             </div>

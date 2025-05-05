@@ -55,7 +55,7 @@ const EditParcelPopup: FC<EditParcelPopup> = ({ parcel }) => {
   };
 
   return (
-    <Card className="flex w-[90vw] flex-col items-center justify-center">
+    <Card className="bg-cardbackground flex w-[80vw] flex-col items-center justify-center">
       <H2>Edit parcel</H2>
       <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         {/* <TextInput label="Length"></TextInput> */}
@@ -101,6 +101,7 @@ const EditParcelPopup: FC<EditParcelPopup> = ({ parcel }) => {
 
         <div className="flex">
           <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={() =>
               dispatch(
                 setEditParcelPopup({
@@ -112,7 +113,9 @@ const EditParcelPopup: FC<EditParcelPopup> = ({ parcel }) => {
           >
             Back
           </Button>
-          <Button type="submit">Edit!</Button>
+          <Button className="bg-bgbutton relative m-5 px-6 py-2" type="submit">
+            Edit!
+          </Button>
         </div>
       </form>
     </Card>

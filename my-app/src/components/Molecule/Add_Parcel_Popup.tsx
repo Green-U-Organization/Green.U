@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import Button from '../Atom/Button';
 import H2 from '../Atom/H2';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { RootState, useDispatch } from '@/redux/store';
 import { useCreateNewParcelMutation } from '@/slice/fetch';
+import { setAddParcelPopup } from '@/redux/display/displaySlice';
 
-const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
-  displayCondition,
-}) => {
+const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
   //Local Variables
-  const [isVisible, setIsVisible] = useState<boolean>(displayCondition);
   const [length, setLength] = useState<number>(1);
   const [width, setWidth] = useState<number>(1);
   const [repeat, setRepeat] = useState<number>(1);
@@ -20,11 +18,16 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
     //{ isLoading: createNewParcelIsLoading },
   ] = useCreateNewParcelMutation();
 
+  //Hooks
+  const dispatch = useDispatch();
+
   //Selectors
   const actualGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
-  if (!isVisible) return null;
+  // const display = useSelector(
+  //   (state: RootState) => state.display.addParcelPopup
+  // );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,7 +50,6 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
         console.log('error creating parcel');
       }
     }
-    setIsVisible(false);
   };
 
   const handleLengthChange = (e: { target: { value: string } }) => {
@@ -64,11 +66,11 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
   };
 
   return (
-    <div
+    <section
       style={{
-        display: isVisible ? 'flex' : 'none',
+        display: display ? 'flex' : 'none',
       }}
-      className="bg-cardbackground flex h-[auto] w-[70vw] flex-col items-center justify-between rounded-xl border-2 p-4"
+      className="bg-cardbackground fixed bottom-[2vh] left-[8vw] flex h-[auto] w-[70vw] flex-col items-center justify-between rounded-xl border-2 p-4"
     >
       <H2>Add parcel</H2>
       <form className="flex flex-col items-center" onSubmit={handleSubmit}>
@@ -133,11 +135,26 @@ const NewParcelForm: React.FC<{ displayCondition: boolean }> = ({
         </div>
 
         <div className="flex">
-          <Button onClick={() => setIsVisible(false)}>Back</Button>
-          <Button type="submit">Create!</Button>
+          <Button
+            type="button"
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            onClick={() =>
+              dispatch(
+                setAddParcelPopup({
+                  state: false,
+                  id: 0,
+                })
+              )
+            }
+          >
+            Back
+          </Button>
+          <Button className="bg-bgbutton relative m-5 px-6 py-2" type="submit">
+            Create!
+          </Button>
         </div>
       </form>
-    </div>
+    </section>
   );
 };
 

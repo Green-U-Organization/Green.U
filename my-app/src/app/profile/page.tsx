@@ -15,6 +15,7 @@ export default function GardenerProfile() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
   const { translations } = useLanguage();
+ 
 
   // Simuler les données d'XP, de badges et de likes
   const xp = 500; // XP actuel (NE PAS DEPASSER LE maxXp!!!)
@@ -63,7 +64,7 @@ export default function GardenerProfile() {
           /> */}
         </>
       ) : (
-        <Card className="flex max-w-5xl flex-col p-5">
+        <Card className="bg-cardbackground flex max-w-5xl flex-col p-5">
           <div id="profilePage">
             {/* Image du profil */}
             <div className="relative flex items-center space-x-4">
@@ -201,11 +202,17 @@ export default function GardenerProfile() {
 
             <div className="mt-auto flex justify-center p-2">
               {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
-              <Button onClick={() => router.push('/login')}>
+              <Button
+                className="bg-bgbutton relative m-5 px-6 py-2"
+                onClick={() => router.push('/login')}
+              >
                 {translations.back}
               </Button>
               {/* ID DU USER A TRANSMETTRE POUR L'EDITION DU PROFILE */}
-              <Button onClick={() => router.push('/editProfile')}>
+              {/* <Button onClick={() => router.push('/editProfile')}>
+                {translations.edit}
+              </Button> */}
+              <Button >
                 {translations.edit}
               </Button>
             </div>

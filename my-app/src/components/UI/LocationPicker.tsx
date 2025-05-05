@@ -108,7 +108,18 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         }
       );
     }
-  }, [markerPosition, multipleMarkers, showUserPosition, translations.errCheckPermissions, translations.errGeoPermissionRefused, translations.errPosition, translations.errPositionUnavailable, translations.errUnknown, translations.errWaitingTime,translations.errgeo]);
+  }, [
+    markerPosition,
+    multipleMarkers,
+    showUserPosition,
+    translations.errCheckPermissions,
+    translations.errGeoPermissionRefused,
+    translations.errPosition,
+    translations.errPositionUnavailable,
+    translations.errUnknown,
+    translations.errWaitingTime,
+    translations.errgeo,
+  ]);
 
   //Fonction pour filtrer les points dans le rayon
   const filterMarkerInRadius = (
@@ -300,7 +311,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             />
           </div>
           <div className="flex items-center justify-center">
-            <Button onClick={handleRemovePin}>{translations.deletePin}</Button>
+            <Button
+              className="bg-bgbutton relative m-5 px-6 py-2"
+              onClick={handleRemovePin}
+            >
+              {translations.deletePin}
+            </Button>
           </div>
         </div>
       )}

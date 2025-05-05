@@ -18,7 +18,7 @@ const CGU = () => {
   };
 
   return (
-    <Card className="mx-auto max-w-4xl p-6">
+    <Card className="bg-cardbackground mx-auto max-w-4xl p-6">
       <h1 className="text-shadow mb-4 text-3xl font-bold">
         {translations.cgutitle}
       </h1>
@@ -89,7 +89,12 @@ const CGU = () => {
         </p>
       </section>
       <div className="flex justify-center">
-        <Button onClick={handleCloseTab}>{translations.close}</Button>
+        <Button
+          className="bg-bgbutton relative m-5 px-6 py-2"
+          onClick={handleCloseTab}
+        >
+          {translations.close}
+        </Button>
       </div>
     </Card>
   );
