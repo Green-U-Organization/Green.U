@@ -29,6 +29,8 @@ public partial class Garden
 
     public string Description { get; set; } = null!;
 
+    public string? GardenColor { get; set; }
+
     public double Latitude { get; set; }
 
     public double Longitude { get; set; }
@@ -46,8 +48,6 @@ public partial class Garden
     public virtual ICollection<Contributor> Contributors { get; set; } = new List<Contributor>();
 
     public virtual ICollection<Follower> Followers { get; set; } = new List<Follower>();
-
-    public virtual ICollection<Log> Logs { get; set; } = new List<Log>();
 
     public virtual ICollection<Parcel> Parcels { get; set; } = new List<Parcel>();
 

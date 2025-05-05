@@ -1,11 +1,19 @@
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
-using JwtController;
 using GreenUApi.Models;
 
 namespace GreenUApi.authentification
 {
+
+    public class UserDTO
+    {
+        public bool? Error {  get; set; }
+        public string? Message { get; set; }
+        public long? Id { get; set; }
+        public string? Username { get; set; }
+    }
+
     public class Authentification
     {
         public static string[] Hasher(string password, byte[]? salty)
@@ -45,7 +53,7 @@ namespace GreenUApi.authentification
             })
             .FirstOrDefaultAsync();
 
-            if (User == null) return new UserDTO { error = true, message = "Email is wrong"};
+            if (User == null) return new UserDTO { Error = true, Message = "Email is wrong"};
 
 
             string hashedPassword = "";
@@ -57,7 +65,7 @@ namespace GreenUApi.authentification
                 return new UserDTO { Id = User.Id, Username = User.Username };
             }
 
-            return new UserDTO { error = true, message = "Pass is wrong" };
+            return new UserDTO { Error = true, Message = "Pass is wrong" };
         }
 
     }

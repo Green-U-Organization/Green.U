@@ -1,27 +1,19 @@
 using GreenUApi.authentification;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using JwtController;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using DotNetEnv;
-using Microsoft.EntityFrameworkCore;
-
-public class LoginModel
-{
-    public string Email { get; set; } = "";
-    public string Password { get; set; } = "";
-}
-
-public class TokenVerfyModel
-{
-    public required string Token { get; set; }
-}
 
 namespace GreenUApi.Controllers
 {
+    public class LoginModel
+    {
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
     [ApiController]
     [Route("/")]
     public class AuthController : ControllerBase
@@ -33,34 +25,13 @@ namespace GreenUApi.Controllers
             _db = db;
         }
 
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Login([FromBody] LoginModel model)
-        //{
-        //    var jwt = await Authentification.Login(model.Email, model.Password, _db);
-            
-        //    if (!jwt.isEmpty) return Ok(jwt);
-
-        //    else return Unauthorized(jwt);
-        //}
-
-        [HttpPost("verifyjwt")]
-        public IActionResult VerifyJwt([FromBody] TokenVerfyModel Token)
-        {
-            Console.WriteLine(Token.Token);
-            bool isValid = JwtController.JwtController.VerifyJwtToken(Token.Token);
-            
-            if (!isValid) return Unauthorized();
-
-            return Ok(new { isEmpty = false, message = "token is valid !", Token});
-        }
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel cred)
         {
             
             UserDTO userData = await Authentification.VerifyCredentials(cred.Email, cred.Password, _db);
 
-            if (userData.error == null)
+            if (userData.Error == null)
             {
                 var token = GenerateJwtToken(cred.Email);
                 return Ok(new { isEmpty = false, message = "Token are created !", token = token, content = userData});
@@ -68,7 +39,7 @@ namespace GreenUApi.Controllers
             return Unauthorized();
         }
 
-        private string GenerateJwtToken(string email)
+        private static string GenerateJwtToken(string email)
         {
             var claims = new[]
             {
@@ -88,11 +59,11 @@ namespace GreenUApi.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: apiLink,
-                audience: prodLink,
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(15),
-                signingCredentials: creds);
+            issuer: apiLink,
+            audience: prodLink,
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(15),
+            signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
