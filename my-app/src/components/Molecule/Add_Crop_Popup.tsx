@@ -26,6 +26,8 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   const [action, setAction] = useState<string>('sowing');
   const [origin, setOrigin] = useState<string>('fromScratch');
   const [selectedCropToPlant, setSelectedCropToPlant] = useState<CropType>();
+  const [vegetable, setVegetable] = useState('');
+  const [variety, setVariety] = useState('');
 
   //USER info
   const userData = Cookies.get('user_data');
@@ -134,18 +136,14 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   };
 
   const handleOriginChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
     setOrigin(e.target.value);
-    console.log('origin : ', origin);
   };
 
   const handleSelectRow = (crop: CropType) => {
-    if (selectedCropToPlant?.id !== crop.id) {
-      console.log('prout');
-      setSelectedCropToPlant(crop);
-    }
-
     setSelectedCropToPlant(crop);
+    setVegetable(crop.vegetable);
+    setVariety(crop.variety);
+    setSelectedIcon(crop.icon);
   };
 
   return (
@@ -179,7 +177,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
           <option value="fromNursery">from nursery</option>
         </select>
 
-        <div className="w-[75vw] overflow-x-auto">
+        <div className="ml-5 flex w-[75vw] overflow-x-auto">
           <table
             style={{
               display:
@@ -187,7 +185,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
                   ? 'none'
                   : 'block',
             }}
-            className="min-w-full"
+            className="flex min-w-full"
           >
             <thead>
               <tr className="border-1">
@@ -206,13 +204,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
                   <tr
                     key={crop.id}
                     onClick={() => handleSelectRow(crop)}
-                    style={{
-                      backgroundColor:
-                        selectedCropToPlant?.id === crop.id ||
-                        selectedCropToPlant === undefined
-                          ? 'red'
-                          : 'none',
-                    }}
+                    className={`${selectedCropToPlant?.id === crop.id ? 'bg-[#f6d4ba]' : ''}`}
                   >
                     <td className="border-1 p-1">
                       <img src={crop.icon} alt="" className="mx-auto" />
@@ -258,12 +250,14 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
           name="vegetable"
           className="mx-[4vw]"
           label="Vegetable"
+          value={vegetable}
         />
         <TextInput
           type="text"
           name="variety"
           className="mx-[4vw] -mt-[3vh]"
           label="Variety"
+          value={variety}
         />
         <div className="mx-[4vw] flex flex-col">
           <label htmlFor="plantationDistance">
