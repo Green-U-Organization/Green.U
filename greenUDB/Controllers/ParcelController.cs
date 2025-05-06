@@ -39,38 +39,53 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPatch("{id}")]
-<<<<<<< HEAD
-        public async Task<IActionResult> PatchParcel(long id, Parcel parcel)
-        {
-
-            var oldParcel = await _context.Parcels.Where(p => p.Id == id).FirstOrDefaultAsync();
-
-            if (oldParcel == null)
-            {
-                return BadRequest(new {message = "Mauvais parcel id."});
-            }
-
-            parcel.Id = id;
-            _context.Entry(oldParcel).CurrentValues.SetValues(parcel);
-=======
         public async Task<IActionResult> PatchParcel(long id, Parcel modifiedParcel)
         {
             var parcel = await _db.Parcels
                 .FindAsync(id);
 
             if (parcel == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
->>>>>>> backend-dev
 
-            if (modifiedParcel.Length != null) parcel.Length = modifiedParcel.Length;
+            string modificationLog = "";
+
+            if (modifiedParcel.Length != null)
+            {
+                modificationLog += $"Edit the length : {parcel.Length} => {modifiedParcel.Length}; ";
+                parcel.Length = modifiedParcel.Length;
+            }
+
+            if (modifiedParcel.Width != null)
+            {
+                modificationLog += $"Edit the width : {parcel.Width} => {modifiedParcel.Width}; ";
+                parcel.Width = modifiedParcel.Width;
+            }
+
+            if (modifiedParcel.NLine != null)
+            {
+                modificationLog += $"Edit number of line : {parcel.NLine} => {modifiedParcel.NLine}; ";
+                parcel.NLine = modifiedParcel.NLine;
+            }
+
+            if (modifiedParcel.ParcelAngle != null)
+            {
+                modificationLog += $"Edit angle : {parcel.ParcelAngle} => {modifiedParcel.ParcelAngle}; ";
+                parcel.ParcelAngle = modifiedParcel.ParcelAngle;
+            }
 
 
-            if (modifiedParcel.Width != null) parcel.Width =  modifiedParcel.Width;
-
-            if (modifiedParcel.NLine != null) parcel.NLine = modifiedParcel.NLine;
-
-            if (modifiedParcel.ParcelAngle != null) parcel.ParcelAngle = modifiedParcel.ParcelAngle;
-            
             _db.Update(parcel);
+
+            Log log = new()
+            {
+                GardenId = parcel.GardenId,
+                ParcelId = parcel.Id,
+                Action = "Edit parcel",
+                Comment = modificationLog,
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "Your parcel is modified", content = parcel });
@@ -85,6 +100,17 @@ namespace GreenUApi.Controllers
             if (GardenExist == null) return BadRequest(new { isEmpty = true, message = "Garden id is incorrect..."});
 
             _db.Parcels.Add(parcel);
+
+            Log log = new()
+            {
+                GardenId = parcel.GardenId,
+                ParcelId = parcel.Id,
+                Action = "Create parcel",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
             
             return Ok(new { isEmpty = false, message = "The parcel is created !", content = parcel});
@@ -114,7 +140,19 @@ namespace GreenUApi.Controllers
                 _db.Lines.Remove(line);
             }
 
+            Log log = new()
+            {
+                GardenId = parcel.GardenId,
+                ParcelId = parcel.Id,
+                Action = "Delete parcel",
+                Type = "Automatic",
+            };
+            _db.Add(log);
+
             _db.Remove(parcel);
+
+
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, messsage = "This parcel is deleted", content = parcel });

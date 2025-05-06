@@ -53,9 +53,29 @@ namespace GreenUApi.Controllers
 
             if (line == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
 
-            if (modifiedLine.Length != null) line.Length = modifiedLine.Length;
+            if (modifiedLine.Length != null)
+            {
+
+            Log log = new()
+            {
+                GardenId = line.GardenId,
+                LineId = line.Id,
+                ParcelId = line.ParcelId,
+                PlantNurseryId = line.PLantNurseryId,
+                Action = "Edit line",
+                Comment = $"Edit the length {line.Length} to {modifiedLine.Length}",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
+                line.Length = modifiedLine.Length;
+            }
 
             _db.Update(line);
+
+
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "This line is modified", content = line});
@@ -72,7 +92,21 @@ namespace GreenUApi.Controllers
 
             if (line.Length == null) return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
 
+            line.GardenId = parcel.GardenId;
+
             _db.Add(line);
+
+            Log log = new() 
+            {
+                GardenId = line.GardenId,
+                ParcelId = line.ParcelId,
+                PlantNurseryId = line.PLantNurseryId,
+                Action = "Create a new line",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "The line is created !", content = line});
@@ -95,17 +129,20 @@ namespace GreenUApi.Controllers
                 crop.LineId = null;
             }
 
-<<<<<<< HEAD
-            var crops = await _context.Crops.Where(c => c.LineId == line.Id).ToListAsync();
-
-            foreach(var crop in crops){
-                crop.LineId = null;
-            }
-
-            _context.Lines.Remove(line);
-            await _context.SaveChangesAsync();
-=======
+            Log log = new()
+            {
+                GardenId = line.GardenId,
+                LineId = line.Id,
+                ParcelId = line.ParcelId,
+                PlantNurseryId = line.PLantNurseryId,
+                Action = $"Delete a line",
+                Type = "Automatic",
+            };
+            _db.Add(log);
             _db.Lines.Remove(line);
+
+
+
             await _db.SaveChangesAsync();
 >>>>>>> backend-dev
 

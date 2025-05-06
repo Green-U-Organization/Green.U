@@ -182,6 +182,9 @@ namespace GreenUApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("GardenColor")
+                        .HasColumnType("longtext");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("double");
 
@@ -231,6 +234,9 @@ namespace GreenUApi.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Created_at");
+
+                    b.Property<long?>("GardenId")
+                        .HasColumnType("bigint");
 
                     b.Property<double?>("Length")
                         .HasColumnType("double");
@@ -294,23 +300,18 @@ namespace GreenUApi.Migrations
                     b.Property<long?>("PlantNurseryId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
-                    b.HasIndex(new[] { "AuthorId" }, "fk_Logs_Author_id");
-
-                    b.HasIndex(new[] { "CropId" }, "fk_Logs_Crop_id");
-
-                    b.HasIndex(new[] { "GardenId" }, "fk_Logs_Garden_id");
-
-                    b.HasIndex(new[] { "LineId" }, "fk_Logs_Line_id");
-
-                    b.HasIndex(new[] { "ParcelId" }, "fk_Logs_Parcel_id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Logs");
                 });
@@ -566,40 +567,9 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Log", b =>
                 {
-                    b.HasOne("GreenUApi.Models.User", "Author")
+                    b.HasOne("GreenUApi.Models.User", null)
                         .WithMany("Logs")
-                        .HasForeignKey("AuthorId")
-                        .HasConstraintName("fk_Logs_Author_id");
-
-                    b.HasOne("GreenUApi.Models.Crop", "Crop")
-                        .WithMany("Logs")
-                        .HasForeignKey("CropId")
-                        .HasConstraintName("fk_Logs_Crop_id");
-
-                    b.HasOne("GreenUApi.Models.Garden", "Garden")
-                        .WithMany("Logs")
-                        .HasForeignKey("GardenId")
-                        .HasConstraintName("fk_Logs_Garden_id");
-
-                    b.HasOne("GreenUApi.Models.Line", "Line")
-                        .WithMany("Logs")
-                        .HasForeignKey("LineId")
-                        .HasConstraintName("fk_Logs_Line_id");
-
-                    b.HasOne("GreenUApi.Models.Parcel", "Parcel")
-                        .WithMany("Logs")
-                        .HasForeignKey("ParcelId")
-                        .HasConstraintName("fk_Logs_Parcel_id");
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Crop");
-
-                    b.Navigation("Garden");
-
-                    b.Navigation("Line");
-
-                    b.Navigation("Parcel");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("GreenUApi.Models.Parcel", b =>
@@ -631,18 +601,11 @@ namespace GreenUApi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GreenUApi.Models.Crop", b =>
-                {
-                    b.Navigation("Logs");
-                });
-
             modelBuilder.Entity("GreenUApi.Models.Garden", b =>
                 {
                     b.Navigation("Contributors");
 
                     b.Navigation("Followers");
-
-                    b.Navigation("Logs");
 
                     b.Navigation("Parcels");
 
@@ -652,15 +615,11 @@ namespace GreenUApi.Migrations
             modelBuilder.Entity("GreenUApi.Models.Line", b =>
                 {
                     b.Navigation("Crops");
-
-                    b.Navigation("Logs");
                 });
 
             modelBuilder.Entity("GreenUApi.Models.Parcel", b =>
                 {
                     b.Navigation("Lines");
-
-                    b.Navigation("Logs");
                 });
 
             modelBuilder.Entity("GreenUApi.Models.PlantNursery", b =>

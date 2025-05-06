@@ -72,7 +72,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchGarden(long id, GardenModification modification)
+        public async Task<IActionResult> PatchGarden(long id, GardenModification modifiedUser)
         {
             var garden = await _db.Gardens
                 .FindAsync(id);
@@ -81,24 +81,68 @@ namespace GreenUApi.Controllers
 
             if (garden.Deleted) return BadRequest(new { isEmpty = true, message = "This garden is deleted" });
 
-            if (!string.IsNullOrEmpty(modification.Name)) garden.Name = modification.Name;
+            string modificationLog = "";
 
-            if (!string.IsNullOrEmpty(modification.Description)) garden.Description = modification.Description;
+            if (!string.IsNullOrEmpty(modifiedUser.Name))
+            {
+                modificationLog += $"Edit the name: {garden.Name} => {modifiedUser.Name}; ";
+                garden.Name = modifiedUser.Name;
+            }
 
-            if (modification.Latitude.HasValue) garden.Latitude = modification.Latitude.Value;
+            if (!string.IsNullOrEmpty(modifiedUser.Description))
+            {
+                modificationLog += $"Edit the description: {garden.Description} => {modifiedUser.Description}; ";
+                garden.Description = modifiedUser.Description;
+            }
 
-            if (modification.Longitude.HasValue) garden.Longitude = modification.Longitude.Value;
+            if (modifiedUser.Latitude.HasValue)
+            {
+                modificationLog += $"Edit latitude: {garden.Latitude} => {modifiedUser.Latitude.Value}; ";
+                garden.Latitude = modifiedUser.Latitude.Value;
+            }
 
-            if (modification.Length.HasValue) garden.Length = modification.Length.Value;
+            if (modifiedUser.Longitude.HasValue)
+            {
+                modificationLog += $"Edit longitude: {garden.Longitude} => {modifiedUser.Longitude.Value}; ";
+                garden.Longitude = modifiedUser.Longitude.Value;
+            }
 
-            if (modification.Width.HasValue) garden.Width = modification.Width.Value;
+            if (modifiedUser.Length.HasValue)
+            {
+                modificationLog += $"Edit the length: {garden.Length} => {modifiedUser.Length.Value}; ";
+                garden.Length = modifiedUser.Length.Value;
+            }
 
-            if (modification.Privacy.HasValue) garden.Privacy = modification.Privacy.Value;
+            if (modifiedUser.Width.HasValue)
+            {
+                modificationLog += $"Edit the width: {garden.Width} => {modifiedUser.Width.Value}; ";
+                garden.Width = modifiedUser.Width.Value;
+            }
 
-            if (modification.Type.HasValue) garden.Type = modification.Type.Value;
+            if (modifiedUser.Privacy.HasValue)
+            {
+                modificationLog += $"Edit privacy: {garden.Privacy} => {modifiedUser.Privacy.Value}; ";
+                garden.Privacy = modifiedUser.Privacy.Value;
+            }
 
+            if (modifiedUser.Type.HasValue)
+            {
+                modificationLog += $"Edit type: {garden.Type} => {modifiedUser.Type.Value}; ";
+                garden.Type = modifiedUser.Type.Value;
+            }
 
             _db.Update(garden);
+
+            Log log = new()
+            {
+                GardenId = garden.Id,
+                Action = "Edit garden",
+                Comment = modificationLog,
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "The garden is modified !", content = garden}); 
@@ -132,8 +176,17 @@ namespace GreenUApi.Controllers
 
             if (garden.Width <= 0) return BadRequest(new { isEmpty = true, message = "The garden width need to be above 0" });
 
-
             _db.Gardens.Add(garden);
+
+            Log log = new()
+            {
+                GardenId = garden.Id,
+                Action = "Create garden",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "Your garden are created !", content = garden});
@@ -190,6 +243,16 @@ namespace GreenUApi.Controllers
 
             garden.Deleted = true;
             _db.Gardens.Update(garden);
+
+            Log log = new()
+            {
+                GardenId = garden.Id,
+                Action = "Delete garden",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "This garden are deleted", content = garden });
