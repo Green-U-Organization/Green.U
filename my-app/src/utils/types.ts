@@ -243,3 +243,14 @@ export type GardenType = {
   type: number;
   hashtags: string[];
 };
+
+export type CropType = {
+  id?: number;
+  lineId?: number;
+  nurseryId?: number;
+  vegetable: string;
+  variety: string;
+  sowing: string;
+  planting: string;
+  harvesting: string;
+};

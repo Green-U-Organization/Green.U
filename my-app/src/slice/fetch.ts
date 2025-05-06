@@ -242,6 +242,10 @@ type GetTagsByUserIdResponse = {
   content: string[];
 };
 
+type DeleteTagByUserRequest = {
+  hashtag: string;
+};
+
 type GetUserByIdResponse = {
   isEmpty: boolean;
   message: string;
@@ -552,6 +556,16 @@ export const extendedGardenAPI = api
           method: 'GET',
         }),
         providesTags: ['tags-userInterest'],
+      }),
+
+      //deleteTagByUser >>
+      deleteTagByUser: builder.mutation<void, DeleteTagByUserRequest>({
+        query: (arg) => ({
+          url: `/tags/user/${arg.hashtag}`,
+          method: 'DELETE',
+          body: arg,
+        }),
+        invalidatesTags: ['tags-user'],
       }),
 
       //GetUserById

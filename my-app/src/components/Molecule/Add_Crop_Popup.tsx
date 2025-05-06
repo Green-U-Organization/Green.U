@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import React, { FC, useState } from 'react';
 import Card from '../Atom/Card';
@@ -7,18 +8,24 @@ import Button from '../Atom/Button';
 import {
   useCreateCropToLineMutation,
   useEditUserByUserIdMutation,
+  useGetCropByNurseryIdQuery,
+  useGetNurseryByGardenIdQuery,
   useGetUserByIdQuery,
 } from '@/slice/fetch';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
-import type { AddCropPopup } from '@/utils/types';
+import type { AddCropPopup, CropType } from '@/utils/types';
 import { setAddCropPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
+import { RootState, useSelector } from '@/redux/store';
 
 const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   //Local State
   const [plantationDistance, setPlantationDistance] = useState<number>(10);
   const [selectedIcon, setSelectedIcon] = useState<string>('');
+  const [action, setAction] = useState<string>('sowing');
+  const [origin, setOrigin] = useState<string>('fromScratch');
+  const [selectedCropToPlant, setSelectedCropToPlant] = useState<CropType>();
 
   //USER info
   const userData = Cookies.get('user_data');
@@ -44,10 +51,25 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   //Hooks
   const dispatch = useDispatch();
 
+  //Selectors
+  const garden = useSelector((state: RootState) => state.garden.selectedGarden);
+
   //RTK Query
   const [createCropToLine] = useCreateCropToLineMutation();
   const [addXp] = useEditUserByUserIdMutation();
   const user = useGetUserByIdQuery({ userId: id });
+  const { data: nurseries } = useGetNurseryByGardenIdQuery({
+    gardenId: garden?.id ?? 0,
+  });
+  const crops =
+    nurseries?.content.map((nursery) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { data: crop } = useGetCropByNurseryIdQuery({
+        nurseryId: nursery.id,
+      });
+      return crop;
+    }) || [];
+  console.log('crops : ', crops);
 
   //Handlers
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -106,14 +128,131 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
     setSelectedIcon(e.currentTarget.src);
   };
 
+  const handleActionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value);
+    setAction(e.target.value);
+  };
+
+  const handleOriginChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value);
+    setOrigin(e.target.value);
+    console.log('origin : ', origin);
+  };
+
+  const handleSelectRow = (crop: CropType) => {
+    if (selectedCropToPlant?.id !== crop.id) {
+      console.log('prout');
+      setSelectedCropToPlant(crop);
+    }
+
+    setSelectedCropToPlant(crop);
+  };
+
   return (
     <Card className="bg-cardbackground flex w-[80vw] flex-col items-center justify-center">
-      <H2>Wich crop you want to add?</H2>
+      <H2>Which crop you want to add?</H2>
       <form
         className="flex flex-col items-center"
         id="addCrop"
         onSubmit={handleSubmit}
       >
+        <select
+          className="mx-[4vw]"
+          name="cropAction"
+          id="cropAction"
+          onChange={handleActionChange}
+        >
+          <option value="sowing">Sowing</option>
+          <option value="planting">Planting</option>
+        </select>
+
+        <select
+          style={{
+            display: action === 'planting' ? 'block' : 'none',
+          }}
+          className="mx-[4vw]"
+          name="cropAction"
+          id="cropAction"
+          onChange={handleOriginChange}
+        >
+          <option value="fromScratch">from scratch</option>
+          <option value="fromNursery">from nursery</option>
+        </select>
+
+        <div className="w-[75vw] overflow-x-auto">
+          <table
+            style={{
+              display:
+                origin == 'fromScratch' || action != 'planting'
+                  ? 'none'
+                  : 'block',
+            }}
+            className="min-w-full"
+          >
+            <thead>
+              <tr className="border-1">
+                <th className="border-1 p-1">Icon</th>
+                <th className="border-1 p-1">Veg.</th>
+                <th className="border-1 p-1">Var.</th>
+                <th className="border-1 p-1">nPot</th>
+                <th className="border-1 p-1">Size</th>
+                <th className="border-1 p-1">Info</th>
+                <th className="border-1 p-1">Del.</th>
+              </tr>
+            </thead>
+            <tbody>
+              {crops.map((cropObject) =>
+                cropObject?.content.map((crop) => (
+                  <tr
+                    key={crop.id}
+                    onClick={() => handleSelectRow(crop)}
+                    style={{
+                      backgroundColor:
+                        selectedCropToPlant?.id === crop.id ||
+                        selectedCropToPlant === undefined
+                          ? 'red'
+                          : 'none',
+                    }}
+                  >
+                    <td className="border-1 p-1">
+                      <img src={crop.icon} alt="" className="mx-auto" />
+                    </td>
+                    <td className="border-1 p-1">{crop.vegetable}</td>
+                    <td className="border-1 p-1">{crop.variety}</td>
+                    <td className="border-1 p-1">{crop.nPot}</td>
+                    <td className="border-1 p-1">
+                      {crop.potSize}x{crop.potSize}
+                    </td>
+                    <td className="border-1 p-1">
+                      <img
+                        className="mx-auto"
+                        src="/image/icons/info.png"
+                        alt="Display info about line"
+                        style={{
+                          width: '5vw',
+                          height: '5vw',
+                        }}
+                      />
+                    </td>
+                    <td className="border-1 p-1">
+                      <img
+                        className="mx-auto"
+                        src="/image/icons/trash.png"
+                        alt="Delete line"
+                        style={{
+                          width: '5vw',
+                          height: '5vw',
+                        }}
+                        // onClick={() => setDisplayDeletingLinePopup(true)}
+                      />
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
         <TextInput
           type="text"
           name="vegetable"
@@ -126,11 +265,6 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
           className="mx-[4vw] -mt-[3vh]"
           label="Variety"
         />
-        <select className="mx-[4vw]" name="cropAction" id="cropAction">
-          <option value="sowing">Sowing</option>
-          <option value="planting">Planting</option>
-        </select>
-        <br />
         <div className="mx-[4vw] flex flex-col">
           <label htmlFor="plantationDistance">
             Plantation distance : {plantationDistance}cm
@@ -178,7 +312,6 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
         <H2>Choose your crop icon :</H2>
         <div className="flex flex-wrap items-center justify-center">
           {iconList.map((icon, key) => (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={icon}
               alt={`icon-${key}`}
