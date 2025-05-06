@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 // import AvatarSelector from '@/components/AvatarSelector';
 import { useLanguage } from '../contexts/LanguageProvider';
-import { supabase } from '@/lib/supabaseClient';
+// import { supabase } from '@/lib/supabaseClient';
 
 export default function GardenerProfile() {
   const router = useRouter();
@@ -15,7 +15,6 @@ export default function GardenerProfile() {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isAvatarSelectorOpen, setIsAvatarSelectorOpen] = useState(false);
   const { translations } = useLanguage();
- 
 
   // Simuler les données d'XP, de badges et de likes
   const xp = 500; // XP actuel (NE PAS DEPASSER LE maxXp!!!)
@@ -42,15 +41,15 @@ export default function GardenerProfile() {
 
   //IL FAUDRA RECUPERER L'URL DE L'AVATAR DANS LA TABLE USER
   // Permet de récupérer l'image dans le storage supabase
-  useEffect(() => {
-    const filePath = 'avatars/1743969461173_profile.png';
-    if (filePath) {
-      const { publicUrl } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(filePath).data;
-      setAvatarUrl(publicUrl);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const filePath = 'avatars/1743969461173_profile.png';
+  //   if (filePath) {
+  //     const { publicUrl } = supabase.storage
+  //       .from('avatars')
+  //       .getPublicUrl(filePath).data;
+  //     setAvatarUrl(publicUrl);
+  //   }
+  // }, []);
 
   return (
     <div className="flex items-center justify-center">
@@ -212,9 +211,7 @@ export default function GardenerProfile() {
               {/* <Button onClick={() => router.push('/editProfile')}>
                 {translations.edit}
               </Button> */}
-              <Button >
-                {translations.edit}
-              </Button>
+              <Button>{translations.edit}</Button>
             </div>
           </div>
         </Card>

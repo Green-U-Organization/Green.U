@@ -42,8 +42,6 @@ const Profile = () => {
 
   return (
     <div className="flex items-center justify-center">
-      {' '}
-      (
       <Card className="bg-cardbackground flex max-w-5xl flex-col p-5">
         <div id="profilePage">
           {/* Image du profil */}
@@ -75,10 +73,7 @@ const Profile = () => {
 
           {/* Présentation */}
 
-          {/* <p className="mt-5 text-gray-700">
-             BESOIN DE LA BIO DANS LA RESPONSE DU FETCH 
-            {user?.data?.content.bio}
-          </p> */}
+          <p className="mt-5 text-gray-700">{user?.data?.content.bio}</p>
 
           {/* XP et Badges */}
           {/* <div className="mt-5">
@@ -122,7 +117,6 @@ const Profile = () => {
               🌿 {translations.participating}
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {/* ROUTE A AJOUTER AVEC L'ID DU JARDIN POUR Y ACCEDER */}
               {gardens?.data?.content.map((garden, index) => (
                 <SlimCard
                   bgColor="bg-cardbackground"
@@ -142,6 +136,17 @@ const Profile = () => {
                       <H2>{garden.name}</H2>
                       <p className="ml-[5vw] italic">{garden.description}</p>
                     </div>
+
+                    <img
+                      // onClick={handleConfigurationClick}
+                      className="image mr-[5vw] h-[10vw] w-[10vw] object-contain"
+                      src={
+                        garden.privacy === 1
+                          ? '/image/icons/lockClose.png'
+                          : '/image/icons/lockOpen.png'
+                      }
+                      alt=""
+                    />
                   </div>
                 </SlimCard>
               ))}
@@ -213,7 +218,6 @@ const Profile = () => {
           </div>
         </div>
       </Card>
-      )
     </div>
   );
 };

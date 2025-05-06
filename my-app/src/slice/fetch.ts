@@ -244,6 +244,7 @@ type GetUserByIdResponse = {
     firstname: string;
     lastname: string;
     email: string;
+    bio: string;
     country: string;
     gender: string;
     birthday: string;
