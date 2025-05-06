@@ -34,6 +34,8 @@ public class UserModification
     public string? ProfileImage { get; set; }
 
     public string? Bio { get; set; }
+
+    public long? xp { get; set; }
 }
 
 [Route("user")]
@@ -161,6 +163,8 @@ public class UserController(GreenUDB db) : ControllerBase
         if (!string.IsNullOrEmpty(modification.ProfileImage)) user.ProfileImage = modification.ProfileImage;
 
         if (!string.IsNullOrEmpty(modification.Bio)) user.Bio = modification.Bio;
+
+        if (modification.xp.HasValue) user.Xp = modification.xp.Value;
 
         _db.Users.Update(user);
         await _db.SaveChangesAsync();
