@@ -1,4 +1,5 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'font-awesome/css/font-awesome.min.css';
 
 :root {
   --background: #ffffff;
@@ -12,6 +13,11 @@
   --bgbutton: #fee685;
   --bginput: #fee685;
   --txterror: #e7000b;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 /* Printemps */
@@ -23,6 +29,12 @@
   --bgbutton: #c3e6cb;
   --bginput: #7bf1a8;
   --txterror: #e7000b;
+  --gardenBG: #2f8136;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 /* Été */
@@ -34,6 +46,11 @@
   --bgbutton: #bee5eb;
   --bginput: #8ec5ff;
   --txterror: #e7000b;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 /* Automne */
@@ -45,6 +62,11 @@
   --bgbutton: #fee685;
   --bginput: #ffb86a;
   --txterror: #e7000b;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 /* Hiver */
@@ -56,6 +78,11 @@
   --bgbutton: #e9ecef;
   --bginput: #d1d5dc;
   --txterror: #e7000b;
+
+  --garden: #f3b391;
+  --parcel: #f6d4ba;
+  --nursery: #fefadc;
+  --greenhouse: #feea00;
 }
 
 @theme {
@@ -63,7 +90,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
- 
+
   --color-border: var(--border);
   --color-shadow: var(--shadow);
   --color-cardbackground: var(--cardbackground);
@@ -71,6 +98,12 @@
   --color-extbutton: var(--extbutton);
   --color-bginput: var(--bginput);
   --color-txterror: var(--txterror);
+  --color-gardenBG: var(--gardenBG);
+
+  --color-garden: var(--garden);
+  --color-parcel: var(--parcel);
+  --color-nursery: var(--nursery);
+  --color-greenhouse: var(--greenhouse);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -102,4 +135,14 @@ body {
 /* TEST DE LA POLICE SUR LA NAVBAR */
 .navbar {
   font-family: var(--font-jersey);
+}
+
+.parcelBackground {
+  background-image: url('/image/assets/tilesets/parcel.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+::placeholder {
+  color: #6a7282;
 }

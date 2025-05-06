@@ -1,0 +1,34 @@
+type gardenType = {
+  authorId: number;
+  name: string;
+  description: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  privacy: number;
+  type: number;
+  hashtags: string[];
+};
+
+export const createNewGarden = async (
+  garden: gardenType
+): Promise<gardenType> => {
+  try {
+    const response = await fetch(process.env.NEXT_PUBLIC_API + '/garden', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(garden),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create a new garden:  ${response.statusText}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error in createNewGarden: ', error);
+    throw error;
+  }
+};
