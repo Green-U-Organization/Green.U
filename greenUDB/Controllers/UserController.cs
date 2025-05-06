@@ -33,7 +33,7 @@ public class UserModification
 
     public string? ProfileImage { get; set; }
 
-    public string?   Bio { get; set; }
+    public string? Bio { get; set; }
 }
 
 [Route("user")]
@@ -44,16 +44,21 @@ public class UserController(GreenUDB db) : ControllerBase
     private readonly GreenUDB _db = db;
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(long id)
+    public async Task<ActionResult<object>> GetUser(long id)
     {
-        var user = await _db.Users.FindAsync(id);
+        var user = await _db.Users
+            .Include(u => u.TagsInterests)
+            .FirstOrDefaultAsync(u => u.Id == id);
 
-        if (user == null) return NotFound(new { isEmpty = true, message = "User not found" });
+        if (user == null) 
+            return NotFound(new { isEmpty = true, message = "User not found" });
 
-        if (user.Deleted) return NotFound(new { isEmpty = true, message = "This user is deleted" });
-        
-        return Ok(new { isEmpty = false, message = "This is the user data", content = user});
+        if (user.Deleted) 
+            return NotFound(new { isEmpty = true, message = "This user is deleted" });
+
+        return Ok(new { isEmpty = false, message = "This is the user data", content = user });
     }
+
 
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser(User user)

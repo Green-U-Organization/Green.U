@@ -4,8 +4,12 @@ using GreenUApi.Models;
 
 namespace GreenUApi.Controllers
 {
+<<<<<<< HEAD
+    public class ContributorDTO{
+=======
     public class ContributorDTO
     {
+>>>>>>> backend-dev
         public bool Admin { get; set; }
     }
 
@@ -31,7 +35,7 @@ namespace GreenUApi.Controllers
                 .AnyAsync();
 
             if (ContributorExist) return BadRequest(new { isEmpty = true, message = "This contributor is already exist" });
-
+            
             bool UserExist = await _db.Users
                 .Where(u => u.Id == contributor.UserId)
                 .AnyAsync();
@@ -46,7 +50,7 @@ namespace GreenUApi.Controllers
 
             _db.Add(contributor);
             await _db.SaveChangesAsync();
-            return Ok(new { isEmpty = false, message = "New contributor is created !", content = contributor });
+            return Ok(new { isEmpty = false, message = "New contributor is created !", content = contributor});
 
         }
 
@@ -62,7 +66,11 @@ namespace GreenUApi.Controllers
             _db.Contributors.Remove(contributorExist);
             await _db.SaveChangesAsync();
 
+<<<<<<< HEAD
+            return Ok(new { isEmpty = true, message = "Contribuor deleted !"});
+=======
             return Ok(new { isEmpty = true, message = "Contribuor deleted !" });
+>>>>>>> backend-dev
         }
 
         [HttpPatch("{id}")]
@@ -80,7 +88,11 @@ namespace GreenUApi.Controllers
             _db.Update(contributor);
             await _db.SaveChangesAsync();
 
+<<<<<<< HEAD
+            return Ok(new { isEmpty = false, message = "The contributor is modified !", content = contributor}); 
+=======
             return Ok(new { isEmpty = false, message = "The contributor is modified !", content = contributor });
+>>>>>>> backend-dev
         }
 
         [HttpGet("{id}")]
@@ -97,7 +109,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "The contributor", content = contributor });
         }
 
-        [HttpGet("garden/{id}")]
+        [HttpGet("/garden/{id}")]
         public async Task<IActionResult> GetContributorsGarden(long id)
         {
             var garden = await _db.Gardens.FindAsync(id);
@@ -124,8 +136,13 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "List of garden contributors", content = contributors });
         }
 
+<<<<<<< HEAD
+        
+        [HttpGet("/user/{id}")]
+=======
 
         [HttpGet("user/{id}")]
+>>>>>>> backend-dev
         public async Task<IActionResult> GetGardensByContributor(long id)
         {
             var user = await _db.Users.FindAsync(id);

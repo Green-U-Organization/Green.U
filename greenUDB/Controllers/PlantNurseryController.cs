@@ -104,7 +104,18 @@ namespace GreenUApi.Controllers
         {
             var plantNursery = await _db.PlantNursery.FindAsync(id);
 
+<<<<<<< HEAD
+            var lines = await _context.Lines.Where(l => l.PLantNurseryId == plantNursery.Id).ToListAsync();
+
+            foreach(var line in lines){
+                line.PLantNurseryId = null;
+            }
+
+            _context.PlantNursery.Remove(plantNursery);
+            await _context.SaveChangesAsync();
+=======
             if (plantNursery == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect !"});
+>>>>>>> backend-dev
 
             _db.PlantNursery.Remove(plantNursery);
             await _db.SaveChangesAsync();

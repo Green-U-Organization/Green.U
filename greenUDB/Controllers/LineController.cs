@@ -144,6 +144,7 @@ namespace GreenUApi.Controllers
 
 
             await _db.SaveChangesAsync();
+>>>>>>> backend-dev
 
             return Ok(new { isEmpty = false, message = "This line is deleted", content = line });
         }

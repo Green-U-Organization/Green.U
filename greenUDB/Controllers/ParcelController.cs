@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using Docker.DotNet.Models;
 
 namespace GreenUApi.Controllers
 {
