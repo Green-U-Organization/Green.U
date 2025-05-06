@@ -232,6 +232,16 @@ type CreateTagsListByUserRequest = {
   hashtags: string[];
 };
 
+type GetTagsByUserIdRequest = {
+  userId: number;
+};
+
+type GetTagsByUserIdResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: string[];
+};
+
 type GetUserByIdResponse = {
   isEmpty: boolean;
   message: string;
@@ -266,6 +276,24 @@ type GetUserByIdRequest = {
   userId: number;
 };
 
+type editUserByUserIdRequest = {
+  userId: number;
+  username?: string;
+  password?: string;
+  isAdmin?: boolean;
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  bio?: string;
+  country?: string;
+  gender?: string;
+  birthday?: string;
+  skill_level?: number;
+  xp?: number;
+  newsletter?: boolean;
+  deleted?: boolean;
+};
+
 export const extendedGardenAPI = api
   .enhanceEndpoints({
     addTagTypes: [
@@ -276,6 +304,7 @@ export const extendedGardenAPI = api
       'garden-nursery',
       'connection - login',
       'tags-user',
+      'tags-userInterest',
     ],
   })
   .injectEndpoints({
@@ -513,6 +542,18 @@ export const extendedGardenAPI = api
         }
       ),
 
+      //GetTagsByUser >>
+      getTagsByUser: builder.query<
+        GetTagsByUserIdResponse,
+        GetTagsByUserIdRequest
+      >({
+        query: (arg) => ({
+          url: `/tags/user/${arg.userId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-userInterest'],
+      }),
+
       //GetUserById
       getUserById: builder.query<GetUserByIdResponse, GetUserByIdRequest>({
         query: (arg) => ({
@@ -520,6 +561,15 @@ export const extendedGardenAPI = api
           method: 'GET',
         }),
         providesTags: ['tags-user'],
+      }),
+
+      //EditUserByUserId
+      editUserByUserId: builder.mutation<void, editUserByUserIdRequest>({
+        query: (arg) => ({
+          url: `user/${arg.userId}`,
+          method: 'PATCH',
+          body: arg,
+        }),
       }),
     }),
   });
@@ -546,4 +596,6 @@ export const {
   useRegisterUserMutation,
   useCreateTagsListByUserMutation,
   useGetUserByIdQuery,
+  useEditUserByUserIdMutation,
+  useGetTagsByUserQuery,
 } = extendedGardenAPI;

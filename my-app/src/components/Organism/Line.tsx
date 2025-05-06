@@ -160,9 +160,11 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   //Modal Closing
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
       if (
         cropPopupRef.current &&
-        !cropPopupRef.current.contains(event.target as Node)
+        !cropPopupRef.current.contains(target) &&
+        !target.closest('[data-modal]')
       ) {
         dispatch(
           setAddCropPopup({
@@ -174,6 +176,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
     }
 
     if (addCropPopupDisplay) {
+      console.log('yo');
       document.addEventListener('mousedown', handleClickOutside);
     }
 
@@ -184,9 +187,12 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+
       if (
         existantPopupRef.current &&
-        !existantPopupRef.current.contains(event.target as Node)
+        !existantPopupRef.current.contains(target) &&
+        !target.closest('[data-modal]')
       ) {
         dispatch(
           setExistantCropPopup({
@@ -198,6 +204,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
     }
 
     if (ExistantCropPopupDisplay) {
+      console.log('yo-yo');
       document.addEventListener('mousedown', handleClickOutside);
     }
 
@@ -324,6 +331,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
               ? 'block'
               : 'none',
         }}
+        data-modal
       >
         <AddCropPopup lineId={line.id} />
       </div>
@@ -336,6 +344,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
               ? 'block'
               : 'none',
         }}
+        data-modal
       >
         <ExistentCropPopup lineId={line.id} />
       </div>

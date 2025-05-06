@@ -4,15 +4,26 @@ import Card from '../Atom/Card';
 import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-import { useCreateCropToLineMutation } from '@/slice/fetch';
+import {
+  useCreateCropToLineMutation,
+  useEditUserByUserIdMutation,
+  useGetUserByIdQuery,
+} from '@/slice/fetch';
+import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import type { AddCropPopup } from '@/utils/types';
 import { setAddCropPopup } from '@/redux/display/displaySlice';
+import XpTable from '@/utils/Xp';
 
 const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   //Local State
   const [plantationDistance, setPlantationDistance] = useState<number>(10);
   const [selectedIcon, setSelectedIcon] = useState<string>('');
+
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const id = Number(userCookie?.id);
 
   //Variables
   const iconList = [
@@ -35,6 +46,8 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
 
   //RTK Query
   const [createCropToLine] = useCreateCropToLineMutation();
+  const [addXp] = useEditUserByUserIdMutation();
+  const user = useGetUserByIdQuery({ userId: id });
 
   //Handlers
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -64,6 +77,12 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
 
     try {
       await createCropToLine(cropData).unwrap();
+      await addXp({
+        userId: id,
+        xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
+      });
+
+      console.log('xp : ', (user?.data?.content?.xp ?? 0) + XpTable.addCrop);
       console.log('crop created');
       dispatch(
         setAddCropPopup({

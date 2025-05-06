@@ -3,8 +3,14 @@ import Button from '../Atom/Button';
 import H2 from '../Atom/H2';
 import { useSelector } from 'react-redux';
 import { RootState, useDispatch } from '@/redux/store';
-import { useCreateNewParcelMutation } from '@/slice/fetch';
+import {
+  useCreateNewParcelMutation,
+  useEditUserByUserIdMutation,
+  useGetUserByIdQuery,
+} from '@/slice/fetch';
 import { setAddParcelPopup } from '@/redux/display/displaySlice';
+import XpTable from '@/utils/Xp';
+import Cookies from 'js-cookie';
 
 const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
   //Local Variables
@@ -12,11 +18,19 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
   const [width, setWidth] = useState<number>(1);
   const [repeat, setRepeat] = useState<number>(1);
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  console.log('USSSERR3 : ', userCookie);
+  const id = Number(userCookie?.id);
+
   //RTK Queries
   const [
     createNewParcel, // fetch de création de ligne
     //{ isLoading: createNewParcelIsLoading },
   ] = useCreateNewParcelMutation();
+  const [addXp] = useEditUserByUserIdMutation();
+  const user = useGetUserByIdQuery({ userId: id });
 
   //Hooks
   const dispatch = useDispatch();
@@ -44,7 +58,11 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
 
     for (let i = 0; i < repeat; i++) {
       try {
-        createNewParcel(newParcel).unwrap();
+        await createNewParcel(newParcel).unwrap();
+        await addXp({
+          userId: id,
+          xp: (user?.data?.content?.xp ?? 0) + XpTable.addParcel,
+        });
         console.log('parcel created');
       } catch {
         console.log('error creating parcel');

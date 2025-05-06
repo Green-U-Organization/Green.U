@@ -1,6 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import {
   useGetAllGardenByUserIdQuery,
+  useGetTagsByUserQuery,
   useGetUserByIdQuery,
 } from '@/slice/fetch';
 import React from 'react';
@@ -19,7 +21,7 @@ import SlimCard from '../Atom/SlimCard';
 import H2 from '../Atom/H2';
 import { useDispatch } from 'react-redux';
 
-const Profile = () => {
+const PublicProfile = () => {
   const { translations } = useLanguage();
 
   //Hooks
@@ -28,17 +30,15 @@ const Profile = () => {
 
   //USER info
   const userData = Cookies.get('user_data');
-  console.log('userDarta : ', userData);
   const userCookie = userData ? JSON.parse(userData) : null;
-  console.log('userCookie : ', userCookie);
   const id = Number(userCookie?.id);
-  console.log('id : ', id);
 
   //RTK Query
-  const user = id ? useGetUserByIdQuery({ userId: id }) : null;
-  console.log('user : ', user);
-  console.log(user?.data?.content.birthday);
-  const gardens = id ? useGetAllGardenByUserIdQuery({ userId: id }) : null;
+  const user = useGetUserByIdQuery({ userId: id });
+  const gardens = useGetAllGardenByUserIdQuery({ userId: id });
+  const userInterestTags = useGetTagsByUserQuery({ userId: id });
+
+  const level = Math.ceil(Number(user?.data?.content.xp) / 100);
 
   return (
     <div className="flex items-center justify-center">
@@ -75,25 +75,28 @@ const Profile = () => {
 
           <p className="mt-5 text-gray-700">{user?.data?.content.bio}</p>
 
-          {/* XP et Badges */}
-          {/* <div className="mt-5">
-                  <h2 className="text-2xl font-semibold">
-                    🏆 {translations.xpandbadges}
-                  </h2> */}
+          {/* XP */}
+          <div className="mt-5">
+            <h2 className="text-2xl font-semibold">🏆 {translations.xp}</h2>
 
-          {/* Barre d'XP */}
-          {/* <div className="bg-bgbutton mt-2 h-4 w-full rounded-full">
-                    <div
-                      className="h-4 rounded-full bg-green-500"
-                      style={{ width: `${(xp / maxXp) * 100}%` }}
-                    ></div>
-                  </div>
-                  <p className="mt-1 text-gray-700">
-                    {xp} / {maxXp} XP
-                  </p> */}
+            {/* Barre d'XP */}
+            <div className="bg-bgbutton mt-2 h-4 w-full rounded-full">
+              <div
+                className="h-4 rounded-full bg-green-500"
+                style={{
+                  width: `${Number(user?.data?.content.xp) - (level - 1) * 100}%`,
+                }}
+              ></div>
+            </div>
+            <div className="flex justify-between">
+              <p className="mt-1 text-gray-700">
+                {Number(user?.data?.content.xp) - (level - 1) * 100} / 100 XP
+              </p>
+              <p className="mt-1 text-gray-700">Level: {level}</p>
+            </div>
 
-          {/* Badges débloqués */}
-          {/* <div className="mt-3 flex flex-wrap gap-2">
+            {/* Badges débloqués */}
+            {/* <div className="mt-3 flex flex-wrap gap-2">
                     {unlockedBadges.map((badge, index) => (
                       <span
                         key={index}
@@ -102,8 +105,8 @@ const Profile = () => {
                         {badge.name}
                       </span>
                     ))}
-                  </div>
-                </div> */}
+                  </div> */}
+          </div>
 
           {/* Likes */}
           {/* <div className="mt-5 flex items-center gap-2">
@@ -117,62 +120,64 @@ const Profile = () => {
               🌿 {translations.participating}
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {gardens?.data?.content.map((garden, index) => (
-                <SlimCard
-                  bgColor="bg-cardbackground"
-                  className="bg-parcel mt-[2vh] ml-[0vw] flex min-h-[5vh] w-[90vw] flex-col justify-center"
-                  key={garden.id}
-                >
-                  <div className="flex items-center justify-between">
-                    <div
-                      onClick={() => {
-                        dispatch(setSelectedGarden(garden));
-                        clearSelectedGarden();
-                        setSelectedGardenCookies(garden);
-                        router.push('/garden/display');
-                      }}
-                      className="flex w-[80vw] flex-col"
-                    >
-                      <H2>{garden.name}</H2>
-                      <p className="ml-[5vw] italic">{garden.description}</p>
-                    </div>
+              {id &&
+                gardens?.data?.content.map((garden) => (
+                  <SlimCard
+                    bgColor="bg-cardbackground"
+                    className="bg-parcel mt-[2vh] ml-[0vw] flex min-h-[5vh] w-[90vw] flex-col justify-center"
+                    key={garden.id}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div
+                        onClick={() => {
+                          dispatch(setSelectedGarden(garden));
+                          clearSelectedGarden();
+                          setSelectedGardenCookies(garden);
+                          router.push('/garden/display');
+                        }}
+                        className="flex w-[80vw] flex-col"
+                      >
+                        <H2>{garden.name}</H2>
+                        <p className="ml-[5vw] italic">{garden.description}</p>
+                      </div>
 
-                    <img
-                      // onClick={handleConfigurationClick}
-                      className="image mr-[5vw] h-[10vw] w-[10vw] object-contain"
-                      src={
-                        garden.privacy === 1
-                          ? '/image/icons/lockClose.png'
-                          : '/image/icons/lockOpen.png'
-                      }
-                      alt=""
-                    />
-                  </div>
-                </SlimCard>
+                      <img
+                        // onClick={handleConfigurationClick}
+                        className="image mr-[5vw] h-[10vw] w-[10vw] object-contain"
+                        src={
+                          garden.privacy > 0
+                            ? '/image/icons/lockOpen.png'
+                            : '/image/icons/lockClose.png'
+                        }
+                        alt=""
+                      />
+                    </div>
+                  </SlimCard>
+                ))}
+            </div>
+          </div>
+
+          {/* Intérêts */}
+          <div className="mt-5">
+            <h2 className="text-2xl font-semibold">
+              🌱{translations.interests}
+            </h2>
+            <div className="flex list-inside list-disc flex-wrap text-gray-700">
+              {/* Liste des hashtags */}
+              {userInterestTags?.data?.content.map((hashtag) => (
+                <div key={hashtag} className="mx-1">
+                  <SlimCard
+                    bgColor="bg-bgcard"
+                    className="flex justify-center bg-amber-200 px-2"
+                  >
+                    <p>{hashtag}</p>
+                  </SlimCard>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Liste des hashtags */}
-          {user?.data?.content.tagsInterests.map((hashtag) => (
-            <div key={hashtag}>
-              <p>{hashtag}</p>
-            </div>
-          ))}
-
-          {/* Compétences */}
-          <div className="mt-5">
-            <h2 className="text-2xl font-semibold">
-              🌱{translations.specialties}
-            </h2>
-            <ul className="list-inside list-disc text-gray-700">
-              <li>Permaculture & organic vegetable gardens</li>
-              <li>Creation and maintenance of gardens</li>
-              <li>Composting and natural recycling</li>
-            </ul>
-          </div>
-
-          {/* Réalisations */}
+          {/* Réalisations
           <div className="mt-5">
             <h2 className="text-2xl font-semibold">
               🏡 {translations.achievements}
@@ -181,7 +186,7 @@ const Profile = () => {
               I recently set up a community vegetable garden and designed an
               ecological pond attracting local biodiversity.
             </p>
-          </div>
+          </div> */}
 
           {/* Réseaux Sociaux */}
           <div className="mt-5">
@@ -214,7 +219,6 @@ const Profile = () => {
             {/* <Button onClick={() => router.push('/editProfile')}>
                     {translations.edit}
                   </Button> */}
-            <Button>{translations.edit}</Button>
           </div>
         </div>
       </Card>
@@ -222,4 +226,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default PublicProfile;
