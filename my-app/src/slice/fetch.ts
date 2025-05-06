@@ -1,3 +1,4 @@
+import { Garden } from '@/utils/types';
 import api from './api';
 
 type CreateNewGardenLineRequest = {
@@ -229,6 +230,39 @@ type RegisterUserRequest = {
 type CreateTagsListByUserRequest = {
   userId: number;
   hashtags: string[];
+};
+
+type GetUserByIdResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    username: string;
+    password: string;
+    salt: string;
+    isAdmin: boolean;
+    firstname: string;
+    lastname: string;
+    email: string;
+    country: string;
+    gender: string;
+    birthday: string;
+    skill_level: number;
+    xp: number;
+    newsletter: boolean;
+    tou: boolean;
+    deleted: boolean;
+    createdAt: string;
+    contributors: string[];
+    followerUsers: string[];
+    gardens: Garden[];
+    logs: string[];
+    tagsInterests: string[];
+  };
+};
+
+type GetUserByIdRequest = {
+  userId: number;
 };
 
 export const extendedGardenAPI = api
@@ -477,6 +511,15 @@ export const extendedGardenAPI = api
           invalidatesTags: ['tags-user'],
         }
       ),
+
+      //GetUserById
+      getUserById: builder.query<GetUserByIdResponse, GetUserByIdRequest>({
+        query: (arg) => ({
+          url: `/user/${arg.userId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-user'],
+      }),
     }),
   });
 
@@ -501,4 +544,5 @@ export const {
   useLoginUserMutation,
   useRegisterUserMutation,
   useCreateTagsListByUserMutation,
+  useGetUserByIdQuery,
 } = extendedGardenAPI;

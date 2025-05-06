@@ -1,8 +1,8 @@
-import GardenSelector from '@/components/Page/GardenSelector';
+import Profile from '@/components/Page/Profile';
 import React from 'react';
 
 const page = () => {
-  return <GardenSelector></GardenSelector>;
+  return <Profile></Profile>;
 };
 
 export default page;
