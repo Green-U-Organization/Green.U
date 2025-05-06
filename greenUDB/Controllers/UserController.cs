@@ -44,19 +44,51 @@ public class UserController(GreenUDB db) : ControllerBase
     private readonly GreenUDB _db = db;
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<object>> GetUser(long id)
+    public async Task<IActionResult> GetUser(long id)
     {
-        var user = await _db.Users
-            .Include(u => u.TagsInterests)
-            .FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _db.Users.FindAsync(id);
 
-        if (user == null) 
+        if (user == null)
             return NotFound(new { isEmpty = true, message = "User not found" });
 
-        if (user.Deleted) 
+        if (user.Deleted)
             return NotFound(new { isEmpty = true, message = "This user is deleted" });
 
-        return Ok(new { isEmpty = false, message = "This is the user data", content = user });
+        var tagInterests = await _db.TagsInterests
+            .Where(t => t.UserId == id)
+            .Select(t => new
+            {
+                t.Id,
+                t.Hashtag,
+                t.Created_at,
+                t.GardenId
+            })
+            .ToListAsync();
+
+        return Ok(new
+        {
+            isEmpty = false,
+            message = "This is the user data",
+            content = new
+            {
+                user.Id,
+                user.Username,
+                user.Firstname,
+                user.Lastname,
+                user.Email,
+                user.Country,
+                user.Gender,
+                user.Birthday,
+                user.Bio,
+                user.Skill_level,
+                user.Xp,
+                user.Newsletter,
+                user.Tou,
+                user.Deleted,
+                user.CreatedAt,
+                tag_interests = tagInterests
+            }
+        });
     }
 
 
