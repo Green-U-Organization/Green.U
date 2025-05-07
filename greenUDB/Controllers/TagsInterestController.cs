@@ -81,6 +81,29 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "User Tag", content = UserTags});
         }
 
+        [HttpGet("allusers")]
+        public async Task<ActionResult<TagsInterest>> GetAllUserByTag([FromBody] TagsInterest tag)
+        {
+            if (tag.Hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+
+            var user = await _db.TagsInterests
+                .Where(t => t.Hashtag == tag.Hashtag)
+                .Select(t => 
+                    _db.Users.Where(u => u.Id == t.UserId).Select(u => new
+                    {
+                        u.Id,
+                        u.Username,
+                        u.Xp,
+                        u.Country,
+                        u.Bio,
+                        u.TagsInterests
+                    }).FirstOrDefault()
+                    )
+                    .ToArrayAsync();
+
+            return Ok(new { isEmpty = false, message = "All user with tag", content = user });
+        }
+
         [HttpDelete("user/{id}")]
         public async Task<ActionResult<TagsInterest>> DeleteUserTag(long id, TagsInterest Tag)
         {
@@ -158,6 +181,28 @@ namespace GreenUApi.Controllers
             if (UserTags.Length == 0) return NotFound(new { message = "This garden doesn't have tags" });
 
             return Ok(UserTags);
+        }
+
+        [HttpGet("allgarden")]
+        public async Task<ActionResult<TagsInterest>> GetAllGardenByTag([FromBody] TagsInterest tag)
+        {
+            if (tag.Hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+
+            var user = await _db.TagsInterests
+                .Where(t => t.Hashtag == tag.Hashtag)
+                .Select(t =>
+                    _db.Gardens.Where(g => g.Id == t.GardenId).Select(g => new
+                    {
+                        g.Id,
+                        g.Name,
+                        g.Description,
+                        g.Type,
+                        g.TagsInterests
+                    }).FirstOrDefault()
+                    )
+                    .ToArrayAsync();
+
+            return Ok(new { isEmpty = false, message = "All user with tag", content = user });
         }
 
         [HttpDelete("garden/{id}")]
