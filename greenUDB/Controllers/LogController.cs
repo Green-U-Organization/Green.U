@@ -33,5 +33,17 @@ namespace GreenUApi.Controllers
 
             return Ok(Log);
         }
+
+        [HttpGet("parcel/{id}")]
+        public async Task<ActionResult<Garden>> GetParcelLog(long id)
+        {
+            var Log = await _db.Logs
+                .Where(l => l.ParcelId == id)
+                .ToListAsync();
+
+            if (Log.Count == 0) return BadRequest(new { isEmpty = true, message = "no log or id is incorrect" });
+
+            return Ok(Log);
+        }
     }
 }
