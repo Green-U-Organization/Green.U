@@ -73,6 +73,7 @@ const LoginForm = () => {
           {
             username: response.content.username,
             id: response.content.id,
+            xp: response.content.id,
           }
         );
 

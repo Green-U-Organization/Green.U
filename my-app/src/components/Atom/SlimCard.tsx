@@ -16,7 +16,7 @@ const SlimCard: React.FC<CardProps> = ({
 
   return (
     <section
-      className={`relative m-auto font-(family-name:--font-jersey) text-2xl ${className}`}
+      className={`relative font-(family-name:--font-jersey) text-2xl ${className}`}
     >
       {/* Bordures */}
       <div className={`absolute top-0 left-0 z-50 h-full w-0.5 bg-black`}></div>
