@@ -42,16 +42,21 @@ namespace GreenUApi.Controllers
         [HttpPost("list/user/{id}")]
         public async Task<ActionResult<TagsInterest>> CreateUserTagWithList(long id, [FromBody] HashtagContainer container)
         {
-            var user = await _db.Users.FindAsync(id);
-            if (user == null) return NotFound(new { isEmpty = true, message = "User not found" });
+            var user = await _db.Users
+                .Where(u => u.Id == id)
+                .AnyAsync();
+
+            if (!user) return NotFound(new { isEmpty = true, message = "User not found" });
 
             // Create all entities with Select and add all tags with AddRange()
             // https://learn.microsoft.com/fr-fr/dotnet/api/system.collections.generic.list-1.addrange?view=net-8.0
-            var newTags = container.Hashtags.Select(tag => new TagsInterest
-            {
-                Hashtag = tag,
-                UserId = id 
-            }).ToList();
+            var newTags = container.Hashtags
+                .Select(tag => new TagsInterest
+                {
+                    Hashtag = tag,
+                    UserId = id 
+                })
+                .ToList();
 
             _db.TagsInterests.AddRange(newTags);
 
@@ -121,6 +126,32 @@ namespace GreenUApi.Controllers
 
                 return Ok(new { isEmpty = false, message = "Tag Deleted !", content = tagExists});
 
+        }
+
+        [HttpDelete("list/user/{id}")]
+        public async Task<ActionResult<TagsInterest>> DeleteUserTagWithList(long id, [FromBody] HashtagContainer container)
+        {
+            var user = await _db.Users
+                .Where(u => u.Id == id)
+                .AnyAsync();
+
+            if (!user) return NotFound(new { isEmpty = true, message = "User not found" });
+
+            // Create all entities with Select and add all tags with AddRange()
+            // https://learn.microsoft.com/fr-fr/dotnet/api/system.collections.generic.list-1.addrange?view=net-8.0
+            var newTags = container.Hashtags
+                .Select(tag => new TagsInterest
+                {
+                    UserId = id,
+                    Hashtag = tag
+                })
+                .ToList();
+
+            _db.TagsInterests.RemoveRange(newTags);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "User tag list created !", content = newTags });
         }
 
 
