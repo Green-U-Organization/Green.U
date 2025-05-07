@@ -52,20 +52,34 @@ public class UserController(GreenUDB db) : ControllerBase
             .Where(u => u.Id == id)
             .Select(u => new
             {
-                User = u,
-                Tags = _db.TagsInterests.Where(t => t.UserId == u.Id).FirstOrDefault()
+                u.Id,
+                u.Username,
+                u.Firstname,
+                u.Lastname,
+                u.Email,
+                u.Country,
+                u.Gender,
+                u.Birthday,
+                u.Bio,
+                tagsinterest = _db.TagsInterests.Where(t => t.UserId == u.Id).ToArray(),
+                u.Skill_level,
+                u.Xp,
+                u.Newsletter,
+                u.Tou,
+                u.Deleted,
+                u.CreatedAt
+               
             })
             .FirstOrDefaultAsync();
 
         if (user == null)
             return NotFound(new { isEmpty = true, message = "User not found" });
 
-
         return Ok(new
         {
             isEmpty = false,
             message = "This is the user data",
-            content = user.User
+            content = user
         });
     }
 
