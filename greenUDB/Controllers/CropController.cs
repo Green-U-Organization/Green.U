@@ -90,6 +90,8 @@ namespace GreenUApi.Controllers
 
             if (crop.Harvesting != null) existingCrop.Harvesting = crop.Harvesting;
 
+            existingCrop.PlantNurseryId = crop.PlantNurseryId;
+
             await _db.SaveChangesAsync();
             return Ok(new { isEmpty = false, message = "This crop is edited", content = existingCrop});
   
