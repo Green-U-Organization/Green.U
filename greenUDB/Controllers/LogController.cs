@@ -45,5 +45,17 @@ namespace GreenUApi.Controllers
 
             return Ok(Log);
         }
+
+        [HttpGet("line/{id}")]
+        public async Task<ActionResult<Garden>> GetLinelLog(long id)
+        {
+            var Log = await _db.Logs
+                .Where(l => l.LineId == id)
+                .ToListAsync();
+
+            if (Log.Count == 0) return BadRequest(new { isEmpty = true, message = "no log or id is incorrect" });
+
+            return Ok(Log);
+        }
     }
 }
