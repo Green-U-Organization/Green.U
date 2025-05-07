@@ -101,6 +101,8 @@ namespace GreenUApi.Controllers
                     )
                     .ToArrayAsync();
 
+            if (user.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
+
             return Ok(new { isEmpty = false, message = "All user with tag", content = user });
         }
 
@@ -188,7 +190,7 @@ namespace GreenUApi.Controllers
         {
             if (tag.Hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
 
-            var user = await _db.TagsInterests
+            var garden = await _db.TagsInterests
                 .Where(t => t.Hashtag == tag.Hashtag)
                 .Select(t =>
                     _db.Gardens.Where(g => g.Id == t.GardenId).Select(g => new
@@ -202,7 +204,9 @@ namespace GreenUApi.Controllers
                     )
                     .ToArrayAsync();
 
-            return Ok(new { isEmpty = false, message = "All user with tag", content = user });
+            if (garden.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
+
+            return Ok(new { isEmpty = false, message = "All user with tag", content = garden });
         }
 
         [HttpDelete("garden/{id}")]
