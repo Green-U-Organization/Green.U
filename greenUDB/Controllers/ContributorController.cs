@@ -97,7 +97,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "The contributor", content = contributor });
         }
 
-        [HttpGet("/garden/{id}")]
+        [HttpGet("garden/{id}")]
         public async Task<IActionResult> GetContributorsGarden(long id)
         {
             var garden = await _db.Gardens.FindAsync(id);
@@ -114,7 +114,9 @@ namespace GreenUApi.Controllers
                     (contributor, user) => new
                     {
                         user.Id,
-                        user.Username
+                        user.Username,
+                        contributor.Admin,
+                        contributorId = contributor.Id
                     })
                 .ToListAsync();
 
@@ -143,7 +145,8 @@ namespace GreenUApi.Controllers
                     {
                         garden.Id,
                         garden.Name,
-                        garden.Description
+                        garden.Description,
+                        contributorId = contributor.Id
                     })
                 .ToListAsync();
 
