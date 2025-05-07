@@ -253,4 +253,5 @@ export type CropType = {
   sowing: string;
   planting: string;
   harvesting: string;
+  icon: string;
 };
