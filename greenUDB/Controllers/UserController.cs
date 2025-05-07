@@ -35,7 +35,7 @@ public class UserModification
 
     public string? Bio { get; set; }
 
-    public long? xp { get; set; }
+    public long? Xp { get; set; }
 }
 
 [Route("user")]
@@ -122,7 +122,6 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (!string.IsNullOrEmpty(modification.Username)) user.Username = modification.Username;
 
-
         if (!string.IsNullOrEmpty(modification.Salt)) return BadRequest(new { isEmpty = true, message = "You can't modify SALT !! Modify password ! La bise fieux" });
 
         if (!string.IsNullOrEmpty(modification.Password))
@@ -154,7 +153,7 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (!string.IsNullOrEmpty(modification.Bio)) user.Bio = modification.Bio;
 
-        if (modification.xp.HasValue) user.Xp = modification.xp.Value;
+        if (modification.Xp.HasValue) user.Xp = modification.Xp.Value;
 
         _db.Users.Update(user);
         await _db.SaveChangesAsync();
