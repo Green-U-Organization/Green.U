@@ -4,12 +4,8 @@ using GreenUApi.Models;
 
 namespace GreenUApi.Controllers
 {
-<<<<<<< HEAD
-    public class ContributorDTO{
-=======
     public class ContributorDTO
     {
->>>>>>> backend-dev
         public bool Admin { get; set; }
     }
 
@@ -66,11 +62,7 @@ namespace GreenUApi.Controllers
             _db.Contributors.Remove(contributorExist);
             await _db.SaveChangesAsync();
 
-<<<<<<< HEAD
-            return Ok(new { isEmpty = true, message = "Contribuor deleted !"});
-=======
             return Ok(new { isEmpty = true, message = "Contribuor deleted !" });
->>>>>>> backend-dev
         }
 
         [HttpPatch("{id}")]
@@ -88,11 +80,7 @@ namespace GreenUApi.Controllers
             _db.Update(contributor);
             await _db.SaveChangesAsync();
 
-<<<<<<< HEAD
-            return Ok(new { isEmpty = false, message = "The contributor is modified !", content = contributor}); 
-=======
             return Ok(new { isEmpty = false, message = "The contributor is modified !", content = contributor });
->>>>>>> backend-dev
         }
 
         [HttpGet("{id}")]
@@ -136,13 +124,8 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "List of garden contributors", content = contributors });
         }
 
-<<<<<<< HEAD
-        
-        [HttpGet("/user/{id}")]
-=======
 
         [HttpGet("user/{id}")]
->>>>>>> backend-dev
         public async Task<IActionResult> GetGardensByContributor(long id)
         {
             var user = await _db.Users.FindAsync(id);
