@@ -35,7 +35,7 @@ public class UserModification
 
     public string? Bio { get; set; }
 
-    public long? xp { get; set; }
+    public long? Xp { get; set; }
 }
 
 [Route("user")]
@@ -52,20 +52,34 @@ public class UserController(GreenUDB db) : ControllerBase
             .Where(u => u.Id == id)
             .Select(u => new
             {
-                User = u,
-                Tags = _db.TagsInterests.Where(t => t.UserId == u.Id).FirstOrDefault()
+                u.Id,
+                u.Username,
+                u.Firstname,
+                u.Lastname,
+                u.Email,
+                u.Country,
+                u.Gender,
+                u.Birthday,
+                u.Bio,
+                tagsinterest = _db.TagsInterests.Where(t => t.UserId == u.Id).ToArray(),
+                u.Skill_level,
+                u.Xp,
+                u.Newsletter,
+                u.Tou,
+                u.Deleted,
+                u.CreatedAt
+               
             })
             .FirstOrDefaultAsync();
 
         if (user == null)
             return NotFound(new { isEmpty = true, message = "User not found" });
 
-
         return Ok(new
         {
             isEmpty = false,
             message = "This is the user data",
-            content = user.User
+            content = user
         });
     }
 
@@ -108,7 +122,6 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (!string.IsNullOrEmpty(modification.Username)) user.Username = modification.Username;
 
-
         if (!string.IsNullOrEmpty(modification.Salt)) return BadRequest(new { isEmpty = true, message = "You can't modify SALT !! Modify password ! La bise fieux" });
 
         if (!string.IsNullOrEmpty(modification.Password))
@@ -140,7 +153,7 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (!string.IsNullOrEmpty(modification.Bio)) user.Bio = modification.Bio;
 
-        if (modification.xp.HasValue) user.Xp = modification.xp.Value;
+        if (modification.Xp.HasValue) user.Xp = modification.Xp.Value;
 
         _db.Users.Update(user);
         await _db.SaveChangesAsync();
