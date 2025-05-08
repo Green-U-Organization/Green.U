@@ -8,9 +8,38 @@
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace GreenUApi.Controllers
 {
+
+    public partial class LogDTO
+    {
+    
+        public long? Id { get; set; }
+
+        public long? AuthorId { get; set; }
+
+        public long? GardenId { get; set; }
+
+        public long? ParcelId { get; set; }
+
+        public long? LineId { get; set; }
+
+        public long? CropId { get; set; }
+
+        public long? PlantNurseryId { get; set; }
+
+        public string? Action { get; set; }
+
+        public string? Comment { get; set; }
+
+        public string? Type { get; set; } 
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+    }
+
     [Route("/log")]
     [ApiController]
     public class LogController : ControllerBase
@@ -20,6 +49,39 @@ namespace GreenUApi.Controllers
         public LogController(GreenUDB context)
         {
             _db = context;
+        }
+
+        [HttpPost("user/{id}")]
+        public async Task<ActionResult<Log>> CreateUserLog(long id, LogDTO logDTO)
+        {
+
+            if (logDTO.Action == null || logDTO.Comment == null) return BadRequest(new { isEmpty = true, message = "Action or comment is empty" });
+
+            bool user = await _db.Users
+                .Where(u => u.Id == id)
+                .AnyAsync();
+
+            if (!user) return BadRequest(new { isEmpty = true, message = "User id is incorrect" });
+
+            logDTO.Type = "user";
+            logDTO.AuthorId = id;
+
+            Log log = new Log {
+                AuthorId = logDTO.AuthorId,
+                GardenId = logDTO.GardenId,
+                ParcelId = logDTO.ParcelId,
+                LineId = logDTO.LineId,
+                CropId = logDTO.CropId,
+                Action = logDTO.Action,
+                Comment = logDTO.Comment,
+                Type = logDTO.Type
+            };
+
+            _db.Add(log);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "Your log is created !", content = log });
+
         }
 
         [HttpGet("garden/{id}")]
