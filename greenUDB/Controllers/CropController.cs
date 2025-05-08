@@ -80,44 +80,56 @@ namespace GreenUApi.Controllers
 
             if (crop.Vegetable != null)
             {
-                modificationLog += $"Edit the Vegetable: {existingCrop.Vegetable} => {crop.Vegetable} ";
+                modificationLog += $"Edit the Vegetable: {existingCrop.Vegetable} => {crop.Vegetable} \n";
                 existingCrop.Vegetable = crop.Vegetable;
             }
 
             if (crop.Variety != null)
             {
-                modificationLog += $"Edit the Variety: {existingCrop.Variety} => {crop.Variety} ";
+                modificationLog += $"Edit the Variety: {existingCrop.Variety} => {crop.Variety} \n";
                 existingCrop.Variety = crop.Variety;
             }
 
-            if (crop.LineId != 0)
+            if (crop.LineId != null)
             {
-                modificationLog += $"Edit the LineId: {existingCrop.LineId} => {crop.LineId} ";
+                modificationLog += $"Edit the LineId: {existingCrop.LineId} => {crop.LineId} \n";
                 existingCrop.LineId = crop.LineId;
             }
 
             if (crop.Icon != null)
             {
-                modificationLog += $"Edit the Icon: {existingCrop.Icon} => {crop.Icon} ";
+                modificationLog += $"Edit the Icon: {existingCrop.Icon} => {crop.Icon} \n";
                 existingCrop.Icon = crop.Icon;
             }
 
             if (crop.Sowing != null)
             {
-                modificationLog += $"Edit the Sowing: {existingCrop.Sowing} => {crop.Sowing} ";
+                modificationLog += $"Edit the Sowing: {existingCrop.Sowing} => {crop.Sowing} \n";
                 existingCrop.Sowing = crop.Sowing;
             }
 
             if (crop.Planting != null)
             {
-                modificationLog += $"Edit the Planting: {existingCrop.Planting} => {crop.Planting} ";
+                modificationLog += $"Edit the Planting: {existingCrop.Planting} => {crop.Planting} \n";
                 existingCrop.Planting = crop.Planting;
             }
 
             if (crop.Harvesting != null)
             {
-                modificationLog += $"Edit the Harvesting: {existingCrop.Harvesting} => {crop.Harvesting} ";
+                modificationLog += $"Edit the Harvesting: {existingCrop.Harvesting} => {crop.Harvesting} \n";
                 existingCrop.Harvesting = crop.Harvesting;
+            }
+
+            if (crop.NPot != null)
+            {
+                modificationLog += $"Edit the NPot: {existingCrop.NPot} => {crop.NPot} \n";
+                existingCrop.NPot = crop.NPot;
+            }
+
+            if (crop.PotSize != null)
+            {
+                modificationLog += $"Edit the PotSize: {existingCrop.PotSize} => {crop.PotSize} \n";
+                existingCrop.PotSize = crop.PotSize;
             }
 
             if (crop.PlantNurseryId != null)
