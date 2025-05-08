@@ -143,9 +143,6 @@ namespace GreenUApi.Controllers
                 .Where(t => t.UserId == id && tags.Hashtags.Contains(t.Hashtag))
                 .ToArrayAsync();
 
-            Console.WriteLine(Tags.Length);
-            Console.WriteLine(tags.Hashtags.Count);
-
             if (Tags.Length != tags.Hashtags.Count) return BadRequest(new { isEmpty = false, message = "A tag is incorrect..." });
 
             _db.TagsInterests.RemoveRange(Tags);
@@ -207,14 +204,14 @@ namespace GreenUApi.Controllers
 
             if (User == null) return NotFound("Garden not found");
 
-            var UserTags = await _db.TagsInterests
+            var GardenTag = await _db.TagsInterests
            .Where(t => t.GardenId == id)
            .Select(t => t.Hashtag)
            .ToArrayAsync();
 
-            if (UserTags.Length == 0) return NotFound(new { message = "This garden doesn't have tags" });
+            if (GardenTag.Length == 0) return NotFound(new { message = "This garden doesn't have tags" });
 
-            return Ok(UserTags);
+            return Ok(new { isEmpty = false, message = "Your garden tag", content = GardenTag});
         }
 
         [HttpGet("allgarden")]
@@ -254,6 +251,30 @@ namespace GreenUApi.Controllers
                 await _db.SaveChangesAsync();
 
                 return Ok(new { message = "Tag Deleted !" });
+        }
+
+        [HttpDelete("list/garden/{id}")]
+        public async Task<ActionResult<TagsInterest>> DeleteGardenTagWithList(long id, [FromBody] TagsInterestDTO tags)
+        {
+            var user = await _db.Users
+                .Where(u => u.Id == id)
+                .AnyAsync();
+
+            if (!user) return NotFound(new { isEmpty = true, message = "User not found" });
+
+            // Delete all entities with RemoveRange();
+            // https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.removerange?view=net-9.0
+            var Tags = await _db.TagsInterests
+                .Where(t => t.GardenId == id && tags.Hashtags.Contains(t.Hashtag))
+                .ToArrayAsync();
+
+            if (Tags.Length != tags.Hashtags.Count) return BadRequest(new { isEmpty = false, message = "A tag is incorrect..." });
+
+            _db.TagsInterests.RemoveRange(Tags);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "User tag list Deleted !", content = Tags });
         }
     }
 }
