@@ -76,19 +76,49 @@ namespace GreenUApi.Controllers
 
             if (existingCrop == null) return BadRequest(new { isEmpty = true, message = "The crop id is incorrect" });
 
-            if (crop.Vegetable != null) existingCrop.Vegetable = crop.Vegetable;
+            string modificationLog = "";
 
-            if (crop.Variety != null) existingCrop.Variety = crop.Variety;
+            if (crop.Vegetable != null)
+            {
+                modificationLog += $"Edit the Vegetable: {existingCrop.Vegetable} => {crop.Vegetable} ";
+                existingCrop.Vegetable = crop.Vegetable;
+            }
 
-            if (crop.LineId != 0) existingCrop.LineId = crop.LineId;
+            if (crop.Variety != null)
+            {
+                modificationLog += $"Edit the Variety: {existingCrop.Variety} => {crop.Variety} ";
+                existingCrop.Variety = crop.Variety;
+            }
 
-            if (crop.Icon != null) existingCrop.Icon = crop.Icon;
+            if (crop.LineId != 0)
+            {
+                modificationLog += $"Edit the LineId: {existingCrop.LineId} => {crop.LineId} ";
+                existingCrop.LineId = crop.LineId;
+            }
 
-            if (crop.Sowing != null) existingCrop.Sowing = crop.Sowing;
+            if (crop.Icon != null)
+            {
+                modificationLog += $"Edit the Icon: {existingCrop.Icon} => {crop.Icon} ";
+                existingCrop.Icon = crop.Icon;
+            }
 
-            if (crop.Planting != null) existingCrop.Planting = crop.Planting;
+            if (crop.Sowing != null)
+            {
+                modificationLog += $"Edit the Sowing: {existingCrop.Sowing} => {crop.Sowing} ";
+                existingCrop.Sowing = crop.Sowing;
+            }
 
-            if (crop.Harvesting != null) existingCrop.Harvesting = crop.Harvesting;
+            if (crop.Planting != null)
+            {
+                modificationLog += $"Edit the Planting: {existingCrop.Planting} => {crop.Planting} ";
+                existingCrop.Planting = crop.Planting;
+            }
+
+            if (crop.Harvesting != null)
+            {
+                modificationLog += $"Edit the Harvesting: {existingCrop.Harvesting} => {crop.Harvesting} ";
+                existingCrop.Harvesting = crop.Harvesting;
+            }
 
             if (crop.PlantNurseryId != null)
             {
@@ -96,8 +126,20 @@ namespace GreenUApi.Controllers
                     .Where(p => p.Id == crop.PlantNurseryId)
                     .AnyAsync();
                 if (!existingPlantNursery) return BadRequest(new { isEmpty = true, message = "The plantnurseryId is incorrect" });
+                modificationLog += $"Edit the PlantNurseryId: {existingCrop.PlantNurseryId} => {crop.PlantNurseryId} ";
                 existingCrop.PlantNurseryId = crop.PlantNurseryId;
             }
+
+
+            Log log = new()
+            {
+                CropId = existingCrop.Id,
+                Action = "Edit Crop",
+                Comment = modificationLog,
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
 
             await _db.SaveChangesAsync();
             return Ok(new { isEmpty = false, message = "This crop is edited", content = existingCrop});
