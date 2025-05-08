@@ -17,6 +17,25 @@ namespace GreenUApi.Controllers
             public required List<string> Hashtags { get; set;}
         }
 
+        [HttpGet("popular")]
+        public async Task<ActionResult<TagsInterest>> GetPopularTags()
+        {
+
+            var PopularTags = await _db.TagsInterests
+                .GroupBy(t => t.Hashtag)
+                .Select(g => new
+                {
+                    Tag = g.Key,
+                    Count = g.Count()
+                })
+                .OrderByDescending(t => t.Count)
+                .ToArrayAsync();
+
+            if (PopularTags.Length == 0) return BadRequest(new { isEmpty = true, message = "No tag..." });
+
+            return Ok(new { isEmpty = false, message = "All popular tag", content = PopularTags });
+        }
+
         [HttpPost("user/{id}")]
         public async Task<ActionResult<TagsInterest>> CreateUserTags(long id, [FromBody] TagsInterest Tag)
         {
@@ -109,25 +128,6 @@ namespace GreenUApi.Controllers
             if (user.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
 
             return Ok(new { isEmpty = false, message = "All user with tag", content = user });
-        }
-
-        [HttpGet("popular")]
-        public async Task<ActionResult<TagsInterest>> GetPopularTags()
-        {
-            
-            var PopularTags = await _db.TagsInterests
-                .GroupBy(t => t.Hashtag)
-                .Select(g => new
-                {
-                    Tag = g.Key,
-                    Count = g.Count()
-                })
-                .OrderByDescending(t => t.Count)
-                .ToArrayAsync();
-
-            if (PopularTags.Length == 0) return BadRequest(new { isEmpty = true, message = "No tag..." });
-
-            return Ok(new { isEmpty = false, message = "All popular tag", content = PopularTags });
         }
 
         [HttpDelete("user/{id}")]
