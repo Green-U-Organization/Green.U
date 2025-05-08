@@ -249,16 +249,17 @@ namespace GreenUApi.Controllers
                 return NotFound(new {isEmpty = true, message = "No crop with this id..."});
             }
 
-            _db.Crops.Remove(crop);
 
             Log log = new()
             {
+                CropId = id,
                 PlantNurseryId = crop.PlantNurseryId,
                 LineId = crop.LineId,
                 Action = "Delete a Crop",
                 Type = "Automatic",
             };
 
+            _db.Crops.Remove(crop);
             _db.Add(log);
 
             await _db.SaveChangesAsync();
