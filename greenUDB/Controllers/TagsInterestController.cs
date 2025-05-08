@@ -138,7 +138,7 @@ namespace GreenUApi.Controllers
             if (!user) return NotFound(new { isEmpty = true, message = "User not found" });
 
             // Delete all entities with RemoveRange();
-            // https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.removerange?view=net-9.0
+            // https://learn.microsoft.com/fr-fr/dotnet/api/microsoft.entityframeworkcore.dbset-1.removerange?view=efcore-9.0   
             var Tags = await _db.TagsInterests
                 .Where(t => t.UserId == id && tags.Hashtags.Contains(t.Hashtag))
                 .ToArrayAsync();
@@ -263,7 +263,7 @@ namespace GreenUApi.Controllers
             if (!user) return NotFound(new { isEmpty = true, message = "User not found" });
 
             // Delete all entities with RemoveRange();
-            // https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.removerange?view=net-9.0
+            // https://learn.microsoft.com/fr-fr/dotnet/api/microsoft.entityframeworkcore.dbset-1.removerange?view=efcore-9.0
             var Tags = await _db.TagsInterests
                 .Where(t => t.GardenId == id && tags.Hashtags.Contains(t.Hashtag))
                 .ToArrayAsync();
