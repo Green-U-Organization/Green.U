@@ -278,6 +278,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
           type="text"
           name="variety"
           className="mx-[4vw] -mt-[3vh]"
+          label="Variety"
           value={variety}
           onChange={(e) => setVariety(e.target.value)}
         />
