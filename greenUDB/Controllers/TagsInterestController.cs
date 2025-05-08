@@ -125,6 +125,8 @@ namespace GreenUApi.Controllers
                 .OrderByDescending(t => t.Count)
                 .ToArrayAsync();
 
+            if (PopularTags.Length == 0) return BadRequest(new { isEmpty = true, message = "No tag..." });
+
             return Ok(new { isEmpty = false, message = "All popular tag", content = PopularTags });
         }
 
