@@ -12,7 +12,7 @@ namespace GreenUApi.Controllers
     {
         private readonly GreenUDB _db = db;
 
-        public class HashtagContainer
+        public class TagsInterestDTO
         {
             public required List<string> Hashtags { get; set;}
         }
@@ -40,7 +40,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("list/user/{id}")]
-        public async Task<ActionResult<TagsInterest>> CreateUserTagWithList(long id, [FromBody] HashtagContainer container)
+        public async Task<ActionResult<TagsInterest>> CreateUserTagWithList(long id, [FromBody] TagsInterestDTO container)
         {
             var user = await _db.Users
                 .Where(u => u.Id == id)
@@ -129,7 +129,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpDelete("list/user/{id}")]
-        public async Task<ActionResult<TagsInterest>> DeleteUserTagWithList(long id, [FromBody] HashtagContainer container)
+        public async Task<ActionResult<TagsInterest>> DeleteUserTagWithList(long id, [FromBody] TagsInterestDTO tags)
         {
             var user = await _db.Users
                 .Where(u => u.Id == id)
@@ -137,21 +137,22 @@ namespace GreenUApi.Controllers
 
             if (!user) return NotFound(new { isEmpty = true, message = "User not found" });
 
-            // Create all entities with Select and add all tags with AddRange()
-            // https://learn.microsoft.com/fr-fr/dotnet/api/system.collections.generic.list-1.addrange?view=net-8.0
-            var newTags = container.Hashtags
-                .Select(tag => new TagsInterest
-                {
-                    UserId = id,
-                    Hashtag = tag
-                })
-                .ToList();
+            // Delete all entities with RemoveRange();
+            // https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.removerange?view=net-9.0
+            var Tags = await _db.TagsInterests
+                .Where(t => t.UserId == id && tags.Hashtags.Contains(t.Hashtag))
+                .ToArrayAsync();
 
-            _db.TagsInterests.RemoveRange(newTags);
+            Console.WriteLine(Tags.Length);
+            Console.WriteLine(tags.Hashtags.Count);
+
+            if (Tags.Length != tags.Hashtags.Count) return BadRequest(new { isEmpty = false, message = "A tag is incorrect..." });
+
+            _db.TagsInterests.RemoveRange(Tags);
 
             await _db.SaveChangesAsync();
 
-            return Ok(new { isEmpty = false, message = "User tag list created !", content = newTags });
+            return Ok(new { isEmpty = false, message = "User tag list Deleted !", content = Tags });
         }
 
 
@@ -178,7 +179,7 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("list/garden/{id}")]
-        public async Task<ActionResult<TagsInterest>> CreateGardenTagWithList(long id, [FromBody] HashtagContainer container)
+        public async Task<ActionResult<TagsInterest>> CreateGardenTagWithList(long id, [FromBody] TagsInterestDTO container)
         {
             var Garden = await _db.Gardens.FindAsync(id);
             if (Garden == null) return NotFound(new { isEmpty = true, message = "Garden not found" });
