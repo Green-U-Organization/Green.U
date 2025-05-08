@@ -111,6 +111,23 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "All user with tag", content = user });
         }
 
+        [HttpGet("popular")]
+        public async Task<ActionResult<TagsInterest>> GetPopularTags()
+        {
+            
+            var PopularTags = await _db.TagsInterests
+                .GroupBy(t => t.Hashtag)
+                .Select(g => new
+                {
+                    Tag = g.Key,
+                    Count = g.Count()
+                })
+                .OrderByDescending(t => t.Count)
+                .ToArrayAsync();
+
+            return Ok(new { isEmpty = false, message = "All popular tag", content = PopularTags });
+        }
+
         [HttpDelete("user/{id}")]
         public async Task<ActionResult<TagsInterest>> DeleteUserTag(long id, TagsInterest Tag)
         {
