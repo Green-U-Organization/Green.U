@@ -2,11 +2,21 @@
 import React from 'react';
 import Card from '../Atom/Card';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../slice/authSlice';
+
 const Landing = () => {
   const router = useRouter();
 
+  const dispatch = useDispatch();
+
+  //Cookies
+  const token = Cookies.get('access_token');
+
   return (
     <Card className="relative flex h-screen w-screen flex-col items-center justify-center">
+      {/* Background */}
       <div className="absolute h-screen w-screen overflow-hidden opacity-100">
         <img
           src={'/image/divers/gifs/1.gif'}
@@ -25,38 +35,89 @@ const Landing = () => {
         />
       </div>
 
+      {/* Titre */}
+      <div className="relative">
+        <h1 className="text-8xl opacity-0">*Green.U*</h1>
+        <h1
+          className="absolute top-1 -left-1 z-40 animate-pulse text-8xl text-black ease-in [animation-duration:4s]"
+          style={{ animationDelay: '2s' }}
+        >
+          *Green.U*
+        </h1>
+        <p className="absolute -top-0 left-0 z-50 text-8xl text-green-600">
+          *Green.U*
+        </p>
+        <h1 className="absolute top-0 -left-0 z-50 animate-pulse text-8xl text-amber-400 ease-in [animation-duration:4s]">
+          *<span className="opacity-0">Green.U</span>*
+        </h1>
+      </div>
+
+      {/* Menu */}
       <div className="flex h-[60vh] w-[70vw] flex-col items-center justify-center p-10">
         <div
-          onClick={() => router.push('/garden')}
+          onClick={token ? () => router.push('/garden') : () => {}}
           className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] bg-none select-none"
         >
-          <div className="bg-bgbutton absolute h-[10vh] w-[50vw] rounded-xl opacity-80"></div>
+          <div
+            className={`${token ? 'bg-bgbutton' : 'bg-gray-600'} absolute h-[10vh] w-[50vw] rounded-xl opacity-80`}
+          ></div>
           <p className="absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745]">
             Garden
           </p>
         </div>
 
         <div
-          onClick={() => router.push('/garden')}
-          className="bg-bgbutton relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] select-none"
+          onClick={token ? () => router.push('/profile') : () => {}}
+          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] bg-none select-none"
         >
-          Explore
+          <div
+            className={`${token ? 'bg-bgbutton' : 'bg-gray-600'} absolute h-[10vh] w-[50vw] rounded-xl opacity-80`}
+          ></div>
+          <p className="absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745]">
+            Profil
+          </p>
         </div>
 
         <div
-          onClick={() => router.push('/garden')}
-          className="bg-bgbutton relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] select-none"
+          onClick={token ? () => router.push('/explore') : () => {}}
+          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] bg-none select-none"
         >
-          Profile
+          <div
+            className={`${token ? 'bg-bgbutton' : 'bg-gray-600'} absolute h-[10vh] w-[50vw] rounded-xl opacity-80`}
+          ></div>
+          <p className="absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745]">
+            Explore
+          </p>
         </div>
 
         <div
-          onClick={() => router.push('/garden')}
-          className="bg-bgbutton relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] select-none"
+          onClick={
+            token
+              ? () => {
+                  dispatch(logout());
+                  router.push('landing');
+                }
+              : () => router.push('login')
+          }
+          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] bg-none select-none"
         >
-          Parametre
+          <div
+            className={`${token ? 'bg-bgbutton' : 'bg-bgbutton'} absolute h-[10vh] w-[50vw] rounded-xl opacity-80`}
+          ></div>
+          <p className="absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745]">
+            {token ? 'Logout' : 'Login'}
+          </p>
         </div>
       </div>
+      <p
+        style={{ display: token ? 'none' : 'block' }}
+        className="z-50 text-base text-white"
+      >
+        Don't have account ? Don't panic and{' '}
+        <span onClick={() => router.push('register')} className="text-blue-600">
+          Register !
+        </span>
+      </p>
     </Card>
   );
 };

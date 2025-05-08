@@ -226,7 +226,7 @@ const Profile = ({ userId }: { userId: number }) => {
             {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
             <Button
               className="bg-bgbutton relative m-5 px-6 py-2"
-              onClick={() => router.push('/login')}
+              onClick={() => router.push('/landing')}
             >
               {translations.back}
             </Button>

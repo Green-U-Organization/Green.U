@@ -40,7 +40,14 @@ export default function RootLayout({
         >
           <LanguageProvider>
             {/* <Navbar /> */}
-            <ThemeApp>{children}</ThemeApp>
+            <ThemeApp>
+              {/* <img
+                src={'/image/divers/gifs/loading.gif'}
+                alt={'Loading...'}
+                className="absolute top-45 -right-25 z-50 h-[70vh] w-[100vh] overflow-hidden object-cover opacity-5"
+              /> */}
+              {children}
+            </ThemeApp>
           </LanguageProvider>
         </body>
       </html>
