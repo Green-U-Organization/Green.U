@@ -1,5 +1,6 @@
 import { Garden } from '@/utils/types';
 import api from './api';
+import { Log } from '@/utils/types';
 
 type CreateNewGardenLineRequest = {
   parcelId: number;
@@ -355,6 +356,19 @@ type editUserByUserIdRequest = {
   deleted?: boolean;
 };
 
+type GetAllLogsResponse = {
+  logs: Log[];
+};
+
+type GetAllLogsRequest = {
+  gardenId?: number;
+  parcelId?: number;
+  lineId?: number;
+  cropId?: number;
+  nurseryId?: number;
+  greenhouseId?: number;
+};
+
 export const extendedGardenAPI = api
   .enhanceEndpoints({
     addTagTypes: [
@@ -363,9 +377,10 @@ export const extendedGardenAPI = api
       'garden-gardens',
       'garden-crops',
       'garden-nursery',
-      'connection - login',
+      'connection-login',
       'tags-user',
       'tags-userInterest',
+      'tags-logs',
     ],
   })
   .injectEndpoints({
@@ -676,7 +691,70 @@ export const extendedGardenAPI = api
           body: arg,
         }),
       }),
+
+      // logs
+      //GetAllLogsByGardenId
+      getAllLogsByGardenId: builder.query<
+        GetAllLogsResponse,
+        GetAllLogsRequest
+      >({
+        query: (arg) => ({
+          url: `/log/garden/${arg.gardenId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLosByParcelId
+      getAllLogsByParcelId: builder.query<
+        GetAllLogsResponse,
+        GetAllLogsRequest
+      >({
+        query: (arg) => ({
+          url: `/log/parcel/${arg.parcelId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLogsByLineId
+      getAllLogsByLineId: builder.query<GetAllLogsResponse, GetAllLogsRequest>({
+        query: (arg) => ({
+          url: `/log/line/${arg.lineId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLogByCropId
+      getAllLogsByCropId: builder.query<GetAllLogsResponse, GetAllLogsRequest>({
+        query: (arg) => ({
+          url: `/log/crop/${arg.cropId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLogsByNurseryId
+      getAllLogsByNurseryId: builder.query<
+        GetAllLogsResponse,
+        GetAllLogsRequest
+      >({
+        query: (arg) => ({
+          url: `/log/nursery/${arg.nurseryId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLogsByGreenhouseId
+      getAllLogsByGreenhouseId: builder.query<
+        GetAllLogsResponse,
+        GetAllLogsRequest
+      >({
+        query: (arg) => ({
+          url: `/log/greenhouse/${arg.greenhouseId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
     }),
+    //CreateLog
   });
 
 export const {
@@ -706,4 +784,11 @@ export const {
   usePatchCropMutation,
   useGetAllUSersByTagQuery,
   useGetAllGardensByTagQuery,
+  useDeleteTagByUserMutation,
+  useGetAllLogsByCropIdQuery,
+  useGetAllLogsByGardenIdQuery,
+  useGetAllLogsByGreenhouseIdQuery,
+  useGetAllLogsByLineIdQuery,
+  useGetAllLogsByNurseryIdQuery,
+  useGetAllLogsByParcelIdQuery,
 } = extendedGardenAPI;
