@@ -146,6 +146,12 @@ type CreateCropToNurseryRequest = {
   distance_plantation: number;
 };
 
+type PatchCropRequest = {
+  cropId?: number;
+  lineId?: number;
+  plantNurseryId?: number;
+};
+
 type GetCropByLineIdResponse = {
   isEmpty: boolean;
   message: string;
@@ -244,6 +250,57 @@ type GetTagsByUserIdResponse = {
 
 type DeleteTagByUserRequest = {
   hashtag: string;
+};
+
+type GetAllUsersByTagRequest = {
+  hashtag: string;
+};
+
+type GetAllUsersByTagResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: [
+    {
+      id: number;
+      username: string;
+      xp: number;
+      country: string;
+      bio: string;
+      tagsInterests: [
+        {
+          id: number;
+          userId: number;
+          hashtag: string;
+          created_at: Date;
+        },
+      ];
+    },
+  ];
+};
+
+type GetAllGardenByTagRequest = {
+  hashtag: string;
+};
+
+type GetAllGardensByTagResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: [
+    {
+      id: number;
+      name: string;
+      description: string;
+      tagsInterests: [
+        {
+          id: number;
+          userId: number;
+          gardenId: number;
+          hashtag: string;
+          created_at: Date;
+        },
+      ];
+    },
+  ];
 };
 
 type GetUserByIdResponse = {
@@ -453,6 +510,16 @@ export const extendedGardenAPI = api
         invalidatesTags: ['garden-crops'],
       }),
 
+      //PatchCrop >>
+      patchCrop: builder.mutation<void, PatchCropRequest>({
+        query: (arg) => ({
+          url: `/crops/${arg.cropId}`,
+          method: 'PATCH',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-crops'],
+      }),
+
       //EditCropByCropId >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
       //GetCropByLineId >> OK
@@ -568,6 +635,30 @@ export const extendedGardenAPI = api
         invalidatesTags: ['tags-user'],
       }),
 
+      //getAllUsersByTag >>
+      getAllUSersByTag: builder.query<
+        GetAllUsersByTagResponse,
+        GetAllUsersByTagRequest
+      >({
+        query: (arg) => ({
+          url: `/tags/allusers`,
+          method: 'GET',
+          body: arg,
+        }),
+      }),
+
+      //getAllGardensByTag >>
+      getAllGardensByTag: builder.query<
+        GetAllGardensByTagResponse,
+        GetAllGardenByTagRequest
+      >({
+        query: (arg) => ({
+          url: `/tags/allgarden`,
+          method: 'GET',
+          body: 'arg',
+        }),
+      }),
+
       //GetUserById
       getUserById: builder.query<GetUserByIdResponse, GetUserByIdRequest>({
         query: (arg) => ({
@@ -612,4 +703,7 @@ export const {
   useGetUserByIdQuery,
   useEditUserByUserIdMutation,
   useGetTagsByUserQuery,
+  usePatchCropMutation,
+  useGetAllUSersByTagQuery,
+  useGetAllGardensByTagQuery,
 } = extendedGardenAPI;

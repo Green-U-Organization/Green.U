@@ -11,6 +11,7 @@ import {
   useGetCropByNurseryIdQuery,
   useGetNurseryByGardenIdQuery,
   useGetUserByIdQuery,
+  usePatchCropMutation,
 } from '@/slice/fetch';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
@@ -63,6 +64,8 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   const { data: nurseries } = useGetNurseryByGardenIdQuery({
     gardenId: garden?.id ?? 0,
   });
+  const [patchCrop] = usePatchCropMutation();
+
   const crops =
     nurseries?.content.map((nursery) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -71,7 +74,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
       });
       return crop;
     }) || [];
-  console.log('crops : ', crops);
+  //console.log('crops : ', crops);
 
   //Handlers
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -99,23 +102,42 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
       comments: formData.get('comments') as string,
     };
 
-    try {
-      await createCropToLine(cropData).unwrap();
-      await addXp({
-        userId: id,
-        xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
-      });
+    console.log('selectedCropToPlant : ', selectedCropToPlant?.id); //29
+    console.log('lineId : ', lineId);
+    console.log('origin : ', origin);
 
-      console.log('xp : ', (user?.data?.content?.xp ?? 0) + XpTable.addCrop);
-      console.log('crop created');
-      dispatch(
-        setAddCropPopup({
-          state: false,
-          id: Number(lineId),
-        })
-      );
-    } catch {
-      console.log('Error creating crop');
+    if (origin === 'fromNursery' && selectedCropToPlant?.id) {
+      console.log('TRANSFERT !!!!!');
+      const cropData = {
+        cropId: selectedCropToPlant?.id,
+        lineId: lineId,
+        plantNurseryId: 0,
+      };
+
+      try {
+        await patchCrop(cropData).unwrap();
+      } catch {
+        console.log('Error patching crop');
+      }
+    } else {
+      try {
+        await createCropToLine(cropData).unwrap();
+        await addXp({
+          userId: id,
+          xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
+        });
+
+        console.log('xp : ', (user?.data?.content?.xp ?? 0) + XpTable.addCrop);
+        console.log('crop created');
+        dispatch(
+          setAddCropPopup({
+            state: false,
+            id: Number(lineId),
+          })
+        );
+      } catch {
+        console.log('Error creating crop');
+      }
     }
   };
 
@@ -131,7 +153,6 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   };
 
   const handleActionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
     setAction(e.target.value);
   };
 
@@ -169,8 +190,8 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
             display: action === 'planting' ? 'block' : 'none',
           }}
           className="mx-[4vw]"
-          name="cropAction"
-          id="cropAction"
+          name="cropOrigin"
+          id="cropOrigin"
           onChange={handleOriginChange}
         >
           <option value="fromScratch">from scratch</option>
@@ -251,6 +272,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
           className="mx-[4vw]"
           label="Vegetable"
           value={vegetable}
+          onChange={(e) => setVegetable(e.target.value)}
         />
         <TextInput
           type="text"
@@ -258,6 +280,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
           className="mx-[4vw] -mt-[3vh]"
           label="Variety"
           value={variety}
+          onChange={(e) => setVariety(e.target.value)}
         />
         <div className="mx-[4vw] flex flex-col">
           <label htmlFor="plantationDistance">
