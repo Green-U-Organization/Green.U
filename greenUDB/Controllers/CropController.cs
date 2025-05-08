@@ -142,7 +142,6 @@ namespace GreenUApi.Controllers
                 existingCrop.PlantNurseryId = crop.PlantNurseryId;
             }
 
-
             Log log = new()
             {
                 CropId = existingCrop.Id,
@@ -185,7 +184,17 @@ namespace GreenUApi.Controllers
             }
 
             _db.Crops.Add(crop);
-                await _db.SaveChangesAsync();
+
+            Log log = new()
+            {
+                LineId = id,
+                Action = "Create a Crop in a line",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
+            await _db.SaveChangesAsync();
 
                 return Ok(new {isEmpty = false, message = "Your crop are created !", content = crop});
 
@@ -214,6 +223,16 @@ namespace GreenUApi.Controllers
             }
 
             _db.Crops.Add(crop);
+
+            Log log = new()
+            {
+                PlantNurseryId = crop.PlantNurseryId,
+                Action = "Create a Crop in a PlantNursery",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "Your crop are created !", content = crop });
@@ -231,6 +250,17 @@ namespace GreenUApi.Controllers
             }
 
             _db.Crops.Remove(crop);
+
+            Log log = new()
+            {
+                PlantNurseryId = crop.PlantNurseryId,
+                LineId = crop.LineId,
+                Action = "Delete a Crop",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new {isEmpty = false, message = "This crop is now deleted" , content = crop});
