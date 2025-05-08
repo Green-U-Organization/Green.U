@@ -1,4 +1,4 @@
-﻿    using GreenUApi.Models;
+﻿        using GreenUApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -106,9 +106,14 @@ namespace GreenUApi.Controllers
         }
 
         [HttpGet("allusers")]
-        public async Task<ActionResult<TagsInterest>> GetAllUserByTag([FromBody] TagsInterest tag)
+        public async Task<ActionResult<TagsInterest>> GetAllUserByTag([FromQuery] string hashtag)
         {
-            if (tag.Hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+            if (hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+
+            TagsInterest tag = new()
+            {
+                Hashtag = hashtag
+            };
 
             var user = await _db.TagsInterests
                 .Where(t => t.Hashtag == tag.Hashtag)
@@ -234,9 +239,14 @@ namespace GreenUApi.Controllers
         }
 
         [HttpGet("allgarden")]
-        public async Task<ActionResult<TagsInterest>> GetAllGardenByTag([FromBody] TagsInterest tag)
+        public async Task<ActionResult<TagsInterest>> GetAllGardenByTag([FromQuery] string hashtag)
         {
-            if (tag.Hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+            if (hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+
+            TagsInterest tag = new()
+            {
+                Hashtag = hashtag
+            };
 
             var garden = await _db.TagsInterests
                 .Where(t => t.Hashtag == tag.Hashtag)
