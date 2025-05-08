@@ -93,7 +93,7 @@ namespace GreenUApi.Controllers
 
             if (Log.Count == 0) return BadRequest(new { isEmpty = true, message = "no log or id is incorrect" });
 
-            return Ok(Log);
+            return Ok(new { isEmpty = false, message = "All garden log with id", content = Log });
         }
 
         [HttpGet("parcel/{id}")]
@@ -105,7 +105,7 @@ namespace GreenUApi.Controllers
 
             if (Log.Count == 0) return BadRequest(new { isEmpty = true, message = "no log or id is incorrect" });
 
-            return Ok(Log);
+            return Ok(new { isEmpty = false, message = "All parcel log with id", content = Log });
         }
 
         [HttpGet("line/{id}")]
@@ -117,7 +117,19 @@ namespace GreenUApi.Controllers
 
             if (Log.Count == 0) return BadRequest(new { isEmpty = true, message = "no log or id is incorrect" });
 
-            return Ok(Log);
+            return Ok(new { isEmpty = false, message = "All Line log with id", content = Log });
+        }
+
+        [HttpGet("crop/{id}")]
+        public async Task<ActionResult<Garden>> GetCroplLog(long id)
+        {
+            var Log = await _db.Logs
+                .Where(l => l.CropId == id)
+                .ToListAsync();
+
+            if (Log.Count == 0) return BadRequest(new { isEmpty = true, message = "no log or id is incorrect" });
+
+            return Ok(new { isEmpty = false, message = "All crops log with id", content = Log});
         }
     }
 }
