@@ -14,6 +14,8 @@ public partial class Log
 
     public long? AuthorId { get; set; }
 
+    public string? Username { get; set; }
+
     public long? GardenId { get; set; }
 
     public long? ParcelId { get; set; }

@@ -308,6 +308,9 @@ namespace GreenUApi.Migrations
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Username")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
