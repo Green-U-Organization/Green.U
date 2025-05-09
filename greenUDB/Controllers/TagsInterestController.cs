@@ -250,17 +250,20 @@ namespace GreenUApi.Controllers
 
             var garden = await _db.TagsInterests
                 .Where(t => t.Hashtag == tag.Hashtag)
-                .Select(t =>
-                    _db.Gardens.Where(g => g.Id == t.GardenId && !g.Deleted).Select(g => new
-                    {
+                .Join(
+                    _db.Gardens
+                    .Where(g => !g.Deleted),
+                    t => t.GardenId,
+                    g => g.Id,
+                    (t, g) => new {
                         g.Id,
                         g.Name,
                         g.Description,
                         g.Type,
                         g.TagsInterests
-                    }).FirstOrDefault()
-                    )
-                    .ToArrayAsync();
+                    }
+                )
+                .ToArrayAsync();
 
             if (garden.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
 
