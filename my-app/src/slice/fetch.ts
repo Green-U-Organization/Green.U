@@ -61,6 +61,10 @@ type CreateNewGardenRequest = {
   hashtags: string[];
 };
 
+type GetGardensByNameRequest = {
+  inputuser: string;
+};
+
 type GetAllParcelByGardenIdRequest = {
   gardenId: number;
 };
@@ -332,8 +336,8 @@ type GetUserByIdResponse = {
   };
 };
 
-type GetUserByIdRequest = {
-  userId: number;
+type GetUserByUsernameRequest = {
+  username: string;
 };
 
 type editUserByUserIdRequest = {
@@ -352,6 +356,10 @@ type editUserByUserIdRequest = {
   xp?: number;
   newsletter?: boolean;
   deleted?: boolean;
+};
+
+type GetUserByIdRequest = {
+  userId: number;
 };
 
 type GetAllLogsResponse = {
@@ -437,6 +445,17 @@ export const extendedGardenAPI = api
           method: 'GET',
         }),
         providesTags: ['garden-parcels'],
+      }),
+
+      //GetGardensByName
+      GetGardensByName: builder.query<
+        GetAllGardensByTagResponse,
+        GetGardensByNameRequest
+      >({
+        query: (arg) => ({
+          url: `/garden/search/${arg.inputuser}`,
+          method: 'GET',
+        }),
       }),
 
       //DeleteParcel >> OK
@@ -693,6 +712,17 @@ export const extendedGardenAPI = api
         }),
       }),
 
+      //GetUserByUsername
+      getUserByUsername: builder.query<
+        GetAllUsersByTagResponse, //Les données retournées sont les mêmes que ceux attendus
+        GetUserByUsernameRequest
+      >({
+        query: (arg) => ({
+          url: `user/search?inputuser=${arg.username}`,
+          method: 'GET',
+        }),
+      }),
+
       // logs
       //GetAllLogsByGardenId
       getAllLogsByGardenId: builder.query<
@@ -793,4 +823,6 @@ export const {
   useGetAllLogsByNurseryIdQuery,
   useGetAllLogsByParcelIdQuery,
   useGetPopularTagsQuery,
+  useLazyGetUserByUsernameQuery,
+  useLazyGetGardensByNameQuery,
 } = extendedGardenAPI;
