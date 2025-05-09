@@ -88,7 +88,7 @@ namespace GreenUApi.Controllers
 
             if (garden.Length == 0) return BadRequest(new { isEmpty = true, message = "Garden doesn't exist" });
 
-            return Ok(new { isEmpty = true, message = "Garden list", content = garden });
+            return Ok(new { isEmpty = false, message = "Garden list", content = garden });
         }
 
         [HttpPatch("{id}")]

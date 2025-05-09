@@ -101,7 +101,7 @@ public class UserController(GreenUDB db) : ControllerBase
 
         if (user.Length == 0) return BadRequest(new { isEmpty = true, message = "User doesn't exist" });
 
-        return Ok(new { isEmpty = true, message = "User list", content = user });
+        return Ok(new { isEmpty = false, message = "User list", content = user });
     }
 
     [HttpPost]
