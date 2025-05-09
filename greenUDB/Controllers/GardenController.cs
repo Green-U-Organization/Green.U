@@ -78,11 +78,14 @@ namespace GreenUApi.Controllers
                 return BadRequest(new { isEmpty = true, message = "inputuser cannot be null or empty" });
 
             var garden = await _db.Gardens
-                .Where(u => u.Name != null && u.Name.Contains(inputuser))
-                .Select(u => new
+                .Where(g => g.Name != null && g.Name.Contains(inputuser))
+                .Select(g => new
                 {
-                    u.Id,
-                    u.Name
+                    g.Id,
+                    g.Name,
+                    g.Description,
+                    g.Type,
+                    g.TagsInterests
                 })
                 .ToArrayAsync();
 

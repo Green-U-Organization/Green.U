@@ -95,7 +95,10 @@ public class UserController(GreenUDB db) : ControllerBase
             .Select(u => new
             {
                 u.Id,
-                u.Username
+                u.Username,
+                u.Bio,
+                u.Skill_level,
+                u.TagsInterests
             })
             .ToArrayAsync();
 
