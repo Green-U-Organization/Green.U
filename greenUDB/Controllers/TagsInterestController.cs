@@ -117,18 +117,20 @@ namespace GreenUApi.Controllers
 
             var user = await _db.TagsInterests
                 .Where(t => t.Hashtag == tag.Hashtag)
-                .Select(t => 
-                    _db.Users.Where(u => u.Id == t.UserId).Select(u => new
-                    {
+                .Join(
+                    _db.Users
+                    .Where(u => !u.Deleted),
+                    t => t.UserId,
+                    u => u.Id,
+                    (t, u) => new {
                         u.Id,
                         u.Username,
-                        u.Xp,
-                        u.Country,
                         u.Bio,
+                        u.Skill_level,
                         u.TagsInterests
-                    }).FirstOrDefault()
-                    )
-                    .ToArrayAsync();
+                    }
+                )
+                .ToArrayAsync();
 
             if (user.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
 
