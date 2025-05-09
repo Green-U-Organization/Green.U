@@ -17,6 +17,7 @@ export type CardProps = {
   variant?: string;
   bgColor?: string;
   ref?: React.Ref<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 };
 
 export type CheckboxProps = {

@@ -1,8 +1,8 @@
-import Profile from '@/components/Page/PublicProfile';
+import Explore from '@/components/Page/Explore';
 import React from 'react';
 
 const page = () => {
-  return <Profile></Profile>;
+  return <Explore></Explore>;
 };
 
 export default page;

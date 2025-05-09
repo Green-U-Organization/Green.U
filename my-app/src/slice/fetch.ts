@@ -253,54 +253,52 @@ type DeleteTagByUserRequest = {
 };
 
 type GetAllUsersByTagRequest = {
-  hashtag: string;
+  hashtags: string[];
 };
 
 type GetAllUsersByTagResponse = {
   isEmpty: boolean;
   message: string;
-  content: [
-    {
+  content: {
+    id: number;
+    username: string;
+    xp: number;
+    country: string;
+    bio: string;
+    tagsInterests: {
       id: number;
-      username: string;
-      xp: number;
-      country: string;
-      bio: string;
-      tagsInterests: [
-        {
-          id: number;
-          userId: number;
-          hashtag: string;
-          created_at: Date;
-        },
-      ];
-    },
-  ];
+      userId: number;
+      hashtag: string;
+      created_at: Date;
+    }[];
+  }[];
 };
 
-type GetAllGardenByTagRequest = {
-  hashtag: string;
+type GetAllGardensBytTagRequest = {
+  hashtags: string[];
 };
 
 type GetAllGardensByTagResponse = {
   isEmpty: boolean;
   message: string;
-  content: [
-    {
+  content: {
+    id: number;
+    name: string;
+    description: string;
+    tagsInterests: {
       id: number;
-      name: string;
-      description: string;
-      tagsInterests: [
-        {
-          id: number;
-          userId: number;
-          gardenId: number;
-          hashtag: string;
-          created_at: Date;
-        },
-      ];
-    },
-  ];
+      userId: number;
+      gardenId: number;
+      hashtag: string;
+      created_at: Date;
+    }[];
+  }[];
+};
+
+type GetPopularTagsResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: [{ tag: string; count: number }];
 };
 
 type GetUserByIdResponse = {
@@ -486,8 +484,6 @@ export const extendedGardenAPI = api
         providesTags: ['garden-gardens'],
       }),
 
-      //GetAllGardenByTags >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
       //EditGarden >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
       //CreateCropToLine >> OK
@@ -636,13 +632,13 @@ export const extendedGardenAPI = api
       }),
 
       //getAllUsersByTag >>
-      getAllUSersByTag: builder.query<
+      getAllUsersByTag: builder.query<
         GetAllUsersByTagResponse,
         GetAllUsersByTagRequest
       >({
         query: (arg) => ({
           url: `/tags/allusers`,
-          method: 'GET',
+          method: 'POST',
           body: arg,
         }),
       }),
@@ -650,12 +646,20 @@ export const extendedGardenAPI = api
       //getAllGardensByTag >>
       getAllGardensByTag: builder.query<
         GetAllGardensByTagResponse,
-        GetAllGardenByTagRequest
+        GetAllGardensBytTagRequest
       >({
         query: (arg) => ({
-          url: `/tags/allgarden`,
+          url: `/tags/allgardens`,
+          method: 'POST',
+          body: arg,
+        }),
+      }),
+
+      //getPopularTags >>
+      getPopularTags: builder.query<GetPopularTagsResponse, void>({
+        query: () => ({
+          url: `/tags/popular`,
           method: 'GET',
-          body: 'arg',
         }),
       }),
 
@@ -704,6 +708,7 @@ export const {
   useEditUserByUserIdMutation,
   useGetTagsByUserQuery,
   usePatchCropMutation,
-  useGetAllUSersByTagQuery,
-  useGetAllGardensByTagQuery,
+  useLazyGetAllUsersByTagQuery,
+  useLazyGetAllGardensByTagQuery,
+  useGetPopularTagsQuery,
 } = extendedGardenAPI;
