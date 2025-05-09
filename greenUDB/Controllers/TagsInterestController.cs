@@ -341,7 +341,7 @@ namespace GreenUApi.Controllers
             if (request.Hashtags == null || !request.Hashtags.Any())
                 return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
 
-            // check user and count match tag
+            // check garden and count match tag
             var gardensWithMatchingTags = await _db.TagsInterests
                 .Where(t => request.Hashtags.Contains(t.Hashtag))
                 .GroupBy(t => t.GardenId)
@@ -355,7 +355,7 @@ namespace GreenUApi.Controllers
             if (!gardensWithMatchingTags.Any())
                 return BadRequest(new { isEmpty = true, message = "No gardens found with these tags" });
 
-            // get users data
+            // get gardens data
             var gardenIds = gardensWithMatchingTags.Select(g => g.GardenId).ToList();
             var gardensWithDetails = await _db.Gardens
                 .Where(g => gardenIds.Contains(g.Id) && !g.Deleted)
@@ -376,6 +376,7 @@ namespace GreenUApi.Controllers
                     garden.Id,
                     garden.Name,
                     garden.Description,
+                    garden.Type,
                     TagsInterests = garden.TagsInterests,
                     MatchingTagsCount = matchingInfo.MatchingTagsCount
                 };
