@@ -10,7 +10,8 @@ using YamlDotNet.Core.Tokens;
 
 namespace GreenUApi.Controllers
 {
-    public class CropDto{
+    public class CropDto
+    {
         public long? LineId { get; set; }
 
         public long? PlantNurseryId { get; set; }
@@ -46,30 +47,32 @@ namespace GreenUApi.Controllers
         }
 
         [HttpGet("line/{id}")]
-        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByline(long id){
+        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByline(long id)
+        {
 
             var crops = await _db.Crops
                 .Where(c => c.LineId == id)
                 .ToListAsync();
 
-            if(crops.Count == 0) return BadRequest(new { isEmpty = true, message = "No crop here..." });
+            if (crops.Count == 0) return BadRequest(new { isEmpty = true, message = "No crop here..." });
 
-            return Ok(new { isEmpty = false, message = "All crops with line id", content = crops});
+            return Ok(new { isEmpty = false, message = "All crops with line id", content = crops });
         }
 
         [HttpGet("plantNursery/{id}")]
-        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByPlantNursery(long id){
+        public async Task<ActionResult<IEnumerable<Crop>>> GetCropsByPlantNursery(long id)
+        {
 
             var crops = await _db.Crops
                 .Where(c => c.PlantNurseryId == id)
                 .ToListAsync();
 
-            if(crops.Count == 0) return BadRequest(new { isEmpty = true, message = "No crops..." });
+            if (crops.Count == 0) return BadRequest(new { isEmpty = true, message = "No crops..." });
 
             return Ok(new { isEmpty = false, message = "All crops with plant nursery id", content = crops });
         }
-          
-       [HttpPatch("{id}")]
+
+        [HttpPatch("{id}")]
         public async Task<IActionResult> PatchCrop(long id, [FromBody] CropDto crop)
         {
             var existingCrop = await _db.Crops.FindAsync(id);
@@ -153,40 +156,40 @@ namespace GreenUApi.Controllers
             _db.Add(log);
 
             await _db.SaveChangesAsync();
-            return Ok(new { isEmpty = false, message = "This crop is edited", content = existingCrop});
-  
+            return Ok(new { isEmpty = false, message = "This crop is edited", content = existingCrop });
+
         }
-        
+
         [HttpPost("line/{id}")]
         public async Task<ActionResult<Crop>> PostCropLine(long id, [FromBody] Crop crop)
         {
             if (crop == null) return BadRequest(new { isEmpty = true, message = "The body does not look like the model..." });
-             
+
             crop.LineId = id;
 
             if (!crop.LineId.HasValue)
             {
-                return BadRequest(new {isEmpty = true, message = "No id for line"});
+                return BadRequest(new { isEmpty = true, message = "No id for line" });
             }
-                
-            if (crop.LineId.HasValue)
-            {
-                var ExistingLine = await _db.Lines
-                    .FindAsync(crop.LineId);
 
-                if (ExistingLine == null) return BadRequest(new {isEmpty = true, message = "Line id is incorrect" });
 
-                var ExistingCropLine = await _db.Crops
-                    .Where(c => c.LineId == crop.LineId)
-                    .FirstOrDefaultAsync();
+            var ExistingLine = await _db.Lines
+                .FindAsync(crop.LineId);
 
-                if (ExistingCropLine != null) return Conflict(new { isEmpty = true, message = "This line have a crop..." });
-            }
+            if (ExistingLine == null) return BadRequest(new { isEmpty = true, message = "Line id is incorrect" });
+
+            var ExistingCropLine = await _db.Crops
+                .Where(c => c.LineId == crop.LineId)
+                .FirstOrDefaultAsync();
+
+            if (ExistingCropLine != null) return Conflict(new { isEmpty = true, message = "This line have a crop..." });
 
             _db.Crops.Add(crop);
 
             Log log = new()
             {
+                GardenId = ExistingLine.GardenId,
+                ParcelId = ExistingLine.ParcelId,
                 LineId = id,
                 Action = "Create a Crop in a line",
                 Type = "Automatic",
@@ -196,7 +199,7 @@ namespace GreenUApi.Controllers
 
             await _db.SaveChangesAsync();
 
-                return Ok(new {isEmpty = false, message = "Your crop are created !", content = crop});
+            return Ok(new { isEmpty = false, message = "Your crop are created !", content = crop });
 
         }
 
@@ -246,7 +249,7 @@ namespace GreenUApi.Controllers
             var crop = await _db.Crops.FindAsync(id);
             if (crop == null)
             {
-                return NotFound(new {isEmpty = true, message = "No crop with this id..."});
+                return NotFound(new { isEmpty = true, message = "No crop with this id..." });
             }
 
 
@@ -264,7 +267,7 @@ namespace GreenUApi.Controllers
 
             await _db.SaveChangesAsync();
 
-            return Ok(new {isEmpty = false, message = "This crop is now deleted" , content = crop});
+            return Ok(new { isEmpty = false, message = "This crop is now deleted", content = crop });
         }
     }
 }
