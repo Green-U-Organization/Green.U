@@ -1,10 +1,16 @@
 import React from 'react';
 import Profile from '../Organism/Profile';
 
-const PublicProfile = (id: number) => {
-  console.log('Profile public - UserId : ', id);
+interface PublicProfileProps {
+  userId: number; // Changé de 'id' à 'userId'
+}
 
-  return <Profile userId={id} />;
+const PublicProfile: React.FC<PublicProfileProps> = ({ userId }) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Profile public - UserId : ', userId);
+  }
+
+  return <Profile userId={userId} />;
 };
 
 export default PublicProfile;

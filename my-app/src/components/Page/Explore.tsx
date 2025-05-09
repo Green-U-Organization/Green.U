@@ -368,7 +368,7 @@ const Explore = () => {
                       <td
                         className="hover:text-border cursor-pointer border border-black px-4 py-2 align-top"
                         onClick={() =>
-                          router.push(`/profile/public?id=${user.id}`)
+                          router.push(`/profile/public/${user.id}`)
                         }
                       >
                         {user.username}

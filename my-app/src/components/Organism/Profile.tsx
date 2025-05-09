@@ -59,7 +59,7 @@ const Profile = ({ userId }: { userId: number }) => {
 
   return (
     <div className="flex items-center justify-center">
-      <Card className="bg-cardbackground flex max-w-5xl flex-col p-5">
+      <Card className="bg-cardbackground flex w-full flex-col p-5">
         <div id="profilePage">
           {/* Image du profil */}
           <div className="relative flex items-center space-x-4">
@@ -204,23 +204,23 @@ const Profile = ({ userId }: { userId: number }) => {
           </div> */}
 
           {/* Réseaux Sociaux */}
-          <div className="mt-5">
+          {/* <div className="mt-5">
             <h2 className="text-2xl font-semibold">
               📢 {translations.contact}
             </h2>
-            <div className="text-border mt-2 flex space-x-4">
-              {/*
-                        <a href="#" target='_blank' className="hover:text-shadow"><FaInstagram /></a>
-                        <a href="#" target='_blank' className="hover:text-shadow"><FaFacebook /></a>
-                        */}
-              <a
+            <div className="text-border mt-2 flex space-x-4"> */}
+          {/*
+                <a href="#" target='_blank' className="hover:text-shadow"><FaInstagram /></a>
+                <a href="#" target='_blank' className="hover:text-shadow"><FaFacebook /></a>
+              */}
+          {/* <a
                 href="mailto:jean.dupont@gmail.com"
                 className="hover:text-shadow"
               >
                 <FaEnvelope />
               </a>
             </div>
-          </div>
+          </div> */}
 
           <div className="mt-auto flex justify-center p-2">
             {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
