@@ -303,36 +303,92 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "Your garden tag", content = GardenTag});
         }
 
-        [HttpGet("allgarden")]
-        public async Task<ActionResult<TagsInterest>> GetAllGardenByTag([FromQuery] string hashtag)
+        //[HttpGet("allgarden")]
+        //public async Task<ActionResult<TagsInterest>> GetAllGardenByTag([FromQuery] string hashtag)
+        //{
+        //    if (hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+
+        //    TagsInterest tag = new()
+        //    {
+        //        Hashtag = hashtag
+        //    };
+
+        //    var garden = await _db.TagsInterests
+        //        .Where(t => t.Hashtag == tag.Hashtag)
+        //        .Join(
+        //            _db.Gardens
+        //            .Where(g => !g.Deleted),
+        //            t => t.GardenId,
+        //            g => g.Id,
+        //            (t, g) => new {
+        //                g.Id,
+        //                g.Name,
+        //                g.Description,
+        //                g.Type,
+        //                g.TagsInterests
+        //            }
+        //        )
+        //        .ToArrayAsync();
+
+        //    if (garden.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
+
+        //    return Ok(new { isEmpty = false, message = "All user with tag", content = garden });
+        //}
+
+        [HttpPost("allgardens")]
+        public async Task<ActionResult<TagsInterest>> GetAllGardensByTags([FromBody] HashtagListRequest request)
         {
-            if (hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+            if (request.Hashtags == null || !request.Hashtags.Any())
+                return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
 
-            TagsInterest tag = new()
+            // check user and count match tag
+            var gardensWithMatchingTags = await _db.TagsInterests
+                .Where(t => request.Hashtags.Contains(t.Hashtag))
+                .GroupBy(t => t.GardenId)
+                .Select(group => new
+                {
+                    GardenId = group.Key,
+                    MatchingTagsCount = group.Count()
+                })
+                .ToListAsync();
+
+            if (!gardensWithMatchingTags.Any())
+                return BadRequest(new { isEmpty = true, message = "No gardens found with these tags" });
+
+            // get users data
+            var gardenIds = gardensWithMatchingTags.Select(g => g.GardenId).ToList();
+            var gardensWithDetails = await _db.Gardens
+                .Where(g => gardenIds.Contains(g.Id) && !g.Deleted)
+                .Select(g => new
+                {
+                    g.Id,
+                    g.Name,
+                    g.Description,
+                    TagsInterests = g.TagsInterests.Select(t => t.Hashtag).ToList(),
+                })
+                .ToListAsync();
+
+            var result = gardensWithDetails.Select(garden => {
+                var matchingInfo = gardensWithMatchingTags.First(g => g.GardenId == garden.Id);
+                return new
+                {
+                    garden.Id,
+                    garden.Name,
+                    garden.Description,
+                    TagsInterests = garden.TagsInterests,
+                    MatchingTagsCount = matchingInfo.MatchingTagsCount
+                };
+            })
+                .OrderByDescending(u => u.MatchingTagsCount)
+                .ToList();
+
+            return Ok(new
             {
-                Hashtag = hashtag
-            };
-
-            var garden = await _db.TagsInterests
-                .Where(t => t.Hashtag == tag.Hashtag)
-                .Join(
-                    _db.Gardens
-                    .Where(g => !g.Deleted),
-                    t => t.GardenId,
-                    g => g.Id,
-                    (t, g) => new {
-                        g.Id,
-                        g.Name,
-                        g.Description,
-                        g.Type,
-                        g.TagsInterests
-                    }
-                )
-                .ToArrayAsync();
-
-            if (garden.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
-
-            return Ok(new { isEmpty = false, message = "All user with tag", content = garden });
+                isEmpty = false,
+                message = "Garden with matching tags",
+                content = result,
+                searchedTags = request.Hashtags
+            });
         }
 
         [HttpDelete("garden/{id}")]
