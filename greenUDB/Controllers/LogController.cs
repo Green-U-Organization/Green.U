@@ -87,13 +87,40 @@ namespace GreenUApi.Controllers
         [HttpGet("garden/{id}")]
         public async Task<ActionResult<Garden>> GetGardenLog(long id)
         {
-            var Log = await _db.Logs
+
+            var logs = await _db.Logs
                 .Where(l => l.GardenId == id)
+                // group all occurence match with the condition
+                .GroupJoin(
+                    _db.Users,
+                    log => log.AuthorId,
+                    user => user.Id,
+                    (log, userGroup) => new { log, userGroup }
+                )
+                // if author exist and user exist put username or null
+                .SelectMany(
+                    x => x.userGroup.DefaultIfEmpty(),
+                    (x, user) => new
+                    {
+                        id = x.log.Id,
+                        authorId = x.log.AuthorId,
+                        username = user != null ? user.Username : null
+                        parcelId = x.log.ParcelId,
+                        lineId = x.log.LineId,
+                        cropId = x.log.CropId,
+                        plantNurseryId = x.log.PlantNurseryId,
+                        action = x.log.Action,
+                        comment = x.log.Comment,
+                        type = x.log.Type,
+                        createdAt = x.log.CreatedAt
+                    }
+                )
                 .ToListAsync();
 
-            if (Log.Count == 0) return BadRequest(new { isEmpty = true, message = "no log or id is incorrect" });
+            if (logs.Lenght == 0)
+                return BadRequest(new { isEmpty = true, message = "no log or id is incorrect" });
 
-            return Ok(new { isEmpty = false, message = "All garden log with id", content = Log });
+            return Ok(new { isEmpty = false, message = "All garden log with id", content = logs });
         }
 
         [HttpGet("parcel/{id}")]

@@ -199,7 +199,7 @@ namespace GreenUApi.Controllers
 
             await _db.SaveChangesAsync();
 
-            return Ok(new { isEmpty = false, message = "Your crop are created !", content = crop });
+            return Ok(new { isEmpty = false, message = "Your crop are created !", content = crop, log = log });
 
         }
 
