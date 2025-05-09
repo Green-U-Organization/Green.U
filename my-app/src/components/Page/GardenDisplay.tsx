@@ -4,11 +4,12 @@ import Garden from '../Organism/Garden';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import MenuSandwich from '../Molecule/MenuSandwich';
+import MenuSandwich from '../Molecule/MenuSandwichAddInGarden';
 import H1 from '../Atom/H1';
 import H2 from '../Atom/H2';
 import Cookies from 'js-cookie';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
+import MenuSandwichOptionInGarden from '../Molecule/MenuSandwichOptionInGarden';
 
 // import Draggable from 'react-draggable';
 
@@ -49,7 +50,9 @@ const GardenDisplay = () => {
             <Garden garden={currentGarden} scale={scale}></Garden>
           )}
         </div>
+
         <MenuSandwich iconList={[]}></MenuSandwich>
+        <MenuSandwichOptionInGarden iconList={[]}></MenuSandwichOptionInGarden>
       </Card>
     </section>
   );

@@ -357,16 +357,13 @@ type editUserByUserIdRequest = {
 };
 
 type GetAllLogsResponse = {
-  logs: Log[];
+  isEmpty: boolean;
+  message: string;
+  content: Log[];
 };
 
 type GetAllLogsRequest = {
-  gardenId?: number;
-  parcelId?: number;
-  lineId?: number;
-  cropId?: number;
-  nurseryId?: number;
-  greenhouseId?: number;
+  id?: number;
 };
 
 export const extendedGardenAPI = api
@@ -699,7 +696,7 @@ export const extendedGardenAPI = api
         GetAllLogsRequest
       >({
         query: (arg) => ({
-          url: `/log/garden/${arg.gardenId}`,
+          url: `/log/garden/${arg.id}`,
           method: 'GET',
         }),
         providesTags: ['tags-logs'],
@@ -710,7 +707,7 @@ export const extendedGardenAPI = api
         GetAllLogsRequest
       >({
         query: (arg) => ({
-          url: `/log/parcel/${arg.parcelId}`,
+          url: `/log/parcel/${arg.id}`,
           method: 'GET',
         }),
         providesTags: ['tags-logs'],
@@ -718,7 +715,7 @@ export const extendedGardenAPI = api
       //GetAllLogsByLineId
       getAllLogsByLineId: builder.query<GetAllLogsResponse, GetAllLogsRequest>({
         query: (arg) => ({
-          url: `/log/line/${arg.lineId}`,
+          url: `/log/line/${arg.id}`,
           method: 'GET',
         }),
         providesTags: ['tags-logs'],
@@ -726,7 +723,7 @@ export const extendedGardenAPI = api
       //GetAllLogByCropId
       getAllLogsByCropId: builder.query<GetAllLogsResponse, GetAllLogsRequest>({
         query: (arg) => ({
-          url: `/log/crop/${arg.cropId}`,
+          url: `/log/crop/${arg.id}`,
           method: 'GET',
         }),
         providesTags: ['tags-logs'],
@@ -737,7 +734,7 @@ export const extendedGardenAPI = api
         GetAllLogsRequest
       >({
         query: (arg) => ({
-          url: `/log/nursery/${arg.nurseryId}`,
+          url: `/log/nursery/${arg.id}`,
           method: 'GET',
         }),
         providesTags: ['tags-logs'],
@@ -748,7 +745,7 @@ export const extendedGardenAPI = api
         GetAllLogsRequest
       >({
         query: (arg) => ({
-          url: `/log/greenhouse/${arg.greenhouseId}`,
+          url: `/log/greenhouse/${arg.id}`,
           method: 'GET',
         }),
         providesTags: ['tags-logs'],

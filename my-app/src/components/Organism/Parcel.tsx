@@ -15,9 +15,14 @@ import {
 } from '@/slice/fetch';
 import VegetableIcon from '../Atom/VegetableIcon';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
-import { setEditParcelPopup } from '@/redux/display/displaySlice';
+import {
+  setDisplayParcelLogPopup,
+  setEditParcelPopup,
+} from '@/redux/display/displaySlice';
 import Loading from '../Atom/Loading';
 import SlimCard from '../Atom/SlimCard';
+import Display_ParcelLogs_Popup from '../Molecule/Display_ParcelLogs_Popup';
+import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   //Local State
@@ -37,9 +42,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
     data: lines,
     isLoading: linesIsLoading,
     isError: linesIsError,
-  } = useGetAllLinesByParcelIdQuery({
-    parcelId: parcel.id,
-  });
+  } = useGetAllLinesByParcelIdQuery({ parcelId: parcel.id });
   const [createNewLine] = useCreateNewGardenLineMutation();
   const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
 
@@ -52,6 +55,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   );
   const editParcelPopupDisplay = useSelector(
     (state: RootState) => state.display.editParcelPopup
+  );
+  const displayParcelLogPopup = useSelector(
+    (state: RootState) => state.display.displayParcelLogPopup
   );
   const id = useSelector((state: RootState) => state.display.id);
 
@@ -195,6 +201,14 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                     alt="Display info about parcel"
                     width={50}
                     height={50}
+                    onClick={() =>
+                      dispatch(
+                        setDisplayParcelLogPopup({
+                          state: !displayParcelLogPopup,
+                          id: Number(parcel.id),
+                        })
+                      )
+                    }
                   />
                   <Image
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
@@ -222,6 +236,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 />
               </div>
 
+              {/* Edit Popup */}
               <div
                 style={{
                   display:
@@ -231,6 +246,22 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 }}
               >
                 <EditParcelPopup parcel={parcel} />
+              </div>
+
+              {/* Log Popup */}
+              <div
+                style={{
+                  display:
+                    displayParcelLogPopup && id === parcel.id
+                      ? 'block'
+                      : 'none',
+                }}
+              >
+                <Display_Logs_Popup
+                  id={parcel.id}
+                  display={displayParcelLogPopup}
+                  logObject={'parcel'}
+                />
               </div>
             </section>
 

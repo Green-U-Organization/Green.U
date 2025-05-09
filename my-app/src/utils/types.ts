@@ -265,6 +265,9 @@ export type Log = {
   nurseryId?: number;
   greenhouseId?: number;
   action: string;
+  comment?: string;
+  authorId?: number;
+  userName?: string;
   type: string;
   createdAt: string;
 };

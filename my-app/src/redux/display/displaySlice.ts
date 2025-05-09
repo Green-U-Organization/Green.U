@@ -21,7 +21,7 @@ type displayState = {
 
 type payloadType = {
   state: boolean;
-  id: number;
+  id?: number;
 };
 
 const initialState: displayState = {
@@ -123,5 +123,11 @@ export const {
   setEditGardenPopup,
   setEditLinePopup,
   setEditParcelPopup,
+  setDisplayCropLogPopup,
+  setDisplayGardenLogPopup,
+  setDisplayGreenhouseLogPopup,
+  setDisplayLineLogPopup,
+  setDisplayNurseryLogPopup,
+  setDisplayParcelLogPopup,
 } = displaySlice.actions;
 export default displaySlice.reducer;

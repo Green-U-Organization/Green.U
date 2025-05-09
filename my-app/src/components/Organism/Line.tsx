@@ -14,8 +14,10 @@ import {
 } from '@/slice/fetch';
 import {
   setAddCropPopup,
+  setDisplayLineLogPopup,
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
+import Display_LineLogs_Popup from '../Molecule/Display_LineLogs_Popup';
 
 const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   // Local State
@@ -47,6 +49,9 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   );
   const ExistantCropPopupDisplay = useSelector(
     (state: RootState) => state.display.existantCropPopup
+  );
+  const displayLineLogPopup = useSelector(
+    (state: RootState) => state.display.displayLineLogPopup
   );
   const id = useSelector((state: RootState) => state.display.id);
 
@@ -286,6 +291,14 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
                 width: '5vw',
                 height: '5vw',
               }}
+              onClick={() =>
+                dispatch(
+                  setDisplayLineLogPopup({
+                    state: true,
+                    id: Number(line.id),
+                  })
+                )
+              }
             />
             <img
               className="mx-[3vw]"
@@ -323,6 +336,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
         />
       </div>
 
+      {/* Add Crop Popup */}
       <div
         ref={cropPopupRef}
         style={{
@@ -336,6 +350,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
         <AddCropPopup lineId={line.id} />
       </div>
 
+      {/* Exist Crop Popup */}
       <div
         ref={existantPopupRef}
         style={{
@@ -347,6 +362,15 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
         data-modal
       >
         <ExistentCropPopup lineId={line.id} />
+      </div>
+
+      {/* Log Popup */}
+      <div
+        style={{
+          display: displayLineLogPopup && id === line.id ? 'block' : 'none',
+        }}
+      >
+        <Display_LineLogs_Popup lineId={line.id} />
       </div>
     </>
   );
