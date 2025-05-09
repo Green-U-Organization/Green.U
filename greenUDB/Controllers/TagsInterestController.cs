@@ -17,6 +17,11 @@ namespace GreenUApi.Controllers
             public required List<string> Hashtags { get; set;}
         }
 
+        public class HashtagListRequest
+        {
+            public required string[] Hashtags { get; set;}
+        }
+
         [HttpGet("popular")]
         public async Task<ActionResult<TagsInterest>> GetPopularTags()
         {
@@ -105,36 +110,94 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "User Tag", content = UserTags});
         }
 
-        [HttpGet("allusers")]
-        public async Task<ActionResult<TagsInterest>> GetAllUserByTag([FromQuery] string hashtag)
+        //[HttpGet("allusers")]
+        //public async Task<ActionResult<TagsInterest>> GetAllUserByTag([FromQuery] string hashtag)
+        //{
+        //    if (hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+
+        //    TagsInterest tag = new()
+        //    {
+        //        Hashtag = hashtag
+        //    };
+
+        //    var user = await _db.TagsInterests
+        //        .Where(t => t.Hashtag == tag.Hashtag)
+        //        .Join(
+        //            _db.Users
+        //            .Where(u => !u.Deleted),
+        //            t => t.UserId,
+        //            u => u.Id,
+        //            (t, u) => new {
+        //                u.Id,
+        //                u.Username,
+        //                u.Bio,
+        //                u.Skill_level,
+        //                u.TagsInterests
+        //            }
+        //        )
+        //        .ToArrayAsync();
+
+        //    if (user.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
+
+        //    return Ok(new { isEmpty = false, message = "All user with tag", content = user });
+        //}
+
+        [HttpPost("allusers")]
+        public async Task<ActionResult<TagsInterest>> GetAllUserByTags([FromBody] HashtagListRequest request)
         {
-            if (hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
+            if (request.Hashtags == null || !request.Hashtags.Any())
+                return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
 
-            TagsInterest tag = new()
+            // check user and count match tag
+            var usersWithMatchingTags = await _db.TagsInterests
+                .Where(t => request.Hashtags.Contains(t.Hashtag))
+                .GroupBy(t => t.UserId)
+                .Select(group => new
+                {
+                    UserId = group.Key,
+                    MatchingTagsCount = group.Count()
+                })
+                .ToListAsync();
+
+            if (!usersWithMatchingTags.Any())
+                return BadRequest(new { isEmpty = true, message = "No users found with these tags" });
+
+            // get users data
+            var userIds = usersWithMatchingTags.Select(u => u.UserId).ToList();
+            var usersWithDetails = await _db.Users
+                .Where(u => userIds.Contains(u.Id) && !u.Deleted)
+                .Select(u => new
+                {
+                    u.Id,
+                    u.Username,
+                    u.Bio,
+                    u.Skill_level,
+                    TagsInterests = u.TagsInterests.Select(t => t.Hashtag).ToList(),
+                })
+                .ToListAsync();
+
+            var result = usersWithDetails.Select(user => {
+                var matchingInfo = usersWithMatchingTags.First(ut => ut.UserId == user.Id);
+                return new
+                {
+                    user.Id,
+                    user.Username,
+                    user.Bio,
+                    user.Skill_level,
+                    TagsInterests = user.TagsInterests,
+                    MatchingTagsCount = matchingInfo.MatchingTagsCount
+                };
+            })
+                .OrderByDescending(u => u.MatchingTagsCount)
+                .ToList();
+
+            return Ok(new
             {
-                Hashtag = hashtag
-            };
-
-            var user = await _db.TagsInterests
-                .Where(t => t.Hashtag == tag.Hashtag)
-                .Join(
-                    _db.Users
-                    .Where(u => !u.Deleted),
-                    t => t.UserId,
-                    u => u.Id,
-                    (t, u) => new {
-                        u.Id,
-                        u.Username,
-                        u.Bio,
-                        u.Skill_level,
-                        u.TagsInterests
-                    }
-                )
-                .ToArrayAsync();
-
-            if (user.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
-
-            return Ok(new { isEmpty = false, message = "All user with tag", content = user });
+                isEmpty = false,
+                message = "Users with matching tags",
+                content = result,
+                searchedTags = request.Hashtags
+            });
         }
 
         [HttpDelete("user/{id}")]
