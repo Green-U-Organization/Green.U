@@ -84,8 +84,8 @@ const LoginForm = () => {
     }
   };
   return (
-    <section className="flex max-h-[calc(100vh-15px)] items-center justify-center overflow-auto">
-      <Card className={'bg-cardbackground max-w-screen px-8 pt-7'}>
+    <section className="flex h-screen items-center justify-center overflow-auto">
+      <Card className={'bg-cardbackground h-screen max-w-screen px-8 pt-7'}>
         {/*}flex flex-col p-5 max-w-150*/}
         <form id="loginForm" onSubmit={handleSubmit}>
           <div className="flex flex-col items-center justify-center">

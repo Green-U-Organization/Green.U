@@ -256,3 +256,16 @@ export type CropType = {
   harvesting: string;
   icon: string;
 };
+
+export type Log = {
+  id: number;
+  gardenId?: number;
+  parcelId?: number;
+  lineId?: number;
+  cropId?: number;
+  nurseryId?: number;
+  greenhouseId?: number;
+  action: string;
+  type: string;
+  createdAt: string;
+};

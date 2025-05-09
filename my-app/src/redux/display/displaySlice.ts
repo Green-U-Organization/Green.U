@@ -11,6 +11,12 @@ type displayState = {
   editParcelPopup: boolean;
   editGardenPopup: boolean;
   editLinePopup: boolean;
+  displayGardenLogPopup: boolean;
+  displayParcelLogPopup: boolean;
+  displayLineLogPopup: boolean;
+  displayCropLogPopup: boolean;
+  displayNurseryLogPopup: boolean;
+  displayGreenhouseLogPopup: boolean;
 };
 
 type payloadType = {
@@ -29,6 +35,12 @@ const initialState: displayState = {
   editParcelPopup: false,
   editGardenPopup: false,
   editLinePopup: false,
+  displayGardenLogPopup: false,
+  displayParcelLogPopup: false,
+  displayLineLogPopup: false,
+  displayCropLogPopup: false,
+  displayNurseryLogPopup: false,
+  displayGreenhouseLogPopup: false,
 };
 
 const displaySlice = createSlice({
@@ -69,6 +81,33 @@ const displaySlice = createSlice({
     },
     setEditLinePopup: (state, action: PayloadAction<payloadType>) => {
       state.editLinePopup = action.payload.state;
+      state.id = action.payload.id;
+    },
+    setDisplayGardenLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayGardenLogPopup = action.payload.state;
+      state.id = action.payload.id;
+    },
+    setDisplayParcelLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayParcelLogPopup = action.payload.state;
+      state.id = action.payload.id;
+    },
+    setDisplayLineLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayLineLogPopup = action.payload.state;
+      state.id = action.payload.id;
+    },
+    setDisplayCropLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayCropLogPopup = action.payload.state;
+      state.id = action.payload.id;
+    },
+    setDisplayNurseryLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayNurseryLogPopup = action.payload.state;
+      state.id = action.payload.id;
+    },
+    setDisplayGreenhouseLogPopup: (
+      state,
+      action: PayloadAction<payloadType>
+    ) => {
+      state.displayGreenhouseLogPopup = action.payload.state;
       state.id = action.payload.id;
     },
   },
