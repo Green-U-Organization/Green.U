@@ -21,6 +21,8 @@ namespace GreenUApi.Controllers
 
         public long? AuthorId { get; set; }
 
+        public string? Username { get; set; }
+
         public long? GardenId { get; set; }
 
         public long? ParcelId { get; set; }
@@ -57,17 +59,19 @@ namespace GreenUApi.Controllers
 
             if (logDTO.Action == null || logDTO.Comment == null) return BadRequest(new { isEmpty = true, message = "Action or comment is empty" });
 
-            bool user = await _db.Users
+            var user = await _db.Users
                 .Where(u => u.Id == id)
-                .AnyAsync();
+                .Select(u => u.Username)
+                .FirstOrDefaultAsync();
 
-            if (!user) return BadRequest(new { isEmpty = true, message = "User id is incorrect" });
+            if (user == null) return BadRequest(new { isEmpty = true, message = "User id is incorrect" });
 
             logDTO.Type = "user";
             logDTO.AuthorId = id;
 
             Log log = new Log {
                 AuthorId = logDTO.AuthorId,
+                Username = user,
                 GardenId = logDTO.GardenId,
                 ParcelId = logDTO.ParcelId,
                 LineId = logDTO.LineId,
