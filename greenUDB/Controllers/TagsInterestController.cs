@@ -364,6 +364,7 @@ namespace GreenUApi.Controllers
                     g.Id,
                     g.Name,
                     g.Description,
+                    g.Type,
                     TagsInterests = g.TagsInterests.Select(t => t.Hashtag).ToList(),
                 })
                 .ToListAsync();
