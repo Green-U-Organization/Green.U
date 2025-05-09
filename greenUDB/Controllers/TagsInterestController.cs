@@ -110,38 +110,6 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "User Tag", content = UserTags});
         }
 
-        //[HttpGet("allusers")]
-        //public async Task<ActionResult<TagsInterest>> GetAllUserByTag([FromQuery] string hashtag)
-        //{
-        //    if (hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
-
-        //    TagsInterest tag = new()
-        //    {
-        //        Hashtag = hashtag
-        //    };
-
-        //    var user = await _db.TagsInterests
-        //        .Where(t => t.Hashtag == tag.Hashtag)
-        //        .Join(
-        //            _db.Users
-        //            .Where(u => !u.Deleted),
-        //            t => t.UserId,
-        //            u => u.Id,
-        //            (t, u) => new {
-        //                u.Id,
-        //                u.Username,
-        //                u.Bio,
-        //                u.Skill_level,
-        //                u.TagsInterests
-        //            }
-        //        )
-        //        .ToArrayAsync();
-
-        //    if (user.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
-
-        //    return Ok(new { isEmpty = false, message = "All user with tag", content = user });
-        //}
-
         [HttpPost("allusers")]
         public async Task<ActionResult<TagsInterest>> GetAllUserByTags([FromBody] HashtagListRequest request)
         {
@@ -190,6 +158,8 @@ namespace GreenUApi.Controllers
             })
                 .OrderByDescending(u => u.MatchingTagsCount)
                 .ToList();
+
+            if (result.Count == 0) return BadRequest(new { isEmpty = true, message = "This tag exist for garden but no in user" });
 
             return Ok(new
             {
@@ -303,38 +273,6 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "Your garden tag", content = GardenTag});
         }
 
-        //[HttpGet("allgarden")]
-        //public async Task<ActionResult<TagsInterest>> GetAllGardenByTag([FromQuery] string hashtag)
-        //{
-        //    if (hashtag == null) return BadRequest(new { isEmpty = true, message = "Hashtag is needed." });
-
-        //    TagsInterest tag = new()
-        //    {
-        //        Hashtag = hashtag
-        //    };
-
-        //    var garden = await _db.TagsInterests
-        //        .Where(t => t.Hashtag == tag.Hashtag)
-        //        .Join(
-        //            _db.Gardens
-        //            .Where(g => !g.Deleted),
-        //            t => t.GardenId,
-        //            g => g.Id,
-        //            (t, g) => new {
-        //                g.Id,
-        //                g.Name,
-        //                g.Description,
-        //                g.Type,
-        //                g.TagsInterests
-        //            }
-        //        )
-        //        .ToArrayAsync();
-
-        //    if (garden.Length == 0) return BadRequest(new { isEmpty = true, message = "This tag is doesn't exist" });
-
-        //    return Ok(new { isEmpty = false, message = "All user with tag", content = garden });
-        //}
-
         [HttpPost("allgardens")]
         public async Task<ActionResult<TagsInterest>> GetAllGardensByTags([FromBody] HashtagListRequest request)
         {
@@ -383,6 +321,8 @@ namespace GreenUApi.Controllers
             })
                 .OrderByDescending(u => u.MatchingTagsCount)
                 .ToList();
+
+            if (result.Count == 0) return BadRequest(new { isEmpty = true, message = "This tag exist for user but no in garden" });
 
             return Ok(new
             {
