@@ -1,9 +1,8 @@
-import Display_ParcelLogs_Popup from '@/components/Molecule/Display_ParcelLogs_Popup';
-import Profile from '@/components/Page/PublicProfile';
+import Explore from '@/components/Page/Explore';
 import React from 'react';
 
 const page = () => {
-  return <Display_ParcelLogs_Popup></Display_ParcelLogs_Popup>;
+  return <Explore></Explore>;
 };
 
 export default page;

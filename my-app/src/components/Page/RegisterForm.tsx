@@ -652,7 +652,7 @@ const RegisterForm = () => {
           placeholder={translations.giveaBio}
           rows={Number(rows)}
           cols={Number(cols)}
-          className="mb-5 rounded-md border-1 pl-3"
+          className="row={5} mb-5 min-h-[165px] max-w-full resize-y rounded-md border-1 pl-3"
         ></textarea>
 
         {/* Vos intérêts */}
@@ -725,7 +725,7 @@ const RegisterForm = () => {
             {translations.previous}
           </Button>
           <Button
-            className="relative bg-bgbutton m-5 px-6 py-2"
+            className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
