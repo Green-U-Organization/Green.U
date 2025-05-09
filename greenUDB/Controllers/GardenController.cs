@@ -71,6 +71,26 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "All garden by user ID", content = gardens});
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<User>> SearchGardens([FromQuery] string inputuser)
+        {
+            if (inputuser == null)
+                return BadRequest(new { isEmpty = true, message = "inputuser cannot be null or empty" });
+
+            var garden = await _db.Gardens
+                .Where(u => u.Name != null && u.Name.Contains(inputuser))
+                .Select(u => new
+                {
+                    u.Id,
+                    u.Name
+                })
+                .ToArrayAsync();
+
+            if (garden.Length == 0) return BadRequest(new { isEmpty = true, message = "Garden doesn't exist" });
+
+            return Ok(new { isEmpty = true, message = "Garden list", content = garden });
+        }
+
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchGarden(long id, GardenModification modifiedUser)
         {
