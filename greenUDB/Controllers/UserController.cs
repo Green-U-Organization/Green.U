@@ -62,6 +62,7 @@ public class UserController(GreenUDB db) : ControllerBase
                 u.Birthday,
                 u.Bio,
                 tagsinterest = _db.TagsInterests.Where(t => t.UserId == u.Id).ToArray(),
+                u.ProfileImage,
                 u.Skill_level,
                 u.Xp,
                 u.Newsletter,

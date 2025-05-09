@@ -251,7 +251,7 @@ namespace GreenUApi.Controllers
             var garden = await _db.TagsInterests
                 .Where(t => t.Hashtag == tag.Hashtag)
                 .Select(t =>
-                    _db.Gardens.Where(g => g.Id == t.GardenId).Select(g => new
+                    _db.Gardens.Where(g => g.Id == t.GardenId && !g.Deleted).Select(g => new
                     {
                         g.Id,
                         g.Name,
