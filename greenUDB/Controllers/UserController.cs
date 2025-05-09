@@ -84,6 +84,25 @@ public class UserController(GreenUDB db) : ControllerBase
         });
     }
 
+    [HttpGet("search")]
+    public async Task<ActionResult<User>> SearchUsers([FromQuery] string inputuser)
+    {
+        if (inputuser == null)
+            return BadRequest(new { isEmpty = true, message = "Input user cannot be null or empty" });
+
+        var user = await _db.Users
+            .Where(u => u.Username != null && u.Username.Contains(inputuser))
+            .Select(u => new
+            {
+                u.Id,
+                u.Username
+            })
+            .ToArrayAsync();
+
+        if (user.Length == 0) return BadRequest(new { isEmpty = true, message = "User doesn't exist" });
+
+        return Ok(new { isEmpty = true, message = "User list", content = user });
+    }
 
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser(User user)
