@@ -185,7 +185,7 @@ const Profile = ({ userId }: { userId: number }) => {
                     bgColor="bg-bgcard"
                     className="flex justify-center bg-amber-200 px-2"
                   >
-                    <p>{hashtag}</p>
+                    <p>#{hashtag}</p>
                   </SlimCard>
                 </div>
               ))}

@@ -65,6 +65,31 @@ type GetGardensByNameRequest = {
   inputuser: string;
 };
 
+type GetGardensByNameErrorResponse = {
+  value: any;
+  isEmpty: boolean;
+  message: string;
+  status?: number;
+};
+
+type GetGardensByNameSuccessResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    authorId: number;
+    name: string;
+    description: string;
+    latitude: number;
+    longitude: number;
+    length: number;
+    width: number;
+    privacy: number;
+    type: number;
+    hashtags: [];
+  }[];
+};
+
 type GetAllParcelByGardenIdRequest = {
   gardenId: number;
 };
@@ -261,16 +286,26 @@ type GetAllUsersByTagRequest = {
   hashtags: string[];
 };
 
-type GetAllUsersByTagResponse = {
+type GetAllUsersByTagErrorResponse = {
+  value: any;
   isEmpty: boolean;
   message: string;
-  content: {
+  status?: number;
+};
+
+type GetAllUsersByTagSuccessResponse = {
+  value: any;
+  isEmpty: boolean;
+  message: string;
+  content?: {
     id: number;
     username: string;
     xp: number;
     country: string;
     bio: string;
-    tagsInterests: {
+    skill_level?: number;
+    matchingTagsCount?: number;
+    tagsInterests?: {
       id: number;
       userId: number;
       hashtag: string;
@@ -279,7 +314,7 @@ type GetAllUsersByTagResponse = {
   }[];
 };
 
-type GetAllGardensBytTagRequest = {
+type GetAllGardensByTagRequest = {
   hashtags: string[];
 };
 
@@ -338,6 +373,32 @@ type GetUserByIdResponse = {
 
 type GetUserByUsernameRequest = {
   username: string;
+};
+
+type GetUserByUsernameErrorResponse = {
+  value: any;
+  isEmpty: boolean;
+  message: string;
+  status?: number;
+};
+
+type GetUserByUsernameSuccessResponse = {
+  value: any;
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    username: string;
+    xp: number;
+    country: string;
+    bio: string;
+    tagsInterests: {
+      id: number;
+      userId: number;
+      hashtag: string;
+      created_at: Date;
+    }[];
+  };
 };
 
 type editUserByUserIdRequest = {
@@ -449,13 +510,24 @@ export const extendedGardenAPI = api
 
       //GetGardensByName
       GetGardensByName: builder.query<
-        GetAllGardensByTagResponse,
+        GetGardensByNameSuccessResponse,
         GetGardensByNameRequest
       >({
         query: (arg) => ({
-          url: `/garden/search/${arg.inputuser}`,
+          url: `/garden/search?inputuser=${arg.inputuser}`,
           method: 'GET',
         }),
+        transformErrorResponse: (response: {
+          status: number;
+          data?: GetGardensByNameErrorResponse;
+        }) => {
+          return {
+            isEmpty: response.data?.isEmpty ?? true,
+            message:
+              response.data?.message || 'Error fetching user by username',
+            status: response.status,
+          };
+        },
       }),
 
       //DeleteParcel >> OK
@@ -664,7 +736,7 @@ export const extendedGardenAPI = api
 
       //getAllUsersByTag >>
       getAllUsersByTag: builder.query<
-        GetAllUsersByTagResponse,
+        GetAllUsersByTagSuccessResponse, // Type de succès
         GetAllUsersByTagRequest
       >({
         query: (arg) => ({
@@ -672,12 +744,22 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
+        transformErrorResponse: (response: {
+          status: number;
+          data?: GetAllUsersByTagErrorResponse;
+        }) => {
+          return {
+            isEmpty: response.data?.isEmpty ?? true,
+            message: response.data?.message || 'Error fetching users by tag',
+            status: response.status,
+          };
+        },
       }),
 
       //getAllGardensByTag >>
       getAllGardensByTag: builder.query<
         GetAllGardensByTagResponse,
-        GetAllGardensBytTagRequest
+        GetAllGardensByTagRequest
       >({
         query: (arg) => ({
           url: `/tags/allgardens`,
@@ -714,13 +796,24 @@ export const extendedGardenAPI = api
 
       //GetUserByUsername
       getUserByUsername: builder.query<
-        GetAllUsersByTagResponse, //Les données retournées sont les mêmes que ceux attendus
+        GetUserByUsernameSuccessResponse,
         GetUserByUsernameRequest
       >({
         query: (arg) => ({
           url: `user/search?inputuser=${arg.username}`,
           method: 'GET',
         }),
+        transformErrorResponse: (response: {
+          status: number;
+          data?: GetUserByUsernameErrorResponse;
+        }) => {
+          return {
+            isEmpty: response.data?.isEmpty ?? true,
+            message:
+              response.data?.message || 'Error fetching user by username',
+            status: response.status,
+          };
+        },
       }),
 
       // logs
