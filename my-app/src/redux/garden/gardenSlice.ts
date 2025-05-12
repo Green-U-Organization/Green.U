@@ -1,5 +1,5 @@
 import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
-import { Garden, GardenFull } from '@/utils/types';
+import { Garden, GardenFull, Parcel, Nursery, Line, Crop } from '@/utils/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GardenState {
@@ -46,6 +46,70 @@ const gardenSlice = createSlice({
     clearSelectedGarden: (state) => {
       state.selectedGarden = null;
     },
+    addParcel: (state, action: PayloadAction<Parcel>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels.push(action.payload);
+      }
+    },
+    addNursery: (state, action: PayloadAction<Nursery>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.nursery.push(action.payload);
+      }
+    },
+    addLine: (state, action: PayloadAction<Line>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels.forEach((parcel) => {
+          if (!parcel.lines) {
+            parcel.lines = [];
+          }
+          parcel.lines.push(action.payload);
+        });
+      }
+    },
+    addCropInLine: (state, action: PayloadAction<Crop>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels.forEach((parcel) => {
+          if (!parcel.lines) {
+            parcel.lines = [];
+          }
+          parcel.lines.forEach((line) => {
+            if (!line.crop) {
+              line.crop = [];
+            }
+            line.crop.push(action.payload);
+          });
+        });
+      }
+    },
+
+    deleteParcel: (state, action: PayloadAction<{ parcelId: number }>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels = state.selectedGarden.parcels.filter(
+          (parcel) => parcel.id !== action.payload.parcelId
+        );
+      }
+    },
+    deleteNursery: (state, action: PayloadAction<{ nurseryId: number }>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.nursery = state.selectedGarden.nursery.filter(
+          (nursery) => nursery.id !== action.payload.nurseryId
+        );
+      }
+    },
+    deleteLine: (
+      state,
+      action: PayloadAction<{ parcelId: number; lineId: number }>
+    ) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels.forEach((parcel) => {
+          if (parcel.id === action.payload.parcelId) {
+            parcel.lines = parcel.lines?.filter(
+              (line) => line.id !== action.payload.lineId
+            );
+          }
+        });
+      }
+    },
     setScale: (state, action: PayloadAction<number>) => {
       state.scale = action.payload;
     },
@@ -86,5 +150,12 @@ export const {
   setFullscreen,
   setReload,
   setGraphicMode,
+  addNursery,
+  addLine,
+  addCropInLine,
+  addParcel,
+  deleteLine,
+  deleteNursery,
+  deleteParcel,
 } = gardenSlice.actions;
 export default gardenSlice.reducer;

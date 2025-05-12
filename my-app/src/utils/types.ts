@@ -58,13 +58,13 @@ export type Garden = {
 };
 
 export type Parcel = {
-  id: number;
+  id?: number;
   gardenId: number;
   length: number;
   width: number;
   nLine: number;
   parcelAngle: number;
-  createdAt: string;
+  createdAt?: string;
   garden?: string;
   lines?: [];
   logs?: [];
@@ -105,6 +105,8 @@ export type Line = {
   id: number;
   parcelId: number;
   length: number;
+  createdAt?: string;
+  crop?: Crop[];
   // crop: string;
   // status: string;
 };
@@ -147,17 +149,18 @@ export type ZoomSliderProps = {
   className?: string;
 };
 
-export type NurceryProps = {
-  nursery: Nurcery;
+export type NurseryProps = {
+  nursery: Nursery;
   scale: number;
   nurseryKey: number;
 };
 
-export type Nurcery = {
+export type Nursery = {
   id: number;
   name: string;
   comments: string;
   type: string;
+  crop?: Crop[];
 };
 
 export type SelectOption = {
@@ -245,16 +248,17 @@ export type GardenType = {
   hashtags: string[];
 };
 
-export type CropType = {
+export type Crop = {
   id?: number;
   lineId?: number;
   nurseryId?: number;
   vegetable: string;
   variety: string;
+  icon: string;
   sowing: string;
   planting: string;
-  harvesting: string;
-  icon: string;
+  distance_plantation: number;
+  comments: string;
 };
 
 export type Log = {
@@ -284,45 +288,6 @@ export type GardenFull = {
   width: number;
   privacy: number;
   type: number;
-  nursery: {
-    id: number;
-    name: string;
-    comments: string;
-    type: string;
-    crop: {
-      id: number;
-      vegetable: string;
-      variety: string;
-      icon: string;
-      sowing: string;
-      planting: string;
-      distance_plantation: number;
-      comments: string;
-    }[];
-  }[];
-  parcel: {
-    id: number;
-    gardenId: number;
-    length: number;
-    width: number;
-    nLine: number;
-    parcelAngle: number;
-    createdAt: string;
-    lines: {
-      id: number;
-      parcelId: number;
-      length: number;
-      createdAt: string;
-      crop: {
-        id: number;
-        vegetable: string;
-        variety: string;
-        icon: string;
-        sowing: string;
-        planting: string;
-        distance_plantation: number;
-        comments: string;
-      }[];
-    }[];
-  }[];
+  nursery: Nursery[];
+  parcels: Parcel[];
 };

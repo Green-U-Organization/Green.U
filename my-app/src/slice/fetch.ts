@@ -1,4 +1,4 @@
-import { Garden, GardenFull } from '@/utils/types';
+import { Garden, GardenFull, Line } from '@/utils/types';
 import api from './api';
 import { Log } from '@/utils/types';
 
@@ -34,9 +34,28 @@ type CreateNewParcelRequest = {
   gardenId: number;
   length: number;
   width: number;
-  x_position: number;
-  y_position: number;
-  parcel_angle: number;
+  nLine: number;
+  x_position?: number;
+  y_position?: number;
+  parcelAngle?: number;
+};
+
+type CreateNewParcelResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    gardenId: number;
+    length: number;
+    width: number;
+    nLine: number;
+    parcelAngle: number;
+    createdAt: string;
+    garden?: Garden;
+    lines: Line[];
+  };
+  // TODO: Ask backend to only return parcel.
+  //  content: Parcel;
 };
 
 type EditParcelRequest = {
@@ -504,13 +523,16 @@ export const extendedGardenAPI = api
       //EditLine >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
       //CreateNewParcel >> OK
-      createNewParcel: builder.mutation<void, CreateNewParcelRequest>({
+      createNewParcel: builder.mutation<
+        CreateNewParcelResponse,
+        CreateNewParcelRequest
+      >({
         query: (arg) => ({
           url: `/garden/parcel/`,
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels', 'tags-logs'],
+        invalidatesTags: [],
       }),
 
       //GetAllParcelByGardenId >> OK

@@ -11,6 +11,8 @@ import {
 import { setAddParcelPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
+import { addParcel } from '@/redux/garden/gardenSlice';
+import { Parcel } from '@/utils/types';
 
 const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
   //Local Variables
@@ -44,26 +46,42 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newParcel = {
-      gardenId: actualGarden?.id ?? 0,
-      length: length,
-      width: width,
-      nLine: 1,
-      parcelAngle: 0,
-      x_position: 0,
-      y_position: 0,
-      parcel_angle: 0,
-    };
+    if (!actualGarden) {
+      console.error('no garden found');
+      return;
+    }
+    // const newParcel = {
+    //   gardenId: actualGarden?.id ?? 0,
+    //   length: length,
+    //   width: width,
+    //   nLine: 1,
+    //   parcelAngle: 0,
+    //   x_position: 0,
+    //   y_position: 0,
+    //   parcel_angle: 0,
+    // };
 
     for (let i = 0; i < repeat; i++) {
       try {
-        await createNewParcel(newParcel).unwrap();
+        const newParcel = await createNewParcel({
+          gardenId: actualGarden.id,
+          length: length,
+          width: width,
+          nLine: 1,
+          parcelAngle: 0,
+        }).unwrap();
+
         await addXp({
           userId: id,
           xp: (user?.data?.content?.xp ?? 0) + XpTable.addParcel,
         });
+
+        // delete newParcel.content.garden;
+
+        dispatch(addParcel(newParcel as unknown as Parcel));
         console.log('parcel created');
-      } catch {
+      } catch (e) {
+        console.error(e);
         console.log('error creating parcel');
       }
     }

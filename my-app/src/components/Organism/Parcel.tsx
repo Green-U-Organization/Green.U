@@ -21,7 +21,7 @@ import {
 } from '@/redux/display/displaySlice';
 import Loading from '../Atom/Loading';
 import SlimCard from '../Atom/SlimCard';
-import Display_ParcelLogs_Popup from '../Molecule/Display_ParcelLogs_Popup';
+// import Display_ParcelLogs_Popup from '../Molecule/Display_ParcelLogs_Popup';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
