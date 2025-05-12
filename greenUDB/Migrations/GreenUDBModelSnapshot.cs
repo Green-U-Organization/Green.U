@@ -251,6 +251,8 @@ namespace GreenUApi.Migrations
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
+                    b.HasIndex("GardenId");
+
                     b.HasIndex("PLantNurseryId");
 
                     b.HasIndex(new[] { "ParcelId" }, "fk_Line_Parcel_id");
@@ -556,6 +558,10 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Line", b =>
                 {
+                    b.HasOne("GreenUApi.Models.Garden", "Gardens")
+                        .WithMany("Lines")
+                        .HasForeignKey("GardenId");
+
                     b.HasOne("GreenUApi.Models.PlantNursery", null)
                         .WithMany("Lines")
                         .HasForeignKey("PLantNurseryId");
@@ -564,6 +570,8 @@ namespace GreenUApi.Migrations
                         .WithMany("Lines")
                         .HasForeignKey("ParcelId")
                         .HasConstraintName("fk_Line_Parcel_id");
+
+                    b.Navigation("Gardens");
 
                     b.Navigation("Parcel");
                 });
@@ -609,6 +617,8 @@ namespace GreenUApi.Migrations
                     b.Navigation("Contributors");
 
                     b.Navigation("Followers");
+
+                    b.Navigation("Lines");
 
                     b.Navigation("Parcels");
 
