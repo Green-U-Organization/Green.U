@@ -139,6 +139,8 @@ namespace GreenUApi.Controllers
                     u.Id,
                     u.Username,
                     u.Bio,
+                    u.Country,
+                    u.Xp,
                     u.Skill_level,
                     TagsInterests = u.TagsInterests.Select(t => t.Hashtag).ToList(),
                 })
@@ -151,6 +153,8 @@ namespace GreenUApi.Controllers
                     user.Id,
                     user.Username,
                     user.Bio,
+                    user.Country,
+                    user.Xp,
                     user.Skill_level,
                     TagsInterests = user.TagsInterests,
                     MatchingTagsCount = matchingInfo.MatchingTagsCount
