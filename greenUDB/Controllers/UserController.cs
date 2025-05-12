@@ -93,10 +93,12 @@ public class UserController(GreenUDB db) : ControllerBase
         var user = await _db.Users
             .Where(u => u.Username != null && u.Username.Contains(inputuser))
             .Select(u => new
-            {
+            {   
                 u.Id,
                 u.Username,
                 u.Bio,
+                u.Country,
+                u.Xp,
                 u.Skill_level,
                 u.TagsInterests
             })
@@ -131,7 +133,7 @@ public class UserController(GreenUDB db) : ControllerBase
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        return Ok(new { isEmpty = true, message = "User created !" });
+        return Ok(new { isEmpty = false, message = "User created !", content = new { id = user.Id, username = user.Username } });
     }
 
     [HttpPatch("{id}")]

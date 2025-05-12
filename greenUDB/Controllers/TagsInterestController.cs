@@ -303,6 +303,7 @@ namespace GreenUApi.Controllers
                     g.Name,
                     g.Description,
                     g.Type,
+                    g.Privacy,
                     TagsInterests = g.TagsInterests.Select(t => t.Hashtag).ToList(),
                 })
                 .ToListAsync();
@@ -315,6 +316,7 @@ namespace GreenUApi.Controllers
                     garden.Name,
                     garden.Description,
                     garden.Type,
+                    garden.Privacy,
                     TagsInterests = garden.TagsInterests,
                     MatchingTagsCount = matchingInfo.MatchingTagsCount
                 };

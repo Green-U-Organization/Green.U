@@ -85,6 +85,7 @@ namespace GreenUApi.Controllers
                     g.Name,
                     g.Description,
                     g.Type,
+                    g.Privacy,
                     g.TagsInterests
                 })
                 .ToArrayAsync();
