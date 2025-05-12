@@ -85,7 +85,7 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   }
 
   return (
-    <section className="mb-10 flex flex-col">
+    <section className="mb-10 flex h-[60vh] flex-col">
       <section
         className={`_GARDEN_ ${graphicMode ? 'bg-gardenBG' : 'bg-cardbackground'} relative rounded-xl`}
         style={{
