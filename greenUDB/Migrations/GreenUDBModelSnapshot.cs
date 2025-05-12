@@ -383,6 +383,8 @@ namespace GreenUApi.Migrations
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
+                    b.HasIndex("GardenId");
+
                     b.ToTable("PlantNursery", (string)null);
                 });
 
@@ -595,6 +597,15 @@ namespace GreenUApi.Migrations
                     b.Navigation("Garden");
                 });
 
+            modelBuilder.Entity("GreenUApi.Models.PlantNursery", b =>
+                {
+                    b.HasOne("GreenUApi.Models.Garden", "Garden")
+                        .WithMany("PlantNurseries")
+                        .HasForeignKey("GardenId");
+
+                    b.Navigation("Garden");
+                });
+
             modelBuilder.Entity("GreenUApi.Models.TagsInterest", b =>
                 {
                     b.HasOne("GreenUApi.Models.Garden", "Garden")
@@ -621,6 +632,8 @@ namespace GreenUApi.Migrations
                     b.Navigation("Lines");
 
                     b.Navigation("Parcels");
+
+                    b.Navigation("PlantNurseries");
 
                     b.Navigation("TagsInterests");
                 });
