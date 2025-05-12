@@ -2,6 +2,11 @@ import { Garden } from '@/utils/types';
 import api from './api';
 import { Log } from '@/utils/types';
 
+type LoginUserRequest = {
+  username: string;
+  password: string;
+};
+
 type CreateNewGardenLineRequest = {
   parcelId: number;
   length: number;
@@ -261,6 +266,15 @@ type RegisterUserRequest = {
   birthday: string;
   newsletter: boolean;
   skill_level: number;
+};
+
+type RegisterUserResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    username: string;
+  };
 };
 
 type CreateTagsListByUserRequest = {
@@ -686,21 +700,24 @@ export const extendedGardenAPI = api
         invalidatesTags: ['garden-nursery', 'tags-logs'],
       }),
 
-      // // USER CONNECTION
-      // loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
-      //   query: (arg) => ({
-      //     url: `/login`,
-      //     method: 'POST',
-      //     body: arg,
-      //   }),
-      // }),
-      registerUser: builder.mutation<void, RegisterUserRequest>({
+      // USER CONNECTION
+      loginUser: builder.mutation<void, LoginUserRequest>({
         query: (arg) => ({
-          url: `/user`,
+          url: `/login`,
           method: 'POST',
           body: arg,
         }),
       }),
+
+      registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>(
+        {
+          query: (arg) => ({
+            url: `/user`,
+            method: 'POST',
+            body: arg,
+          }),
+        }
+      ),
 
       //CreateTagsListByUser >>
       createTagsListByUser: builder.mutation<void, CreateTagsListByUserRequest>(

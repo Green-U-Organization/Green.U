@@ -382,20 +382,22 @@ const RegisterForm = () => {
     //--------------------------------------------
     //IL FAUT RECUPERER LE USERID DANS LA RESPONSE
     //--------------------------------------------
-    const bodyHashTagsRequest = {
-      userId: 8,
-      hashtags: formDataRegister.interests,
-    };
 
     try {
       setIsSubmitting(true);
       setSubmitError(null); // reset errors
 
-      const result = registerUser(bodyRequest);
+      //On créé l'utilisateur
+      const response = await registerUser(bodyRequest).unwrap();
+      const { id } = response.content;
 
-      //Ajout des hashtags
+      const bodyHashTagsRequest = {
+        userId: id,
+        hashtags: formDataRegister.interests,
+      };
+
+      //On ajoute les hashtags
       createTagsListByUser(bodyHashTagsRequest);
-      console.log('hashtags user created');
 
       try {
         loginUser({
@@ -468,7 +470,7 @@ const RegisterForm = () => {
 
   return (
     <Card className={'bg-cardbackground h-full max-w-screen px-8 pt-5'}>
-      <h1 className="mb-5 text-4xl">{translations.signup}: </h1>
+      <h1 className="mb-5 text-4xl">{translations.register}: </h1>
 
       <form
         ref={formRef}
@@ -637,6 +639,13 @@ const RegisterForm = () => {
         <div className="flex justify-center pb-5">
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
+            type="button"
+            onClick={() => router.push('login')}
+          >
+            Back
+          </Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={handleNextStep}
           >
             {translations.next}
@@ -728,6 +737,13 @@ const RegisterForm = () => {
           <p className="text-txterror">{translations.errorNotCheckedToU}</p>
         )}
         <div className="flex justify-center pb-5">
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            type="button"
+            onClick={() => router.push('login')}
+          >
+            Back
+          </Button>
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={handlePrevStep}
