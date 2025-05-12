@@ -17,6 +17,7 @@ type displayState = {
   displayCropLogPopup: boolean;
   displayNurseryLogPopup: boolean;
   displayGreenhouseLogPopup: boolean;
+  displayAddLogWindow: boolean;
 };
 
 type payloadType = {
@@ -41,6 +42,7 @@ const initialState: displayState = {
   displayCropLogPopup: false,
   displayNurseryLogPopup: false,
   displayGreenhouseLogPopup: false,
+  displayAddLogWindow: false,
 };
 
 const displaySlice = createSlice({
@@ -49,66 +51,70 @@ const displaySlice = createSlice({
   reducers: {
     setAddCropNurseryPopup: (state, action: PayloadAction<payloadType>) => {
       state.addCropNurseryPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setAddCropPopup: (state, action: PayloadAction<payloadType>) => {
       state.addCropPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setAddGreenhousePopup: (state, action: PayloadAction<payloadType>) => {
       state.addGreenhousePopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setAddNurseryPopup: (state, action: PayloadAction<payloadType>) => {
       state.addNurseryPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setAddParcelPopup: (state, action: PayloadAction<payloadType>) => {
       state.addParcelPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setExistantCropPopup: (state, action: PayloadAction<payloadType>) => {
       state.existantCropPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setEditParcelPopup: (state, action: PayloadAction<payloadType>) => {
       state.editParcelPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setEditGardenPopup: (state, action: PayloadAction<payloadType>) => {
       state.editGardenPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setEditLinePopup: (state, action: PayloadAction<payloadType>) => {
       state.editLinePopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setDisplayGardenLogPopup: (state, action: PayloadAction<payloadType>) => {
       state.displayGardenLogPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setDisplayParcelLogPopup: (state, action: PayloadAction<payloadType>) => {
       state.displayParcelLogPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setDisplayLineLogPopup: (state, action: PayloadAction<payloadType>) => {
       state.displayLineLogPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setDisplayCropLogPopup: (state, action: PayloadAction<payloadType>) => {
       state.displayCropLogPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setDisplayNurseryLogPopup: (state, action: PayloadAction<payloadType>) => {
       state.displayNurseryLogPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setDisplayGreenhouseLogPopup: (
       state,
       action: PayloadAction<payloadType>
     ) => {
       state.displayGreenhouseLogPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
+    },
+    setDisplayAddLogWindow: (state, action: PayloadAction<payloadType>) => {
+      state.displayAddLogWindow = action.payload.state;
+      state.id = action.payload.id ?? 0;
     },
   },
 });
@@ -129,5 +135,6 @@ export const {
   setDisplayLineLogPopup,
   setDisplayNurseryLogPopup,
   setDisplayParcelLogPopup,
+  setDisplayAddLogWindow,
 } = displaySlice.actions;
 export default displaySlice.reducer;

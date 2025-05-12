@@ -442,6 +442,7 @@ type GetGardenFullByIdRequest = {
 };
 
 type createLogRequest = {
+  id: number;
   gardenId?: number;
   parcelId?: number;
   nurseryId?: number;
@@ -960,6 +961,5 @@ export const {
   useGetAllLogsByNurseryIdQuery,
   useGetAllLogsByParcelIdQuery,
   useGetPopularTagsQuery,
-  useLazyGetUserByUsernameQuery,
-  useLazyGetGardensByNameQuery,
+  useCreateLogQuery,
 } = extendedGardenAPI;
