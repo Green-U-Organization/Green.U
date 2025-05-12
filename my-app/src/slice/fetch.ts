@@ -2,10 +2,20 @@ import { Garden, GardenFull } from '@/utils/types';
 import api from './api';
 import { Log } from '@/utils/types';
 
-type LoginUserRequest = {
-  username: string;
-  password: string;
-};
+// type LoginUserRequest = {
+//   email: string;
+//   password: string;
+// };
+
+// type LoginUserResponse = {
+//   isEmpty: string;
+//   message: string;
+//   token: string;
+//   content: {
+//     id: number;
+//     username: string;
+//   };
+// };
 
 type CreateNewGardenLineRequest = {
   parcelId: number;
@@ -718,13 +728,13 @@ export const extendedGardenAPI = api
       }),
 
       // USER CONNECTION
-      loginUser: builder.mutation<void, LoginUserRequest>({
-        query: (arg) => ({
-          url: `/login`,
-          method: 'POST',
-          body: arg,
-        }),
-      }),
+      // loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
+      //   query: (arg) => ({
+      //     url: `/login`,
+      //     method: 'POST',
+      //     body: arg,
+      //   }),
+      // }),
 
       registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>(
         {
@@ -914,13 +924,13 @@ export const extendedGardenAPI = api
         providesTags: ['tags-logs'],
       }),
       //CreateLog
-      createLog: builder.query<void, createLogRequest>({
-        query: (arg) => ({
-          url: `/log/user/${arg.id}`,
-          method: 'POST',
-          body: arg,
-        }),
-      }),
+      // createLog: builder.query<void, createLogRequest>({
+      //   query: (arg) => ({
+      //     url: `/log/user/${arg.id}`,
+      //     method: 'POST',
+      //     body: arg,
+      //   }),
+      // }),
 
       //GetGardenFullById
       getGardenFullById: builder.query<
@@ -967,8 +977,6 @@ export const {
   useEditUserByUserIdMutation,
   useGetTagsByUserQuery,
   usePatchCropMutation,
-  useLazyGetAllUsersByTagQuery,
-  useLazyGetAllGardensByTagQuery,
   useDeleteTagByUserMutation,
   useGetAllLogsByCropIdQuery,
   useGetAllLogsByGardenIdQuery,
@@ -977,6 +985,4 @@ export const {
   useGetAllLogsByNurseryIdQuery,
   useGetAllLogsByParcelIdQuery,
   useGetPopularTagsQuery,
-  useLazyGetUserByUsernameQuery,
-  useLazyGetGardensByNameQuery,
 } = extendedGardenAPI;

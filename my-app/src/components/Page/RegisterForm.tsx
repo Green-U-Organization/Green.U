@@ -14,6 +14,9 @@ import Checkbox from '@/components/Atom/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from '@/redux/store';
+import { setCredentials } from '../../slice/authSlice';
+import { setAuthCookies } from '@/utils/authCookies';
 import {
   useCreateTagsListByUserMutation,
   useLoginUserMutation,
@@ -62,6 +65,7 @@ const RegisterForm = () => {
   const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
   const calendarRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const dispatch = useDispatch();
   const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
 
   //	https://blog.logrocket.com/using-react-usestate-object/
@@ -113,7 +117,7 @@ const RegisterForm = () => {
 
   // RTK Query
   const [registerUser] = useRegisterUserMutation();
-  const [loginUser] = useLoginUserMutation();
+  const [loginUserRegister] = useLoginUserMutation();
   const [createTagsListByUser] = useCreateTagsListByUserMutation();
 
   //#endregion
@@ -400,13 +404,34 @@ const RegisterForm = () => {
       createTagsListByUser(bodyHashTagsRequest);
 
       try {
-        loginUser({
+        const user = {
           email: bodyRequest.email,
           password: bodyRequest.password,
-        });
-        console.log('user connected');
+        };
+
+        const response = await loginUserRegister(user).unwrap();
+
+        dispatch(
+          setCredentials({
+            id: response.content.id,
+            user: response.content.username,
+            token: response.token,
+          })
+        );
+        setAuthCookies(
+          {
+            accessToken: response.token,
+          },
+          {
+            username: response.content.username,
+            id: response.content.id,
+            xp: response.content.id,
+          }
+        );
+
+        //console.log('user connected');
       } catch {
-        console.log('error connecting user');
+        console.log('error connecting user'); //A EFFACER
       }
 
       // const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
