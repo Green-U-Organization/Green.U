@@ -125,18 +125,18 @@ const LoginForm = () => {
             <div className="flex flex-row justify-between pb-5">
               <Button
                 className="bg-bgbutton relative m-5 px-6 py-2"
+                onClick={() => router.push('/signin')}
+              >
+                {translations.signup}
+              </Button>
+              <Button
+                className="bg-bgbutton relative m-5 px-6 py-2"
                 onClick={(e) => {
                   e.preventDefault();
                   handleSubmit(e as unknown as FormEvent<HTMLFormElement>);
                 }}
               >
                 {translations.login}
-              </Button>
-              <Button
-                className="bg-bgbutton relative m-5 px-6 py-2"
-                onClick={() => router.push('/signin')}
-              >
-                {translations.signup}
               </Button>
             </div>
           </div>
