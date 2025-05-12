@@ -159,7 +159,13 @@ namespace GreenUApi.Controllers
                 .OrderByDescending(u => u.MatchingTagsCount)
                 .ToList();
 
-            if (result.Count == 0) return BadRequest(new { isEmpty = true, message = "This tag exist for garden but no in user" });
+            if (result.Count == 0) return Ok(new
+            {
+                isEmpty = false,
+                message = "Users with matching tags",
+                content = Array.Empty<object>(),
+                searchedTags = request.Hashtags
+            });
 
             return Ok(new
             {
@@ -324,7 +330,12 @@ namespace GreenUApi.Controllers
                 .OrderByDescending(u => u.MatchingTagsCount)
                 .ToList();
 
-            if (result.Count == 0) return BadRequest(new { isEmpty = true, message = "This tag exist for user but no in garden" });
+            if (result.Count == 0) return Ok(new { 
+                isEmpty = false,
+                message = "Garden with matching tags",
+                content = Array.Empty<object>(),
+                searchedTags = request.Hashtags
+            });
 
             return Ok(new
             {
