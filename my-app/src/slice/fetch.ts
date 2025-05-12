@@ -1,4 +1,4 @@
-import { Garden } from '@/utils/types';
+import { Garden, GardenFull } from '@/utils/types';
 import api from './api';
 import { Log } from '@/utils/types';
 
@@ -449,6 +449,23 @@ type GetAllLogsRequest = {
   id?: number;
 };
 
+type GetGardenFullByIdResponse = GardenFull;
+
+type GetGardenFullByIdRequest = {
+  id: number;
+};
+
+type createLogRequest = {
+  gardenId?: number;
+  parcelId?: number;
+  nurseryId?: number;
+  greenhouseId?: number;
+  lineId?: number;
+  cropId?: number;
+  action: string;
+  comment: string;
+};
+
 export const extendedGardenAPI = api
   .enhanceEndpoints({
     addTagTypes: [
@@ -896,8 +913,33 @@ export const extendedGardenAPI = api
         }),
         providesTags: ['tags-logs'],
       }),
+      //CreateLog
+      createLog: builder.query<void, createLogRequest>({
+        query: (arg) => ({
+          url: `/log/user/${arg.id}`,
+          method: 'POST',
+          body: arg,
+        }),
+      }),
+
+      //GetGardenFullById
+      getGardenFullById: builder.query<
+        GetGardenFullByIdResponse,
+        GetGardenFullByIdRequest
+      >({
+        query: (arg) => ({
+          url: `/garden/${arg.id}`,
+          method: 'GET',
+        }),
+        providesTags: [
+          'garden-gardens',
+          'garden-parcels',
+          'garden-lines',
+          'garden-nursery',
+          'garden-crops',
+        ],
+      }),
     }),
-    //CreateLog
   });
 
 export const {

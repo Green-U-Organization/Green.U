@@ -22,6 +22,7 @@ const GardenDisplay = () => {
   );
   const scale = useSelector((state: RootState) => state.garden.scale);
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
+
   //Cookies
   const garden = Cookies.get('selected_garden');
 
@@ -38,7 +39,7 @@ const GardenDisplay = () => {
   return (
     <section className="bg-cardbackground flex min-h-screen items-center justify-center">
       <Card className="min-h-screen overflow-auto">
-        <div className="mt-5 flex flex-col items-center">
+        <div className="mt-5 flex max-h-[15vh] flex-col items-center overflow-y-auto">
           <H1>{currentGarden?.name}</H1>
           <H2>{currentGarden?.description}</H2>
         </div>
@@ -47,20 +48,20 @@ const GardenDisplay = () => {
             display: fullscreen ? 'none' : 'block',
           }}
         ></div>
-        <div className="mt-[5vw] max-w-full overflow-x-auto">
+        <div className="mt-[5vw] max-h-[90vh] max-w-full overflow-x-auto">
           {currentGarden && (
             <Garden garden={currentGarden} scale={scale}></Garden>
           )}
         </div>
         <MenuSandwich iconList={[]}></MenuSandwich>
-        <div className="fixed right-0 bottom-5 left-0 z-49 flex justify-center">
+        <div className="fixed right-0 bottom-[20px] left-0 z-49 flex min-h-[10vh] items-center justify-center">
           <Button
             className="bg-bgbutton relative px-6 py-2"
             onClick={() => router.back()}
           >
             Back
           </Button>
-        </div>{' '}
+        </div>
         <MenuSandwichOptionInGarden iconList={[]}></MenuSandwichOptionInGarden>
       </Card>
     </section>
