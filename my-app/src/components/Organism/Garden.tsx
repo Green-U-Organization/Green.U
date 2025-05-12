@@ -12,6 +12,8 @@ import {
 import H1 from '../Atom/H1';
 import Nursery from './Nursery';
 import Loading from '../Atom/Loading';
+import H2 from '../Atom/H2';
+import SlimCard from '../Atom/SlimCard';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   //Local State
@@ -147,17 +149,16 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
           </div>
         ))} */}
         {parcelsIsError ? (
-          <div className="ml-[3vw] flex w-[80vw] flex-col items-center justify-center">
-            <H1>
-              Hey, you don&apos;t have any parcels yet! Want to create one?
-            </H1>
-            <br />
-            <p>
-              You can just click on the icon on the bottom right of your screen,
-              then click on the &quot;+&quot; icon and select the parcel.
-              <br />
-              Easy isn&apos;t it?
-            </p>
+          <div className="ml-[10vw] flex w-[80vw] flex-row items-center gap-15">
+            <SlimCard className="bg-bginput p-5 pt-0">
+              <H1>No parcel yet!</H1>
+
+              <p className="pt-3">
+                To create one, you can just click on the icon on the bottom
+                right of your screen, then click on the &quot;+&quot; icon and
+                select the parcel (P).
+              </p>
+            </SlimCard>
           </div>
         ) : (
           parcels?.content.map((parcel, index) => (
@@ -168,8 +169,15 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
         )}
 
         {nurseryIsError ? (
-          <div className="mt-[2vh] ml-[3vw] flex w-[80vw] flex-col items-center justify-center">
-            <p>You don&apos;t have any nursery here. Want to create one?</p>
+          <div className="mt-[3vh] ml-[10vw] flex w-[80vw] flex-col justify-center gap-5">
+            <SlimCard className="bg-bginput p-5 pt-0">
+              <H1>No nursery yet! </H1>
+              <p className="pt-3">
+                To create one, you can just click on the icon on the bottom
+                right of your screen, then click on the &quot;+&quot; icon and
+                select the nursery (N).
+              </p>
+            </SlimCard>
           </div>
         ) : (
           nurseries?.content.map((nursery, index) => (
@@ -182,6 +190,12 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
             </div>
           ))
         )}
+
+        {parcelsIsError || nurseryIsError ? (
+          <div className="mt-[1vh] flex w-[100vw] flex-col items-center justify-center">
+            <H1>Easy isn&apos;t it!</H1>
+          </div>
+        ) : null}
       </section>
     </section>
   );
