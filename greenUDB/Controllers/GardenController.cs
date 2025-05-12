@@ -56,6 +56,7 @@ namespace GreenUApi.Controllers
             var garden = await _db.Gardens
                 .Include(e => e.Parcels)
                 .Include(e => e.Lines)
+                .Include(e => e.PlantNurseries)
                 .ToListAsync();
 
             return Ok(new { isEmpty = false, message = "Garden object", content = garden });

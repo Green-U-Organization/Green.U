@@ -54,7 +54,7 @@ public partial class Garden
 
     public virtual ICollection<Line> Lines { get; set; } = new List<Line>();
 
-    public virtual ICollection<PlantNursery> PlantNurseries { get; set; }
+    public virtual ICollection<PlantNursery>? PlantNurseries { get; set; }
 
     public virtual ICollection<TagsInterest> TagsInterests { get; set; } = new List<TagsInterest>();
 }
