@@ -30,6 +30,7 @@ namespace GreenUApi.Controllers
             public GardenType? Type { get; set; } = GardenType.Personnal;
 
         }
+
         private readonly GreenUDB _db   ;
 
         public GardenController(GreenUDB context)
@@ -47,6 +48,17 @@ namespace GreenUApi.Controllers
             if (garden.Deleted) return Conflict(new { isEmpty = true, message = "The garden is deleted " });
 
             return Ok(new { isEmpty = false, message = "The garden", content = garden });
+        }
+
+        [HttpGet("alldata/{id}")]
+        public async Task<ActionResult<Garden>> GetAllDataGarden(long id)
+        {
+            var garden = await _db.Gardens
+                .Include(e => e.Parcels)
+                .Include(e => e.Lines)
+                .ToListAsync();
+
+            return Ok(new { isEmpty = false, message = "Garden object", content = garden });
         }
 
         [HttpGet]
