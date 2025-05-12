@@ -9,8 +9,8 @@ const MenuIcon: React.FC<MenuIconProps> = ({
 }) => {
   return (
     <div className="m-50 py-[50%]">
-      {menuIconList.map((menuIcon, index) => (
-        <div key={index}>
+      {menuIconList.map((menuIcon) => (
+        <div key={menuIcon.src}>
           <Icon
             icon={{
               src: menuIcon.src,

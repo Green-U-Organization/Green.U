@@ -10,8 +10,8 @@ const PrivateProfile = () => {
   const id = Number(userCookie?.id);
 
   //DEBUG
-  console.log('userData : ', userData);
-  console.log('userCookie: ', userCookie);
+  // console.log('userData : ', userData);
+  // console.log('userCookie: ', userCookie);
 
   return <Profile userId={id} />;
 };

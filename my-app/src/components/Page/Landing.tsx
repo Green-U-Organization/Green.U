@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import React from 'react';
 import Card from '../Atom/Card';
@@ -15,13 +16,13 @@ const Landing = () => {
   const token = Cookies.get('access_token');
 
   return (
-    <Card className="relative flex h-[92vh] w-screen flex-col items-center justify-center">
+    <Card className="relative flex h-screen w-screen flex-col items-center justify-center">
       {/* Background */}
-      <div className="absolute h-[92vh] w-screen overflow-hidden opacity-100">
+      <div className="absolute h-screen w-screen overflow-hidden opacity-100">
         <img
           src={'/image/divers/gifs/1.gif'}
           alt={'Loading...'}
-          className="absolute -top-0 -right-0 h-[92vh] w-screen overflow-hidden object-cover"
+          className="absolute -top-0 -right-0 h-screen w-screen overflow-hidden object-cover"
         />
         <img
           src={'/image/divers/gifs/loading.gif'}
@@ -31,7 +32,7 @@ const Landing = () => {
         <img
           src={'/image/divers/gifs/2.gif'}
           alt={'Loading...'}
-          className="absolute -top-0 -right-0 h-[92vh] w-screen overflow-hidden object-cover"
+          className="absolute -top-0 -right-0 h-screen w-screen overflow-hidden object-cover"
         />
       </div>
 
@@ -119,7 +120,7 @@ const Landing = () => {
         style={{ display: token ? 'none' : 'block' }}
         className="z-50 text-base text-white"
       >
-        Don't have account ? Don't panic and{' '}
+        Don&apos;t have account ? Don&apos;t panic and{' '}
         <span onClick={() => router.push('register')} className="text-border">
           Register !
         </span>

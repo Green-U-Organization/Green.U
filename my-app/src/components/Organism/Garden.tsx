@@ -43,7 +43,6 @@ const Garden: FC<GardenProps> = ({ garden, scale }) => {
   });
 
   //Debug
-  console.log('parcels : ', parcels);
 
   //Variables
 

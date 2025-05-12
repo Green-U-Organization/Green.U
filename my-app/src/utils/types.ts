@@ -272,3 +272,5 @@ export type Log = {
   type: string;
   createdAt: string;
 };
+
+export type Tag = { tag: string; count: number };

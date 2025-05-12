@@ -13,6 +13,7 @@ import Card from '../Atom/Card';
 import Button from '../Atom/Button';
 import SlimCard from '../Atom/SlimCard';
 import Radio from '../Atom/Radio';
+import { Tag } from '@/utils/types';
 
 const Explore = () => {
   const router = useRouter();
@@ -185,15 +186,15 @@ const Explore = () => {
   };
 
   return (
-    <Card className="bg-cardbackground flex h-[92vh] w-full flex-col px-5 pt-5 pb-5">
+    <Card className="bg-cardbackground flex h-screen w-full flex-col px-5 pt-5 pb-5">
       {/* Partie supérieure fixe (formulaire) */}
       <div className="flex-shrink-0">
         <p>The most used tags:</p>
         <div className="mb-5 flex flex-row flex-wrap gap-2">
           {Array.isArray(hashTags?.content) && hashTags.content.length > 0 ? (
-            hashTags.content.slice(0, 5).map((tag: any, index: number) => (
+            hashTags.content.slice(0, 5).map((tag: Tag) => (
               <SlimCard
-                key={index}
+                key={tag.tag}
                 bgColor="bg-bgcard"
                 className={`flex w-fit cursor-pointer justify-center px-2 hover:bg-amber-400 active:scale-95 ${
                   selectedTags.includes(tag.tag)

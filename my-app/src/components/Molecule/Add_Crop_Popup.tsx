@@ -74,7 +74,6 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
       });
       return crop;
     }) || [];
-  //console.log('crops : ', crops);
 
   //Handlers
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -102,12 +101,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
       comments: formData.get('comments') as string,
     };
 
-    console.log('selectedCropToPlant : ', selectedCropToPlant?.id); //29
-    console.log('lineId : ', lineId);
-    console.log('origin : ', origin);
-
     if (origin === 'fromNursery' && selectedCropToPlant?.id) {
-      console.log('TRANSFERT !!!!!');
       const cropData = {
         cropId: selectedCropToPlant?.id,
         lineId: lineId,
@@ -127,7 +121,6 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
           xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
         });
 
-        console.log('xp : ', (user?.data?.content?.xp ?? 0) + XpTable.addCrop);
         console.log('crop created');
         dispatch(
           setAddCropPopup({

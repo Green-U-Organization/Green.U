@@ -28,37 +28,24 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
 
   // UseEffect
-  useEffect(() => {
-    console.log('addSubmenu updated:', addSubmenu);
-  }, [addSubmenu]);
+  // useEffect(() => {
+  //   console.log('addSubmenu updated:', addSubmenu);
+  // }, [addSubmenu]);
 
   useEffect(() => {
     setCurrentGarden(garden);
   }, [garden]);
 
-  useEffect(() => {
-    console.log(reload);
-    console.log("that's where i'm suppose to reload");
-    setCurrentGarden(garden);
-  }, [reload, dispatch, garden]);
-
   // Handlers
   const handleAdd = () => {
-    console.log('Add garden');
     setAddSubmenu((prev) => !prev);
   };
 
   //TODO:
-  const handleEditGarden = () => {
-    console.log('Edit Garden');
-  };
+  const handleEditGarden = () => {};
   //TODO:
-  const handleDisplayMode = () => {
-    console.log('display');
-  };
-  const handleAddParcel = () => {
-    console.log('first');
-  };
+  const handleDisplayMode = () => {};
+  const handleAddParcel = () => {};
 
   const handleFullscreenSwitch = () => {
     dispatch(setFullscreen(!fullscreen));
@@ -198,9 +185,9 @@ const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
           }}
         ></div>
 
-        {parcels?.map((parcel, index) => (
+        {parcels?.map((parcel) => (
           <div className="relative z-10" key={parcel.id}>
-            <Parcel parcel={parcel} scale={scale} parcelKey={index} />
+            <Parcel parcel={parcel} scale={scale} parcelKey={parcel.id} />
           </div>
         ))}
       </section>

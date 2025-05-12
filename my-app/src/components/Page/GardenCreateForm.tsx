@@ -45,7 +45,6 @@ const CreateGardenForm = () => {
   const userData = Cookies.get('user_data');
   const userCookie = userData ? JSON.parse(userData) : null;
   const id = Number(userCookie?.id);
-  console.log('id : ', typeof id, id);
 
   // RTHK Query
   const [createNewGarden] = useCreateNewGardenMutation();
@@ -95,8 +94,6 @@ const CreateGardenForm = () => {
         type: selectedType,
         hashtags: formData.getAll('gardenHashtag') as string[],
       };
-
-      console.log('Garden Data:', gardenData);
 
       try {
         createNewGarden(gardenData).unwrap();
@@ -184,7 +181,6 @@ const CreateGardenForm = () => {
             initialLat={0} //Pour ne pas avoir un pin par défaut
             initialLng={0} //Idem
             //showUserPosition={true}
-            onLocationChange={(lat, lng) => console.log(lat, lng)}
           />
 
           <SelectInput

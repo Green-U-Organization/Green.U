@@ -25,8 +25,8 @@ const Submenu: React.FC<SubmenuProps> = ({ iconList }) => {
       }}
     >
       <div className="relative flex h-[40vw] flex-col items-center justify-between">
-        {iconList.map((icon, index) => (
-          <div key={index} className="relative">
+        {iconList.map((icon) => (
+          <div key={icon.src} className="relative">
             <Icon
               icon={{
                 src: icon.src,

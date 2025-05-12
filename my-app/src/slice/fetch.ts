@@ -376,14 +376,14 @@ type GetUserByUsernameRequest = {
 };
 
 type GetUserByUsernameErrorResponse = {
-  value: any;
+  // value: any;
   isEmpty: boolean;
   message: string;
   status?: number;
 };
 
 type GetUserByUsernameSuccessResponse = {
-  value: any;
+  // value: any;
   isEmpty: boolean;
   message: string;
   content: {
@@ -398,7 +398,7 @@ type GetUserByUsernameSuccessResponse = {
       hashtag: string;
       created_at: Date;
     }[];
-  };
+  }[];
 };
 
 type editUserByUserIdRequest = {

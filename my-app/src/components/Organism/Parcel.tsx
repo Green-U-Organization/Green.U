@@ -47,7 +47,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
 
   //Debug
-  console.log('lines : ', lines);
+  // console.log('lines : ', lines);
 
   //Selectors
   const graphicMode = useSelector(
