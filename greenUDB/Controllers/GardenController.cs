@@ -90,15 +90,22 @@ namespace GreenUApi.Controllers
         [HttpGet("alldata/{id}")]
         public async Task<ActionResult<Garden>> GetAllDataGarden(long id)
         {
-            Garden garden = await _db.Gardens
+
+            if (id == 0) return BadRequest(new { isEmpty = true, message = "No id..." });
+
+
+#pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
+            Garden? garden = await _db.Gardens
                 .Include(p => p.Parcels)
                     .ThenInclude(l => l.Lines)
                         .ThenInclude(c => c.Crops)
                 .Include(pn => pn.PlantNurseries)
-                    .ThenInclude(cr => cr.Crops)
+                    .ThenInclude(cr => cr!.Crops)
                 .FirstOrDefaultAsync(g => g.Id == id);
+#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
 
-            
+            if (garden == null) return NotFound(new { isEmpty = true, message = "The garden is not found" });
+
 
             return Ok(new { isEmpty = false, message = "Garden object", content = garden });
         }
