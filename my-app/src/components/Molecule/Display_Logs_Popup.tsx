@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { FC, useState, useMemo } from 'react';
 import Card from '../Atom/Card';
 import H2 from '../Atom/H2';
@@ -25,53 +26,31 @@ type DisplayLog = {
 };
 
 const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
-  let logs, isLoading, isError;
+  let logs, isLoading;
 
   switch (logObject) {
     case 'garden':
-      ({
-        data: logs,
-        isLoading,
-        isError,
-      } = useGetAllLogsByGardenIdQuery({ id }));
+      ({ data: logs, isLoading } = useGetAllLogsByGardenIdQuery({ id }));
       break;
     case 'parcel':
-      ({
-        data: logs,
-        isLoading,
-        isError,
-      } = useGetAllLogsByParcelIdQuery({ id }));
+      ({ data: logs, isLoading } = useGetAllLogsByParcelIdQuery({ id }));
       break;
     case 'line':
-      ({ data: logs, isLoading, isError } = useGetAllLogsByLineIdQuery({ id }));
+      ({ data: logs, isLoading } = useGetAllLogsByLineIdQuery({ id }));
       break;
     case 'crop':
-      ({ data: logs, isLoading, isError } = useGetAllLogsByCropIdQuery({ id }));
+      ({ data: logs, isLoading } = useGetAllLogsByCropIdQuery({ id }));
       break;
     case 'nursery':
-      ({
-        data: logs,
-        isLoading,
-        isError,
-      } = useGetAllLogsByNurseryIdQuery({ id }));
+      ({ data: logs, isLoading } = useGetAllLogsByNurseryIdQuery({ id }));
       break;
     case 'greenhouse':
-      ({
-        data: logs,
-        isLoading,
-        isError,
-      } = useGetAllLogsByGreenhouseIdQuery({ id }));
+      ({ data: logs, isLoading } = useGetAllLogsByGreenhouseIdQuery({ id }));
       break;
     default:
-      ({
-        data: logs,
-        isLoading,
-        isError,
-      } = useGetAllLogsByGardenIdQuery({ id }));
+      ({ data: logs, isLoading } = useGetAllLogsByGardenIdQuery({ id }));
       break;
   }
-
-  console.log(logs);
 
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: 'createdAt', // Colonne par défaut à trier

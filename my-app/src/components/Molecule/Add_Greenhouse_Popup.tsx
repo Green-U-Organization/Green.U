@@ -5,9 +5,7 @@ import H2 from '../Atom/H2';
 
 const NewGreenhouseForm: React.FC<{ display: boolean }> = ({ display }) => {
   //Handlers
-  const handleSubmit = () => {
-    console.log('create');
-  };
+  const handleSubmit = () => {};
 
   return (
     <section

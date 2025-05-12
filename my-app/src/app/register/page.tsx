@@ -4,7 +4,6 @@ import RegisterForm from '../../components/Page/RegisterForm';
 const page = () => {
   //#region FETCH FUNCTION
 
-  console.log('registerForm : ', RegisterForm);
   //#endregion
 
   // DISPLAY

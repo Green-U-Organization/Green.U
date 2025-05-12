@@ -21,7 +21,6 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
   //USER info
   const userData = Cookies.get('user_data');
   const userCookie = userData ? JSON.parse(userData) : null;
-  console.log('USSSERR3 : ', userCookie);
   const id = Number(userCookie?.id);
 
   //RTK Queries

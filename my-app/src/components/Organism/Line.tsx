@@ -186,7 +186,6 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
     }
 
     if (addCropPopupDisplay) {
-      console.log('yo');
       document.addEventListener('mousedown', handleClickOutside);
     }
 
@@ -214,7 +213,6 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
     }
 
     if (ExistantCropPopupDisplay) {
-      console.log('yo-yo');
       document.addEventListener('mousedown', handleClickOutside);
     }
 

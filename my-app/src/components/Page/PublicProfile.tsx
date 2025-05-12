@@ -7,7 +7,7 @@ interface PublicProfileProps {
 
 const PublicProfile: React.FC<PublicProfileProps> = ({ userId }) => {
   if (process.env.NODE_ENV === 'development') {
-    console.log('Profile public - UserId : ', userId);
+    // console.log('Profile public - UserId : ', userId);
   }
 
   return <Profile userId={userId} />;

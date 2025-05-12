@@ -33,8 +33,8 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
   const [deleteNursery] = useDeleteOneNurseryByNurseryIdMutation();
 
   // Debug,
-  console.log('nurseryId : ', nursery.id);
-  console.log('crops : ', crops);
+  // console.log('nurseryId : ', nursery.id);
+  // console.log('crops : ', crops);
 
   // Hooks
   const dispatch = useDispatch();
@@ -213,9 +213,9 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
                 </tr>
               </thead>
               <tbody>
-                {crops?.content.map((crop, index) => (
+                {crops?.content.map((crop) => (
                   <>
-                    <tr key={index}>
+                    <tr key={crop.id}>
                       <td className="border-1 p-1">{crop.vegetable}</td>
                       <td className="border-1 p-1">{crop.variety}</td>
                       <td className="border-1 p-1">{crop.nPot}</td>

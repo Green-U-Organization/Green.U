@@ -31,7 +31,7 @@ const Profile = ({ userId }: { userId: number }) => {
   const cookieId = Number(userCookie?.id);
 
   //DEBUG
-  console.log('userId : ', userId);
+  // console.log('userId : ', userId);
 
   //Hooks
   const dispatch = useDispatch();
@@ -41,7 +41,6 @@ const Profile = ({ userId }: { userId: number }) => {
   const { data: user, isLoading: userIsLoading } = useGetUserByIdQuery({
     userId: userId,
   });
-  console.log(user);
   const { data: gardens, isLoading: gardenIsLoading } =
     useGetAllGardenByUserIdQuery({ userId: userId });
   const { data: userInterestTags, isLoading: userInterestTagsLoading } =
