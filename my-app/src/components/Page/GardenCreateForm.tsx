@@ -187,10 +187,10 @@ const CreateGardenForm = () => {
             label={translations.kindOfGarden}
             name="gardenType"
             options={[
-              { value: 0, label: translations.gardenType0 },
-              { value: 1, label: translations.gardenType1 },
-              { value: 2, label: translations.gardenType2 },
-              { value: 3, label: translations.gardenType3 },
+              { value: 0, label: translations.gardenType0 }, //Personnal
+              { value: 1, label: translations.gardenType1 }, //Famillial
+              { value: 2, label: translations.gardenType2 }, //Collective
+              { value: 3, label: translations.gardenType3 }, //Professionnal
             ]}
             value={selectedType}
             onChange={(e) => setSelectedType(Number(e.target.value))}
@@ -201,7 +201,7 @@ const CreateGardenForm = () => {
             name="gardenPrivacy"
             options={[
               { value: 0, label: translations.privateGarden },
-              { value: 1, label: translations.semiPrivateGarden },
+              //{ value: 1, label: translations.semiPrivateGarden },
               { value: 2, label: translations.publicGarden },
             ]}
             garden-manager

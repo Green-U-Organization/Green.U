@@ -30,6 +30,8 @@ const Profile = ({ userId }: { userId: number }) => {
   const userCookie = userData ? JSON.parse(userData) : null;
   const cookieId = Number(userCookie?.id);
 
+  const loggedUserId = userCookie?.id;
+
   //DEBUG
   // console.log('userId : ', userId);
 
@@ -46,7 +48,7 @@ const Profile = ({ userId }: { userId: number }) => {
   const { data: userInterestTags, isLoading: userInterestTagsLoading } =
     useGetTagsByUserQuery({ userId: userId });
 
-  const level = Math.ceil(Number(user?.content.xp) / 100);
+  const level = Math.max(1, Math.ceil(Number(user?.content.xp) / 100));
 
   if (userIsLoading || gardenIsLoading || userInterestTagsLoading) {
     return (
@@ -98,13 +100,16 @@ const Profile = ({ userId }: { userId: number }) => {
               <div
                 className="h-4 rounded-full bg-green-500"
                 style={{
-                  width: `${Number(user?.content.xp) - (level - 1) * 100}%`,
+                  width: `${Number(user?.content.xp) === 0 ? 0 : Number(user?.content.xp) - (level - 1) * 100}%`,
                 }}
               ></div>
             </div>
             <div className="flex justify-between">
               <p className="mt-1 text-gray-700">
-                {Number(user?.content.xp) - (level - 1) * 100} / 100 XP
+                {Number(user?.content.xp) === 0
+                  ? 0
+                  : Number(user?.content.xp) - (level - 1) * 100}{' '}
+                / 100 XP
               </p>
               <p className="mt-1 text-gray-700">Level: {level}</p>
             </div>
@@ -144,12 +149,19 @@ const Profile = ({ userId }: { userId: number }) => {
                     <div className="flex items-center justify-between">
                       <div
                         onClick={() => {
-                          dispatch(setSelectedGarden(garden));
-                          clearSelectedGarden();
-                          setSelectedGardenCookies(garden);
-                          router.push('/garden/display');
+                          // Vérifie si le clic est autorisé
+                          if (garden.privacy === 2 || userId === loggedUserId) {
+                            dispatch(setSelectedGarden(garden));
+                            clearSelectedGarden();
+                            setSelectedGardenCookies(garden);
+                            router.push('/garden/display');
+                          }
                         }}
-                        className="flex w-[80vw] flex-col"
+                        className={`flex w-[80vw] flex-col ${
+                          garden.privacy === 2 || userId === loggedUserId
+                            ? 'cursor-pointer hover:bg-gray-100'
+                            : 'cursor-not-allowed opacity-50'
+                        }`}
                       >
                         <H2>{garden.name}</H2>
                         <p className="ml-[5vw] italic">{garden.description}</p>
@@ -157,13 +169,13 @@ const Profile = ({ userId }: { userId: number }) => {
 
                       <img
                         // onClick={handleConfigurationClick}
-                        className="image mr-[5vw] h-[10vw] w-[10vw] object-contain"
+                        className="image mr-[5vw] h-[5vw] w-[5vw] object-contain"
                         src={
                           garden.privacy > 0
                             ? '/image/icons/lockOpen.png'
                             : '/image/icons/lockClose.png'
                         }
-                        alt=""
+                        alt="Privacy"
                       />
                     </div>
                   </SlimCard>
@@ -182,7 +194,7 @@ const Profile = ({ userId }: { userId: number }) => {
                 <div key={hashtag} className="mx-1">
                   <SlimCard
                     bgColor="bg-bgcard"
-                    className="flex justify-center bg-amber-200 px-2"
+                    className="flex cursor-auto! justify-center bg-amber-200 px-2"
                   >
                     <p>#{hashtag}</p>
                   </SlimCard>
@@ -225,7 +237,7 @@ const Profile = ({ userId }: { userId: number }) => {
             {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
             <Button
               className="bg-bgbutton relative m-5 px-6 py-2"
-              onClick={() => router.push('/landing')}
+              onClick={() => router.back()}
             >
               {translations.back}
             </Button>

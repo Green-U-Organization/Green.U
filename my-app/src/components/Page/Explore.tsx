@@ -19,9 +19,10 @@ const Explore = () => {
   const router = useRouter();
 
   const gardenTypeLabels: Record<number, string> = {
-    0: 'Private',
-    1: 'Semi-private',
-    2: 'Public',
+    0: 'Personnal',
+    1: 'Famillial',
+    2: 'Collective',
+    3: 'Professionnal',
   };
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -272,16 +273,16 @@ const Explore = () => {
           <div className="flex justify-center pb-2">
             <Button
               className="bg-bgbutton relative m-5 px-6 py-2"
-              type="submit"
-            >
-              Search
-            </Button>
-            <Button
-              className="bg-bgbutton relative m-5 px-6 py-2"
               type="button"
               onClick={() => router.push('landing')}
             >
               Home
+            </Button>
+            <Button
+              className="bg-bgbutton relative m-5 px-6 py-2"
+              type="submit"
+            >
+              Search
             </Button>
           </div>
         </form>
@@ -329,7 +330,7 @@ const Explore = () => {
                         usersData.content.map((user) => (
                           <tr key={user.id}>
                             <td
-                              className="cursor-pointer border border-black px-4 py-2 hover:text-amber-600"
+                              className="cursor-pointer border border-black px-4 py-2 text-amber-500 hover:text-amber-600"
                               onClick={() =>
                                 router.push(`/profile/public/${user.id}`)
                               }
@@ -337,7 +338,7 @@ const Explore = () => {
                               {user.username}
                             </td>
                             <td className="border border-black px-4 py-2">
-                              {user.xp || 'N/A'}
+                              {user.xp || 0}
                             </td>
                             <td className="border border-black px-4 py-2">
                               {user.country || 'N/A'}
@@ -354,7 +355,8 @@ const Explore = () => {
                             className="border border-black px-4 py-2 text-center"
                           >
                             {searchMessages.usersMessage ||
-                              'User by tags not found (length===0)'}
+                              'No user found with these tags'}
+                            {/*User by tags not found (length===0) */}
                           </td>
                         </tr>
                       )
@@ -379,8 +381,9 @@ const Explore = () => {
                           colSpan={4}
                           className="border border-black px-4 py-2 text-center"
                         >
-                          {searchMessages.usersMessage ||
-                            'Users by username rejected'}
+                          {searchMessages.usersMessage || ''}
+                          {'No user found'}
+                          {/*Users by username rejected */}
                         </td>
                       </tr>
                     ) : userData?.content ? (
@@ -388,7 +391,7 @@ const Explore = () => {
                         userData.content.map((user) => (
                           <tr key={user.id}>
                             <td
-                              className="cursor-pointer border border-black px-4 py-2 hover:text-amber-600"
+                              className="cursor-pointer border border-black px-4 py-2 text-amber-500 hover:text-amber-600"
                               onClick={() =>
                                 router.push(`/profile/public/${user.id}`)
                               }
@@ -396,7 +399,7 @@ const Explore = () => {
                               {user.username}
                             </td>
                             <td className="border border-black px-4 py-2">
-                              {user.xp || 'N/A'}
+                              {user.xp || 0}
                             </td>
                             <td className="border border-black px-4 py-2">
                               {user.country || 'N/A'}
@@ -450,6 +453,9 @@ const Explore = () => {
                     <th className="border border-black px-4 py-2 text-left">
                       Type
                     </th>
+                    <th className="border border-black px-4 py-2 text-left">
+                      Privacy
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -458,7 +464,7 @@ const Explore = () => {
                     gardensStatus === 'rejected' ? (
                       <tr>
                         <td
-                          colSpan={3}
+                          colSpan={4}
                           className="border border-black px-4 py-2 text-center"
                         >
                           {searchMessages.gardensMessage ||
@@ -470,9 +476,9 @@ const Explore = () => {
                         gardensData.content.map((garden) => (
                           <tr key={garden.id}>
                             <td
-                              className={`border border-black px-4 py-2 ${garden.type === 2 ? 'cursor-pointer hover:text-amber-600' : ''}`}
+                              className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
                               onClick={() =>
-                                garden.type === 2 &&
+                                garden.privacy === 2 &&
                                 router.push(`/garden/display?id=${garden.id}`)
                               }
                             >
@@ -484,27 +490,44 @@ const Explore = () => {
                             <td className="border border-black px-4 py-2">
                               {gardenTypeLabels[garden.type] ?? 'Unknown'}
                             </td>
+                            <td className="border border-black px-4 py-2">
+                              {garden.privacy === 0 ? (
+                                <img
+                                  src="/image/icons/lockClose.png"
+                                  alt="Private"
+                                  className="h-10 w-10"
+                                />
+                              ) : garden.privacy === 2 ? (
+                                <img
+                                  src="/image/icons/lockOpen.png"
+                                  alt="Public"
+                                  className="h-10 w-10"
+                                />
+                              ) : (
+                                'N/A'
+                              )}
+                            </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
                           <td
-                            colSpan={3}
+                            colSpan={4}
                             className="border border-black px-4 py-2 text-center"
                           >
                             {searchMessages.gardensMessage ||
-                              'Garden not found (length===0)'}
+                              'No garden found with these tags'}
                           </td>
                         </tr>
                       )
                     ) : (
                       <tr>
                         <td
-                          colSpan={3}
+                          colSpan={4}
                           className="border border-black px-4 py-2 text-center"
                         >
                           {searchMessages.gardensMessage ||
-                            'No garden found (pas de content)'}
+                            'No garden found (no content)'}
                         </td>
                       </tr>
                     )
@@ -515,11 +538,11 @@ const Explore = () => {
                     gardenStatus === 'rejected' ? (
                       <tr>
                         <td
-                          colSpan={3}
+                          colSpan={4}
                           className="border border-black px-4 py-2 text-center"
                         >
-                          {searchMessages.gardensMessage ||
-                            'Garden by name rejected'}
+                          {searchMessages.gardensMessage || 'No garden found'}
+                          {/*Garden by name rejected */}
                         </td>
                       </tr>
                     ) : gardenData?.content ? (
@@ -527,9 +550,9 @@ const Explore = () => {
                         gardenData.content.map((garden) => (
                           <tr key={garden.id}>
                             <td
-                              className={`border border-black px-4 py-2 ${garden.type === 2 ? 'cursor-pointer hover:text-amber-600' : ''}`}
+                              className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
                               onClick={() =>
-                                garden.type === 2 &&
+                                garden.privacy === 2 &&
                                 router.push(`/garden/display?id=${garden.id}`)
                               }
                             >
@@ -541,12 +564,29 @@ const Explore = () => {
                             <td className="border border-black px-4 py-2">
                               {gardenTypeLabels[garden.type] ?? 'Unknown'}
                             </td>
+                            <td className="border border-black px-4 py-2">
+                              {garden.privacy === 0 ? (
+                                <img
+                                  src="/image/icons/lockClose.png"
+                                  alt="Private"
+                                  className="h-10 w-10"
+                                />
+                              ) : garden.privacy === 2 ? (
+                                <img
+                                  src="/image/icons/lockOpen.png"
+                                  alt="Public"
+                                  className="h-10 w-10"
+                                />
+                              ) : (
+                                'N/A'
+                              )}
+                            </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
                           <td
-                            colSpan={3}
+                            colSpan={4}
                             className="border border-black px-4 py-2 text-center"
                           >
                             {searchMessages.gardensMessage ||
@@ -557,7 +597,7 @@ const Explore = () => {
                     ) : (
                       <tr>
                         <td
-                          colSpan={3}
+                          colSpan={4}
                           className="border border-black px-4 py-2 text-center"
                         >
                           {searchMessages.gardensMessage ||

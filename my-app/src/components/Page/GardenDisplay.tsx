@@ -10,6 +10,8 @@ import H2 from '../Atom/H2';
 import Cookies from 'js-cookie';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
 import MenuSandwichOptionInGarden from '../Molecule/MenuSandwichOptionInGarden';
+import { useRouter } from 'next/navigation';
+import Button from '../Atom/Button';
 
 // import Draggable from 'react-draggable';
 
@@ -26,6 +28,7 @@ const GardenDisplay = () => {
 
   //Hooks
   const dispatch = useDispatch();
+  const router = useRouter();
 
   //Check du State global du garden si jamais refresh de la page
   if (!currentGarden && garden) {
@@ -45,14 +48,20 @@ const GardenDisplay = () => {
             display: fullscreen ? 'none' : 'block',
           }}
         ></div>
-
         <div className="mt-[5vw] max-w-full overflow-x-auto">
           {currentGarden && (
             <Garden garden={currentGarden} scale={scale}></Garden>
           )}
         </div>
-
         <MenuSandwich iconList={[]}></MenuSandwich>
+        <div className="fixed right-0 bottom-5 left-0 z-49 flex justify-center">
+          <Button
+            className="bg-bgbutton relative px-6 py-2"
+            onClick={() => router.back()}
+          >
+            Back
+          </Button>
+        </div>{' '}
         <MenuSandwichOptionInGarden iconList={[]}></MenuSandwichOptionInGarden>
       </Card>
     </section>
