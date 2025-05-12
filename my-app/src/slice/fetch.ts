@@ -2,6 +2,21 @@ import { Garden, GardenFull } from '@/utils/types';
 import api from './api';
 import { Log } from '@/utils/types';
 
+// type LoginUserRequest = {
+//   email: string;
+//   password: string;
+// };
+
+// type LoginUserResponse = {
+//   isEmpty: string;
+//   message: string;
+//   token: string;
+//   content: {
+//     id: number;
+//     username: string;
+//   };
+// };
+
 type CreateNewGardenLineRequest = {
   parcelId: number;
   length: number;
@@ -261,6 +276,15 @@ type RegisterUserRequest = {
   birthday: string;
   newsletter: boolean;
   skill_level: number;
+};
+
+type RegisterUserResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    username: string;
+  };
 };
 
 type CreateTagsListByUserRequest = {
@@ -704,7 +728,7 @@ export const extendedGardenAPI = api
         invalidatesTags: ['garden-nursery', 'tags-logs'],
       }),
 
-      // // USER CONNECTION
+      // USER CONNECTION
       // loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
       //   query: (arg) => ({
       //     url: `/login`,
@@ -712,13 +736,16 @@ export const extendedGardenAPI = api
       //     body: arg,
       //   }),
       // }),
-      registerUser: builder.mutation<void, RegisterUserRequest>({
-        query: (arg) => ({
-          url: `/user`,
-          method: 'POST',
-          body: arg,
-        }),
-      }),
+
+      registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>(
+        {
+          query: (arg) => ({
+            url: `/user`,
+            method: 'POST',
+            body: arg,
+          }),
+        }
+      ),
 
       //CreateTagsListByUser >>
       createTagsListByUser: builder.mutation<void, CreateTagsListByUserRequest>(
@@ -898,13 +925,13 @@ export const extendedGardenAPI = api
         providesTags: ['tags-logs'],
       }),
       //CreateLog
-      createLog: builder.query<void, createLogRequest>({
-        query: (arg) => ({
-          url: `/log/user/${arg.id}`,
-          method: 'POST',
-          body: arg,
-        }),
-      }),
+      // createLog: builder.query<void, createLogRequest>({
+      //   query: (arg) => ({
+      //     url: `/log/user/${arg.id}`,
+      //     method: 'POST',
+      //     body: arg,
+      //   }),
+      // }),
 
       //GetGardenFullById
       getGardenFullById: builder.query<
@@ -951,8 +978,6 @@ export const {
   useEditUserByUserIdMutation,
   useGetTagsByUserQuery,
   usePatchCropMutation,
-  useLazyGetAllUsersByTagQuery,
-  useLazyGetAllGardensByTagQuery,
   useDeleteTagByUserMutation,
   useGetAllLogsByCropIdQuery,
   useGetAllLogsByGardenIdQuery,
@@ -961,5 +986,8 @@ export const {
   useGetAllLogsByNurseryIdQuery,
   useGetAllLogsByParcelIdQuery,
   useGetPopularTagsQuery,
+<<<<<<< HEAD
   useCreateLogQuery,
+=======
+>>>>>>> f50593c2defa695206da7f06151045a4a6e2648a
 } = extendedGardenAPI;

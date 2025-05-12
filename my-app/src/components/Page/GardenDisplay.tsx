@@ -54,9 +54,9 @@ const GardenDisplay = () => {
           )}
         </div>
         <MenuSandwich iconList={[]}></MenuSandwich>
-        <div className="fixed right-0 bottom-[20px] left-0 z-49 flex min-h-[10vh] items-center justify-center">
+        <div className="fixed right-0 bottom-[20px] left-0 z-49 flex items-center justify-center">
           <Button
-            className="bg-bgbutton relative px-6 py-2"
+            className="bg-bgbutton relative px-6 py-3.5"
             onClick={() => router.back()}
           >
             Back

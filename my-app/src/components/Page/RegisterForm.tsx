@@ -14,6 +14,9 @@ import Checkbox from '@/components/Atom/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from '@/redux/store';
+import { setCredentials } from '../../slice/authSlice';
+import { setAuthCookies } from '@/utils/authCookies';
 import {
   useCreateTagsListByUserMutation,
   useLoginUserMutation,
@@ -62,6 +65,7 @@ const RegisterForm = () => {
   const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
   const calendarRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const dispatch = useDispatch();
   const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
 
   //	https://blog.logrocket.com/using-react-usestate-object/
@@ -113,7 +117,7 @@ const RegisterForm = () => {
 
   // RTK Query
   const [registerUser] = useRegisterUserMutation();
-  const [loginUser] = useLoginUserMutation();
+  const [loginUserRegister] = useLoginUserMutation();
   const [createTagsListByUser] = useCreateTagsListByUserMutation();
 
   //#endregion
@@ -382,29 +386,52 @@ const RegisterForm = () => {
     //--------------------------------------------
     //IL FAUT RECUPERER LE USERID DANS LA RESPONSE
     //--------------------------------------------
-    const bodyHashTagsRequest = {
-      userId: 8,
-      hashtags: formDataRegister.interests,
-    };
 
     try {
       setIsSubmitting(true);
       setSubmitError(null); // reset errors
 
-      const result = registerUser(bodyRequest);
+      //On créé l'utilisateur
+      const response = await registerUser(bodyRequest).unwrap();
+      const { id } = response.content;
 
-      //Ajout des hashtags
+      const bodyHashTagsRequest = {
+        userId: id,
+        hashtags: formDataRegister.interests,
+      };
+
+      //On ajoute les hashtags
       createTagsListByUser(bodyHashTagsRequest);
-      console.log('hashtags user created');
 
       try {
-        loginUser({
+        const user = {
           email: bodyRequest.email,
           password: bodyRequest.password,
-        });
-        console.log('user connected');
+        };
+
+        const response = await loginUserRegister(user).unwrap();
+
+        dispatch(
+          setCredentials({
+            id: response.content.id,
+            user: response.content.username,
+            token: response.token,
+          })
+        );
+        setAuthCookies(
+          {
+            accessToken: response.token,
+          },
+          {
+            username: response.content.username,
+            id: response.content.id,
+            xp: response.content.id,
+          }
+        );
+
+        //console.log('user connected');
       } catch {
-        console.log('error connecting user');
+        console.log('error connecting user'); //A EFFACER
       }
 
       // const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
@@ -468,7 +495,7 @@ const RegisterForm = () => {
 
   return (
     <Card className={'bg-cardbackground h-full max-w-screen px-8 pt-5'}>
-      <h1 className="mb-5 text-4xl">{translations.signup}: </h1>
+      <h1 className="mb-5 text-4xl">{translations.register}: </h1>
 
       <form
         ref={formRef}
@@ -637,6 +664,13 @@ const RegisterForm = () => {
         <div className="flex justify-center pb-5">
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
+            type="button"
+            onClick={() => router.push('login')}
+          >
+            Back
+          </Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={handleNextStep}
           >
             {translations.next}
@@ -728,6 +762,13 @@ const RegisterForm = () => {
           <p className="text-txterror">{translations.errorNotCheckedToU}</p>
         )}
         <div className="flex justify-center pb-5">
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            type="button"
+            onClick={() => router.push('login')}
+          >
+            Back
+          </Button>
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={handlePrevStep}
