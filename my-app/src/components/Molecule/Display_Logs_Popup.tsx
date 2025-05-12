@@ -13,6 +13,7 @@ import {
 import Loading from '../Atom/Loading';
 import { Log } from '@/utils/types';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import Button from '../Atom/Button';
 
 type SortConfig = {
   key: keyof Log;
@@ -108,6 +109,10 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
     return <Loading />;
   }
 
+  const handleClickAddButton = (logObject) => {
+    createLogRequest;
+  };
+
   return (
     <section
       style={{
@@ -115,7 +120,15 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
       }}
       className={`${logObject === 'garden' ? 'fixed right-[8vw] bottom-[2vh] z-50 flex h-[auto] max-h-[90vh] w-[70vw]' : 'm-auto w-[80vw]'} bg-cardbackground flex-col items-center justify-between rounded-xl border-2`}
     >
-      <H2>{logObject} history :</H2>
+      <div className="flex items-center justify-around">
+        <Button
+          className="bg-bgbutton relative m-5 px-6"
+          onClick={handleClickAddButton}
+        >
+          Add
+        </Button>
+        <H2>{logObject} history :</H2>
+      </div>
       <div
         className={` ${logObject === 'garden' ? 'w-[68vw]' : 'w-full'} overflow-auto`}
       >

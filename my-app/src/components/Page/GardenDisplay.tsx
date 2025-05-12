@@ -20,6 +20,7 @@ const GardenDisplay = () => {
   );
   const scale = useSelector((state: RootState) => state.garden.scale);
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
+
   //Cookies
   const garden = Cookies.get('selected_garden');
 

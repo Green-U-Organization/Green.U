@@ -66,8 +66,8 @@ export type Parcel = {
   parcelAngle: number;
   createdAt: string;
   garden?: string;
-  lines: [];
-  logs: [];
+  lines?: [];
+  logs?: [];
 };
 
 export type GardenCardHeaderProps = {
@@ -274,3 +274,55 @@ export type Log = {
 };
 
 export type Tag = { tag: string; count: number };
+
+export type GardenFull = {
+  id: number;
+  authorId: number;
+  name: string;
+  description: string;
+  length: number;
+  width: number;
+  privacy: number;
+  type: number;
+  nursery: {
+    id: number;
+    name: string;
+    comments: string;
+    type: string;
+    crop: {
+      id: number;
+      vegetable: string;
+      variety: string;
+      icon: string;
+      sowing: string;
+      planting: string;
+      distance_plantation: number;
+      comments: string;
+    }[];
+  }[];
+  parcel: {
+    id: number;
+    gardenId: number;
+    length: number;
+    width: number;
+    nLine: number;
+    parcelAngle: number;
+    createdAt: string;
+    lines: {
+      id: number;
+      parcelId: number;
+      length: number;
+      createdAt: string;
+      crop: {
+        id: number;
+        vegetable: string;
+        variety: string;
+        icon: string;
+        sowing: string;
+        planting: string;
+        distance_plantation: number;
+        comments: string;
+      }[];
+    }[];
+  }[];
+};
