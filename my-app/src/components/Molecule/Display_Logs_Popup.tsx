@@ -3,6 +3,7 @@ import React, { FC, useState, useMemo } from 'react';
 import Card from '../Atom/Card';
 import H2 from '../Atom/H2';
 import {
+  useCreateLogQuery,
   useGetAllLogsByCropIdQuery,
   useGetAllLogsByGardenIdQuery,
   useGetAllLogsByGreenhouseIdQuery,
@@ -14,6 +15,12 @@ import Loading from '../Atom/Loading';
 import { Log } from '@/utils/types';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import Button from '../Atom/Button';
+import Cookies from 'js-cookie';
+import SlimCard from '../Atom/SlimCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { setDisplayAddLogWindow } from '@/redux/display/displaySlice';
+import TextInput from '../Atom/TextInput';
 
 type SortConfig = {
   key: keyof Log;
@@ -29,27 +36,73 @@ type DisplayLog = {
 const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
   let logs, isLoading;
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
+
+  //Selectors
+  const displayAddLog = useSelector(
+    (state: RootState) => state.display.displayAddLogWindow
+  );
+
+  //Hooks
+  const dispatch = useDispatch();
+
+  //Redux
+  const changeDisplayAddLog = setDisplayAddLogWindow;
+
+  let query;
+
   switch (logObject) {
     case 'garden':
       ({ data: logs, isLoading } = useGetAllLogsByGardenIdQuery({ id }));
+      query = {
+        id: userId,
+        gardenId: id,
+      };
       break;
     case 'parcel':
       ({ data: logs, isLoading } = useGetAllLogsByParcelIdQuery({ id }));
+      query = {
+        id: userId,
+        parcelId: id,
+      };
       break;
     case 'line':
       ({ data: logs, isLoading } = useGetAllLogsByLineIdQuery({ id }));
+      query = {
+        id: userId,
+        lineId: id,
+      };
       break;
     case 'crop':
       ({ data: logs, isLoading } = useGetAllLogsByCropIdQuery({ id }));
+      query = {
+        id: userId,
+        cropId: id,
+      };
       break;
     case 'nursery':
       ({ data: logs, isLoading } = useGetAllLogsByNurseryIdQuery({ id }));
+      query = {
+        id: userId,
+        nurseryId: id,
+      };
       break;
     case 'greenhouse':
       ({ data: logs, isLoading } = useGetAllLogsByGreenhouseIdQuery({ id }));
+      query = {
+        id: userId,
+        greenhouseId: id,
+      };
       break;
     default:
       ({ data: logs, isLoading } = useGetAllLogsByGardenIdQuery({ id }));
+      query = {
+        id: userId,
+        gardenId: id,
+      };
       break;
   }
 
@@ -110,7 +163,7 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
   }
 
   const handleClickAddButton = (logObject) => {
-    createLogRequest;
+    dispatch(changeDisplayAddLog({ state: !displayAddLog, id: id }));
   };
 
   return (
@@ -132,6 +185,26 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
       <div
         className={` ${logObject === 'garden' ? 'w-[68vw]' : 'w-full'} overflow-auto`}
       >
+        <div
+          style={{
+            display: displayAddLog ? 'block' : 'none',
+          }}
+        >
+          <SlimCard>
+            <form action="">
+              <select name="" id="">
+                <option value="Weeding"></option>
+                <option value="Sowing"></option>
+                <option value="Planting"></option>
+                <option value="Watering"></option>
+                <option value="Tuteuring"></option>
+                <option value="Other"></option>
+              </select>
+              <TextInput></TextInput>
+            </form>
+          </SlimCard>
+        </div>
+
         <table className="min-w-full">
           <thead>
             <tr className="border-1">

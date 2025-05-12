@@ -39,7 +39,7 @@ const GardenDisplay = () => {
   return (
     <section className="bg-cardbackground flex min-h-screen items-center justify-center">
       <Card className="min-h-screen overflow-auto">
-        <div className="mt-5 flex max-h-[15vh] flex-col items-center overflow-y-auto">
+        <div className="mt-5 flex max-h-[11vh] flex-col items-center overflow-y-auto">
           <H1>{currentGarden?.name}</H1>
           <H2>{currentGarden?.description}</H2>
         </div>
