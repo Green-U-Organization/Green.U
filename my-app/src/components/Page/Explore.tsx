@@ -185,7 +185,7 @@ const Explore = () => {
   };
 
   return (
-    <Card className="bg-cardbackground flex h-[92vh] w-full flex-col px-5 pt-5 pb-5">
+    <Card className="bg-cardbackground flex h-screen w-full flex-col px-5 pt-5 pb-5">
       {/* Partie supérieure fixe (formulaire) */}
       <div className="flex-shrink-0">
         <p>The most used tags:</p>
@@ -449,6 +449,9 @@ const Explore = () => {
                     <th className="border border-black px-4 py-2 text-left">
                       Type
                     </th>
+                    <th className="border border-black px-4 py-2 text-left">
+                      Privacy
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -482,6 +485,9 @@ const Explore = () => {
                             </td>
                             <td className="border border-black px-4 py-2">
                               {gardenTypeLabels[garden.type] ?? 'Unknown'}
+                            </td>
+                            <td className="border border-black px-4 py-2">
+                              {garden.privacy || 'N/A'}
                             </td>
                           </tr>
                         ))
@@ -539,6 +545,9 @@ const Explore = () => {
                             </td>
                             <td className="border border-black px-4 py-2">
                               {gardenTypeLabels[garden.type] ?? 'Unknown'}
+                            </td>
+                            <td className="border border-black px-4 py-2">
+                              {garden.privacy} || 'N/A'}
                             </td>
                           </tr>
                         ))
