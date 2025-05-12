@@ -325,6 +325,8 @@ type GetAllGardensByTagResponse = {
     id: number;
     name: string;
     description: string;
+    type: number;
+    privacy: number;
     tagsInterests: {
       id: number;
       userId: number;
@@ -398,7 +400,7 @@ type GetUserByUsernameSuccessResponse = {
       hashtag: string;
       created_at: Date;
     }[];
-  };
+  }[];
 };
 
 type editUserByUserIdRequest = {
