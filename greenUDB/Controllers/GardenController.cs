@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace GreenUApi.Controllers
 {
@@ -31,6 +33,41 @@ namespace GreenUApi.Controllers
 
         }
 
+        public class GardenDTO
+        {
+
+            public long? Id { get; set; }
+
+            public long AuthorId { get; set; }
+
+            public string Name { get; set; } = null!;
+
+            public bool Deleted { get; set; } = false;
+
+            public string Description { get; set; } = null!;
+
+            public string? GardenColor { get; set; }
+
+            public double Latitude { get; set; }
+
+            public double Longitude { get; set; }
+
+            public double Length { get; set; }
+
+            public double Width { get; set; }
+
+            public DateTime CreatedAt { get; set; }
+
+            public GardenPrivacy Privacy { get; set; } 
+
+            public GardenType Type { get; set; }
+
+            public Parcel[]? Parcels { get; set; }
+
+            public PlantNursery[]? PlantNurseries { get; set; }
+        }
+
+
         private readonly GreenUDB _db   ;
 
         public GardenController(GreenUDB context)
@@ -53,11 +90,15 @@ namespace GreenUApi.Controllers
         [HttpGet("alldata/{id}")]
         public async Task<ActionResult<Garden>> GetAllDataGarden(long id)
         {
-            var garden = await _db.Gardens
-                .Include(e => e.Parcels)
-                .Include(e => e.Lines)
-                .Include(e => e.PlantNurseries)
-                .ToListAsync();
+            Garden garden = await _db.Gardens
+                .Include(p => p.Parcels)
+                    .ThenInclude(l => l.Lines)
+                        .ThenInclude(c => c.Crops)
+                .Include(pn => pn.PlantNurseries)
+                    .ThenInclude(cr => cr.Crops)
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            
 
             return Ok(new { isEmpty = false, message = "Garden object", content = garden });
         }

@@ -561,7 +561,7 @@ namespace GreenUApi.Migrations
             modelBuilder.Entity("GreenUApi.Models.Line", b =>
                 {
                     b.HasOne("GreenUApi.Models.Garden", "Gardens")
-                        .WithMany("Lines")
+                        .WithMany()
                         .HasForeignKey("GardenId");
 
                     b.HasOne("GreenUApi.Models.PlantNursery", null)
@@ -628,8 +628,6 @@ namespace GreenUApi.Migrations
                     b.Navigation("Contributors");
 
                     b.Navigation("Followers");
-
-                    b.Navigation("Lines");
 
                     b.Navigation("Parcels");
 
