@@ -12,10 +12,14 @@ public partial class Bugs
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public long Id { get; set; }
 
+  public long AuthorId { get; set; }
+
   [Required]
   public string Message { get; set; } = string.Empty;
 
   [Required]
   public string Category { get; set; } = string.Empty;
+
+
 
 }
