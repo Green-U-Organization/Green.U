@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
-using YamlDotNet.Core.Tokens;
 
 namespace GreenUApi.Controllers
 {
@@ -191,7 +185,7 @@ namespace GreenUApi.Controllers
                 GardenId = ExistingLine.GardenId,
                 ParcelId = ExistingLine.ParcelId,
                 LineId = id,
-                Action = "Create a Crop in a line",
+                Action = $"Plant a {crop.Vegetable} {crop.Variety}",
                 Type = "Automatic",
             };
 
@@ -230,7 +224,7 @@ namespace GreenUApi.Controllers
             Log log = new()
             {
                 PlantNurseryId = crop.PlantNurseryId,
-                Action = "Create a Crop in a PlantNursery",
+                Action = $"Plant a {crop.Vegetable} {crop.Variety} in plant nursery",
                 Type = "Automatic",
             };
 
@@ -258,7 +252,7 @@ namespace GreenUApi.Controllers
                 CropId = id,
                 PlantNurseryId = crop.PlantNurseryId,
                 LineId = crop.LineId,
-                Action = "Delete a Crop",
+                Action = $"Delete {crop.Vegetable} {crop.Variety}",
                 Type = "Automatic",
             };
 
