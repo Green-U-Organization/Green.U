@@ -353,16 +353,16 @@ namespace GreenUApi.Controllers
         [HttpDelete("garden/{id}")]
         public async Task<ActionResult<TagsInterest>> DeleteGardenTag(long id, TagsInterest Tag)
         {
-                var tagExists = await _db.TagsInterests
+                var tag = await _db.TagsInterests
                     .Where(t => t.GardenId == id && t.Hashtag == Tag.Hashtag)
                     .FirstOrDefaultAsync();
 
-                if (tagExists == null) return NotFound(new { message = "Garden tag not found" });
+                if (tag == null) return NotFound(new { isEmpty = true, message = "Garden tag not found" });
 
-                _db.TagsInterests.Remove(tagExists);
+                _db.TagsInterests.Remove(tag);
                 await _db.SaveChangesAsync();
 
-                return Ok(new { message = "Tag Deleted !" });
+                return Ok(new { isEmpty = false, message = "Tag Deleted !", content = tag });
         }
 
         [HttpDelete("list/garden/{id}")]
