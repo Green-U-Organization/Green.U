@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState, useDispatch } from '@/redux/store';
@@ -150,7 +149,7 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
   return (
     <section ref={menuRef} className="fixed right-[20px] bottom-[20px] z-50">
       <Button
-        className="bg-bgbutton h-[60px] w-[60px]"
+        className="bg-bgbutton z-50 h-[60px] w-[60px]"
         onClick={handleClickMenu}
       >
         <img
@@ -167,33 +166,33 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
         style={{
           display: clickMenuDisplay ? 'block' : 'none',
         }}
-        className="absolute -top-[230px] right-[0px] h-[250px] w-[60px]"
+        className="absolute -top-[230px] right-[0px] z-50 h-[250px] w-[60px]"
       >
         <Card
-          className="bg-bgbutton absolute top-0 right-0 flex h-[250px] w-[60px] flex-col items-center justify-between"
+          className="bg-bgbutton absolute top-0 right-0 z-50 flex h-[250px] w-[60px] flex-col items-center justify-between"
           variant="bottom"
         >
-          <div onClick={handleParcelClick} className="bg-parcel my-5">
+          <div onClick={handleParcelClick} className="bg-parcel z-50 my-5">
             <SlimCard
               bgColor="bg-bgbutton"
-              className="h-[40px] w-[40px] p-1 text-center text-2xl"
+              className="z-50text-center h-[40px] w-[40px] p-1 text-2xl"
             >
               P
             </SlimCard>
           </div>
 
-          <div onClick={handleGreenhouseClick} className="bg-nursery my-5">
+          <div onClick={handleGreenhouseClick} className="bg-nursery z-50 my-5">
             <SlimCard
               bgColor="bg-bgbutton"
-              className="h-[40px] w-[40px] p-1 text-center text-2xl"
+              className="z-50 h-[40px] w-[40px] p-1 text-center text-2xl"
             >
               N
             </SlimCard>
           </div>
-          <div onClick={handleNurseryClick} className="bg-greenhouse my-5">
+          <div onClick={handleNurseryClick} className="bg-greenhouse z-50 my-5">
             <SlimCard
               bgColor="bg-bgbutton"
-              className="h-[40px] w-[40px] p-1 text-center text-2xl"
+              className="z-50 h-[40px] w-[40px] p-1 text-center text-2xl"
             >
               G
             </SlimCard>

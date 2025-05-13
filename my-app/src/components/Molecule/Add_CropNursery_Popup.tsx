@@ -7,13 +7,24 @@ import { RootState } from '@/redux/store';
 import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';
 import { Nurcery } from '@/utils/types';
 import H2 from '../Atom/H2';
-import { useCreateCropToNurseryMutation } from '@/slice/fetch';
+import {
+  useCreateCropToNurseryMutation,
+  useEditUserByUserIdMutation,
+  useGetUserByIdQuery,
+} from '@/slice/fetch';
+import XpTable from '@/utils/Xp';
+import Cookies from 'js-cookie';
 
 const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   //Local State
   const [potSize, setPotSize] = useState<number>(5);
   const [typeOfAction, setTypeOfAction] = useState<string>('sowing');
   const [selectedIcon, setSelectedIcon] = useState<string>('');
+
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const id = Number(userCookie?.id);
 
   //Variables
   const iconList = [
@@ -41,6 +52,8 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
 
   //RTK Query
   const [createCropToNursery] = useCreateCropToNurseryMutation();
+  const [addXp] = useEditUserByUserIdMutation();
+  const user = useGetUserByIdQuery({ userId: id });
 
   //Handlers
   const handlePotSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +96,10 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
 
     try {
       await createCropToNursery(cropData).unwrap();
+      await addXp({
+        userId: id,
+        xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
+      });
       console.log('crop created');
       dispatch(
         setAddCropNurseryPopup({

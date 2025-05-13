@@ -14,6 +14,9 @@ import Checkbox from '@/components/Atom/Checkbox';
 import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from '@/redux/store';
+import { setCredentials } from '../../slice/authSlice';
+import { setAuthCookies } from '@/utils/authCookies';
 import {
   useCreateTagsListByUserMutation,
   useLoginUserMutation,
@@ -62,6 +65,7 @@ const RegisterForm = () => {
   const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
   const calendarRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const dispatch = useDispatch();
   const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
 
   //	https://blog.logrocket.com/using-react-usestate-object/
@@ -104,7 +108,7 @@ const RegisterForm = () => {
   const cols = 65;
 
   const [isValidPostalCode, setIsValidPostalCode] = useState(true);
-  const [step, setStep] = useState(2); //Pour gérer l'affichage des "pages"
+  const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVerify, setShowPasswordVerify] = useState(false);
   const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
@@ -113,7 +117,7 @@ const RegisterForm = () => {
 
   // RTK Query
   const [registerUser] = useRegisterUserMutation();
-  const [loginUser] = useLoginUserMutation();
+  const [loginUserRegister] = useLoginUserMutation();
   const [createTagsListByUser] = useCreateTagsListByUserMutation();
 
   //#endregion
@@ -130,15 +134,15 @@ const RegisterForm = () => {
       !data.postalCode ||
       !formDataRegister.birthDate;
 
-    console.log('emptyfields? ', hasEmptyFields);
+    //console.log('emptyfields? ', hasEmptyFields);
 
     const passwordValid =
       (data.password?.length ?? 0) >= 8 &&
       specialCharRegex.test(data.password ?? '');
-    console.log('passwordValid ? : ', passwordValid);
+    //console.log('passwordValid ? : ', passwordValid);
 
     const passwordsMatch = data.password === data.passwordVerify;
-    console.log('passwordMatch ? ', passwordsMatch);
+    //console.log('passwordMatch ? ', passwordsMatch);
 
     checkPassword(data.password ?? '');
     checkPasswordVerify(data.password ?? '', data.passwordVerify ?? '');
@@ -151,7 +155,7 @@ const RegisterForm = () => {
   };
 
   const step2Validation = () => {
-    console.log('check validation step 2:');
+    //console.log('check validation step 2:');
 
     const isValid = formDataRegister.interests.length > 0 && isCheckedToU;
 
@@ -162,7 +166,7 @@ const RegisterForm = () => {
       errorNotCheckedToU: !isCheckedToU,
     }));
 
-    console.log('validation ok: ', isValid);
+    //console.log('validation ok: ', isValid);
     return isValid;
   };
 
@@ -217,7 +221,7 @@ const RegisterForm = () => {
     //Ajout manuel du champ birthdate (car géré par Calendar et non par un input)
     formJson.birthDate = formDataRegister.birthDate;
 
-    console.log('formJson page 1: ', formJson);
+    //console.log('formJson page 1: ', formJson);
 
     setFormDataRegister((prevFormData) => ({
       ...prevFormData,
@@ -344,7 +348,7 @@ const RegisterForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const isValid = step2Validation();
-    console.log('Submit -> is valid: ', isValid);
+    //console.log('Submit -> is valid: ', isValid);
     if (!isValid) {
       return;
     }
@@ -359,7 +363,7 @@ const RegisterForm = () => {
       tou: isCheckedToU,
     }));
 
-    console.log('FORM OK');
+    //console.log('FORM OK');
     const bodyRequest = {
       username: formDataRegister.login,
       password: formDataRegister.password,
@@ -375,33 +379,59 @@ const RegisterForm = () => {
       skill_level: selectedSkillLevel,
       bio: formDataRegister.bio,
     };
-    console.log('formJson page 2: ', bodyRequest);
+    //console.log('formJson page 2: ', bodyRequest);
 
     //addUser(bodyRequest);
 
-    const bodyHashTagsRequest = {
-      userId: 8,
-      hashtags: formDataRegister.interests,
-    };
+    //--------------------------------------------
+    //IL FAUT RECUPERER LE USERID DANS LA RESPONSE
+    //--------------------------------------------
 
     try {
       setIsSubmitting(true);
       setSubmitError(null); // reset errors
 
-      registerUser(bodyRequest);
-      console.log('user created');
-      //Ajout des hashtags
+      //On créé l'utilisateur
+      const response = await registerUser(bodyRequest).unwrap();
+      const { id } = response.content;
+
+      const bodyHashTagsRequest = {
+        userId: id,
+        hashtags: formDataRegister.interests,
+      };
+
+      //On ajoute les hashtags
       createTagsListByUser(bodyHashTagsRequest);
-      console.log('hashtags user created');
 
       try {
-        loginUser({
+        const user = {
           email: bodyRequest.email,
           password: bodyRequest.password,
-        });
-        console.log('user connected');
+        };
+
+        const response = await loginUserRegister(user).unwrap();
+
+        dispatch(
+          setCredentials({
+            id: response.content.id,
+            user: response.content.username,
+            token: response.token,
+          })
+        );
+        setAuthCookies(
+          {
+            accessToken: response.token,
+          },
+          {
+            username: response.content.username,
+            id: response.content.id,
+            xp: response.content.id,
+          }
+        );
+
+        //console.log('user connected');
       } catch {
-        console.log('error connecting user');
+        console.log('error connecting user'); //A EFFACER
       }
 
       // const response = await fetch(process.env.NEXT_PUBLIC_API + '/user', {
@@ -464,8 +494,10 @@ const RegisterForm = () => {
   //#endregion
 
   return (
-    <Card className={'bg-cardbackground h-full max-w-screen px-8 pt-5'}>
-      <h1 className="mb-5 text-4xl">{translations.signup}: </h1>
+    <Card
+      className={'bg-cardbackground h-full min-h-screen max-w-screen px-8 pt-5'}
+    >
+      <h1 className="mb-5 text-4xl">{translations.register}: </h1>
 
       <form
         ref={formRef}
@@ -634,6 +666,13 @@ const RegisterForm = () => {
         <div className="flex justify-center pb-5">
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
+            type="button"
+            onClick={() => router.push('login')}
+          >
+            Back
+          </Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={handleNextStep}
           >
             {translations.next}
@@ -652,7 +691,14 @@ const RegisterForm = () => {
           placeholder={translations.giveaBio}
           rows={Number(rows)}
           cols={Number(cols)}
-          className="mb-5 rounded-md border-1 pl-3"
+          className="row={5} mb-5 min-h-[165px] max-w-full resize-y rounded-md border-1 pl-3"
+          value={formDataRegister.bio}
+          onChange={(e) =>
+            setFormDataRegister((prev) => ({
+              ...prev,
+              bio: e.target.value,
+            }))
+          }
         ></textarea>
 
         {/* Vos intérêts */}
@@ -720,12 +766,19 @@ const RegisterForm = () => {
         <div className="flex justify-center pb-5">
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
+            type="button"
+            onClick={() => router.push('login')}
+          >
+            Back
+          </Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={handlePrevStep}
           >
             {translations.previous}
           </Button>
           <Button
-            className="relative bg-bgbutton m-5 px-6 py-2"
+            className="bg-bgbutton relative m-5 px-6 py-2"
             onClick={handleSubmit}
             disabled={isSubmitting}
           >

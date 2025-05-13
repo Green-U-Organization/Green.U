@@ -45,7 +45,6 @@ const CreateGardenForm = () => {
   const userData = Cookies.get('user_data');
   const userCookie = userData ? JSON.parse(userData) : null;
   const id = Number(userCookie?.id);
-  console.log('id : ', typeof id, id);
 
   // RTHK Query
   const [createNewGarden] = useCreateNewGardenMutation();
@@ -96,8 +95,6 @@ const CreateGardenForm = () => {
         hashtags: formData.getAll('gardenHashtag') as string[],
       };
 
-      console.log('Garden Data:', gardenData);
-
       try {
         createNewGarden(gardenData).unwrap();
         console.log('Garden created with success');
@@ -114,7 +111,7 @@ const CreateGardenForm = () => {
 
   return (
     <>
-      <Card className="bg-cardbackground h-full max-w-screen px-8 pt-5 pb-10">
+      <Card className="bg-cardbackground h-full min-h-screen max-w-screen px-8 pt-5 pb-10">
         <h1 className="mb-5 text-center text-4xl">
           {translations.gardenCreator}
         </h1>
@@ -184,17 +181,16 @@ const CreateGardenForm = () => {
             initialLat={0} //Pour ne pas avoir un pin par défaut
             initialLng={0} //Idem
             //showUserPosition={true}
-            onLocationChange={(lat, lng) => console.log(lat, lng)}
           />
 
           <SelectInput
             label={translations.kindOfGarden}
             name="gardenType"
             options={[
-              { value: 0, label: translations.gardenType0 },
-              { value: 1, label: translations.gardenType1 },
-              { value: 2, label: translations.gardenType2 },
-              { value: 3, label: translations.gardenType3 },
+              { value: 0, label: translations.gardenType0 }, //Personnal
+              { value: 1, label: translations.gardenType1 }, //Famillial
+              { value: 2, label: translations.gardenType2 }, //Collective
+              { value: 3, label: translations.gardenType3 }, //Professionnal
             ]}
             value={selectedType}
             onChange={(e) => setSelectedType(Number(e.target.value))}
@@ -205,7 +201,7 @@ const CreateGardenForm = () => {
             name="gardenPrivacy"
             options={[
               { value: 0, label: translations.privateGarden },
-              { value: 1, label: translations.semiPrivateGarden },
+              //{ value: 1, label: translations.semiPrivateGarden },
               { value: 2, label: translations.publicGarden },
             ]}
             garden-manager

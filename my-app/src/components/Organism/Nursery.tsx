@@ -10,8 +10,13 @@ import {
 } from '@/slice/fetch';
 import { NurceryProps } from '@/utils/types';
 import AddCropNurseryPopup from '../Molecule/Add_CropNursery_Popup';
-import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';
+import {
+  setAddCropNurseryPopup,
+  setDisplayCropLogPopup,
+  setDisplayNurseryLogPopup,
+} from '@/redux/display/displaySlice';
 import SlimCard from '../Atom/SlimCard';
+import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 
 const Nursery: FC<NurceryProps> = ({ nursery }) => {
   // Local State
@@ -28,8 +33,8 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
   const [deleteNursery] = useDeleteOneNurseryByNurseryIdMutation();
 
   // Debug,
-  console.log('nurseryId : ', nursery.id);
-  console.log('crops : ', crops);
+  // console.log('nurseryId : ', nursery.id);
+  // console.log('crops : ', crops);
 
   // Hooks
   const dispatch = useDispatch();
@@ -37,6 +42,12 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
   // Selectors
   const addCropPopupDisplay = useSelector(
     (state: RootState) => state.display.addCropNurseryPopup
+  );
+  const displayNurseryLogPopup = useSelector(
+    (state: RootState) => state.display.displayNurseryLogPopup
+  );
+  const displayCropLogPopup = useSelector(
+    (state: RootState) => state.display.displayCropLogPopup
   );
   const id = useSelector((state: RootState) => state.display.id);
 
@@ -114,6 +125,14 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
               alt="Display info about nursery"
               width={50}
               height={50}
+              onClick={() =>
+                dispatch(
+                  setDisplayNurseryLogPopup({
+                    state: !displayNurseryLogPopup,
+                    id: Number(nursery.id),
+                  })
+                )
+              }
             />
             <Image
               className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
@@ -152,6 +171,19 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
           <AddCropNurseryPopup nursery={nursery} />
         </div>
 
+        {/* Log Popup */}
+        <div
+          style={{
+            display:
+              displayNurseryLogPopup && id === nursery.id ? 'block' : 'none',
+          }}
+        >
+          <Display_Logs_Popup
+            id={nursery.id}
+            display={displayNurseryLogPopup}
+            logObject={'nursery'}
+          />
+        </div>
         {/* //crops map */}
 
         {!crops ? (
@@ -172,7 +204,6 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
             <table className="min-w-full">
               <thead>
                 <tr className="border-1">
-                  <th className="border-1 p-1">Icon</th>
                   <th className="border-1 p-1">Veg.</th>
                   <th className="border-1 p-1">Var.</th>
                   <th className="border-1 p-1">nPot</th>
@@ -182,41 +213,55 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
                 </tr>
               </thead>
               <tbody>
-                {crops?.content.map((crop, index) => (
-                  <tr key={index}>
-                    <td className="border-1 p-1">
-                      <img src={crop.icon} alt="" className="mx-auto" />
-                    </td>
-                    <td className="border-1 p-1">{crop.vegetable}</td>
-                    <td className="border-1 p-1">{crop.variety}</td>
-                    <td className="border-1 p-1">{crop.nPot}</td>
-                    <td className="border-1 p-1">
-                      {crop.potSize}x{crop.potSize}
-                    </td>
-                    <td className="border-1 p-1">
-                      <img
-                        className="mx-auto"
-                        src="/image/icons/info.png"
-                        alt="Display info about line"
-                        style={{
-                          width: '5vw',
-                          height: '5vw',
-                        }}
-                      />
-                    </td>
-                    <td className="border-1 p-1">
-                      <img
-                        className="mx-auto"
-                        src="/image/icons/trash.png"
-                        alt="Delete line"
-                        style={{
-                          width: '5vw',
-                          height: '5vw',
-                        }}
-                        // onClick={() => setDisplayDeletingLinePopup(true)}
-                      />
-                    </td>
-                  </tr>
+                {crops?.content.map((crop) => (
+                  <>
+                    <tr key={crop.id}>
+                      <td className="border-1 p-1">{crop.vegetable}</td>
+                      <td className="border-1 p-1">{crop.variety}</td>
+                      <td className="border-1 p-1">{crop.nPot}</td>
+                      <td className="border-1 p-1">
+                        {crop.potSize}x{crop.potSize}
+                      </td>
+                      <td
+                        className="border-1 p-1"
+                        onClick={() =>
+                          dispatch(
+                            setDisplayCropLogPopup({
+                              state: !displayCropLogPopup,
+                              id: Number(crop.id),
+                            })
+                          )
+                        }
+                      >
+                        <img src={crop.icon} alt="" className="mx-auto" />
+                      </td>
+                      <td className="border-1 p-1">
+                        <img
+                          className="mx-auto"
+                          src="/image/icons/trash.png"
+                          alt="Delete line"
+                          style={{
+                            width: '5vw',
+                            height: '5vw',
+                          }}
+                          // onClick={() => setDisplayDeletingLinePopup(true)}
+                        />
+                      </td>
+                    </tr>
+                    {displayCropLogPopup && id === crop.id && (
+                      <tr>
+                        <td colSpan={6} className="p-0">
+                          <div className="relative w-full">
+                            <Display_Logs_Popup
+                              id={crop.id}
+                              display={true}
+                              logObject={'crop'}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
                 ))}
               </tbody>
             </table>

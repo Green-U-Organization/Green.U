@@ -9,6 +9,7 @@ type AuthTokens = {
 type UserData = {
   username: string;
   id: number;
+  xp: number;
 };
 
 // Configuration
@@ -35,6 +36,7 @@ export const getAuthCookies = () => ({
   refreshToken: Cookies.get('refresh_token'),
   user: Cookies.get('user_data') ? JSON.parse(Cookies.get('user_data')!) : null,
   id: Cookies.get('user_data') ? Cookies.get('user_data')! : null,
+  xp: Cookies.get('user_data') ? Cookies.get('user_data')! : null,
 });
 
 export const clearAuthCookies = () => {
