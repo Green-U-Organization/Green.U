@@ -111,11 +111,11 @@ const Add_Log_Window: FC<AddLogWindow> = ({ id, logObject, userId }) => {
     <SlimCard className="m-2">
       <form onSubmit={handleSubmit} className="flex flex-col justify-center">
         <div className="flex">
-          <label className="ml-2" htmlFor="action">
+          <label className="ml-3" htmlFor="action">
             Action :{' '}
           </label>
           <select
-            className="ml-2"
+            className="ml-3"
             name="action"
             id="action"
             onChange={(e) => {
@@ -146,7 +146,7 @@ const Add_Log_Window: FC<AddLogWindow> = ({ id, logObject, userId }) => {
           ></TextInput>
         </div>
 
-        <label className="ml-2" htmlFor="comment">
+        <label className="ml-3" htmlFor="comment">
           Comment :
         </label>
         <textarea

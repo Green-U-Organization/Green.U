@@ -72,7 +72,7 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
         <H2>On Page {currentPath}</H2>
         <form onSubmit={handleSubmit} className="flex flex-col justify-center">
           <div className="flex">
-            <label className="ml-2" htmlFor="action">
+            <label className="ml-3" htmlFor="action">
               Type :{' '}
             </label>
             <select
@@ -95,7 +95,7 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
           </div>
 
           <div style={{ display: category === 'other' ? 'block' : 'none' }}>
-            <label className="ml-2" htmlFor="otherAction">
+            <label className="ml-3" htmlFor="otherAction">
               Your action :
             </label>
             <TextInput
@@ -107,7 +107,7 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
             ></TextInput>
           </div>
 
-          <label className="ml-2" htmlFor="comment">
+          <label className="ml-3" htmlFor="comment">
             Message :
           </label>
           <textarea
