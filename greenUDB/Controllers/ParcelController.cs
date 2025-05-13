@@ -14,14 +14,9 @@ namespace GreenUApi.Controllers
     [Route("garden/parcel")]
     [ApiController]
     // [Authorize]
-    public class ParcelController : ControllerBase
+    public class ParcelController(GreenUDB _db) : ControllerBase
     {
-        private readonly GreenUDB _db;
-
-        public ParcelController(GreenUDB context)
-        {
-            _db = context;
-        }
+        private readonly GreenUDB _db = _db;
 
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Parcel>>> GetParcelWithGardenId(long id)

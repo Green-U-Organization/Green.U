@@ -17,7 +17,9 @@ namespace GreenUApi.Models
 
         public string? Where { get; set; }
 
-        public string Type { get; set; } = null!;
+        public string Status { get; set; } = "Open";
+
+        public string Type { get; set; } = "Other";
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
