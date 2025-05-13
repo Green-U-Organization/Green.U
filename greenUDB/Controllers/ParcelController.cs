@@ -100,7 +100,7 @@ namespace GreenUApi.Controllers
             {
                 GardenId = parcel.GardenId,
                 ParcelId = parcel.Id,
-                Action = "Create parcel",
+                Action = $"Create parcel. Length : {parcel.Length}. Width : {parcel.Width}",
                 Type = "Automatic",
             };
 
@@ -139,7 +139,7 @@ namespace GreenUApi.Controllers
             {
                 GardenId = parcel.GardenId,
                 ParcelId = parcel.Id,
-                Action = "Delete parcel",
+                Action = $"Delete parcel. Length : {parcel.Length}. Width : {parcel.Width}",
                 Type = "Automatic",
             };
             _db.Add(log);
