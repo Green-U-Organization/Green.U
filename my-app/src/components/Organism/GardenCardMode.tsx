@@ -4,7 +4,7 @@ import Parcel from './Parcel';
 import styles from '../../app/Assets.module.css';
 import { GardenProps, type Garden } from '@/utils/types';
 import { useParcelList } from '@/app/hooks/useParcelList';
-import MenuSandwich from '../Molecule/MenuSandwich';
+import MenuSandwich from '../Molecule/MenuSandwichAddInGarden';
 import Submenu from '../Molecule/Submenu';
 import NewParcelForm from '../Molecule/Add_Parcel_Popup';
 import { RootState, useSelector, useDispatch } from '@/redux/store';
@@ -14,7 +14,6 @@ import NewGreenhouseForm from '../Molecule/Add_Greenhouse_Popup';
 const GardenCardMode: FC<GardenProps> = ({ garden, scale }) => {
   // Hooks
   const dispatch = useDispatch();
-  const reload = useSelector((state) => state.garden.reload);
 
   // Local State
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);

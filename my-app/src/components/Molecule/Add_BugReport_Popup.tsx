@@ -1,13 +1,11 @@
 'use client';
-import React, { useState, FC, useEffect } from 'react';
+import React, { useState, FC } from 'react';
 import SlimCard from '../Atom/SlimCard';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch } from 'react-redux';
 import { setDisplayBugReportPopup } from '@/redux/display/displaySlice';
 import H1 from '../Atom/H1';
-import { useRouter } from 'next/navigation';
 import H2 from '../Atom/H2';
 
 type AddBugReport = {
@@ -21,13 +19,9 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
   const [message, setMessage] = useState<string>('');
 
   //Selectors
-  const displayBugReport = useSelector(
-    (state: RootState) => state.display.displayBugReportPopup
-  );
 
   //Hooks
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const currentPath =
     typeof window !== 'undefined' ? window.location.pathname : '';
@@ -47,15 +41,16 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
       setCategory(customAction);
     }
 
-    let query = {
+    const query = {
       id: userId,
       category: category,
       message: message,
-      where: router.pathname,
+      where: currentPath,
     };
 
+    console.log(query);
     try {
-      const logData = query;
+      // const logData = query;
       //createLog(logData).unwrap();
     } catch {
       console.log('Error creating Log');

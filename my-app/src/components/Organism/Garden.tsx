@@ -12,7 +12,6 @@ import {
 import H1 from '../Atom/H1';
 import Nursery from './Nursery';
 import Loading from '../Atom/Loading';
-import H2 from '../Atom/H2';
 import SlimCard from '../Atom/SlimCard';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {

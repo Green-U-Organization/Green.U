@@ -1,14 +1,15 @@
 import PublicProfile from '@/components/Page/PublicProfile';
-import { notFound } from 'next/navigation';
-import React from 'react';
+import React, { FC } from 'react';
 
-interface Props {
+type Profile = {
   params: {
-    id: string; // Les paramètres d'URL sont toujours des strings
+    id: number;
   };
-}
+};
 
-export default function Page({ params }: Props) {
-  const userId = Number(params.id);
+const page: FC<Profile> = (id) => {
+  const userId = Number(id.params.id);
   return <PublicProfile userId={userId} />;
-}
+};
+
+export default page;

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 import {
   useLazyGetAllGardensByTagQuery,
@@ -179,21 +180,21 @@ const Explore = () => {
           }));
         }
       } else if (searchType === 'user') {
-        const result = await triggerUserByUsername({
+        await triggerUserByUsername({
           username: searchTerm,
         });
 
         //console.log('usersByUsername : ', result); //A EFFACER
       } else if (searchType === 'garden') {
-        const result = await triggerGardenByName({ inputuser: searchTerm });
+        await triggerGardenByName({ inputuser: searchTerm });
 
         //console.log('gardensByName : ', result); //A EFFACER
         //console.log('gardenStatus : ', gardenStatus); //A EFFACER
       }
 
       setSearchExecuted(true);
-    } catch (error: any) {
-      setError(error.message);
+    } catch {
+      setError('error searching tags');
     }
   };
 

@@ -18,7 +18,6 @@ import {
   setDisplayLineLogPopup,
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
-import Display_LineLogs_Popup from '../Molecule/Display_LineLogs_Popup';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 
 const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {

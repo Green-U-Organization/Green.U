@@ -7,7 +7,6 @@ import {
 } from '@/slice/fetch';
 import React from 'react';
 import Card from '../Atom/Card';
-import { FaEnvelope } from 'react-icons/fa';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';

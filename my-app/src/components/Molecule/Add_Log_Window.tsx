@@ -2,8 +2,7 @@ import React, { useState, FC } from 'react';
 import SlimCard from '../Atom/SlimCard';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch } from 'react-redux';
 import { setDisplayAddLogWindow } from '@/redux/display/displaySlice';
 import { useCreateLogMutation } from '@/slice/fetch';
 

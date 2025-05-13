@@ -50,15 +50,6 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
   const displayAddLog = useSelector(
     (state: RootState) => state.display.displayAddLogWindow
   );
-  const displayGardenLogs = useSelector(
-    (state: RootState) => state.display.displayGardenLogPopup
-  );
-  const displayParcelLogs = useSelector(
-    (state: RootState) => state.display.displayParcelLogPopup
-  );
-  const displayNurseryLogs = useSelector(
-    (state: RootState) => state.display.displayNurseryLogPopup
-  );
 
   //Hooks
   const dispatch = useDispatch();

@@ -70,6 +70,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
 
   const [radius, setRadius] = useState<number>(5);
   const [distance, setDistance] = useState<number | null>(null);
+  console.log(distance);
 
   useEffect(() => {}, [translations]);
 
