@@ -111,7 +111,7 @@ const CreateGardenForm = () => {
 
   return (
     <>
-      <Card className="bg-cardbackground h-full max-w-screen px-8 pt-5 pb-10">
+      <Card className="bg-cardbackground h-full min-h-screen max-w-screen px-8 pt-5 pb-10">
         <h1 className="mb-5 text-center text-4xl">
           {translations.gardenCreator}
         </h1>

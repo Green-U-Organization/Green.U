@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { FC, useState, useMemo } from 'react';
-import Card from '../Atom/Card';
 import H2 from '../Atom/H2';
 import {
-  useCreateLogQuery,
   useGetAllLogsByCropIdQuery,
   useGetAllLogsByGardenIdQuery,
   useGetAllLogsByGreenhouseIdQuery,

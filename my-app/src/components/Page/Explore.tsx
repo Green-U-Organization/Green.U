@@ -187,7 +187,7 @@ const Explore = () => {
   };
 
   return (
-    <Card className="bg-cardbackground flex h-screen w-full flex-col px-5 pt-5 pb-5">
+    <Card className="bg-cardbackground flex h-screen min-h-screen w-full flex-col px-5 pt-5 pb-5">
       {/* Partie supérieure fixe (formulaire) */}
       <div className="flex-shrink-0">
         <p>The most used tags:</p>
