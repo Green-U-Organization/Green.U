@@ -20,9 +20,6 @@ const Add_Log_Window: FC<AddLogWindow> = ({ id, logObject, userId }) => {
   const [comment, setComment] = useState<string>('');
 
   //Selectors
-  const displayAddLog = useSelector(
-    (state: RootState) => state.display.displayAddLogWindow
-  );
 
   //Hooks
   const dispatch = useDispatch();
@@ -154,6 +151,7 @@ const Add_Log_Window: FC<AddLogWindow> = ({ id, logObject, userId }) => {
         </label>
         <textarea
           onChange={(e) => setComment(e.target.value)}
+          rows={3}
           name="comment"
           id="comment"
           placeholder="You can add some details about what you did..."

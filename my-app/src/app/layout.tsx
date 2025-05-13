@@ -4,6 +4,7 @@ import './globals.css';
 import ThemeApp from '@/components/ThemeApp';
 import { LanguageProvider } from '@/app/contexts/LanguageProvider';
 import { StoreProvider } from '@/redux/StoreProvider';
+import BugReport from '@/components/Atom/BugReport';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -39,15 +40,9 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
         >
           <LanguageProvider>
+            <BugReport />
             {/* <Navbar /> */}
-            <ThemeApp>
-              {/* <img
-                src={'/image/divers/gifs/loading.gif'}
-                alt={'Loading...'}
-                className="absolute top-45 -right-25 z-50 h-[70vh] w-[100vh] overflow-hidden object-cover opacity-5"
-              /> */}
-              {children}
-            </ThemeApp>
+            <ThemeApp>{children}</ThemeApp>
           </LanguageProvider>
         </body>
       </html>

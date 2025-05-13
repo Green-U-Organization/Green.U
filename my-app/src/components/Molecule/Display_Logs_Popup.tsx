@@ -170,12 +170,6 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
         <div className="flex items-center justify-around">
           <Button
             className="bg-bgbutton relative m-5 px-6"
-            onClick={handleClickAddButton}
-          >
-            Add
-          </Button>
-          <Button
-            className="bg-bgbutton relative m-5 px-6"
             onClick={() =>
               dispatch(
                 setDisplayGardenLogPopup({
@@ -217,6 +211,12 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
           >
             Back
           </Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6"
+            onClick={handleClickAddButton}
+          >
+            Add
+          </Button>
         </div>
         <div
           // className={` ${logObject === 'garden' ? 'w-[68vw]' : 'w-full'} overflow-auto`}
@@ -257,9 +257,9 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
                 </th>
                 <th
                   className="cursor-pointer border-1 p-1 text-lg hover:bg-gray-100"
-                  onClick={() => requestSort('userName')}
+                  onClick={() => requestSort('username')}
                 >
-                  Author{getSortIndicator('userName')}
+                  Author{getSortIndicator('username')}
                 </th>
               </tr>
             </thead>
