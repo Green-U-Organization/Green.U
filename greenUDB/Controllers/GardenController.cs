@@ -266,7 +266,7 @@ namespace GreenUApi.Controllers
             Log log = new()
             {
                 GardenId = garden.Id,
-                Action = "Create garden",
+                Action = $"Create the {garden.Name}",
                 Type = "Automatic",
             };
 
@@ -291,9 +291,15 @@ namespace GreenUApi.Controllers
                 .Where(p => p.GardenId == id)
                 .ToListAsync();
 
+            int parcelCount = 0;
+            int lineCount = 0;
+            int cropCount = 0;
+            int nurseryCount = 0;
+
             // Need to check that if is a good practice i'm not sure... ^^"
             foreach(var parcel in allParcel)
             {
+                parcelCount++;
                 var parcelId = parcel.Id;
 
                 var lines = await _db.Lines
@@ -302,11 +308,13 @@ namespace GreenUApi.Controllers
 
                 foreach (var line in lines)
                 {
+                    lineCount++;
                     var crops = await _db.Crops
                         .Where(c => c.LineId == line.Id)
                         .ToListAsync();
                     foreach (var crop in crops)
                     {
+                        cropCount++;
                         crop.LineId = null;
                     }
                     _db.Lines.Remove(line);
@@ -322,6 +330,7 @@ namespace GreenUApi.Controllers
             {
                 foreach (var plantnursery in  plantNurserys)
                 {
+                    nurseryCount++;
                     _db.Remove(plantnursery);
                 }
             }
@@ -332,7 +341,7 @@ namespace GreenUApi.Controllers
             Log log = new()
             {
                 GardenId = garden.Id,
-                Action = "Delete garden",
+                Action = $"Delete garden. Delted Parcel : {parcelCount}, Line : {lineCount}, Crop : {cropCount}, Plant Nursery: {nurseryCount}",
                 Type = "Automatic",
             };
 

@@ -94,6 +94,16 @@ namespace GreenUApi.Controllers
             if (!gardenExist) return BadRequest(new { isEmpty = true, message = "The specified garden does not exist" });
 
             _db.PlantNursery.Add(plantNursery);
+
+            Log log = new()
+            {
+                GardenId = plantNursery.GardenId,
+                Action = $"Create the {plantNursery.Name} plant nursery with type {plantNursery.Type}",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "A new nursery is created!", content = plantNursery });
@@ -110,13 +120,26 @@ namespace GreenUApi.Controllers
                 .Where(c => c.PlantNurseryId == id)
                 .ToList();
 
+            int cropCount = 0; 
+
             foreach (var crop in crops)
             {
+                cropCount++;
                 crop.PlantNurseryId = null;
             };
 
 
             _db.PlantNursery.Remove(plantNursery);
+
+            Log log = new()
+            {
+                GardenId = plantNursery.GardenId,
+                Action = $"Delete the {plantNursery.Name} plant nursery with type {plantNursery.Type} and delete {cropCount} crops.",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
             await _db.SaveChangesAsync();
 
             return Ok(new { isEmpty = false, message = "This plant nursery are deleted", content = plantNursery});
