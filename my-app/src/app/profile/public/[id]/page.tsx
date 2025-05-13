@@ -7,8 +7,8 @@ type Profile = {
   };
 };
 
-const page: FC<Profile> = (id) => {
-  const userId = Number(id.params.id);
+const page: FC<Profile> = async id => {
+  const userId = Number((await id.params).id);
   return <PublicProfile userId={userId} />;
 };
 
