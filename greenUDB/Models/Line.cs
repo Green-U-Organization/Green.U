@@ -23,5 +23,7 @@ public partial class Line
 
     public virtual ICollection<Crop> Crops { get; set; } = new List<Crop>();
 
+    public virtual Garden? Gardens { get; set; }
+
     public virtual Parcel? Parcel { get; set; }
 }

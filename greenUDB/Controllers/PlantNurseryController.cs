@@ -106,6 +106,16 @@ namespace GreenUApi.Controllers
 
             if (plantNursery == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect !"});
 
+            var crops = _db.Crops
+                .Where(c => c.PlantNurseryId == id)
+                .ToList();
+
+            foreach (var crop in crops)
+            {
+                crop.PlantNurseryId = null;
+            };
+
+
             _db.PlantNursery.Remove(plantNursery);
             await _db.SaveChangesAsync();
 

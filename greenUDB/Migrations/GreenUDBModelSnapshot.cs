@@ -24,6 +24,42 @@ namespace GreenUApi.Migrations
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4");
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("GreenUApi.Models.BugReport", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AuthorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Where")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BugReports");
+                });
+
             modelBuilder.Entity("GreenUApi.Models.Contributor", b =>
                 {
                     b.Property<long>("Id")
@@ -251,6 +287,8 @@ namespace GreenUApi.Migrations
                     b.HasKey("Id")
                         .HasName("PRIMARY");
 
+                    b.HasIndex("GardenId");
+
                     b.HasIndex("PLantNurseryId");
 
                     b.HasIndex(new[] { "ParcelId" }, "fk_Line_Parcel_id");
@@ -307,6 +345,9 @@ namespace GreenUApi.Migrations
 
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
@@ -377,6 +418,8 @@ namespace GreenUApi.Migrations
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
+
+                    b.HasIndex("GardenId");
 
                     b.ToTable("PlantNursery", (string)null);
                 });
@@ -553,6 +596,10 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Line", b =>
                 {
+                    b.HasOne("GreenUApi.Models.Garden", "Gardens")
+                        .WithMany()
+                        .HasForeignKey("GardenId");
+
                     b.HasOne("GreenUApi.Models.PlantNursery", null)
                         .WithMany("Lines")
                         .HasForeignKey("PLantNurseryId");
@@ -561,6 +608,8 @@ namespace GreenUApi.Migrations
                         .WithMany("Lines")
                         .HasForeignKey("ParcelId")
                         .HasConstraintName("fk_Line_Parcel_id");
+
+                    b.Navigation("Gardens");
 
                     b.Navigation("Parcel");
                 });
@@ -580,6 +629,15 @@ namespace GreenUApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_Parcel_Garden_id");
+
+                    b.Navigation("Garden");
+                });
+
+            modelBuilder.Entity("GreenUApi.Models.PlantNursery", b =>
+                {
+                    b.HasOne("GreenUApi.Models.Garden", "Garden")
+                        .WithMany("PlantNurseries")
+                        .HasForeignKey("GardenId");
 
                     b.Navigation("Garden");
                 });
@@ -608,6 +666,8 @@ namespace GreenUApi.Migrations
                     b.Navigation("Followers");
 
                     b.Navigation("Parcels");
+
+                    b.Navigation("PlantNurseries");
 
                     b.Navigation("TagsInterests");
                 });

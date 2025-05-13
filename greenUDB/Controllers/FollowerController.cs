@@ -126,15 +126,15 @@ namespace GreenUApi.Controllers
             var Follow = await _db.Followers
                    .Where(f => f.GardenId == id)
                    .Join(
-               _db.Users,
-               follower => follower.FollowerId,
-               user => user.Id,
-               (follower, user) => new
-               {
-                   follower.FollowerId,
-                   user.Username,
-               }
-               )
+                   _db.Users,
+                   follower => follower.FollowerId,
+                   user => user.Id,
+                   (follower, user) => new
+                   {
+                       follower.FollowerId,
+                       user.Username,
+                   }
+                   )
                    .ToListAsync();
 
             if (Follow.Count == 0) return NotFound(new { isEmpty = true, message = "This garden didn't have follower" });

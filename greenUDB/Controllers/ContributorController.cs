@@ -31,7 +31,7 @@ namespace GreenUApi.Controllers
                 .AnyAsync();
 
             if (ContributorExist) return BadRequest(new { isEmpty = true, message = "This contributor is already exist" });
-
+            
             bool UserExist = await _db.Users
                 .Where(u => u.Id == contributor.UserId)
                 .AnyAsync();
@@ -46,7 +46,7 @@ namespace GreenUApi.Controllers
 
             _db.Add(contributor);
             await _db.SaveChangesAsync();
-            return Ok(new { isEmpty = false, message = "New contributor is created !", content = contributor });
+            return Ok(new { isEmpty = false, message = "New contributor is created !", content = contributor});
 
         }
 
@@ -114,7 +114,9 @@ namespace GreenUApi.Controllers
                     (contributor, user) => new
                     {
                         user.Id,
-                        user.Username
+                        user.Username,
+                        contributor.Admin,
+                        contributorId = contributor.Id
                     })
                 .ToListAsync();
 
@@ -143,7 +145,8 @@ namespace GreenUApi.Controllers
                     {
                         garden.Id,
                         garden.Name,
-                        garden.Description
+                        garden.Description,
+                        contributorId = contributor.Id
                     })
                 .ToListAsync();
 
