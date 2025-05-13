@@ -987,4 +987,9 @@ export const {
   useGetAllLogsByParcelIdQuery,
   useGetPopularTagsQuery,
   useCreateLogQuery,
+  useLazyGetAllGardensByTagQuery,
+  useLazyGetAllUsersByTagQuery,
+  useLazyGetGardenFullByIdQuery,
+  useLazyGetGardensByNameQuery,
+  useLazyGetUserByUsernameQuery,
 } = extendedGardenAPI;

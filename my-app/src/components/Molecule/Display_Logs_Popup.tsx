@@ -36,6 +36,9 @@ type DisplayLog = {
 const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
   let logs, isLoading;
 
+  //Variables locales
+  const [action, setAction] = useState<string>('weeding');
+
   //USER info
   const userData = Cookies.get('user_data');
   const userCookie = userData ? JSON.parse(userData) : null;
@@ -192,15 +195,20 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
         >
           <SlimCard>
             <form action="">
-              <select name="" id="">
-                <option value="Weeding"></option>
-                <option value="Sowing"></option>
-                <option value="Planting"></option>
-                <option value="Watering"></option>
-                <option value="Tuteuring"></option>
-                <option value="Other"></option>
+              <label htmlFor="action">Action : </label>
+              <select name="action" id="action" onChange={(export const first = (second) => {third}) => setAction(e.target.value)}>
+                <option value="weeding">Weeding</option>
+                <option value="sowing">Sowing</option>
+                <option value="planting">Planting</option>
+                <option value="watering">Watering</option>
+                <option value="tutoring">Tutoring</option>
+                <option value="amending">Amending</option>
+                <option value="other">Other</option>
               </select>
-              <TextInput></TextInput>
+              <TextInput
+                style={{ display: action === ' other' ? 'block' : 'none' }}
+                placeholder="action"
+              ></TextInput>
             </form>
           </SlimCard>
         </div>
