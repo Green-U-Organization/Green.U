@@ -36,5 +36,28 @@ namespace GreenUApi.Controllers
 
             return Ok(new { isEmpty = false, message = "Bug report is created !", content = bugReport});
         }
+
+        
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<BugReport>> closeABug(long id)
+        {
+            if (id == 0) return BadRequest(new { isEmpty = true, message = "The id is needed !" });
+
+            var bug = await _db.BugReports
+                .Where(b => b.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (bug == null || bug.Status == null) return NotFound(new { isEmpty = true, message = "The id is incorrect... " });
+
+            if (bug.Status == "Closed") return Conflict(new { isEmpty = true, message = "This bug report is already closed !" });
+
+            bug.Status = "Closed";
+
+            _db.Update(bug);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "The bug is closed !", content = bug});
+        }
     }
 }
