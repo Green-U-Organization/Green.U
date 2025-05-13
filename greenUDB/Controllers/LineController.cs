@@ -101,7 +101,7 @@ namespace GreenUApi.Controllers
                 GardenId = line.GardenId,
                 ParcelId = line.ParcelId,
                 PlantNurseryId = line.PLantNurseryId,
-                Action = "Create a new line",
+                Action = $"Create a new line. length : {line.Length}",
                 Type = "Automatic",
             };
 
@@ -135,7 +135,7 @@ namespace GreenUApi.Controllers
                 LineId = line.Id,
                 ParcelId = line.ParcelId,
                 PlantNurseryId = line.PLantNurseryId,
-                Action = $"Delete a line",
+                Action = $"Delete a line. Length : {line.Length}",
                 Type = "Automatic",
             };
             _db.Add(log);
