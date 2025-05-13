@@ -36,7 +36,7 @@ namespace GreenUApi.Controllers
                 .OrderByDescending(t => t.Count)
                 .ToArrayAsync();
 
-            if (PopularTags.Length == 0) return BadRequest(new { isEmpty = true, message = "No tag..." });
+            if (PopularTags.Length == 0) return Ok(new { isEmpty = true, message = "No tag...", content = Array.Empty<object>() });
 
             return Ok(new { isEmpty = false, message = "All popular tag", content = PopularTags });
         }
@@ -59,7 +59,7 @@ namespace GreenUApi.Controllers
             _db.TagsInterests.Add(Tag);
             await _db.SaveChangesAsync();
 
-            return Ok(new { isEmpty = true, message = "User tag created !"});
+            return Ok(new { isEmpty = false, message = "User tag created !", content = Tag});
           
         }
 
@@ -105,7 +105,7 @@ namespace GreenUApi.Controllers
            .Select(t => t.Hashtag)
            .ToArrayAsync();
 
-            if (UserTags.Length == 0) return NotFound(new { message = "This user doesn't have tags" });
+            if (UserTags.Length == 0) return NotFound(new { isEmpty = true, message = "This user doesn't have tags" });
 
             return Ok(new { isEmpty = false, message = "User Tag", content = UserTags});
         }
@@ -278,7 +278,7 @@ namespace GreenUApi.Controllers
            .Select(t => t.Hashtag)
            .ToArrayAsync();
 
-            if (GardenTag.Length == 0) return NotFound(new { message = "This garden doesn't have tags" });
+            if (GardenTag.Length == 0) return NotFound(new { isEmpty = true, message = "This garden doesn't have tags" });
 
             return Ok(new { isEmpty = false, message = "Your garden tag", content = GardenTag});
         }
