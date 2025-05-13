@@ -66,7 +66,7 @@ namespace GreenUApi.Controllers
                                         .Where(g => g.AuthorId == id && !g.Deleted)
                                         .ToListAsync();
 
-            if (gardens == null || gardens.Count == 0) return NotFound(new { isEmpty = true, message = "This user didn't have garden or user doesn't exist" });
+            if (gardens == null || gardens.Count == 0) return Ok(new { isEmpty = true, message = "This user didn't have garden or user doesn't exist" });
 
             return Ok(new { isEmpty = false, message = "All garden by user ID", content = gardens});
         }
