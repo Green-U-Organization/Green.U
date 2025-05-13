@@ -2,15 +2,28 @@ import React from 'react';
 import H2 from '../Atom/H2';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-import { useCreateNurseryMutation } from '@/slice/fetch';
+import {
+  useCreateNurseryMutation,
+  useEditUserByUserIdMutation,
+  useGetUserByIdQuery,
+} from '@/slice/fetch';
 import { RootState, useDispatch, useSelector } from '@/redux/store';
 import { setAddNurseryPopup } from '@/redux/display/displaySlice';
+import XpTable from '@/utils/Xp';
+import Cookies from 'js-cookie';
 
 const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
   //Local State
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const id = Number(userCookie?.id);
+
   //RTK Queries
   const [createNewNursery] = useCreateNurseryMutation();
+  const [addXp] = useEditUserByUserIdMutation();
+  const user = useGetUserByIdQuery({ userId: id });
 
   //Hooks
   const dispatch = useDispatch();
@@ -52,7 +65,11 @@ const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
     };
 
     try {
-      createNewNursery(newNursery).unwrap();
+      await createNewNursery(newNursery).unwrap();
+      await addXp({
+        userId: id,
+        xp: (user?.data?.content?.xp ?? 0) + XpTable.addNursery,
+      });
       console.log('nursery created');
     } catch {
       console.log('error creating nursery');

@@ -12,8 +12,6 @@ const NewUserButton = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch users');
       }
-      const data = await response.json();
-      console.log('Fetched users:', data);
     } catch (error) {
       console.error('Error fetching users:', error);
     }

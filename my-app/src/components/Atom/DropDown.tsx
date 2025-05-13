@@ -21,8 +21,8 @@ const DropdownSelect = <T extends string | number>({
         className={`w-full pl-2 ${error ? 'border-txterror border' : 'bg-bginput'}`}
       >
         <option value="">{translations.selectoption}</option>
-        {options.map((option, index) => (
-          <option key={index} value={option}>
+        {options.map((option) => (
+          <option key={option} value={option}>
             {option}
           </option>
         ))}

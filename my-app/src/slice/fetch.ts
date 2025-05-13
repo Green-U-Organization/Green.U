@@ -1,4 +1,21 @@
+import { Garden, GardenFull } from '@/utils/types';
 import api from './api';
+import { Log } from '@/utils/types';
+
+// type LoginUserRequest = {
+//   email: string;
+//   password: string;
+// };
+
+// type LoginUserResponse = {
+//   isEmpty: string;
+//   message: string;
+//   token: string;
+//   content: {
+//     id: number;
+//     username: string;
+//   };
+// };
 
 type CreateNewGardenLineRequest = {
   parcelId: number;
@@ -57,6 +74,34 @@ type CreateNewGardenRequest = {
   privacy: number;
   type: number;
   hashtags: string[];
+};
+
+type GetGardensByNameRequest = {
+  inputuser: string;
+};
+
+type GetGardensByNameErrorResponse = {
+  isEmpty: boolean;
+  message: string;
+  status?: number;
+};
+
+type GetGardensByNameSuccessResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    authorId: number;
+    name: string;
+    description: string;
+    latitude: number;
+    longitude: number;
+    length: number;
+    width: number;
+    privacy: number;
+    type: number;
+    hashtags: [];
+  }[];
 };
 
 type GetAllParcelByGardenIdRequest = {
@@ -145,6 +190,12 @@ type CreateCropToNurseryRequest = {
   distance_plantation: number;
 };
 
+type PatchCropRequest = {
+  cropId?: number;
+  lineId?: number;
+  plantNurseryId?: number;
+};
+
 type GetCropByLineIdResponse = {
   isEmpty: boolean;
   message: string;
@@ -226,9 +277,201 @@ type RegisterUserRequest = {
   skill_level: number;
 };
 
+type RegisterUserResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    username: string;
+  };
+};
+
 type CreateTagsListByUserRequest = {
   userId: number;
   hashtags: string[];
+};
+
+type GetTagsByUserIdRequest = {
+  userId: number;
+};
+
+type GetTagsByUserIdResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: string[];
+};
+
+type DeleteTagByUserRequest = {
+  hashtag: string;
+};
+
+type GetAllUsersByTagRequest = {
+  hashtags: string[];
+};
+
+type GetAllUsersByTagErrorResponse = {
+  isEmpty: boolean;
+  message: string;
+  status?: number;
+};
+
+type GetAllUsersByTagSuccessResponse = {
+  isEmpty: boolean;
+  message: string;
+  content?: {
+    id: number;
+    username: string;
+    xp: number;
+    country: string;
+    bio: string;
+    skill_level?: number;
+    matchingTagsCount?: number;
+    tagsInterests?: {
+      id: number;
+      userId: number;
+      hashtag: string;
+      created_at: Date;
+    }[];
+  }[];
+};
+
+type GetAllGardensByTagRequest = {
+  hashtags: string[];
+};
+
+type GetAllGardensByTagResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    name: string;
+    description: string;
+    type: number;
+    privacy: number;
+    tagsInterests: {
+      id: number;
+      userId: number;
+      gardenId: number;
+      hashtag: string;
+      created_at: Date;
+    }[];
+  }[];
+};
+
+type GetPopularTagsResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: [{ tag: string; count: number }];
+};
+
+type GetUserByIdResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    username: string;
+    password: string;
+    salt: string;
+    isAdmin: boolean;
+    firstname: string;
+    lastname: string;
+    email: string;
+    bio: string;
+    country: string;
+    gender: string;
+    birthday: string;
+    skill_level: number;
+    xp: number;
+    newsletter: boolean;
+    tou: boolean;
+    deleted: boolean;
+    createdAt: string;
+    contributors: string[];
+    followerUsers: string[];
+    gardens: Garden[];
+    logs: string[];
+    tagsInterests: string[];
+  };
+};
+
+type GetUserByUsernameRequest = {
+  username: string;
+};
+
+type GetUserByUsernameErrorResponse = {
+  // value: any;
+  isEmpty: boolean;
+  message: string;
+  status?: number;
+};
+
+type GetUserByUsernameSuccessResponse = {
+  // value: any;
+  isEmpty: boolean;
+  message: string;
+  content: {
+    id: number;
+    username: string;
+    xp: number;
+    country: string;
+    bio: string;
+    tagsInterests: {
+      id: number;
+      userId: number;
+      hashtag: string;
+      created_at: Date;
+    }[];
+  }[];
+};
+
+type editUserByUserIdRequest = {
+  userId: number;
+  username?: string;
+  password?: string;
+  isAdmin?: boolean;
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  bio?: string;
+  country?: string;
+  gender?: string;
+  birthday?: string;
+  skill_level?: number;
+  xp?: number;
+  newsletter?: boolean;
+  deleted?: boolean;
+};
+
+type GetUserByIdRequest = {
+  userId: number;
+};
+
+type GetAllLogsResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: Log[];
+};
+
+type GetAllLogsRequest = {
+  id?: number;
+};
+
+type GetGardenFullByIdResponse = GardenFull;
+
+type GetGardenFullByIdRequest = {
+  id: number;
+};
+
+type createLogRequest = {
+  id: number;
+  gardenId?: number;
+  parcelId?: number;
+  nurseryId?: number;
+  greenhouseId?: number;
+  lineId?: number;
+  cropId?: number;
+  action: string;
+  comment: string;
 };
 
 export const extendedGardenAPI = api
@@ -239,8 +482,10 @@ export const extendedGardenAPI = api
       'garden-gardens',
       'garden-crops',
       'garden-nursery',
-      'connection - login',
+      'connection-login',
       'tags-user',
+      'tags-userInterest',
+      'tags-logs',
     ],
   })
   .injectEndpoints({
@@ -252,7 +497,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-lines'],
+        invalidatesTags: ['garden-lines', 'tags-logs'],
       }),
 
       //GelAllLineByParcelId >> OK
@@ -277,7 +522,7 @@ export const extendedGardenAPI = api
           method: 'DELETE',
           body: arg,
         }),
-        invalidatesTags: ['garden-lines'],
+        invalidatesTags: ['garden-lines', 'tags-logs'],
       }),
 
       //EditLine >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -289,7 +534,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels'],
+        invalidatesTags: ['garden-parcels', 'tags-logs'],
       }),
 
       //GetAllParcelByGardenId >> OK
@@ -304,6 +549,28 @@ export const extendedGardenAPI = api
         providesTags: ['garden-parcels'],
       }),
 
+      //GetGardensByName
+      GetGardensByName: builder.query<
+        GetGardensByNameSuccessResponse,
+        GetGardensByNameRequest
+      >({
+        query: (arg) => ({
+          url: `/garden/search?inputuser=${arg.inputuser}`,
+          method: 'GET',
+        }),
+        transformErrorResponse: (response: {
+          status: number;
+          data?: GetGardensByNameErrorResponse;
+        }) => {
+          return {
+            isEmpty: response.data?.isEmpty ?? true,
+            message:
+              response.data?.message || 'Error fetching user by username',
+            status: response.status,
+          };
+        },
+      }),
+
       //DeleteParcel >> OK
       DeleteOneParcelByParcelId: builder.mutation<
         void,
@@ -314,7 +581,7 @@ export const extendedGardenAPI = api
           method: 'DELETE',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels'],
+        invalidatesTags: ['garden-parcels', 'tags-logs'],
       }),
 
       //EditParcel >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -324,7 +591,7 @@ export const extendedGardenAPI = api
           method: 'PATCH',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels'],
+        invalidatesTags: ['garden-parcels', 'tags-logs'],
       }),
 
       //CreateNewGarden >> OK
@@ -334,7 +601,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-gardens'],
+        invalidatesTags: ['garden-gardens', 'tags-logs'],
       }),
 
       //GetAllGardeByUserId >> OK
@@ -361,8 +628,6 @@ export const extendedGardenAPI = api
         providesTags: ['garden-gardens'],
       }),
 
-      //GetAllGardenByTags >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
       //EditGarden >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
       //CreateCropToLine >> OK
@@ -372,7 +637,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-crops'],
+        invalidatesTags: ['garden-crops', 'tags-logs'],
       }),
 
       //CreateCropToNursery >> OK + TO IMPLEMENT
@@ -382,7 +647,17 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-crops'],
+        invalidatesTags: ['garden-crops', 'tags-logs'],
+      }),
+
+      //PatchCrop >>
+      patchCrop: builder.mutation<void, PatchCropRequest>({
+        query: (arg) => ({
+          url: `/crops/${arg.cropId}`,
+          method: 'PATCH',
+          body: arg,
+        }),
+        invalidatesTags: ['garden-crops', 'tags-logs'],
       }),
 
       //EditCropByCropId >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -420,7 +695,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-nursery'],
+        invalidatesTags: ['garden-nursery', 'tags-logs'],
       }),
 
       //GetNurseryByGardenId >> OK
@@ -447,10 +722,10 @@ export const extendedGardenAPI = api
           method: 'DELETE',
           body: arg,
         }),
-        invalidatesTags: ['garden-nursery'],
+        invalidatesTags: ['garden-nursery', 'tags-logs'],
       }),
 
-      // // USER CONNECTION
+      // USER CONNECTION
       // loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
       //   query: (arg) => ({
       //     url: `/login`,
@@ -458,13 +733,16 @@ export const extendedGardenAPI = api
       //     body: arg,
       //   }),
       // }),
-      registerUser: builder.mutation<void, RegisterUserRequest>({
-        query: (arg) => ({
-          url: `/user`,
-          method: 'POST',
-          body: arg,
-        }),
-      }),
+
+      registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>(
+        {
+          query: (arg) => ({
+            url: `/user`,
+            method: 'POST',
+            body: arg,
+          }),
+        }
+      ),
 
       //CreateTagsListByUser >>
       createTagsListByUser: builder.mutation<void, CreateTagsListByUserRequest>(
@@ -477,7 +755,201 @@ export const extendedGardenAPI = api
           invalidatesTags: ['tags-user'],
         }
       ),
+
+      //GetTagsByUser >>
+      getTagsByUser: builder.query<
+        GetTagsByUserIdResponse,
+        GetTagsByUserIdRequest
+      >({
+        query: (arg) => ({
+          url: `/tags/user/${arg.userId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-userInterest'],
+      }),
+
+      //deleteTagByUser >>
+      deleteTagByUser: builder.mutation<void, DeleteTagByUserRequest>({
+        query: (arg) => ({
+          url: `/tags/user/${arg.hashtag}`,
+          method: 'DELETE',
+          body: arg,
+        }),
+        invalidatesTags: ['tags-user'],
+      }),
+
+      //getAllUsersByTag >>
+      getAllUsersByTag: builder.query<
+        GetAllUsersByTagSuccessResponse, // Type de succès
+        GetAllUsersByTagRequest
+      >({
+        query: (arg) => ({
+          url: `/tags/allusers`,
+          method: 'POST',
+          body: arg,
+        }),
+        transformErrorResponse: (response: {
+          status: number;
+          data?: GetAllUsersByTagErrorResponse;
+        }) => {
+          return {
+            isEmpty: response.data?.isEmpty ?? true,
+            message: response.data?.message || 'Error fetching users by tag',
+            status: response.status,
+          };
+        },
+      }),
+
+      //getAllGardensByTag >>
+      getAllGardensByTag: builder.query<
+        GetAllGardensByTagResponse,
+        GetAllGardensByTagRequest
+      >({
+        query: (arg) => ({
+          url: `/tags/allgardens`,
+          method: 'POST',
+          body: arg,
+        }),
+      }),
+
+      //getPopularTags >>
+      getPopularTags: builder.query<GetPopularTagsResponse, void>({
+        query: () => ({
+          url: `/tags/popular`,
+          method: 'GET',
+        }),
+      }),
+
+      //GetUserById
+      getUserById: builder.query<GetUserByIdResponse, GetUserByIdRequest>({
+        query: (arg) => ({
+          url: `/user/${arg.userId}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-user'],
+      }),
+
+      //EditUserByUserId
+      editUserByUserId: builder.mutation<void, editUserByUserIdRequest>({
+        query: (arg) => ({
+          url: `user/${arg.userId}`,
+          method: 'PATCH',
+          body: arg,
+        }),
+      }),
+
+      //GetUserByUsername
+      getUserByUsername: builder.query<
+        GetUserByUsernameSuccessResponse,
+        GetUserByUsernameRequest
+      >({
+        query: (arg) => ({
+          url: `user/search?inputuser=${arg.username}`,
+          method: 'GET',
+        }),
+        transformErrorResponse: (response: {
+          status: number;
+          data?: GetUserByUsernameErrorResponse;
+        }) => {
+          return {
+            isEmpty: response.data?.isEmpty ?? true,
+            message:
+              response.data?.message || 'Error fetching user by username',
+            status: response.status,
+          };
+        },
+      }),
+
+      // logs
+      //GetAllLogsByGardenId
+      getAllLogsByGardenId: builder.query<
+        GetAllLogsResponse,
+        GetAllLogsRequest
+      >({
+        query: (arg) => ({
+          url: `/log/garden/${arg.id}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLosByParcelId
+      getAllLogsByParcelId: builder.query<
+        GetAllLogsResponse,
+        GetAllLogsRequest
+      >({
+        query: (arg) => ({
+          url: `/log/parcel/${arg.id}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLogsByLineId
+      getAllLogsByLineId: builder.query<GetAllLogsResponse, GetAllLogsRequest>({
+        query: (arg) => ({
+          url: `/log/line/${arg.id}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLogByCropId
+      getAllLogsByCropId: builder.query<GetAllLogsResponse, GetAllLogsRequest>({
+        query: (arg) => ({
+          url: `/log/crop/${arg.id}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLogsByNurseryId
+      getAllLogsByNurseryId: builder.query<
+        GetAllLogsResponse,
+        GetAllLogsRequest
+      >({
+        query: (arg) => ({
+          url: `/log/nursery/${arg.id}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //GetAllLogsByGreenhouseId
+      getAllLogsByGreenhouseId: builder.query<
+        GetAllLogsResponse,
+        GetAllLogsRequest
+      >({
+        query: (arg) => ({
+          url: `/log/greenhouse/${arg.id}`,
+          method: 'GET',
+        }),
+        providesTags: ['tags-logs'],
+      }),
+      //CreateLog
+      createLog: builder.mutation<void, createLogRequest>({
+        query: (arg) => ({
+          url: `/log/user/${arg.id}`,
+          method: 'POST',
+          body: arg,
+        }),
+        invalidatesTags: ['tags-logs'],
+      }),
+
+      //GetGardenFullById
+      getGardenFullById: builder.query<
+        GetGardenFullByIdResponse,
+        GetGardenFullByIdRequest
+      >({
+        query: (arg) => ({
+          url: `/garden/${arg.id}`,
+          method: 'GET',
+        }),
+        providesTags: [
+          'garden-gardens',
+          'garden-parcels',
+          'garden-lines',
+          'garden-nursery',
+          'garden-crops',
+        ],
+      }),
     }),
+    overrideExisting: true,
   });
 
 export const {
@@ -501,4 +973,22 @@ export const {
   useLoginUserMutation,
   useRegisterUserMutation,
   useCreateTagsListByUserMutation,
+  useGetUserByIdQuery,
+  useEditUserByUserIdMutation,
+  useGetTagsByUserQuery,
+  usePatchCropMutation,
+  useDeleteTagByUserMutation,
+  useGetAllLogsByCropIdQuery,
+  useGetAllLogsByGardenIdQuery,
+  useGetAllLogsByGreenhouseIdQuery,
+  useGetAllLogsByLineIdQuery,
+  useGetAllLogsByNurseryIdQuery,
+  useGetAllLogsByParcelIdQuery,
+  useGetPopularTagsQuery,
+  useCreateLogMutation,
+  useLazyGetAllGardensByTagQuery,
+  useLazyGetAllUsersByTagQuery,
+  useLazyGetGardenFullByIdQuery,
+  useLazyGetGardensByNameQuery,
+  useLazyGetUserByUsernameQuery,
 } = extendedGardenAPI;

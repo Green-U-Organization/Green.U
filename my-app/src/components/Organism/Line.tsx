@@ -14,8 +14,11 @@ import {
 } from '@/slice/fetch';
 import {
   setAddCropPopup,
+  setDisplayCropLogPopup,
+  setDisplayLineLogPopup,
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
+import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 
 const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   // Local State
@@ -47,6 +50,12 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   );
   const ExistantCropPopupDisplay = useSelector(
     (state: RootState) => state.display.existantCropPopup
+  );
+  const displayLineLogPopup = useSelector(
+    (state: RootState) => state.display.displayLineLogPopup
+  );
+  const displayCropLogPopup = useSelector(
+    (state: RootState) => state.display.displayCropLogPopup
   );
   const id = useSelector((state: RootState) => state.display.id);
 
@@ -160,9 +169,11 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   //Modal Closing
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
       if (
         cropPopupRef.current &&
-        !cropPopupRef.current.contains(event.target as Node)
+        !cropPopupRef.current.contains(target) &&
+        !target.closest('[data-modal]')
       ) {
         dispatch(
           setAddCropPopup({
@@ -184,9 +195,12 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+
       if (
         existantPopupRef.current &&
-        !existantPopupRef.current.contains(event.target as Node)
+        !existantPopupRef.current.contains(target) &&
+        !target.closest('[data-modal]')
       ) {
         dispatch(
           setExistantCropPopup({
@@ -257,9 +271,27 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
       >
         <div className="flex items-center justify-between">
           <H2>Line {lineIndex}</H2>
-          {crops?.content[0]?.icon && crops.content[0].icon !== '' && (
-            <img src={crops.content[0].icon} alt="" />
-          )}
+
+          {
+            <img
+              src={
+                crops?.content[0].icon === ''
+                  ? '/image/icons/info.png'
+                  : crops?.content[0].icon
+              }
+              className="w-[6vw]"
+              alt=""
+              onClick={() =>
+                dispatch(
+                  setDisplayCropLogPopup({
+                    state: !displayCropLogPopup,
+                    id: Number(crops?.content[0].id),
+                  })
+                )
+              }
+            />
+          }
+
           <div className="mr-[5vw] flex">
             <img
               className="mx-[3vw]"
@@ -288,6 +320,14 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
                 width: '5vw',
                 height: '5vw',
               }}
+              onClick={() =>
+                dispatch(
+                  setDisplayLineLogPopup({
+                    state: !displayLineLogPopup,
+                    id: Number(line.id),
+                  })
+                )
+              }
             />
             <img
               className="mx-[3vw]"
@@ -304,6 +344,22 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
       </div>
 
       {/* POPUP */}
+      {/* Log Popup */}
+      <div
+        style={{
+          display:
+            displayCropLogPopup && id === crops?.content[0].id
+              ? 'block'
+              : 'none',
+        }}
+      >
+        <Display_Logs_Popup
+          id={crops?.content[0].id}
+          display={displayCropLogPopup}
+          logObject={'crop'}
+        />
+      </div>
+
       <div
         style={{
           display: displayDeletingLinePopup ? 'block' : 'none',
@@ -316,6 +372,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
         />
       </div>
 
+      {/* Add Crop Popup */}
       <div
         ref={cropPopupRef}
         style={{
@@ -324,10 +381,12 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
               ? 'block'
               : 'none',
         }}
+        data-modal
       >
         <AddCropPopup lineId={line.id} />
       </div>
 
+      {/* Exist Crop Popup */}
       <div
         ref={existantPopupRef}
         style={{
@@ -336,8 +395,22 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
               ? 'block'
               : 'none',
         }}
+        data-modal
       >
         <ExistentCropPopup lineId={line.id} />
+      </div>
+
+      {/* Log Popup */}
+      <div
+        style={{
+          display: displayLineLogPopup && id === line.id ? 'block' : 'none',
+        }}
+      >
+        <Display_Logs_Popup
+          id={line.id}
+          display={displayLineLogPopup}
+          logObject={'line'}
+        />
       </div>
     </>
   );

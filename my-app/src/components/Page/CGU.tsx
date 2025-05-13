@@ -18,7 +18,7 @@ const CGU = () => {
   };
 
   return (
-    <Card className="bg-cardbackground mx-auto max-w-4xl p-6">
+    <Card className="bg-cardbackground mx-auto min-h-screen max-w-4xl p-6">
       <h1 className="text-shadow mb-4 text-3xl font-bold">
         {translations.cgutitle}
       </h1>

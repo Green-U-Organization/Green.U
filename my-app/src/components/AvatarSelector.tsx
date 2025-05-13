@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Card from '@/components/Atom/Card';
 import Button from '@/components/Atom/Button';
 import { useLanguage } from '../app/contexts/LanguageProvider';
-import AvatarUpload from './AvatarUpload';
+// import AvatarUpload from './AvatarUpload';
 //import { useState } from "react";
 
 const avatars = [
@@ -92,7 +92,7 @@ function AvatarSelector({ onSelect, isOpen, onClose }: AvatarSelectorProps) {
           ))}
         </div>
 
-        <AvatarUpload />
+        {/* <AvatarUpload /> */}
 
         <div className="sticky flex justify-center">
           <Button

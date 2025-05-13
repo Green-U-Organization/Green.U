@@ -11,14 +11,13 @@ const TodoDisplay = () => {
   const [edit, setEdit] = useState(false);
 
   const addTask = () => {
-    console.log('add task');
+    // console.log('add task');
   };
 
   //Sorting des Todos
   //https://www.javascripttutorial.net/array/javascript-sort-an-array-of-objects/
   const handleProcess = (e: { target: { value: unknown } }) => {
     const tempData = [...data.todos];
-    console.log(e.target.value);
     switch (e.target.value) {
       case 'nameAsc':
         tempData.sort((a, b) => a.content.localeCompare(b.content));
@@ -57,9 +56,7 @@ const TodoDisplay = () => {
         break;
     }
   };
-  useEffect(() => {
-    console.log('yolo');
-  }, [processedData]);
+  useEffect(() => {}, [processedData]);
 
   const handleStatusChange = (id: string, newStatus: number) => {
     const updatedData = processedData.map((todo) =>

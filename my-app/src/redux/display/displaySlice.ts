@@ -11,11 +11,19 @@ type displayState = {
   editParcelPopup: boolean;
   editGardenPopup: boolean;
   editLinePopup: boolean;
+  displayGardenLogPopup: boolean;
+  displayParcelLogPopup: boolean;
+  displayLineLogPopup: boolean;
+  displayCropLogPopup: boolean;
+  displayNurseryLogPopup: boolean;
+  displayGreenhouseLogPopup: boolean;
+  displayAddLogWindow: boolean;
+  displayBugReportPopup: boolean;
 };
 
 type payloadType = {
   state: boolean;
-  id: number;
+  id?: number;
 };
 
 const initialState: displayState = {
@@ -29,6 +37,14 @@ const initialState: displayState = {
   editParcelPopup: false,
   editGardenPopup: false,
   editLinePopup: false,
+  displayGardenLogPopup: false,
+  displayParcelLogPopup: false,
+  displayLineLogPopup: false,
+  displayCropLogPopup: false,
+  displayNurseryLogPopup: false,
+  displayGreenhouseLogPopup: false,
+  displayAddLogWindow: false,
+  displayBugReportPopup: false,
 };
 
 const displaySlice = createSlice({
@@ -37,39 +53,74 @@ const displaySlice = createSlice({
   reducers: {
     setAddCropNurseryPopup: (state, action: PayloadAction<payloadType>) => {
       state.addCropNurseryPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setAddCropPopup: (state, action: PayloadAction<payloadType>) => {
       state.addCropPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setAddGreenhousePopup: (state, action: PayloadAction<payloadType>) => {
       state.addGreenhousePopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setAddNurseryPopup: (state, action: PayloadAction<payloadType>) => {
       state.addNurseryPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setAddParcelPopup: (state, action: PayloadAction<payloadType>) => {
       state.addParcelPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setExistantCropPopup: (state, action: PayloadAction<payloadType>) => {
       state.existantCropPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setEditParcelPopup: (state, action: PayloadAction<payloadType>) => {
       state.editParcelPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setEditGardenPopup: (state, action: PayloadAction<payloadType>) => {
       state.editGardenPopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
     },
     setEditLinePopup: (state, action: PayloadAction<payloadType>) => {
       state.editLinePopup = action.payload.state;
-      state.id = action.payload.id;
+      state.id = action.payload.id ?? 0;
+    },
+    setDisplayGardenLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayGardenLogPopup = action.payload.state;
+      state.id = action.payload.id ?? 0;
+    },
+    setDisplayParcelLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayParcelLogPopup = action.payload.state;
+      state.id = action.payload.id ?? 0;
+    },
+    setDisplayLineLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayLineLogPopup = action.payload.state;
+      state.id = action.payload.id ?? 0;
+    },
+    setDisplayCropLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayCropLogPopup = action.payload.state;
+      state.id = action.payload.id ?? 0;
+    },
+    setDisplayNurseryLogPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayNurseryLogPopup = action.payload.state;
+      state.id = action.payload.id ?? 0;
+    },
+    setDisplayGreenhouseLogPopup: (
+      state,
+      action: PayloadAction<payloadType>
+    ) => {
+      state.displayGreenhouseLogPopup = action.payload.state;
+      state.id = action.payload.id ?? 0;
+    },
+    setDisplayAddLogWindow: (state, action: PayloadAction<payloadType>) => {
+      state.displayAddLogWindow = action.payload.state;
+      state.id = action.payload.id ?? 0;
+    },
+    setDisplayBugReportPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayBugReportPopup = action.payload.state;
+      state.id = action.payload.id ?? 0;
     },
   },
 });
@@ -84,5 +135,13 @@ export const {
   setEditGardenPopup,
   setEditLinePopup,
   setEditParcelPopup,
+  setDisplayCropLogPopup,
+  setDisplayGardenLogPopup,
+  setDisplayGreenhouseLogPopup,
+  setDisplayLineLogPopup,
+  setDisplayNurseryLogPopup,
+  setDisplayParcelLogPopup,
+  setDisplayAddLogWindow,
+  setDisplayBugReportPopup,
 } = displaySlice.actions;
 export default displaySlice.reducer;

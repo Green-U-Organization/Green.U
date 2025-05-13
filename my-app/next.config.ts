@@ -4,15 +4,10 @@ const nextConfig: NextConfig = {
   /* config options here */
   output: 'standalone',
   experimental: {
-    allowedDevOrigins: [
-      'http://192.168.0.110:3000',
-      'http://192.168.0.122:3000',
-      'http://192.168.0.131:3000',
-      'http://192.168.228.19:3000',
-    ],
+    allowedDevOrigins: ['http://192.168.1.3'],
   },
 };
-  
+
 module.exports = {
   images: {
     remotePatterns: [

@@ -1,11 +1,4 @@
-type CropType = {
-  lineId: number;
-  vegetable: string;
-  variety: string;
-  sowing: string;
-  planting: string;
-  harvesting: string;
-};
+import { CropType } from '@/utils/types';
 
 export const addCropLine = async (crop: CropType): Promise<CropType> => {
   try {
