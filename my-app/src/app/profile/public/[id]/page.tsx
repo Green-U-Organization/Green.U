@@ -2,13 +2,14 @@ import PublicProfile from '@/components/Page/PublicProfile';
 import React, { FC } from 'react';
 
 type Profile = {
-  params: {
+  params: Promise<{
     id: number;
-  };
+  }>;
 };
 
-const page: FC<Profile> = async id => {
-  const userId = Number((await id.params).id);
+const page: FC<Profile> = async ({ params }) => {
+  const { id } = await params;
+  const userId = Number(id);
   return <PublicProfile userId={userId} />;
 };
 
