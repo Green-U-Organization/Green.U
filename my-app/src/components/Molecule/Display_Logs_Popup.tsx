@@ -16,7 +16,15 @@ import Button from '../Atom/Button';
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { setDisplayAddLogWindow } from '@/redux/display/displaySlice';
+import {
+  setDisplayAddLogWindow,
+  setDisplayGardenLogPopup,
+  setDisplayParcelLogPopup,
+  setDisplayNurseryLogPopup,
+  setDisplayGreenhouseLogPopup,
+  setDisplayCropLogPopup,
+  setDisplayLineLogPopup,
+} from '@/redux/display/displaySlice';
 import Add_Log_Window from './Add_Log_Window';
 
 type SortConfig = {
@@ -42,6 +50,15 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
   const displayAddLog = useSelector(
     (state: RootState) => state.display.displayAddLogWindow
   );
+  const displayGardenLogs = useSelector(
+    (state: RootState) => state.display.displayGardenLogPopup
+  );
+  const displayParcelLogs = useSelector(
+    (state: RootState) => state.display.displayParcelLogPopup
+  );
+  const displayNurseryLogs = useSelector(
+    (state: RootState) => state.display.displayNurseryLogPopup
+  );
 
   //Hooks
   const dispatch = useDispatch();
@@ -49,57 +66,27 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
   //Redux
   const changeDisplayAddLog = setDisplayAddLogWindow;
 
-  let query;
-
   switch (logObject) {
     case 'garden':
       ({ data: logs, isLoading } = useGetAllLogsByGardenIdQuery({ id }));
-      query = {
-        id: userId,
-        gardenId: id,
-      };
       break;
     case 'parcel':
       ({ data: logs, isLoading } = useGetAllLogsByParcelIdQuery({ id }));
-      query = {
-        id: userId,
-        parcelId: id,
-      };
       break;
     case 'line':
       ({ data: logs, isLoading } = useGetAllLogsByLineIdQuery({ id }));
-      query = {
-        id: userId,
-        lineId: id,
-      };
       break;
     case 'crop':
       ({ data: logs, isLoading } = useGetAllLogsByCropIdQuery({ id }));
-      query = {
-        id: userId,
-        cropId: id,
-      };
       break;
     case 'nursery':
       ({ data: logs, isLoading } = useGetAllLogsByNurseryIdQuery({ id }));
-      query = {
-        id: userId,
-        nurseryId: id,
-      };
       break;
     case 'greenhouse':
       ({ data: logs, isLoading } = useGetAllLogsByGreenhouseIdQuery({ id }));
-      query = {
-        id: userId,
-        greenhouseId: id,
-      };
       break;
     default:
       ({ data: logs, isLoading } = useGetAllLogsByGardenIdQuery({ id }));
-      query = {
-        id: userId,
-        gardenId: id,
-      };
       break;
   }
 
@@ -164,80 +151,134 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
   };
 
   return (
-    <section
-      style={{
-        display: display ? 'flex' : 'none',
-      }}
-      className={`${logObject === 'garden' ? 'fixed right-[8vw] bottom-[2vh] z-50 flex h-[auto] max-h-[90vh] w-[70vw]' : 'm-auto w-[80vw]'} bg-cardbackground flex-col items-center justify-between rounded-xl border-2`}
-    >
-      <div className="flex items-center justify-around">
-        <Button
-          className="bg-bgbutton relative m-5 px-6"
-          onClick={handleClickAddButton}
-        >
-          Add
-        </Button>
-        <H2>{logObject} history :</H2>
-      </div>
-      <div
-        className={` ${logObject === 'garden' ? 'w-[68vw]' : 'w-full'} overflow-auto`}
+    <>
+      {/* <div
+        style={{
+          display: display ? 'flex' : 'none',
+        }}
+        className="bg-opacity-50 fixed inset-0 isolate !z-[2147483647] flex h-screen w-screen items-center justify-center backdrop-blur-md"
+      > */}
+      <section
+        style={{
+          display: display ? 'flex' : 'none',
+        }}
+        // className="bg-cardbackground m-auto h-[auto] max-h-[90vh] w-[80vw] flex-col items-center justify-between rounded-xl border-2"
+        className={`${logObject === 'garden' ? 'fixed right-[8vw] bottom-[2vh] z-50 flex h-[auto] max-h-[90vh] w-[70vw]' : 'm-auto w-[80vw]'} bg-cardbackground flex-col items-center justify-between rounded-xl border-2`}
       >
-        <div
-          style={{
-            display: displayAddLog ? 'block' : 'none',
-          }}
-        >
-          <Add_Log_Window
-            userId={userId}
-            id={id}
-            logObject={logObject}
-          ></Add_Log_Window>
+        <H2>{logObject} history :</H2>
+        <div className="flex items-center justify-around">
+          <Button
+            className="bg-bgbutton relative m-5 px-6"
+            onClick={handleClickAddButton}
+          >
+            Add
+          </Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6"
+            onClick={() =>
+              dispatch(
+                setDisplayGardenLogPopup({
+                  state: false,
+                  id: id,
+                })
+              ) &&
+              dispatch(
+                setDisplayParcelLogPopup({
+                  state: false,
+                  id: id,
+                })
+              ) &&
+              dispatch(
+                setDisplayLineLogPopup({
+                  state: false,
+                  id: id,
+                })
+              ) &&
+              dispatch(
+                setDisplayNurseryLogPopup({
+                  state: false,
+                  id: id,
+                })
+              ) &&
+              dispatch(
+                setDisplayCropLogPopup({
+                  state: false,
+                  id: id,
+                })
+              ) &&
+              dispatch(
+                setDisplayGreenhouseLogPopup({
+                  state: false,
+                  id: id,
+                })
+              )
+            }
+          >
+            Back
+          </Button>
         </div>
+        <div
+          // className={` ${logObject === 'garden' ? 'w-[68vw]' : 'w-full'} overflow-auto`}
+          className="max-h-[70vh] w-full overflow-auto"
+        >
+          <div
+            style={{
+              display: displayAddLog ? 'block' : 'none',
+            }}
+          >
+            <Add_Log_Window
+              userId={userId}
+              id={id}
+              logObject={logObject}
+            ></Add_Log_Window>
+          </div>
 
-        <table className="min-w-full">
-          <thead>
-            <tr className="border-1">
-              <th
-                className="cursor-pointer border-1 p-1 text-lg hover:bg-gray-100"
-                onClick={() => requestSort('createdAt')}
-              >
-                Date{getSortIndicator('createdAt')}
-              </th>
-              <th
-                className="cursor-pointer border-1 p-1 text-lg hover:bg-gray-100"
-                onClick={() => requestSort('action')}
-              >
-                Action{getSortIndicator('action')}
-              </th>
-              <th
-                className="cursor-pointer border-1 p-1 text-lg hover:bg-gray-100"
-                onClick={() => requestSort('comment')}
-              >
-                Comment{getSortIndicator('comment')}
-              </th>
-              <th
-                className="cursor-pointer border-1 p-1 text-lg hover:bg-gray-100"
-                onClick={() => requestSort('userName')}
-              >
-                Author{getSortIndicator('userName')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedLogs?.map((log: Log) => (
-              <tr key={log.id} className="border-1">
-                <td className="border-1 p-1 text-lg">
-                  {formatDate(log.createdAt)}
-                </td>
-                <td className="border-1 p-1 text-lg">{log.action}</td>
-                <td className="border-1 p-1 text-lg">{log.comment}</td>
-                <td className="border-1 p-1 text-lg">{log.userName}</td>
+          <table className="min-w-full">
+            <thead>
+              <tr className="border-1">
+                <th
+                  className="cursor-pointer border-1 p-1 text-lg hover:bg-gray-100"
+                  onClick={() => requestSort('createdAt')}
+                >
+                  Date{getSortIndicator('createdAt')}
+                </th>
+                <th
+                  className="cursor-pointer border-1 p-1 text-lg hover:bg-gray-100"
+                  onClick={() => requestSort('action')}
+                >
+                  Action{getSortIndicator('action')}
+                </th>
+                <th
+                  className="cursor-pointer border-1 p-1 text-lg hover:bg-gray-100"
+                  onClick={() => requestSort('comment')}
+                >
+                  Comment{getSortIndicator('comment')}
+                </th>
+                <th
+                  className="cursor-pointer border-1 p-1 text-lg hover:bg-gray-100"
+                  onClick={() => requestSort('userName')}
+                >
+                  Author{getSortIndicator('userName')}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
+            </thead>
+            <tbody>
+              {sortedLogs?.map((log: Log) => (
+                <tr key={log.id} className="border-1">
+                  <td className="border-1 p-1 text-lg">
+                    {formatDate(log.createdAt)}
+                  </td>
+                  <td className="border-1 p-1 text-lg">{log.action}</td>
+                  <td className="border-1 p-1 text-lg">{log.comment}</td>
+                  <td className="border-1 p-1 text-lg">{log.userName}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      {/* </div> */}
+    </>
   );
 };
 
