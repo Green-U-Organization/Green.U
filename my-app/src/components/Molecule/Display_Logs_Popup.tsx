@@ -90,6 +90,7 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
       break;
   }
 
+  console.log(logs);
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: 'createdAt', // Colonne par défaut à trier
     direction: 'descending', // Ordre par défaut
@@ -270,7 +271,9 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
                   </td>
                   <td className="border-1 p-1 text-lg">{log.action}</td>
                   <td className="border-1 p-1 text-lg">{log.comment}</td>
-                  <td className="border-1 p-1 text-lg">{log.userName}</td>
+                  <td className="border-1 p-1 text-center text-lg">
+                    {log.username ? log.username : '🤖'}
+                  </td>
                 </tr>
               ))}
             </tbody>

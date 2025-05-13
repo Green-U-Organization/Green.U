@@ -268,7 +268,7 @@ export type Log = {
   action: string;
   comment?: string;
   authorId?: number;
-  userName?: string;
+  username?: string;
   type: string;
   createdAt: string;
 };
