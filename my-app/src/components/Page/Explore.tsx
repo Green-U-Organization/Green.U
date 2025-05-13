@@ -119,6 +119,17 @@ const Explore = () => {
     }
   };
 
+  // Fonction pour gérer le clic du bouton
+  const handleSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    // Crée un événement de formulaire factice pour appeler handleSubmit
+    const formEvent = {
+      preventDefault: () => {},
+      currentTarget: document.createElement('form'),
+    } as React.FormEvent<HTMLFormElement>;
+    handleSubmit(formEvent);
+  };
+
   // Fonction exécutée lors du clic sur le bouton "Search"
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -148,8 +159,8 @@ const Explore = () => {
           triggerGardensByTag(requestData),
         ]);
 
-        console.log('usersResponseByTag : ', usersResponse); //A EFFACER
-        console.log('gardenResponseByTag : ', gardensResponse); //A EFFACER
+        //console.log('usersResponseByTag : ', usersResponse); //A EFFACER
+        //console.log('gardenResponseByTag : ', gardensResponse); //A EFFACER
 
         if (usersResponse.isError || usersResponse.data?.isEmpty) {
           setSearchMessages((prev) => ({
@@ -172,12 +183,12 @@ const Explore = () => {
           username: searchTerm,
         });
 
-        console.log('usersByUsername : ', result); //A EFFACER
+        //console.log('usersByUsername : ', result); //A EFFACER
       } else if (searchType === 'garden') {
         const result = await triggerGardenByName({ inputuser: searchTerm });
 
-        console.log('gardensByName : ', result); //A EFFACER
-        console.log('gardenStatus : ', gardenStatus); //A EFFACER
+        //console.log('gardensByName : ', result); //A EFFACER
+        //console.log('gardenStatus : ', gardenStatus); //A EFFACER
       }
 
       setSearchExecuted(true);
@@ -187,7 +198,7 @@ const Explore = () => {
   };
 
   return (
-    <Card className="bg-cardbackground flex h-screen min-h-screen w-full flex-col px-5 pt-5 pb-5">
+    <Card className="bg-cardbackground flex h-screen min-h-screen w-full flex-col px-5 pt-5 pb-23">
       {/* Partie supérieure fixe (formulaire) */}
       <div className="flex-shrink-0">
         <p>The most used tags:</p>
@@ -240,7 +251,7 @@ const Explore = () => {
           </div>
 
           <TextInput
-            className="mb-0!"
+            className="mb-5!"
             type="text"
             label={
               searchType === 'tag'
@@ -269,22 +280,6 @@ const Explore = () => {
           {searchMessages.gardensMessage && (
             <p className="text-red-500">{searchMessages.gardensMessage}</p>
           )} */}
-
-          <div className="flex justify-center pb-2">
-            <Button
-              className="bg-bgbutton relative m-5 px-6 py-2"
-              type="button"
-              onClick={() => router.push('landing')}
-            >
-              Home
-            </Button>
-            <Button
-              className="bg-bgbutton relative m-5 px-6 py-2"
-              type="submit"
-            >
-              Search
-            </Button>
-          </div>
         </form>
       </div>
 
@@ -439,76 +434,88 @@ const Explore = () => {
 
           {/* Résultats pour les jardins */}
           {(searchType === 'tag' || searchType === 'garden') && (
-            <div className="mb-5 max-h-[40vh] overflow-auto">
-              <h3 className="text-lg font-semibold">Gardens</h3>
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-amber-200">
-                    <th className="border border-black px-4 py-2 text-left">
-                      Name
-                    </th>
-                    <th className="border border-black px-4 py-2 text-left">
-                      Description
-                    </th>
-                    <th className="border border-black px-4 py-2 text-left">
-                      Type
-                    </th>
-                    <th className="border border-black px-4 py-2 text-left">
-                      Privacy
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/*Recherche par tags*/}
-                  {searchType === 'tag' ? (
-                    gardensStatus === 'rejected' ? (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="border border-black px-4 py-2 text-center"
-                        >
-                          {searchMessages.gardensMessage ||
-                            'Garden by tags rejected'}
-                        </td>
-                      </tr>
-                    ) : gardensData?.content ? (
-                      gardensData.content.length > 0 ? (
-                        gardensData.content.map((garden) => (
-                          <tr key={garden.id}>
+            <>
+              <div className="mb-5 max-h-[40vh] overflow-auto">
+                <h3 className="text-lg font-semibold">Gardens</h3>
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-amber-200">
+                      <th className="border border-black px-4 py-2 text-left">
+                        Name
+                      </th>
+                      <th className="border border-black px-4 py-2 text-left">
+                        Description
+                      </th>
+                      <th className="border border-black px-4 py-2 text-left">
+                        Type
+                      </th>
+                      <th className="border border-black px-4 py-2 text-left">
+                        Privacy
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/*Recherche par tags*/}
+                    {searchType === 'tag' ? (
+                      gardensStatus === 'rejected' ? (
+                        <tr>
+                          <td
+                            colSpan={4}
+                            className="border border-black px-4 py-2 text-center"
+                          >
+                            {searchMessages.gardensMessage ||
+                              'Garden by tags rejected'}
+                          </td>
+                        </tr>
+                      ) : gardensData?.content ? (
+                        gardensData.content.length > 0 ? (
+                          gardensData.content.map((garden) => (
+                            <tr key={garden.id}>
+                              <td
+                                className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
+                                onClick={() =>
+                                  garden.privacy === 2 &&
+                                  router.push(`/garden/display?id=${garden.id}`)
+                                }
+                              >
+                                {garden.name}
+                              </td>
+                              <td className="border border-black px-4 py-2">
+                                {garden.description || 'N/A'}
+                              </td>
+                              <td className="border border-black px-4 py-2">
+                                {gardenTypeLabels[garden.type] ?? 'Unknown'}
+                              </td>
+                              <td className="border border-black px-4 py-2">
+                                {garden.privacy === 0 ? (
+                                  <img
+                                    src="/image/icons/lockClose.png"
+                                    alt="Private"
+                                    className="h-10 w-10"
+                                  />
+                                ) : garden.privacy === 2 ? (
+                                  <img
+                                    src="/image/icons/lockOpen.png"
+                                    alt="Public"
+                                    className="h-10 w-10"
+                                  />
+                                ) : (
+                                  'N/A'
+                                )}
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
                             <td
-                              className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
-                              onClick={() =>
-                                garden.privacy === 2 &&
-                                router.push(`/garden/display?id=${garden.id}`)
-                              }
+                              colSpan={4}
+                              className="border border-black px-4 py-2 text-center"
                             >
-                              {garden.name}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {garden.description || 'N/A'}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {gardenTypeLabels[garden.type] ?? 'Unknown'}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {garden.privacy === 0 ? (
-                                <img
-                                  src="/image/icons/lockClose.png"
-                                  alt="Private"
-                                  className="h-10 w-10"
-                                />
-                              ) : garden.privacy === 2 ? (
-                                <img
-                                  src="/image/icons/lockOpen.png"
-                                  alt="Public"
-                                  className="h-10 w-10"
-                                />
-                              ) : (
-                                'N/A'
-                              )}
+                              {searchMessages.gardensMessage ||
+                                'No garden found with these tags'}
                             </td>
                           </tr>
-                        ))
+                        )
                       ) : (
                         <tr>
                           <td
@@ -516,73 +523,74 @@ const Explore = () => {
                             className="border border-black px-4 py-2 text-center"
                           >
                             {searchMessages.gardensMessage ||
-                              'No garden found with these tags'}
+                              'No garden found (no content)'}
                           </td>
                         </tr>
                       )
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="border border-black px-4 py-2 text-center"
-                        >
-                          {searchMessages.gardensMessage ||
-                            'No garden found (no content)'}
-                        </td>
-                      </tr>
-                    )
-                  ) : null}
+                    ) : null}
 
-                  {/*Recherche par name*/}
-                  {searchType === 'garden' ? (
-                    gardenStatus === 'rejected' ? (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="border border-black px-4 py-2 text-center"
-                        >
-                          {searchMessages.gardensMessage || 'No garden found'}
-                          {/*Garden by name rejected */}
-                        </td>
-                      </tr>
-                    ) : gardenData?.content ? (
-                      gardenData.content.length > 0 ? (
-                        gardenData.content.map((garden) => (
-                          <tr key={garden.id}>
+                    {/*Recherche par name*/}
+                    {searchType === 'garden' ? (
+                      gardenStatus === 'rejected' ? (
+                        <tr>
+                          <td
+                            colSpan={4}
+                            className="border border-black px-4 py-2 text-center"
+                          >
+                            {searchMessages.gardensMessage || 'No garden found'}
+                            {/*Garden by name rejected */}
+                          </td>
+                        </tr>
+                      ) : gardenData?.content ? (
+                        gardenData.content.length > 0 ? (
+                          gardenData.content.map((garden) => (
+                            <tr key={garden.id}>
+                              <td
+                                className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
+                                onClick={() =>
+                                  garden.privacy === 2 &&
+                                  router.push(`/garden/display?id=${garden.id}`)
+                                }
+                              >
+                                {garden.name}
+                              </td>
+                              <td className="border border-black px-4 py-2">
+                                {garden.description || 'N/A'}
+                              </td>
+                              <td className="border border-black px-4 py-2">
+                                {gardenTypeLabels[garden.type] ?? 'Unknown'}
+                              </td>
+                              <td className="border border-black px-4 py-2">
+                                {garden.privacy === 0 ? (
+                                  <img
+                                    src="/image/icons/lockClose.png"
+                                    alt="Private"
+                                    className="h-10 w-10"
+                                  />
+                                ) : garden.privacy === 2 ? (
+                                  <img
+                                    src="/image/icons/lockOpen.png"
+                                    alt="Public"
+                                    className="h-10 w-10"
+                                  />
+                                ) : (
+                                  'N/A'
+                                )}
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
                             <td
-                              className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
-                              onClick={() =>
-                                garden.privacy === 2 &&
-                                router.push(`/garden/display?id=${garden.id}`)
-                              }
+                              colSpan={4}
+                              className="border border-black px-4 py-2 text-center"
                             >
-                              {garden.name}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {garden.description || 'N/A'}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {gardenTypeLabels[garden.type] ?? 'Unknown'}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {garden.privacy === 0 ? (
-                                <img
-                                  src="/image/icons/lockClose.png"
-                                  alt="Private"
-                                  className="h-10 w-10"
-                                />
-                              ) : garden.privacy === 2 ? (
-                                <img
-                                  src="/image/icons/lockOpen.png"
-                                  alt="Public"
-                                  className="h-10 w-10"
-                                />
-                              ) : (
-                                'N/A'
-                              )}
+                              {searchMessages.gardensMessage ||
+                                'No garden found'}
+                              {/*Garden by name not found (length===0)*/}
                             </td>
                           </tr>
-                        ))
+                        )
                       ) : (
                         <tr>
                           <td
@@ -590,28 +598,35 @@ const Explore = () => {
                             className="border border-black px-4 py-2 text-center"
                           >
                             {searchMessages.gardensMessage ||
-                              'Garden by name not found (length===0)'}
+                              'Garden by name not found (no content)'}
                           </td>
                         </tr>
                       )
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="border border-black px-4 py-2 text-center"
-                        >
-                          {searchMessages.gardensMessage ||
-                            'Garden by name not found (no content)'}
-                        </td>
-                      </tr>
-                    )
-                  ) : null}
-                </tbody>
-              </table>
-            </div>
+                    ) : null}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </>
       )}
+      {/* Bouton fixe en bas de l'écran */}
+      <div className="fixed right-0 bottom-0 left-0 flex justify-center p-4">
+        <Button
+          className="bg-bgbutton relative m-5 px-6 py-2"
+          type="button"
+          onClick={() => router.push('landing')}
+        >
+          Home
+        </Button>
+        <Button
+          className="bg-bgbutton relative m-5 px-6 py-2"
+          type="submit"
+          onClick={handleSearchClick}
+        >
+          Search
+        </Button>
+      </div>
     </Card>
   );
 };
