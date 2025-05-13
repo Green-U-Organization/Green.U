@@ -16,11 +16,10 @@ import { Log } from '@/utils/types';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import Button from '../Atom/Button';
 import Cookies from 'js-cookie';
-import SlimCard from '../Atom/SlimCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setDisplayAddLogWindow } from '@/redux/display/displaySlice';
-import TextInput from '../Atom/TextInput';
+import Add_Log_Window from './Add_Log_Window';
 
 type SortConfig = {
   key: keyof Log;
@@ -35,9 +34,6 @@ type DisplayLog = {
 
 const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
   let logs, isLoading;
-
-  //Variables locales
-  const [action, setAction] = useState<string>('weeding');
 
   //USER info
   const userData = Cookies.get('user_data');
@@ -165,7 +161,7 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
     return <Loading />;
   }
 
-  const handleClickAddButton = (logObject) => {
+  const handleClickAddButton = () => {
     dispatch(changeDisplayAddLog({ state: !displayAddLog, id: id }));
   };
 
@@ -193,24 +189,11 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
             display: displayAddLog ? 'block' : 'none',
           }}
         >
-          <SlimCard>
-            <form action="">
-              <label htmlFor="action">Action : </label>
-              <select name="action" id="action" onChange={(export const first = (second) => {third}) => setAction(e.target.value)}>
-                <option value="weeding">Weeding</option>
-                <option value="sowing">Sowing</option>
-                <option value="planting">Planting</option>
-                <option value="watering">Watering</option>
-                <option value="tutoring">Tutoring</option>
-                <option value="amending">Amending</option>
-                <option value="other">Other</option>
-              </select>
-              <TextInput
-                style={{ display: action === ' other' ? 'block' : 'none' }}
-                placeholder="action"
-              ></TextInput>
-            </form>
-          </SlimCard>
+          <Add_Log_Window
+            userId={userId}
+            id={id}
+            logObject={logObject}
+          ></Add_Log_Window>
         </div>
 
         <table className="min-w-full">

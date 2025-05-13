@@ -925,13 +925,14 @@ export const extendedGardenAPI = api
         providesTags: ['tags-logs'],
       }),
       //CreateLog
-      // createLog: builder.query<void, createLogRequest>({
-      //   query: (arg) => ({
-      //     url: `/log/user/${arg.id}`,
-      //     method: 'POST',
-      //     body: arg,
-      //   }),
-      // }),
+      createLog: builder.mutation<void, createLogRequest>({
+        query: (arg) => ({
+          url: `/log/user/${arg.id}`,
+          method: 'POST',
+          body: arg,
+        }),
+        invalidatesTags: ['tags-logs'],
+      }),
 
       //GetGardenFullById
       getGardenFullById: builder.query<
@@ -951,6 +952,7 @@ export const extendedGardenAPI = api
         ],
       }),
     }),
+    overrideExisting: true,
   });
 
 export const {
@@ -986,7 +988,7 @@ export const {
   useGetAllLogsByNurseryIdQuery,
   useGetAllLogsByParcelIdQuery,
   useGetPopularTagsQuery,
-  useCreateLogQuery,
+  useCreateLogMutation,
   useLazyGetAllGardensByTagQuery,
   useLazyGetAllUsersByTagQuery,
   useLazyGetGardenFullByIdQuery,
