@@ -37,7 +37,16 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "Bug report is created !", content = bugReport});
         }
 
-        
+        [HttpGet()]
+        public async Task<ActionResult<BugReport>> allBugReport()
+        {
+            var allBug = await _db.BugReports
+                .ToArrayAsync();
+
+            if (allBug == null) return NotFound(new { isEmpty = true, message = "No BugReport" });
+
+            return Ok(new { isEmpty = false, message = "All bugs", content = allBug });
+        }
 
         [HttpPatch("{id}")]
         public async Task<ActionResult<BugReport>> closeABug(long id)
