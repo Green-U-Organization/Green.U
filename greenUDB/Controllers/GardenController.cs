@@ -80,7 +80,7 @@ namespace GreenUApi.Controllers
         {
             var garden = await _db.Gardens.FindAsync(id);
 
-            if (garden == null) return NotFound(new { isEmpty = true, message = "The id is incorrect" });
+            if (garden == null) return NotFound(new { isEmpty = true, message = "The id is incorrect", content = new { } });
 
             if (garden.Deleted) return Conflict(new { isEmpty = true, message = "The garden is deleted " });
 
@@ -104,7 +104,7 @@ namespace GreenUApi.Controllers
                 .FirstOrDefaultAsync(g => g.Id == id);
 #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
 
-            if (garden == null) return NotFound(new { isEmpty = true, message = "The garden is not found" });
+            if (garden == null) return Ok(new { isEmpty = true, message = "The garden is not found", content = Array.Empty<object>() });
 
 
             return Ok(new { isEmpty = false, message = "Garden object", content = garden });
@@ -151,7 +151,7 @@ namespace GreenUApi.Controllers
                 })
                 .ToArrayAsync();
 
-            if (garden.Length == 0) return BadRequest(new { isEmpty = true, message = "Garden doesn't exist" });
+            if (garden.Length == 0) return Ok(new { isEmpty = true, message = "Garden doesn't exist", content = Array.Empty<object>() });
 
             return Ok(new { isEmpty = false, message = "Garden list", content = garden });
         }
