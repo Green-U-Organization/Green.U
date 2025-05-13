@@ -36,6 +36,8 @@ public partial class GreenUDB : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<Bugs> Bugs { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -278,6 +280,25 @@ public partial class GreenUDB : DbContext
             entity.Property(e => e.Salt).HasColumnType("text");
             entity.Property(e => e.Gender).HasColumnType("text");
             entity.Property(e => e.Username).HasColumnType("text");
+        });
+
+        modelBuilder.Entity<Bugs>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("Bugs");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("id");
+
+            entity.Property(e => e.Message)
+                .HasColumnType("text")
+                .HasColumnName("message");
+
+            entity.Property(e => e.Category)
+                .HasColumnType("text")
+                .HasColumnName("category");
         });
 
         OnModelCreatingPartial(modelBuilder);
