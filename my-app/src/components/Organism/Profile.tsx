@@ -59,12 +59,10 @@ const Profile = ({ userId }: { userId: number }) => {
   }
 
   return (
-    <div className="flex items-center justify-center">
-      <Card className="bg-cardbackground flex min-h-screen w-full flex-col p-5">
-        <div
-          id="profilePage"
-          className="flex min-h-[92vh] flex-col justify-between"
-        >
+    <Card className="bg-cardbackground flex h-screen min-h-screen w-full flex-col overflow-hidden px-5 pt-5 pb-23">
+      <div className="h-[calc(100vh-130px)] flex-shrink-0 overflow-y-auto">
+        {/* Ajustez la hauteur pour éviter le chevauchement */}
+        <div id="profilePage">
           <div>
             {/* Image du profil */}
             <div className="relative flex items-center space-x-4">
@@ -242,27 +240,27 @@ const Profile = ({ userId }: { userId: number }) => {
               </div>
               </div> */}
           </div>
-
-          <div className="mt-auto flex justify-center p-2">
-            {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
-            <Button
-              className="bg-bgbutton relative m-5 mb-0 px-6 py-2"
-              onClick={() => router.back()}
-            >
-              {translations.back}
-            </Button>
-            {/* ID DU USER A TRANSMETTRE POUR L'EDITION DU PROFILE */}
-            <Button
-              style={{ display: userId === cookieId ? 'block' : 'none' }}
-              className="bg-bgbutton relative m-5 mb-0 px-6 py-2"
-              onClick={() => router.push('/profile/edit')}
-            >
-              {translations.edit}
-            </Button>
-          </div>
         </div>
-      </Card>
-    </div>
+      </div>
+      {/* Bouton fixe en bas de l'écran */}
+      <div className="fixed right-0 bottom-0 left-0 flex justify-center p-4">
+        {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
+        <Button
+          className="bg-bgbutton relative m-5 px-6 py-2"
+          onClick={() => router.back()}
+        >
+          {translations.back}
+        </Button>
+        {/* ID DU USER A TRANSMETTRE POUR L'EDITION DU PROFILE */}
+        <Button
+          style={{ display: userId === cookieId ? 'block' : 'none' }}
+          className="bg-bgbutton relative m-5 px-6 py-2"
+          onClick={() => router.push('/profile/edit')}
+        >
+          {translations.edit}
+        </Button>
+      </div>
+    </Card>
   );
 };
 
