@@ -474,6 +474,14 @@ type createLogRequest = {
   comment: string;
 };
 
+type GetCreateLogBugReportRequest = {
+  authorid: number;
+  type: string;
+  title?: string;
+  comment: string;
+  where: string;
+};
+
 export const extendedGardenAPI = api
   .enhanceEndpoints({
     addTagTypes: [
@@ -535,6 +543,14 @@ export const extendedGardenAPI = api
           body: arg,
         }),
         invalidatesTags: ['garden-parcels', 'tags-logs'],
+      }),
+
+      createLogBugReport: builder.mutation<void, GetCreateLogBugReportRequest>({
+        query: (arg) => ({
+          url: `/bug/`,
+          method: 'POST',
+          body: arg,
+        }),
       }),
 
       //GetAllParcelByGardenId >> OK
@@ -948,6 +964,14 @@ export const extendedGardenAPI = api
           'garden-crops',
         ],
       }),
+
+      CreateLogBugReport: builder.mutation<void, GetCreateLogBugReportRequest>({
+        query: (arg) => ({
+          url: `/bug/`,
+          method: 'POST',
+          body: arg,
+        }),
+      }),
     }),
     overrideExisting: true,
   });
@@ -991,4 +1015,5 @@ export const {
   useLazyGetGardenFullByIdQuery,
   useLazyGetGardensByNameQuery,
   useLazyGetUserByUsernameQuery,
+  useCreateLogBugReportMutation,
 } = extendedGardenAPI;

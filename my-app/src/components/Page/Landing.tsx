@@ -44,7 +44,7 @@ const Landing = () => {
       </div>
 
       {/* Titre */}
-      <div className="relative">
+      <div className="relative z-0">
         <h1 className="text-8xl opacity-0">*Green.U*</h1>
         <h1
           className="absolute top-1 -left-1 z-40 animate-pulse text-8xl text-black ease-in [animation-duration:4s]"
