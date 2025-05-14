@@ -7,6 +7,7 @@ import {
 } from '@/slice/fetch';
 import React from 'react';
 import Card from '../Atom/Card';
+import { FaEnvelope } from 'react-icons/fa';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
@@ -257,7 +258,7 @@ const Profile = ({ userId }: { userId: number }) => {
         <Button
           style={{ display: userId === cookieId ? 'block' : 'none' }}
           className="bg-bgbutton relative m-5 px-6 py-2"
-          onClick={() => router.push('/profile/edit')}
+          onClick={() => router.push(`/profile/edit/${userId}`)}
         >
           {translations.edit}
         </Button>
