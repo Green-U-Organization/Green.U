@@ -20,6 +20,7 @@ import {
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
+import LoadingModal from '../Molecule/LoadingModal';
 
 const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   // Local State
@@ -29,10 +30,8 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   const [cropIsPresent, setCropIsPresent] = useState<boolean>(false);
 
   //RTK Query
-  const [
-    deleteLineMutation,
-    //  { data: lines }
-  ] = useDeleteOneLineByLineIdMutation();
+  const [deleteLineMutation, { isLoading: deleteLinesIsLoading }] =
+    useDeleteOneLineByLineIdMutation();
   const { data: crops } = useGetCropByLineIdQuery({
     lineId: line.id,
   });
@@ -223,6 +222,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
 
   return (
     <>
+      {deleteLinesIsLoading && <LoadingModal />}
       <div
         className={`relative z-0`}
         style={{
