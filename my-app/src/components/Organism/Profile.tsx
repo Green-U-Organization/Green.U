@@ -21,6 +21,7 @@ import H2 from '../Atom/H2';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import Loading from '../Atom/Loading';
+import { forIn } from 'lodash';
 
 const Profile = ({ userId }: { userId: number }) => {
   const { translations } = useLanguage();
@@ -241,7 +242,13 @@ const Profile = ({ userId }: { userId: number }) => {
               </div> */}
           </div>
         </div>
+        <div>
+          {Array.from({ length: 20 }).map((_, index) => (
+            <p key={index}>{index}</p>
+          ))}
+        </div>
       </div>
+
       {/* Bouton fixe en bas de l'écran */}
       <div className="fixed right-0 bottom-0 left-0 flex justify-center p-4">
         {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
