@@ -178,7 +178,7 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
           <div onClick={handleParcelClick} className="bg-parcel z-50 my-5">
             <SlimCard
               bgColor="bg-bgbutton"
-              className="z-50text-center h-[40px] w-[40px] p-1 text-2xl"
+              className="z-50 h-[40px] w-[40px] p-1 text-center text-2xl"
             >
               P
             </SlimCard>
