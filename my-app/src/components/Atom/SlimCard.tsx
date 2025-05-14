@@ -138,47 +138,47 @@ const SlimCard: React.FC<CardProps> = ({
 
       {/* Pixels extérieur corner */}
       <div
-        className={`z-0.50 ${bgColorClass} absolute top-0 left-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute top-0 left-0 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute top-0 right-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute top-0 right-0 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute top-0.5 left-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute top-0.5 left-0 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute top-0 left-0.5 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute top-0 left-0.5 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute top-0 right-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute top-0 right-0 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute top-0.5 right-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute top-0.5 right-0 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute top-0 right-0.5 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute top-0 right-0.5 h-0.5 w-0.5`}
       ></div>
 
       <div
-        className={`z-0.50 ${bgColorClass} absolute bottom-0 left-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute bottom-0 left-0 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute right-0 bottom-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute right-0 bottom-0 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute bottom-0.5 left-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute bottom-0.5 left-0 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute bottom-0 left-0.5 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute bottom-0 left-0.5 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute right-0 bottom-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute right-0 bottom-0 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute right-0 bottom-0.5 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute right-0 bottom-0.5 h-0.5 w-0.5`}
       ></div>
       <div
-        className={`z-0.50 ${bgColorClass} absolute right-0.5 bottom-0 h-0.5 w-0.5`}
+        className={`z-1 ${bgColorClass} absolute right-0.5 bottom-0 h-0.5 w-0.5`}
       ></div>
       {/* Contenu */}
       {children}

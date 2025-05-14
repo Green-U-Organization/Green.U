@@ -105,8 +105,6 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
 
   return (
     <>
-      {deleteParcelIsLoading && <LoadingModal />}
-      {newLineIsLoading && <LoadingModal />}
       <section className="-z-0 ml-[5vw]">
         <div className="flex flex-col">
           {/* //MainCore */}
@@ -260,8 +258,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
           </SlimCard>
         </div>
       </section>
+      {deleteParcelIsLoading && <LoadingModal />}
+      {newLineIsLoading && <LoadingModal />}
     </>
   );
 };
-
 export default Parcel;

@@ -41,13 +41,16 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    let updatedCategory = category;
     if (category === 'other') {
-      setCategory(customAction);
+      updatedCategory = customAction;
     }
+
+    console.log('custommm : ', updatedCategory);
 
     const query = {
       authorid: userId,
-      type: category,
+      type: updatedCategory,
       title: title,
       comment: message,
       where: currentPath,
@@ -116,7 +119,10 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
               name="otherAction"
               id="otherAction"
               placeholder="Enter a type"
-              onChange={(e) => setCustomAction(e.target.value)}
+              onChange={(e) => {
+                setCustomAction(e.target.value);
+                console.log(customAction);
+              }}
               value={customAction}
             ></TextInput>
           </div>
