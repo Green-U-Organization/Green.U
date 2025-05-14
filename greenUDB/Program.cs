@@ -86,7 +86,8 @@ var allowedOriginsWithNull = new string?[] {
     Environment.GetEnvironmentVariable("ALLOWED_HOST1"),
     Environment.GetEnvironmentVariable("ALLOWED_HOST2"),
     Environment.GetEnvironmentVariable("ALLOWED_HOST3"),
-    Environment.GetEnvironmentVariable("ALLOWED_HOST4")
+    Environment.GetEnvironmentVariable("ALLOWED_HOST4"),
+    Environment.GetEnvironmentVariable("ALLOWED_HOST5")
 };
 
 var allowedOrigins = allowedOriginsWithNull
