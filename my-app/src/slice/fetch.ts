@@ -274,7 +274,7 @@ type RegisterUserRequest = {
   gender: string;
   birthday: string;
   newsletter: boolean;
-  skill_level: number;
+  skill_level?: number;
 };
 
 type RegisterUserResponse = {
