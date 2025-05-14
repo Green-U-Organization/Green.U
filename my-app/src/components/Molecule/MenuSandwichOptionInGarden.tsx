@@ -140,7 +140,7 @@ const MenuSandwichOptionInGarden: React.FC<MenuSandwichProps> = () => {
   }, [clickMenuDisplay]);
 
   return (
-    <section ref={menuRef} className="fixed bottom-[20px] left-[20px] z-50">
+    <section ref={menuRef} className="fixed bottom-[20px] left-[20px] z-10">
       <Button
         className="bg-bgbutton h-[60px] w-[60px]"
         onClick={handleClickMenu}
