@@ -85,7 +85,8 @@ builder.Services.AddDbContext<GreenUDB>(options =>
 var allowedOriginsWithNull = new string?[] {
     Environment.GetEnvironmentVariable("ALLOWED_HOST1"),
     Environment.GetEnvironmentVariable("ALLOWED_HOST2"),
-    Environment.GetEnvironmentVariable("ALLOWED_HOST3")
+    Environment.GetEnvironmentVariable("ALLOWED_HOST3"),
+    Environment.GetEnvironmentVariable("ALLOWED_HOST4")
 };
 
 var allowedOrigins = allowedOriginsWithNull

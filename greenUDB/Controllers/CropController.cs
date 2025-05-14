@@ -185,7 +185,8 @@ namespace GreenUApi.Controllers
                 GardenId = ExistingLine.GardenId,
                 ParcelId = ExistingLine.ParcelId,
                 LineId = id,
-                Action = $"Plant a {crop.Vegetable} {crop.Variety}",
+                Action = "Plant a crop",
+                Comment = $"{crop.Vegetable} {crop.Variety}",
                 Type = "Automatic",
             };
 
@@ -224,7 +225,8 @@ namespace GreenUApi.Controllers
             Log log = new()
             {
                 PlantNurseryId = crop.PlantNurseryId,
-                Action = $"Plant a {crop.Vegetable} {crop.Variety} in plant nursery",
+                Action = "Plant a crop in plant nursery",
+                Comment = $"{crop.Vegetable} {crop.Variety} ",
                 Type = "Automatic",
             };
 
@@ -236,7 +238,6 @@ namespace GreenUApi.Controllers
 
         }
 
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCrop(long id)
         {
@@ -246,13 +247,13 @@ namespace GreenUApi.Controllers
                 return NotFound(new { isEmpty = true, message = "No crop with this id..." });
             }
 
-
             Log log = new()
             {
                 CropId = id,
                 PlantNurseryId = crop.PlantNurseryId,
                 LineId = crop.LineId,
-                Action = $"Delete {crop.Vegetable} {crop.Variety}",
+                Action = "Delete a crop",
+                Comment = $"{crop.Vegetable} {crop.Variety}",
                 Type = "Automatic",
             };
 
