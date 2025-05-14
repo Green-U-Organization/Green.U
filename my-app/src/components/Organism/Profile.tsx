@@ -20,6 +20,7 @@ import H2 from '../Atom/H2';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import Loading from '../Atom/Loading';
+import Image from 'next/image';
 
 const Profile = ({ userId }: { userId: number }) => {
   const { translations } = useLanguage();
@@ -173,7 +174,9 @@ const Profile = ({ userId }: { userId: number }) => {
                           </p>
                         </div>
 
-                        <img
+                        <Image
+                          width={50}
+                          height={50}
                           // onClick={handleConfigurationClick}
                           className="image mr-[5vw] h-[5vw] w-[5vw] object-contain"
                           src={

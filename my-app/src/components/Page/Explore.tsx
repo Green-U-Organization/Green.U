@@ -15,6 +15,7 @@ import Button from '../Atom/Button';
 import SlimCard from '../Atom/SlimCard';
 import Radio from '../Atom/Radio';
 import { Tag } from '@/utils/types';
+import Image from 'next/image';
 
 const Explore = () => {
   const router = useRouter();
@@ -489,13 +490,17 @@ const Explore = () => {
                               </td>
                               <td className="border border-black px-4 py-2">
                                 {garden.privacy === 0 ? (
-                                  <img
+                                  <Image
+                                    width={50}
+                                    height={50}
                                     src="/image/icons/lockClose.png"
                                     alt="Private"
                                     className="h-10 w-10"
                                   />
                                 ) : garden.privacy === 2 ? (
-                                  <img
+                                  <Image
+                                    width={50}
+                                    height={50}
                                     src="/image/icons/lockOpen.png"
                                     alt="Public"
                                     className="h-10 w-10"
@@ -563,13 +568,17 @@ const Explore = () => {
                               </td>
                               <td className="border border-black px-4 py-2">
                                 {garden.privacy === 0 ? (
-                                  <img
+                                  <Image
+                                    width={50}
+                                    height={50}
                                     src="/image/icons/lockClose.png"
                                     alt="Private"
                                     className="h-10 w-10"
                                   />
                                 ) : garden.privacy === 2 ? (
-                                  <img
+                                  <Image
+                                    width={50}
+                                    height={50}
                                     src="/image/icons/lockOpen.png"
                                     alt="Public"
                                     className="h-10 w-10"

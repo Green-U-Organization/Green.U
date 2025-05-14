@@ -14,6 +14,7 @@ import {
 } from '@/slice/fetch';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
+import Image from 'next/image';
 
 const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   //Local State
@@ -189,8 +190,9 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
           <H2>Choose your crop icon :</H2>
           <div className="flex flex-wrap items-center justify-center">
             {iconList.map((icon, key) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
+                width={50}
+                height={50}
                 src={icon}
                 alt={`icon-${key}`}
                 key={icon}
