@@ -50,6 +50,9 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
   const displayAddLog = useSelector(
     (state: RootState) => state.display.displayAddLogWindow
   );
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
+  );
 
   //Hooks
   const dispatch = useDispatch();
@@ -203,6 +206,9 @@ const Display_Logs_Popup: FC<DisplayLog> = ({ id, display, logObject }) => {
             Back
           </Button>
           <Button
+            style={{
+              display: userId === currentGarden?.authorId ? 'block' : 'none',
+            }}
             className="bg-bgbutton relative m-5 px-6"
             onClick={handleClickAddButton}
           >

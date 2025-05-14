@@ -8,7 +8,7 @@ import Button from '../Atom/Button';
 import Card from '../Atom/Card';
 import { setDisplayGardenLogPopup } from '@/redux/display/displaySlice';
 import SlimCard from '../Atom/SlimCard';
-
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import Display_Logs_Popup from './Display_Logs_Popup';
 
@@ -21,9 +21,17 @@ const MenuSandwichOptionInGarden: React.FC<MenuSandwichProps> = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
+
   //Selectors
   const displayGardenLogs = useSelector(
     (state: RootState) => state.display.displayGardenLogPopup
+  );
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
   );
   const garden = useSelector((state: RootState) => state.garden.selectedGarden);
 
@@ -193,6 +201,9 @@ const MenuSandwichOptionInGarden: React.FC<MenuSandwichProps> = () => {
           </div>
 
           <div
+            style={{
+              display: userId === currentGarden?.authorId ? 'block' : 'none',
+            }}
             onClick={() => router.push('/garden/edit')}
             className="bg-nursery my-5"
           >
@@ -212,6 +223,9 @@ const MenuSandwichOptionInGarden: React.FC<MenuSandwichProps> = () => {
           </div>
 
           <div
+            style={{
+              display: userId === currentGarden?.authorId ? 'block' : 'none',
+            }}
             onClick={() => router.push('/garden/edit')}
             className="bg-greenhouse my-5"
           >
