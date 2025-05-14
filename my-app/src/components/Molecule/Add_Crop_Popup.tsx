@@ -143,6 +143,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
 
   const handleClickIcon = (e: React.MouseEvent<HTMLImageElement>) => {
     setSelectedIcon(e.currentTarget.src);
+    console.log(e.currentTarget.src);
   };
 
   const handleActionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -325,9 +326,9 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
             <img
               src={icon}
               alt={`icon-${key}`}
-              key={icon}
               onClick={handleClickIcon}
-              className={`mx-[2vw] ${baseURL + icon === selectedIcon ? 'z-50 rounded-lg border-2 bg-amber-300' : 'border-0'}`}
+              className={`mx-[2vw] ${icon.split('/').pop() === selectedIcon.split('/').pop() ? 'z-50 rounded-lg border-2 bg-amber-300' : 'border-0'}`}
+              key={icon}
             />
           ))}
         </div>
