@@ -13,22 +13,18 @@ import Card from '../Atom/Card';
 import Button from '../Atom/Button';
 import SlimCard from '../Atom/SlimCard';
 import Radio from '../Atom/Radio';
-import { Garden, Tag } from '@/utils/types';
+import { Tag } from '@/utils/types';
 import Image from 'next/image';
-import Cookies from 'js-cookie';
 import { setSelectedGardenCookies } from '@/utils/selectedGardenCookies';
 
 import {
   clearSelectedGarden,
   setSelectedGarden,
 } from '@/redux/garden/gardenSlice';
-import { RootState, useDispatch, useSelector } from '@/redux/store';
+import { useDispatch } from '@/redux/store';
 
 const Explore = () => {
   // Selectors
-  const currentGarden = useSelector(
-    (state: RootState) => state.garden.selectedGarden
-  );
 
   //Hooks
   const dispatch = useDispatch();

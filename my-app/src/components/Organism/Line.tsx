@@ -23,9 +23,9 @@ import {
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
 
-const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
+const Line: FC<LineProps> = ({ line, lineIndex }) => {
   // Local State
-  const [displayInfo, SetDisplayInfo] = useState(false);
+  // const [displayInfo, SetDisplayInfo] = useState(false);
   const [displayDeletingLinePopup, setDisplayDeletingLinePopup] =
     useState<boolean>(false);
   const [cropIsPresent, setCropIsPresent] = useState<boolean>(false);
@@ -167,13 +167,13 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
     }
   };
 
-  const handleMouseEnter = () => {
-    SetDisplayInfo(true);
-  };
+  // const handleMouseEnter = () => {
+  //   SetDisplayInfo(true);
+  // };
 
-  const handleMouseLeave = () => {
-    SetDisplayInfo(false);
-  };
+  // const handleMouseLeave = () => {
+  //   SetDisplayInfo(false);
+  // };
 
   //Modal Closing
   useEffect(() => {

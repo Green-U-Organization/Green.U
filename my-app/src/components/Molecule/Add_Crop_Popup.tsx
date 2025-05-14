@@ -49,16 +49,12 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
     '/image/assets/vegetables/icon/potato.png',
     '/image/assets/vegetables/icon/tomato.png',
   ];
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
   //Hooks
   const dispatch = useDispatch();
 
   //Selectors
   const garden = useSelector((state: RootState) => state.garden.selectedGarden);
-  const addCropPopupDisplay = useSelector(
-    (state: RootState) => state.display.addCropPopup
-  );
 
   //RTK Query
   const [createCropToLine] = useCreateCropToLineMutation();
