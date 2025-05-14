@@ -74,7 +74,7 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({
         validatePostalCode(postalCodeValue);
       }
     }
-  }, [filteredOptions, value, onChange]);
+  }, [filteredOptions, value, onChange, validatePostalCode]);
 
   return (
     <div className="mb-4 flex flex-col">
