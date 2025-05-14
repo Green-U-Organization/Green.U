@@ -67,7 +67,6 @@ namespace GreenUApi.Controllers
                 parcel.ParcelAngle = modifiedParcel.ParcelAngle;
             }
 
-
             _db.Update(parcel);
 
             Log log = new()
@@ -100,7 +99,8 @@ namespace GreenUApi.Controllers
             {
                 GardenId = parcel.GardenId,
                 ParcelId = parcel.Id,
-                Action = $"Create parcel. Length : {parcel.Length}. Width : {parcel.Width}",
+                Action = "Create parcel",
+                Comment = $"Length : {parcel.Length}. Width : {parcel.Width}",
                 Type = "Automatic",
             };
 
@@ -139,14 +139,13 @@ namespace GreenUApi.Controllers
             {
                 GardenId = parcel.GardenId,
                 ParcelId = parcel.Id,
-                Action = $"Delete parcel. Length : {parcel.Length}. Width : {parcel.Width}",
+                Action = "Delete parcel",
+                Comment = $"Length : {parcel.Length}. Width : {parcel.Width}",
                 Type = "Automatic",
             };
             _db.Add(log);
 
             _db.Remove(parcel);
-
-
 
             await _db.SaveChangesAsync();
 

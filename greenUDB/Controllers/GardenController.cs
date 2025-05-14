@@ -93,7 +93,7 @@ namespace GreenUApi.Controllers
 
             if (id == 0) return BadRequest(new { isEmpty = true, message = "No id..." });
 
-
+            // this is not definitive !!
 #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             Garden? garden = await _db.Gardens
                 .Include(p => p.Parcels)
@@ -266,7 +266,8 @@ namespace GreenUApi.Controllers
             Log log = new()
             {
                 GardenId = garden.Id,
-                Action = $"Create the {garden.Name}",
+                Action = "Create garden",
+                Comment = $"Garden name : {garden.Name}",
                 Type = "Automatic",
             };
 
@@ -341,7 +342,8 @@ namespace GreenUApi.Controllers
             Log log = new()
             {
                 GardenId = garden.Id,
-                Action = $"Delete garden. Delted Parcel : {parcelCount}, Line : {lineCount}, Crop : {cropCount}, Plant Nursery: {nurseryCount}",
+                Action = "Delete garden.",
+                Comment = $" Delted Parcel : {parcelCount}, Line : {lineCount}, Crop : {cropCount}, Plant Nursery: {nurseryCount}",
                 Type = "Automatic",
             };
 
