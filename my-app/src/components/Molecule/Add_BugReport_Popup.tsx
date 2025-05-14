@@ -66,13 +66,18 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
       setTimeout(() => {
         setSuccess(false);
       }, 1500);
-    } catch {
-      console.log('Error creating bug report!');
-      setError('Error creating bug report log');
+    } catch (err) {
+      if (isNaN(userId)) {
+        setError('Your are not connected!');
+      } else {
+        console.log('Error creating bug report : ', err);
+        setError('Error creating bug report log');
+      }
       setSuccess(false);
     }
 
     setTimeout(() => {
+      setError(null);
       dispatch(changeDisplayBugReport({ state: false, id: 0 }));
     }, 1500); // Délai court pour permettre la réinitialisation
   };
@@ -80,7 +85,7 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
   //console.log(currentPath);
   return (
     <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-      <SlimCard className="bg-cardbackground m-2">
+      <SlimCard className="bg-cardbackground p-0">
         <H1>Bug Report</H1>
         <H2>On Page {currentPath}</H2>
         <form onSubmit={handleSubmit} className="flex flex-col justify-center">
@@ -143,9 +148,9 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
             value={message}
           ></textarea>
 
-          {error && <p className="px-5 py-5 text-red-500">{error}</p>}
+          {error && <p className="px-5 py-2 text-red-500">{error}</p>}
           {success && (
-            <p className="px-5 py-5 text-green-600">Bug reported !</p>
+            <p className="px-5 py-2 text-green-600">Bug reported !</p>
           )}
           <Button
             className="bg-bgbutton relative mx-8 my-5 px-6 py-2"
