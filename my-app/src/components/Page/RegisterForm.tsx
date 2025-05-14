@@ -371,15 +371,15 @@ const RegisterForm = () => {
       firstname: formDataRegister.firstname,
       lastname: formDataRegister.lastname,
       email: formDataRegister.email,
-      Postal_code: formDataRegister.postalCode, // AJOUTER POSTAL CODE DANS API
+      postalcode: formDataRegister.postalCode,
       country: 'Belgium',
       gender: formDataRegister.gender,
       birthday: formDataRegister.birthDate,
       newsletter: isCheckedNewsletter,
-      //skill_level: formDataRegister.skillLevel,
+      skill_level: formDataRegister.skillLevel,
       bio: formDataRegister.bio,
     };
-    //console.log('formJson page 2: ', bodyRequest);
+    console.log('formJson page 2: ', bodyRequest);
 
     //addUser(bodyRequest);
 
