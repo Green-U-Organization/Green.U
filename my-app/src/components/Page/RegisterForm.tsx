@@ -108,7 +108,7 @@ const RegisterForm = () => {
   const cols = 65;
 
   const [isValidPostalCode, setIsValidPostalCode] = useState(true);
-  const [step, setStep] = useState(2); //Pour gérer l'affichage des "pages"
+  const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVerify, setShowPasswordVerify] = useState(false);
   const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
