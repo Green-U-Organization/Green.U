@@ -66,7 +66,7 @@ const RegisterForm = () => {
   const calendarRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const dispatch = useDispatch();
-  const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
+  //const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
 
   //	https://blog.logrocket.com/using-react-usestate-object/
   const [formDataRegister, setFormDataRegister] = useState<FormData>({
@@ -161,7 +161,7 @@ const RegisterForm = () => {
 
     setErrorForm((prevErrorForm) => ({
       ...prevErrorForm,
-      errorEmptyGardenerLevel: !formDataRegister.skillLevel,
+      //errorEmptyGardenerLevel: !formDataRegister.skillLevel,
       errorEmptyInterests: !formDataRegister.interests.length,
       errorNotCheckedToU: !isCheckedToU,
     }));
@@ -376,7 +376,7 @@ const RegisterForm = () => {
       gender: formDataRegister.gender,
       birthday: formDataRegister.birthDate,
       newsletter: isCheckedNewsletter,
-      skill_level: selectedSkillLevel,
+      //skill_level: selectedSkillLevel,
       bio: formDataRegister.bio,
     };
     //console.log('formJson page 2: ', bodyRequest);
@@ -715,7 +715,7 @@ const RegisterForm = () => {
               */}
 
         {/* Niveau du jardinier */}
-        <SelectInput
+        {/* <SelectInput
           label={translations.skillLevel}
           name="skillLevel"
           options={[
@@ -726,7 +726,7 @@ const RegisterForm = () => {
           ]}
           value={selectedSkillLevel}
           onChange={(e) => setSelectedSkillLevel(Number(e.target.value))}
-        />
+        /> */}
 
         {/* <DropDown
                 label={translations.yourlevel}
@@ -764,13 +764,6 @@ const RegisterForm = () => {
           <p className="text-txterror">{translations.errorNotCheckedToU}</p>
         )}
         <div className="flex justify-center gap-4 pt-5 pb-10">
-          <Button
-            className="bg-bgbutton relative px-6 py-2"
-            type="button"
-            onClick={() => router.push('login')}
-          >
-            Back
-          </Button>
           <Button
             className="bg-bgbutton relative px-6 py-2"
             onClick={handlePrevStep}

@@ -4,7 +4,7 @@ import React from 'react';
 
 interface Props {
   params: {
-    id: string; // Les paramètres d'URL sont toujours des strings
+    id: number; // Les paramètres d'URL sont toujours des strings
   };
 }
 
