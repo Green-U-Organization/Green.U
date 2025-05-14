@@ -41,16 +41,24 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+<<<<<<< HEAD
     let updatedCategory = category;
     if (category === 'other') {
       updatedCategory = customAction;
     }
+=======
+    //const finalCategory = category === 'other' ? customAction : category;
+>>>>>>> c03802edf36c63676460f910b4d6acd066a910b9
 
     console.log('custommm : ', updatedCategory);
 
     const query = {
       authorid: userId,
+<<<<<<< HEAD
       type: updatedCategory,
+=======
+      type: category === 'other' ? customAction : category,
+>>>>>>> c03802edf36c63676460f910b4d6acd066a910b9
       title: title,
       comment: message,
       where: currentPath,
@@ -99,7 +107,6 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
               id="action"
               onChange={(e) => {
                 setCategory(e.target.value);
-                console.log(category);
               }}
               value={category}
             >
