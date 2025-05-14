@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 import { setDisplayBugReportPopup } from '@/redux/display/displaySlice';
 import { RootState, useSelector } from '@/redux/store';

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { FC, useState } from 'react';
 import TextInput from '../Atom/TextInput';
 import Card from '../Atom/Card';
@@ -14,7 +15,6 @@ import {
 } from '@/slice/fetch';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
-import Image from 'next/image';
 
 const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   //Local State
