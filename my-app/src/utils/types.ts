@@ -182,7 +182,7 @@ export type VegetableIconProps = {
 };
 
 export type AddCropPopup = {
-  lineId: number;
+  lineId: number | null;
 };
 
 export type ConfirmationProps = {

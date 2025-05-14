@@ -56,6 +56,9 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
 
   //Selectors
   const garden = useSelector((state: RootState) => state.garden.selectedGarden);
+  const addCropPopupDisplay = useSelector(
+    (state: RootState) => state.display.addCropPopup
+  );
 
   //RTK Query
   const [createCropToLine] = useCreateCropToLineMutation();
@@ -90,7 +93,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
       formData.get('cropAction') === 'planting' ? formatDate(new Date()) : '';
 
     const cropData = {
-      lineId: lineId,
+      lineId: Number(lineId),
       vegetable: formData.get('vegetable') as string,
       variety: formData.get('variety') as string,
       icon: selectedIcon,
@@ -104,7 +107,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
     if (origin === 'fromNursery' && selectedCropToPlant?.id) {
       const cropData = {
         cropId: selectedCropToPlant?.id,
-        lineId: lineId,
+        lineId: Number(lineId),
         plantNurseryId: 0,
       };
 
