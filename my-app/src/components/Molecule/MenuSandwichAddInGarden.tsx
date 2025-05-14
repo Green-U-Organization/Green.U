@@ -15,6 +15,7 @@ import Add_Parcel_Popup from './Add_Parcel_Popup';
 import Add_Nursery_Popup from './Add_Nursery_Popup';
 import Add_Greenhouse_Popup from './Add_Greenhouse_Popup';
 import SlimCard from '../Atom/SlimCard';
+import Image from 'next/image';
 
 const MenuSandwich: React.FC<MenuSandwichProps> = () => {
   //Local State
@@ -152,7 +153,9 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
         className="bg-bgbutton z-50 h-[60px] w-[60px]"
         onClick={handleClickMenu}
       >
-        <img
+        <Image
+          width={50}
+          height={50}
           src={
             clickMenuDisplay
               ? '/image/icons/chevronBas.png'
@@ -175,7 +178,7 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
           <div onClick={handleParcelClick} className="bg-parcel z-50 my-5">
             <SlimCard
               bgColor="bg-bgbutton"
-              className="z-50text-center h-[40px] w-[40px] p-1 text-2xl"
+              className="z-50 h-[40px] w-[40px] p-1 text-center text-2xl"
             >
               P
             </SlimCard>

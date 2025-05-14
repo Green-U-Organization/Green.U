@@ -125,6 +125,7 @@ const LoginForm = () => {
             <div className="flex flex-row justify-between pb-5">
               <Button
                 className="bg-bgbutton relative m-5 px-6 py-2"
+                type="button"
                 onClick={() => router.push('/register')}
               >
                 {translations.register}

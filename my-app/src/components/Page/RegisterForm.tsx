@@ -66,7 +66,7 @@ const RegisterForm = () => {
   const calendarRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const dispatch = useDispatch();
-  const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
+  //const [selectedSkillLevel, setSelectedSkillLevel] = useState<number>(0);
 
   //	https://blog.logrocket.com/using-react-usestate-object/
   const [formDataRegister, setFormDataRegister] = useState<FormData>({
@@ -161,7 +161,7 @@ const RegisterForm = () => {
 
     setErrorForm((prevErrorForm) => ({
       ...prevErrorForm,
-      errorEmptyGardenerLevel: !formDataRegister.skillLevel,
+      //errorEmptyGardenerLevel: !formDataRegister.skillLevel,
       errorEmptyInterests: !formDataRegister.interests.length,
       errorNotCheckedToU: !isCheckedToU,
     }));
@@ -371,15 +371,15 @@ const RegisterForm = () => {
       firstname: formDataRegister.firstname,
       lastname: formDataRegister.lastname,
       email: formDataRegister.email,
-      // Postal_code: formDataRegister.postalCode, // AJOUTER POSTAL CODE DANS API
+      postalcode: formDataRegister.postalCode,
       country: 'Belgium',
       gender: formDataRegister.gender,
       birthday: formDataRegister.birthDate,
       newsletter: isCheckedNewsletter,
-      skill_level: selectedSkillLevel,
+      skill_level: formDataRegister.skillLevel,
       bio: formDataRegister.bio,
     };
-    //console.log('formJson page 2: ', bodyRequest);
+    console.log('formJson page 2: ', bodyRequest);
 
     //addUser(bodyRequest);
 
@@ -715,7 +715,7 @@ const RegisterForm = () => {
               */}
 
         {/* Niveau du jardinier */}
-        <SelectInput
+        {/* <SelectInput
           label={translations.skillLevel}
           name="skillLevel"
           options={[
@@ -726,7 +726,7 @@ const RegisterForm = () => {
           ]}
           value={selectedSkillLevel}
           onChange={(e) => setSelectedSkillLevel(Number(e.target.value))}
-        />
+        /> */}
 
         {/* <DropDown
                 label={translations.yourlevel}
@@ -745,7 +745,7 @@ const RegisterForm = () => {
           />
           <p className="ml-2">{translations.newsletter}</p>
         </div>
-        <div className="mb-0 flex items-start">
+        <div className="flex items-start">
           <Checkbox checked={isCheckedToU} onChange={setIsCheckedToU} />
           <p className="ml-2">
             {translations.agree}
@@ -763,22 +763,15 @@ const RegisterForm = () => {
         {errorForm.errorNotCheckedToU && (
           <p className="text-txterror">{translations.errorNotCheckedToU}</p>
         )}
-        <div className="flex justify-center pb-5">
+        <div className="flex justify-center gap-4 pt-5 pb-10">
           <Button
-            className="bg-bgbutton relative m-5 px-6 py-2"
-            type="button"
-            onClick={() => router.push('login')}
-          >
-            Back
-          </Button>
-          <Button
-            className="bg-bgbutton relative m-5 px-6 py-2"
+            className="bg-bgbutton relative px-6 py-2"
             onClick={handlePrevStep}
           >
             {translations.previous}
           </Button>
           <Button
-            className="bg-bgbutton relative m-5 px-6 py-2"
+            className="bg-bgbutton relative px-6 py-2"
             onClick={handleSubmit}
             disabled={isSubmitting}
           >

@@ -14,6 +14,7 @@ import {
 } from '@/slice/fetch';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
+import Image from 'next/image';
 
 const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   //Local State
@@ -189,13 +190,12 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
           <H2>Choose your crop icon :</H2>
           <div className="flex flex-wrap items-center justify-center">
             {iconList.map((icon, key) => (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={icon}
                 alt={`icon-${key}`}
                 key={icon}
                 onClick={handleClickIcon}
-                className={`mx-[2vw] ${baseURL + icon === selectedIcon ? 'rounded-lg border-2' : 'border-0'}`}
+                className={`mx-[2vw] ${baseURL + icon === selectedIcon ? 'z-50 rounded-lg border-2' : 'border-0'}`}
               />
             ))}
           </div>
@@ -203,6 +203,7 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
           <div className="flex justify-center">
             <Button
               className="bg-bgbutton relative m-5 px-6 py-2"
+              type="button"
               onClick={() =>
                 dispatch(
                   setAddCropNurseryPopup({

@@ -15,6 +15,7 @@ import Button from '../Atom/Button';
 import SlimCard from '../Atom/SlimCard';
 import Radio from '../Atom/Radio';
 import { Tag } from '@/utils/types';
+import Image from 'next/image';
 
 const Explore = () => {
   const router = useRouter();
@@ -30,6 +31,8 @@ const Explore = () => {
   const [searchType, setSearchType] = useState<'tag' | 'user' | 'garden'>(
     'tag'
   );
+  const [isUsersTableVisible, setIsUsersTableVisible] = useState(true);
+  const [isGardensTableVisible, setIsGardensTableVisible] = useState(true);
   const [searchValue, setSearchValue] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [searchExecuted, setSearchExecuted] = useState(false);
@@ -200,8 +203,8 @@ const Explore = () => {
 
   return (
     <Card className="bg-cardbackground flex h-screen min-h-screen w-full flex-col px-5 pt-5 pb-23">
-      {/* Partie supérieure fixe (formulaire) */}
-      <div className="flex-shrink-0">
+      {/* Zone des résultats avec défilement */}
+      <div className="mb-5 flex-1 overflow-y-auto">
         <p>The most used tags:</p>
         <div className="mb-5 flex flex-row flex-wrap gap-2">
           {Array.isArray(hashTags?.content) && hashTags.content.length > 0 ? (
@@ -282,351 +285,429 @@ const Explore = () => {
             <p className="text-red-500">{searchMessages.gardensMessage}</p>
           )} */}
         </form>
-      </div>
 
-      {/* Affichage conditionnel des résultats */}
-      {searchExecuted && (
-        <>
-          {/* Résultats pour les utilisateurs */}
-          {(searchType === 'tag' || searchType === 'user') && (
-            <div className="mb-5 max-h-[40vh] overflow-auto">
-              <h3 className="text-lg font-semibold">Users</h3>
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-amber-200">
-                    <th className="border border-black px-4 py-2 text-left">
-                      Name
-                    </th>
-                    <th className="border border-black px-4 py-2 text-left">
-                      XP
-                    </th>
-                    <th className="border border-black px-4 py-2 text-left">
-                      Country
-                    </th>
-                    <th className="border border-black px-4 py-2 text-left">
-                      Biography
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/*Recherche par tags*/}
-                  {searchType === 'tag' ? (
-                    usersStatus === 'rejected' ? (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="border border-black px-4 py-2 text-center"
-                        >
-                          {searchMessages.usersMessage ||
-                            'Users by tags rejected'}
-                        </td>
-                      </tr>
-                    ) : usersData?.content ? (
-                      usersData.content.length > 0 ? (
-                        usersData.content.map((user) => (
-                          <tr key={user.id}>
-                            <td
-                              className="cursor-pointer border border-black px-4 py-2 text-amber-500 hover:text-amber-600"
-                              onClick={() =>
-                                router.push(`/profile/public/${user.id}`)
-                              }
-                            >
-                              {user.username}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {user.xp || 0}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {user.country || 'N/A'}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {user.bio || 'No bio'}
-                            </td>
-                          </tr>
-                        ))
+        {/* Affichage conditionnel des résultats */}
+        {searchExecuted && (
+          <>
+            <div>
+              {/* Résultats pour les utilisateurs */}
+              {(searchType === 'tag' || searchType === 'user') && (
+                <>
+                  <div className="sticky flex items-center gap-2">
+                    <h3 className="text-m">Users</h3>
+                    <button
+                      onClick={() =>
+                        setIsUsersTableVisible(!isUsersTableVisible)
+                      }
+                    >
+                      {isUsersTableVisible ? (
+                        <Image
+                          width={50}
+                          height={50}
+                          src="/image/icons/chevronBas.png"
+                          alt="Cacher"
+                          className="h-3 w-4 rotate-180 transform"
+                        />
                       ) : (
-                        <tr>
-                          <td
-                            colSpan={4}
-                            className="border border-black px-4 py-2 text-center"
-                          >
-                            {searchMessages.usersMessage ||
-                              'No user found with these tags'}
-                            {/*User by tags not found (length===0) */}
-                          </td>
-                        </tr>
-                      )
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="border border-black px-4 py-2 text-center"
-                        >
-                          {searchMessages.usersMessage ||
-                            'User by tags not found (no content)'}
-                        </td>
-                      </tr>
-                    )
-                  ) : null}
+                        <Image
+                          width={50}
+                          height={50}
+                          src="/image/icons/chevronBas.png"
+                          alt="Afficher"
+                          className="h-3 w-4"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div className="mb-5 overflow-x-auto">
+                    {isUsersTableVisible && (
+                      <div>
+                        <table className="w-full max-w-full">
+                          <thead>
+                            <tr className="bg-amber-200">
+                              <th className="border border-black px-4 py-2 text-left">
+                                Name
+                              </th>
+                              <th className="border border-black px-4 py-2 text-left">
+                                XP
+                              </th>
+                              <th className="border border-black px-4 py-2 text-left">
+                                Country
+                              </th>
+                              <th className="border border-black px-4 py-2 text-left">
+                                Biography
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {/* Le reste de votre code de tableau reste inchangé */}
+                            {searchType === 'tag' ? (
+                              usersStatus === 'rejected' ? (
+                                <tr>
+                                  <td
+                                    colSpan={4}
+                                    className="border border-black px-4 py-2 text-center"
+                                  >
+                                    {searchMessages.usersMessage ||
+                                      'Users by tags rejected'}
+                                  </td>
+                                </tr>
+                              ) : usersData?.content ? (
+                                usersData.content.length > 0 ? (
+                                  usersData.content.map((user) => (
+                                    <tr key={user.id}>
+                                      <td
+                                        className="cursor-pointer border border-black px-4 py-2 text-amber-500 hover:text-amber-600"
+                                        onClick={() =>
+                                          router.push(
+                                            `/profile/public/${user.id}`
+                                          )
+                                        }
+                                      >
+                                        {user.username}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {user.xp || 0}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {user.country || 'N/A'}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {user.bio || 'No bio'}
+                                      </td>
+                                    </tr>
+                                  ))
+                                ) : (
+                                  <tr>
+                                    <td
+                                      colSpan={4}
+                                      className="border border-black px-4 py-2 text-center"
+                                    >
+                                      {searchMessages.usersMessage ||
+                                        'No user found with these tags'}
+                                    </td>
+                                  </tr>
+                                )
+                              ) : (
+                                <tr>
+                                  <td
+                                    colSpan={4}
+                                    className="border border-black px-4 py-2 text-center"
+                                  >
+                                    {searchMessages.usersMessage ||
+                                      'User by tags not found (no content)'}
+                                  </td>
+                                </tr>
+                              )
+                            ) : null}
 
-                  {/*Recherche par username*/}
-                  {searchType === 'user' ? (
-                    userStatus === 'rejected' ? (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="border border-black px-4 py-2 text-center"
-                        >
-                          {searchMessages.usersMessage || ''}
-                          {'No user found'}
-                          {/*Users by username rejected */}
-                        </td>
-                      </tr>
-                    ) : userData?.content ? (
-                      userData.content.length > 0 ? (
-                        userData.content.map((user) => (
-                          <tr key={user.id}>
-                            <td
-                              className="cursor-pointer border border-black px-4 py-2 text-amber-500 hover:text-amber-600"
-                              onClick={() =>
-                                router.push(`/profile/public/${user.id}`)
-                              }
-                            >
-                              {user.username}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {user.xp || 0}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {user.country || 'N/A'}
-                            </td>
-                            <td className="border border-black px-4 py-2">
-                              {user.bio || 'No bio'}
-                            </td>
-                          </tr>
-                        ))
+                            {searchType === 'user' ? (
+                              userStatus === 'rejected' ? (
+                                <tr>
+                                  <td
+                                    colSpan={4}
+                                    className="border border-black px-4 py-2 text-center"
+                                  >
+                                    {searchMessages.usersMessage || ''}
+                                    {'No user found'}
+                                  </td>
+                                </tr>
+                              ) : userData?.content ? (
+                                userData.content.length > 0 ? (
+                                  userData.content.map((user) => (
+                                    <tr key={user.id}>
+                                      <td
+                                        className="cursor-pointer border border-black px-4 py-2 text-amber-500 hover:text-amber-600"
+                                        onClick={() =>
+                                          router.push(
+                                            `/profile/public/${user.id}`
+                                          )
+                                        }
+                                      >
+                                        {user.username}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {user.xp || 0}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {user.country || 'N/A'}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {user.bio || 'No bio'}
+                                      </td>
+                                    </tr>
+                                  ))
+                                ) : (
+                                  <tr>
+                                    <td
+                                      colSpan={4}
+                                      className="border border-black px-4 py-2 text-center"
+                                    >
+                                      {searchMessages.usersMessage ||
+                                        'User by username not found (length===0)'}
+                                    </td>
+                                  </tr>
+                                )
+                              ) : (
+                                <tr>
+                                  <td
+                                    colSpan={4}
+                                    className="border border-black px-4 py-2 text-center"
+                                  >
+                                    {searchMessages.usersMessage ||
+                                      'User by username not found (no content)'}
+                                  </td>
+                                </tr>
+                              )
+                            ) : null}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {/* Résultats pour les jardins */}
+              {(searchType === 'tag' || searchType === 'garden') && (
+                <>
+                  <div className="sticky flex items-center gap-2">
+                    <h3 className="text-m">Gardens</h3>
+                    <button
+                      onClick={() =>
+                        setIsGardensTableVisible(!isGardensTableVisible)
+                      }
+                    >
+                      {isGardensTableVisible ? (
+                        <Image
+                          width={50}
+                          height={50}
+                          src="/image/icons/chevronBas.png"
+                          alt="Cacher"
+                          className="h-3 w-4 rotate-180 transform"
+                        />
                       ) : (
-                        <tr>
-                          <td
-                            colSpan={4}
-                            className="border border-black px-4 py-2 text-center"
-                          >
-                            {searchMessages.usersMessage ||
-                              'User by username not found (length===0)'}
-                          </td>
-                        </tr>
-                      )
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="border border-black px-4 py-2 text-center"
-                        >
-                          {searchMessages.usersMessage ||
-                            'User by username not found (no content)'}
-                        </td>
-                      </tr>
-                    )
-                  ) : null}
-                </tbody>
-              </table>
+                        <Image
+                          width={50}
+                          height={50}
+                          src="/image/icons/chevronBas.png"
+                          alt="Afficher"
+                          className="h-3 w-4"
+                        />
+                      )}
+                    </button>
+                  </div>
+                  <div className="mb-5 overflow-x-auto">
+                    {isGardensTableVisible && (
+                      <div>
+                        <table className="w-full max-w-full">
+                          <thead>
+                            <tr className="bg-amber-200">
+                              <th className="border border-black px-4 py-2 text-left">
+                                Name
+                              </th>
+                              <th className="border border-black px-4 py-2 text-left">
+                                Description
+                              </th>
+                              <th className="border border-black px-4 py-2 text-left">
+                                Type
+                              </th>
+                              <th className="border border-black px-4 py-2 text-left">
+                                Privacy
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {/*Recherche par tags*/}
+                            {searchType === 'tag' ? (
+                              gardensStatus === 'rejected' ? (
+                                <tr>
+                                  <td
+                                    colSpan={4}
+                                    className="border border-black px-4 py-2 text-center"
+                                  >
+                                    {searchMessages.gardensMessage ||
+                                      'Garden by tags rejected'}
+                                  </td>
+                                </tr>
+                              ) : gardensData?.content ? (
+                                gardensData.content.length > 0 ? (
+                                  gardensData.content.map((garden) => (
+                                    <tr key={garden.id}>
+                                      <td
+                                        className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
+                                        onClick={() =>
+                                          garden.privacy === 2 &&
+                                          router.push(
+                                            `/garden/display?id=${garden.id}`
+                                          )
+                                        }
+                                      >
+                                        {garden.name}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {garden.description || 'N/A'}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {gardenTypeLabels[garden.type] ??
+                                          'Unknown'}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {garden.privacy === 0 ? (
+                                          <Image
+                                            width={50}
+                                            height={50}
+                                            src="/image/icons/lockClose.png"
+                                            alt="Private"
+                                            className="h-10 w-10"
+                                          />
+                                        ) : garden.privacy === 2 ? (
+                                          <Image
+                                            width={50}
+                                            height={50}
+                                            src="/image/icons/lockOpen.png"
+                                            alt="Public"
+                                            className="h-10 w-10"
+                                          />
+                                        ) : (
+                                          'N/A'
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))
+                                ) : (
+                                  <tr>
+                                    <td
+                                      colSpan={4}
+                                      className="border border-black px-4 py-2 text-center"
+                                    >
+                                      {searchMessages.gardensMessage ||
+                                        'No garden found with these tags'}
+                                    </td>
+                                  </tr>
+                                )
+                              ) : (
+                                <tr>
+                                  <td
+                                    colSpan={4}
+                                    className="border border-black px-4 py-2 text-center"
+                                  >
+                                    {searchMessages.gardensMessage ||
+                                      'No garden found (no content)'}
+                                  </td>
+                                </tr>
+                              )
+                            ) : null}
+
+                            {/*Recherche par name*/}
+                            {searchType === 'garden' ? (
+                              gardenStatus === 'rejected' ? (
+                                <tr>
+                                  <td
+                                    colSpan={4}
+                                    className="border border-black px-4 py-2 text-center"
+                                  >
+                                    {searchMessages.gardensMessage ||
+                                      'No garden found'}
+                                    {/*Garden by name rejected */}
+                                  </td>
+                                </tr>
+                              ) : gardenData?.content ? (
+                                gardenData.content.length > 0 ? (
+                                  gardenData.content.map((garden) => (
+                                    <tr key={garden.id}>
+                                      <td
+                                        className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
+                                        onClick={() =>
+                                          garden.privacy === 2 &&
+                                          router.push(
+                                            `/garden/display?id=${garden.id}`
+                                          )
+                                        }
+                                      >
+                                        {garden.name}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {garden.description || 'N/A'}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {gardenTypeLabels[garden.type] ??
+                                          'Unknown'}
+                                      </td>
+                                      <td className="border border-black px-4 py-2">
+                                        {garden.privacy === 0 ? (
+                                          <Image
+                                            width={50}
+                                            height={50}
+                                            src="/image/icons/lockClose.png"
+                                            alt="Private"
+                                            className="h-10 w-10"
+                                          />
+                                        ) : garden.privacy === 2 ? (
+                                          <Image
+                                            width={50}
+                                            height={50}
+                                            src="/image/icons/lockOpen.png"
+                                            alt="Public"
+                                            className="h-10 w-10"
+                                          />
+                                        ) : (
+                                          'N/A'
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))
+                                ) : (
+                                  <tr>
+                                    <td
+                                      colSpan={4}
+                                      className="border border-black px-4 py-2 text-center"
+                                    >
+                                      {searchMessages.gardensMessage ||
+                                        'No garden found'}
+                                      {/*Garden by name not found (length===0)*/}
+                                    </td>
+                                  </tr>
+                                )
+                              ) : (
+                                <tr>
+                                  <td
+                                    colSpan={4}
+                                    className="border border-black px-4 py-2 text-center"
+                                  >
+                                    {searchMessages.gardensMessage ||
+                                      'Garden by name not found (no content)'}
+                                  </td>
+                                </tr>
+                              )
+                            ) : null}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
-          )}
-
-          {/* Résultats pour les jardins */}
-          {(searchType === 'tag' || searchType === 'garden') && (
-            <>
-              <div className="mb-5 max-h-[40vh] overflow-auto">
-                <h3 className="text-lg font-semibold">Gardens</h3>
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-amber-200">
-                      <th className="border border-black px-4 py-2 text-left">
-                        Name
-                      </th>
-                      <th className="border border-black px-4 py-2 text-left">
-                        Description
-                      </th>
-                      <th className="border border-black px-4 py-2 text-left">
-                        Type
-                      </th>
-                      <th className="border border-black px-4 py-2 text-left">
-                        Privacy
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/*Recherche par tags*/}
-                    {searchType === 'tag' ? (
-                      gardensStatus === 'rejected' ? (
-                        <tr>
-                          <td
-                            colSpan={4}
-                            className="border border-black px-4 py-2 text-center"
-                          >
-                            {searchMessages.gardensMessage ||
-                              'Garden by tags rejected'}
-                          </td>
-                        </tr>
-                      ) : gardensData?.content ? (
-                        gardensData.content.length > 0 ? (
-                          gardensData.content.map((garden) => (
-                            <tr key={garden.id}>
-                              <td
-                                className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
-                                onClick={() =>
-                                  garden.privacy === 2 &&
-                                  router.push(`/garden/display?id=${garden.id}`)
-                                }
-                              >
-                                {garden.name}
-                              </td>
-                              <td className="border border-black px-4 py-2">
-                                {garden.description || 'N/A'}
-                              </td>
-                              <td className="border border-black px-4 py-2">
-                                {gardenTypeLabels[garden.type] ?? 'Unknown'}
-                              </td>
-                              <td className="border border-black px-4 py-2">
-                                {garden.privacy === 0 ? (
-                                  <img
-                                    src="/image/icons/lockClose.png"
-                                    alt="Private"
-                                    className="h-10 w-10"
-                                  />
-                                ) : garden.privacy === 2 ? (
-                                  <img
-                                    src="/image/icons/lockOpen.png"
-                                    alt="Public"
-                                    className="h-10 w-10"
-                                  />
-                                ) : (
-                                  'N/A'
-                                )}
-                              </td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td
-                              colSpan={4}
-                              className="border border-black px-4 py-2 text-center"
-                            >
-                              {searchMessages.gardensMessage ||
-                                'No garden found with these tags'}
-                            </td>
-                          </tr>
-                        )
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan={4}
-                            className="border border-black px-4 py-2 text-center"
-                          >
-                            {searchMessages.gardensMessage ||
-                              'No garden found (no content)'}
-                          </td>
-                        </tr>
-                      )
-                    ) : null}
-
-                    {/*Recherche par name*/}
-                    {searchType === 'garden' ? (
-                      gardenStatus === 'rejected' ? (
-                        <tr>
-                          <td
-                            colSpan={4}
-                            className="border border-black px-4 py-2 text-center"
-                          >
-                            {searchMessages.gardensMessage || 'No garden found'}
-                            {/*Garden by name rejected */}
-                          </td>
-                        </tr>
-                      ) : gardenData?.content ? (
-                        gardenData.content.length > 0 ? (
-                          gardenData.content.map((garden) => (
-                            <tr key={garden.id}>
-                              <td
-                                className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
-                                onClick={() =>
-                                  garden.privacy === 2 &&
-                                  router.push(`/garden/display?id=${garden.id}`)
-                                }
-                              >
-                                {garden.name}
-                              </td>
-                              <td className="border border-black px-4 py-2">
-                                {garden.description || 'N/A'}
-                              </td>
-                              <td className="border border-black px-4 py-2">
-                                {gardenTypeLabels[garden.type] ?? 'Unknown'}
-                              </td>
-                              <td className="border border-black px-4 py-2">
-                                {garden.privacy === 0 ? (
-                                  <img
-                                    src="/image/icons/lockClose.png"
-                                    alt="Private"
-                                    className="h-10 w-10"
-                                  />
-                                ) : garden.privacy === 2 ? (
-                                  <img
-                                    src="/image/icons/lockOpen.png"
-                                    alt="Public"
-                                    className="h-10 w-10"
-                                  />
-                                ) : (
-                                  'N/A'
-                                )}
-                              </td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td
-                              colSpan={4}
-                              className="border border-black px-4 py-2 text-center"
-                            >
-                              {searchMessages.gardensMessage ||
-                                'No garden found'}
-                              {/*Garden by name not found (length===0)*/}
-                            </td>
-                          </tr>
-                        )
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan={4}
-                            className="border border-black px-4 py-2 text-center"
-                          >
-                            {searchMessages.gardensMessage ||
-                              'Garden by name not found (no content)'}
-                          </td>
-                        </tr>
-                      )
-                    ) : null}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
-        </>
-      )}
-      {/* Bouton fixe en bas de l'écran */}
-      <div className="fixed right-0 bottom-0 left-0 flex justify-center p-4">
-        <Button
-          className="bg-bgbutton relative m-5 px-6 py-2"
-          type="button"
-          onClick={() => router.push('landing')}
-        >
-          Home
-        </Button>
-        <Button
-          className="bg-bgbutton relative m-5 px-6 py-2"
-          type="submit"
-          onClick={handleSearchClick}
-        >
-          Search
-        </Button>
+          </>
+        )}
+        {/* Bouton fixe en bas de l'écran */}
+        <div className="fixed right-0 bottom-0 left-0 flex justify-center p-4">
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            type="button"
+            onClick={() => router.push('landing')}
+          >
+            Home
+          </Button>
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            type="submit"
+            onClick={handleSearchClick}
+          >
+            Search
+          </Button>
+        </div>
       </div>
     </Card>
   );

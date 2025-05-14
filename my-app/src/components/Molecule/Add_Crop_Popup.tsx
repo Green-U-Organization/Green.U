@@ -327,7 +327,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
               alt={`icon-${key}`}
               key={icon}
               onClick={handleClickIcon}
-              className={`mx-[2vw] ${baseURL + icon === selectedIcon ? 'rounded-lg border-2' : 'border-0'}`}
+              className={`mx-[2vw] ${baseURL + icon === selectedIcon ? 'z-50 rounded-lg border-2 bg-amber-300' : 'border-0'}`}
             />
           ))}
         </div>
@@ -335,6 +335,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
         <div className="flex items-center justify-center">
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
+            type="button"
             onClick={() =>
               dispatch(
                 setAddCropPopup({

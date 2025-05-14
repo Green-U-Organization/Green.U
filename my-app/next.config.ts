@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   output: 'standalone',
   experimental: {
-    allowedDevOrigins: ['http://192.168.1.3'],
+    allowedDevOrigins: ['http://192.168.1.3', 'http://localhost:3000'],
   },
 };
 

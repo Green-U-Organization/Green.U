@@ -7,6 +7,7 @@ import {
 } from '@/slice/fetch';
 import React from 'react';
 import Card from '../Atom/Card';
+import { FaEnvelope } from 'react-icons/fa';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
@@ -20,6 +21,8 @@ import H2 from '../Atom/H2';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import Loading from '../Atom/Loading';
+import { forIn } from 'lodash';
+import Image from 'next/image';
 
 const Profile = ({ userId }: { userId: number }) => {
   const { translations } = useLanguage();
@@ -139,12 +142,12 @@ const Profile = ({ userId }: { userId: number }) => {
               <h2 className="mb-2 text-2xl font-semibold">
                 🌿 {translations.participating}
               </h2>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="flex flex-col items-center justify-center">
                 {userId &&
                   gardens?.content.map((garden) => (
                     <SlimCard
                       bgColor="bg-cardbackground"
-                      className="bg-parcel mt-[2vh] ml-[0vw] flex min-h-[5vh] w-[90vw] flex-col justify-center"
+                      className="bg-parcel mt-[2vh] ml-[0vw] flex min-h-[5vh] w-[85vw] flex-col justify-center"
                       key={garden.id}
                     >
                       <div className="flex items-center justify-between">
@@ -173,7 +176,9 @@ const Profile = ({ userId }: { userId: number }) => {
                           </p>
                         </div>
 
-                        <img
+                        <Image
+                          width={50}
+                          height={50}
                           // onClick={handleConfigurationClick}
                           className="image mr-[5vw] h-[5vw] w-[5vw] object-contain"
                           src={
@@ -241,6 +246,7 @@ const Profile = ({ userId }: { userId: number }) => {
           </div>
         </div>
       </div>
+
       {/* Bouton fixe en bas de l'écran */}
       <div className="fixed right-0 bottom-0 left-0 flex justify-center p-4">
         {/* A VOIR SI C'EST NECESSAIRE ET OU ALLER */}
@@ -254,7 +260,7 @@ const Profile = ({ userId }: { userId: number }) => {
         <Button
           style={{ display: userId === cookieId ? 'block' : 'none' }}
           className="bg-bgbutton relative m-5 px-6 py-2"
-          onClick={() => router.push('/profile/edit')}
+          onClick={() => router.push(`/profile/edit/${userId}`)}
         >
           {translations.edit}
         </Button>

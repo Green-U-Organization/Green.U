@@ -8,6 +8,7 @@ import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/Confirmation_Popup';
 import AddCropPopup from '../Molecule/Add_Crop_Popup';
 import ExistentCropPopup from '../Molecule/ExistentCrop_Popup';
+import Image from 'next/image';
 import {
   useDeleteOneLineByLineIdMutation,
   useGetCropByLineIdQuery,
@@ -19,6 +20,7 @@ import {
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
+import LoadingModal from '../Molecule/LoadingModal';
 
 const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   // Local State
@@ -28,10 +30,8 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   const [cropIsPresent, setCropIsPresent] = useState<boolean>(false);
 
   //RTK Query
-  const [
-    deleteLineMutation,
-    //  { data: lines }
-  ] = useDeleteOneLineByLineIdMutation();
+  const [deleteLineMutation, { isLoading: deleteLinesIsLoading }] =
+    useDeleteOneLineByLineIdMutation();
   const { data: crops } = useGetCropByLineIdQuery({
     lineId: line.id,
   });
@@ -222,6 +222,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
 
   return (
     <>
+      {deleteLinesIsLoading && <LoadingModal />}
       <div
         className={`relative z-0`}
         style={{
@@ -293,7 +294,9 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
           }
 
           <div className="mr-[5vw] flex">
-            <img
+            <Image
+              width={50}
+              height={50}
               className="mx-[3vw]"
               src="/image/icons/add.png"
               alt="Add crop"
@@ -303,7 +306,9 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
               }}
               onClick={() => handleClickAddCrop()}
             />
-            <img
+            <Image
+              width={50}
+              height={50}
               className="mx-[3vw]"
               src="/image/icons/edit.png"
               alt="Edit line"
@@ -312,7 +317,9 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
                 height: '5vw',
               }}
             />
-            <img
+            <Image
+              width={50}
+              height={50}
               className="mx-[3vw]"
               src="/image/icons/info.png"
               alt="Display info about line"
@@ -329,7 +336,9 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
                 )
               }
             />
-            <img
+            <Image
+              width={50}
+              height={50}
               className="mx-[3vw]"
               src="/image/icons/trash.png"
               alt="Delete line"

@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Image from 'next/image';
 import React from 'react';
 
 interface IconProps {
@@ -13,7 +14,9 @@ const Icon = ({ icon }: { icon: IconProps }) => {
       className="m-auto h-8 w-8 rounded-md border-1 p-1"
       onClick={() => icon.handleClick()}
     >
-      <img
+      <Image
+        width={50}
+        height={50}
         src={icon.src}
         alt={icon.alt}
         style={{ height: '100%', width: '100%' }}
