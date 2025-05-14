@@ -23,6 +23,7 @@ import Loading from '../Atom/Loading';
 import SlimCard from '../Atom/SlimCard';
 import Cookies from 'js-cookie';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
+import LoadingModal from '../Molecule/LoadingModal';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   //Local State
@@ -48,8 +49,10 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
     isLoading: linesIsLoading,
     isError: linesIsError,
   } = useGetAllLinesByParcelIdQuery({ parcelId: parcel.id });
-  const [createNewLine] = useCreateNewGardenLineMutation();
-  const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
+  const [createNewLine, { isLoading: newLineIsLoading }] =
+    useCreateNewGardenLineMutation();
+  const [deleteParcel, { isLoading: deleteParcelIsLoading }] =
+    useDeleteOneParcelByParcelIdMutation();
 
   //Debug
   // console.log('lines : ', lines);
@@ -108,6 +111,8 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
 
   return (
     <>
+      {deleteParcelIsLoading && <LoadingModal />}
+      {newLineIsLoading && <LoadingModal />}
       <section className="-z-0 ml-[5vw]">
         <div className="flex flex-col">
           {/* //MainCore */}
