@@ -2,28 +2,26 @@
 
 # User
 
-- Login
-- Sign in + Creation User
-- Writing post (blog stye)
-- Join garden
-- Left garden
+- Login X
+- Sign in + Creation User X
+- Join garden X
+- Left garden X
 
 
 # Garden
 
-- Create a garden
-- Edit a garden
-- Vote (For moderation)
+- Create a garden V
+- Edit a garden X
 
     **Parcels**
-    - add
-    - edit
-        - add line
-        - delete line
-        - edit line 
-        - view (popup)
-    - delete
-    - view (popup)
+    - add V
+    - edit V
+        - add line V
+        - delete line V
+        - edit line X
+        - view (popup) X
+    - delete V 
+    - view (popup) X
 
 
 # Vegetables

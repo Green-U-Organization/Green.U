@@ -15,88 +15,134 @@ namespace GreenUApi.Controllers
     // [Authorize]
     public class PlantNurseryController : ControllerBase
     {
-        private readonly GreenUDB _context;
+        private readonly GreenUDB _db;
 
         public PlantNurseryController(GreenUDB context)
         {
-            _context = context;
+            _db = context;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlantNursery>>> GetPlantNursery()
         {
-            return await _context.PlantNursery.ToListAsync();
-        }
-
-        [HttpGet("{id}", Name = "GetPlantNursery")]
-        public async Task<ActionResult<PlantNursery>> GetPlantNursery(long? id)
-        {
-            var plantNursery = await _context.PlantNursery.FindAsync(id);
+            var plantNursery = await _db.PlantNursery
+                .ToListAsync();
 
             if (plantNursery == null)
             {
-                return NotFound();
+                return BadRequest(new { isEmpty = true, message = "No plantNursery..."});
             }
 
-            return plantNursery;
+            return Ok(new { isEmpty = false, message = "All plant nursery", content = plantNursery});
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PlantNursery>> GetPlantNurseryById(long id)
+        {
+            var plantNursery = await _db.PlantNursery.FindAsync(id);
+
+            if (plantNursery == null)
+            {
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect"});
+            }
+
+            return Ok(new { isEmpty = false, message = "The nursery", content = plantNursery});
+        }
+
+        [HttpGet("garden/{id}")]
+        public async Task<ActionResult<PlantNursery>> GetPlantNurseryByGardenId(long id)
+        {
+            var plantNursery = await _db.PlantNursery
+                .Where(p => p.GardenId == id)
+                .ToListAsync();
+
+            if (plantNursery.Count == 0)
+            {
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
+            }
+
+            return Ok(new { isEmpty = false, message = "The nursery", content = plantNursery });
+
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PutPlantNursery(long? id, PlantNursery plantNursery)
+        public async Task<ActionResult<PlantNursery>> PatchPlantNursery(long id, PlantNursery modifiedPlantNursery)
         {
-            if (id != plantNursery.Id)
-            {
-                return BadRequest();
-            }
+            var plantNursery = await _db.PlantNursery
+                .FirstOrDefaultAsync();
 
-            _context.Entry(plantNursery).State = EntityState.Modified;
+            if (plantNursery == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlantNurseryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            if (modifiedPlantNursery.Name != null) plantNursery.Name = modifiedPlantNursery.Name;
 
-            return NoContent();
+            if (modifiedPlantNursery.Type != null) plantNursery.Type = modifiedPlantNursery.Type;
+
+            _db.Update(plantNursery);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "Plant Nursery is modified", content = plantNursery });
         }
 
         [HttpPost]
         public async Task<ActionResult<PlantNursery>> PostPlantNursery(PlantNursery plantNursery)
         {
-            _context.PlantNursery.Add(plantNursery);
-            await _context.SaveChangesAsync();
+            if (plantNursery.GardenId == null) return BadRequest(new { isEmpty = true, message = "The gardenId is required" });
 
-            return CreatedAtAction("GetPlantNursery", new { id = plantNursery.Id }, plantNursery);
+            bool gardenExist = await _db.Gardens
+                .AnyAsync(g => g.Id == plantNursery.GardenId);
+
+            if (!gardenExist) return BadRequest(new { isEmpty = true, message = "The specified garden does not exist" });
+
+            _db.PlantNursery.Add(plantNursery);
+
+            Log log = new()
+            {
+                GardenId = plantNursery.GardenId,
+                Action = $"Create the {plantNursery.Name} plant nursery with type {plantNursery.Type}",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "A new nursery is created!", content = plantNursery });
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlantNursery(long? id)
         {
-            var plantNursery = await _context.PlantNursery.FindAsync(id);
-            if (plantNursery == null)
+            var plantNursery = await _db.PlantNursery.FindAsync(id);
+
+            if (plantNursery == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect !"});
+
+            var crops = _db.Crops
+                .Where(c => c.PlantNurseryId == id)
+                .ToList();
+
+            int cropCount = 0; 
+
+            foreach (var crop in crops)
             {
-                return NotFound();
-            }
+                cropCount++;
+                crop.PlantNurseryId = null;
+            };
 
-            _context.PlantNursery.Remove(plantNursery);
-            await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+            _db.PlantNursery.Remove(plantNursery);
 
-        private bool PlantNurseryExists(long? id)
-        {
-            return _context.PlantNursery.Any(e => e.Id == id);
+            Log log = new()
+            {
+                GardenId = plantNursery.GardenId,
+                Action = $"Delete the {plantNursery.Name} plant nursery with type {plantNursery.Type} and delete {cropCount} crops.",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "This plant nursery are deleted", content = plantNursery});
         }
     }
 }

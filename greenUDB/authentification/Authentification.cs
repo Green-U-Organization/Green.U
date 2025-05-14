@@ -1,11 +1,19 @@
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
-using Token;
 using GreenUApi.Models;
 
 namespace GreenUApi.authentification
 {
+
+    public class UserDTO
+    {
+        public bool? Error {  get; set; }
+        public string? Message { get; set; }
+        public long? Id { get; set; }
+        public string? Username { get; set; }
+    }
+
     public class Authentification
     {
         public static string[] Hasher(string password, byte[]? salty)
@@ -32,7 +40,7 @@ namespace GreenUApi.authentification
 
         }
 
-    public static async Task<(bool success, string? token, string? message)> Login(string Email, string password, GreenUDB db)
+        public static async Task<UserDTO> VerifyCredentials(string Email, string password, GreenUDB db)
         {
             var User = await db.Users
             .Where(u => u.Email == Email)
@@ -45,26 +53,20 @@ namespace GreenUApi.authentification
             })
             .FirstOrDefaultAsync();
 
-            if (User == null)
-            {
-                return (false, null, "User not found !!!");
-            }
+            if (User == null) return new UserDTO { Error = true, Message = "Email is wrong"};
 
 
-            String hashedPassword = "";
-            if(User.Salt != null)
+            string hashedPassword = "";
+            if (User.Salt != null)
                 hashedPassword = Hasher(password, Convert.FromBase64String(User.Salt))[0];
 
             if (User.Password == hashedPassword)
             {
-                var token = Jwt.GenerateJwtToken(User);
-
-                return (true, token, "Bienvenue !!!");
+                return new UserDTO { Id = User.Id, Username = User.Username };
             }
 
-            return (false, null, "Combinaison mot de passe/username invalide !!!");
+            return new UserDTO { Error = true, Message = "Pass is wrong" };
         }
-
 
     }
 }

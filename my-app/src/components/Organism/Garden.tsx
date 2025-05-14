@@ -13,16 +13,15 @@ import H1 from '../Atom/H1';
 import Nursery from './Nursery';
 import Loading from '../Atom/Loading';
 import SlimCard from '../Atom/SlimCard';
-import Cookies from 'js-cookie';
 
 const Garden: FC<GardenProps> = ({ garden, scale }) => {
   //Local State
   const [currentGarden, setCurrentGarden] = useState<Garden>(garden);
 
   //USER info
-  const userData = Cookies.get('user_data');
-  const userCookie = userData ? JSON.parse(userData) : null;
-  const userId = Number(userCookie?.id);
+  // const userData = Cookies.get('user_data');
+  // const userCookie = userData ? JSON.parse(userData) : null;
+  // const userId = Number(userCookie?.id);
 
   // Hooks
 

@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from 'react';
 import Card from '@/components/Atom/Card';
 import TextInput from '@/components/Atom/TextInput';
 import Button from '@/components/Atom/Button';
-import SelectInput from '@/components/Atom/SelectInput';
 import Calendar from 'react-calendar';
 import { CalendarProps } from 'react-calendar';
 import Radio from '@/components/Atom/Radio';
