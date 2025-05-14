@@ -118,7 +118,10 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
               name="otherAction"
               id="otherAction"
               placeholder="Enter a type"
-              onChange={(e) => setCustomAction(e.target.value)}
+              onChange={(e) => {
+                setCustomAction(e.target.value);
+                console.log(customAction);
+              }}
               value={customAction}
             ></TextInput>
           </div>
