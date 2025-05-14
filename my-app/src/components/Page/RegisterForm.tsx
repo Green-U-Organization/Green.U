@@ -108,7 +108,7 @@ const RegisterForm = () => {
   const cols = 65;
 
   const [isValidPostalCode, setIsValidPostalCode] = useState(true);
-  const [step, setStep] = useState(2); //Pour gérer l'affichage des "pages"
+  const [step, setStep] = useState(1); //Pour gérer l'affichage des "pages"
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordVerify, setShowPasswordVerify] = useState(false);
   const [birthDateDisplay, setBirthDateDisplay] = useState<boolean>(false);
@@ -371,12 +371,12 @@ const RegisterForm = () => {
       firstname: formDataRegister.firstname,
       lastname: formDataRegister.lastname,
       email: formDataRegister.email,
-      // Postal_code: formDataRegister.postalCode, // AJOUTER POSTAL CODE DANS API
+      Postal_code: formDataRegister.postalCode, // AJOUTER POSTAL CODE DANS API
       country: 'Belgium',
       gender: formDataRegister.gender,
       birthday: formDataRegister.birthDate,
       newsletter: isCheckedNewsletter,
-      //skill_level: selectedSkillLevel,
+      //skill_level: formDataRegister.skillLevel,
       bio: formDataRegister.bio,
     };
     //console.log('formJson page 2: ', bodyRequest);

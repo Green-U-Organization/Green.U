@@ -6,6 +6,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import Add_BugReport_Popup from '../Molecule/Add_BugReport_Popup';
 import Cookies from 'js-cookie';
+import Image from 'next/image';
 
 const BugReport = () => {
   //Selector
@@ -36,7 +37,9 @@ const BugReport = () => {
           )
         }
       >
-        <img
+        <Image
+          width={50}
+          height={50}
           src={'/image/icons/bug.png'}
           alt={'Bug report'}
           className="border-4object-cover fixed top-2 right-2 z-50 h-[6vh] w-[6vh] overflow-hidden p-1 opacity-100"

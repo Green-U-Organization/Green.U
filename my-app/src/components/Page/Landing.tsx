@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../slice/authSlice';
+import Image from 'next/image';
 
 const Landing = () => {
   const router = useRouter();
@@ -19,17 +20,23 @@ const Landing = () => {
     <Card className="relative flex h-screen w-screen flex-col items-center justify-center">
       {/* Background */}
       <div className="absolute h-screen w-screen overflow-hidden opacity-100">
-        <img
+        <Image
+          width={50}
+          height={50}
           src={'/image/divers/gifs/1.gif'}
           alt={'Loading...'}
           className="absolute -top-0 -right-0 h-screen w-screen overflow-hidden object-cover"
         />
-        <img
+        <Image
+          width={50}
+          height={50}
           src={'/image/divers/gifs/loading.gif'}
           alt={'Loading...'}
           className="absolute top-45 -right-25 h-[70vh] w-[100vh] overflow-hidden object-cover"
         />
-        <img
+        <Image
+          width={50}
+          height={50}
           src={'/image/divers/gifs/2.gif'}
           alt={'Loading...'}
           className="absolute -top-0 -right-0 h-screen w-screen overflow-hidden object-cover"

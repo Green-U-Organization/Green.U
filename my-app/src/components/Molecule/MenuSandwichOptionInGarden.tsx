@@ -145,7 +145,9 @@ const MenuSandwichOptionInGarden: React.FC<MenuSandwichProps> = () => {
         className="bg-bgbutton h-[60px] w-[60px]"
         onClick={handleClickMenu}
       >
-        <img
+        <Image
+          width={50}
+          height={50}
           src={
             clickMenuDisplay
               ? '/image/icons/chevronBas.png'
