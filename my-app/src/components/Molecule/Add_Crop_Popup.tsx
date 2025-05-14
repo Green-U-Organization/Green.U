@@ -327,7 +327,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
               alt={`icon-${key}`}
               key={icon}
               onClick={handleClickIcon}
-              className={`mx-[2vw] ${baseURL + icon === selectedIcon ? 'z-50 rounded-lg border-2' : 'border-0'}`}
+              className={`mx-[2vw] ${baseURL + icon === selectedIcon ? 'z-50 rounded-lg border-2 bg-amber-300' : 'border-0'}`}
             />
           ))}
         </div>
