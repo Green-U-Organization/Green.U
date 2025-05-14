@@ -7,10 +7,7 @@ import { RootState, useDispatch } from '@/redux/store';
 import { MenuSandwichProps } from '@/utils/types';
 import Button from '../Atom/Button';
 import Card from '../Atom/Card';
-import {
-  setDisplayGardenLogPopup,
-  setDisplayParcelLogPopup,
-} from '@/redux/display/displaySlice';
+import { setDisplayGardenLogPopup } from '@/redux/display/displaySlice';
 import SlimCard from '../Atom/SlimCard';
 
 import { useRouter } from 'next/navigation';

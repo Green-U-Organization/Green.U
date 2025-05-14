@@ -1,14 +1,16 @@
 import PublicProfile from '@/components/Page/PublicProfile';
-import { notFound } from 'next/navigation';
-import React from 'react';
+import React, { FC } from 'react';
 
-interface Props {
-  params: {
-    id: number; // Les paramètres d'URL sont toujours des strings
-  };
-}
+type Profile = {
+  params: Promise<{
+    id: number;
+  }>;
+};
 
-export default function Page({ params }: Props) {
-  const userId = Number(params.id);
+const page: FC<Profile> = async ({ params }) => {
+  const { id } = await params;
+  const userId = Number(id);
   return <PublicProfile userId={userId} />;
-}
+};
+
+export default page;

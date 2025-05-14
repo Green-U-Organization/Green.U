@@ -18,6 +18,7 @@ type displayState = {
   displayNurseryLogPopup: boolean;
   displayGreenhouseLogPopup: boolean;
   displayAddLogWindow: boolean;
+  displayBugReportPopup: boolean;
 };
 
 type payloadType = {
@@ -43,6 +44,7 @@ const initialState: displayState = {
   displayNurseryLogPopup: false,
   displayGreenhouseLogPopup: false,
   displayAddLogWindow: false,
+  displayBugReportPopup: false,
 };
 
 const displaySlice = createSlice({
@@ -116,6 +118,10 @@ const displaySlice = createSlice({
       state.displayAddLogWindow = action.payload.state;
       state.id = action.payload.id ?? 0;
     },
+    setDisplayBugReportPopup: (state, action: PayloadAction<payloadType>) => {
+      state.displayBugReportPopup = action.payload.state;
+      state.id = action.payload.id ?? 0;
+    },
   },
 });
 
@@ -136,5 +142,6 @@ export const {
   setDisplayNurseryLogPopup,
   setDisplayParcelLogPopup,
   setDisplayAddLogWindow,
+  setDisplayBugReportPopup,
 } = displaySlice.actions;
 export default displaySlice.reducer;

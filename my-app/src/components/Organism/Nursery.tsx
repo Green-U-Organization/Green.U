@@ -16,6 +16,8 @@ import {
   setDisplayNurseryLogPopup,
 } from '@/redux/display/displaySlice';
 import SlimCard from '../Atom/SlimCard';
+import Cookies from 'js-cookie';
+
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 
 const Nursery: FC<NurceryProps> = ({ nursery }) => {
@@ -39,6 +41,11 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
   // Hooks
   const dispatch = useDispatch();
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
+
   // Selectors
   const addCropPopupDisplay = useSelector(
     (state: RootState) => state.display.addCropNurseryPopup
@@ -48,6 +55,9 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
   );
   const displayCropLogPopup = useSelector(
     (state: RootState) => state.display.displayCropLogPopup
+  );
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
   );
   const id = useSelector((state: RootState) => state.display.id);
 
@@ -97,6 +107,9 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
         <div className="flex w-full justify-between">
           <div className="flex items-center">
             <Image
+              style={{
+                display: userId === currentGarden?.authorId ? 'block' : 'none',
+              }}
               className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
               src="/image/icons/add.png"
               alt="Add crop"
@@ -113,6 +126,9 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
               }
             />
             <Image
+              style={{
+                display: userId === currentGarden?.authorId ? 'block' : 'none',
+              }}
               className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
               src="/image/icons/edit.png"
               alt="Edit nursery"
@@ -135,6 +151,9 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
               }
             />
             <Image
+              style={{
+                display: userId === currentGarden?.authorId ? 'block' : 'none',
+              }}
               className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
               src="/image/icons/trash.png"
               alt="Deleting nursery"

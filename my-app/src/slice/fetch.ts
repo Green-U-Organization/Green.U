@@ -81,7 +81,6 @@ type GetGardensByNameRequest = {
 };
 
 type GetGardensByNameErrorResponse = {
-  value: any;
   isEmpty: boolean;
   message: string;
   status?: number;
@@ -311,14 +310,12 @@ type GetAllUsersByTagRequest = {
 };
 
 type GetAllUsersByTagErrorResponse = {
-  value: any;
   isEmpty: boolean;
   message: string;
   status?: number;
 };
 
 type GetAllUsersByTagSuccessResponse = {
-  value: any;
   isEmpty: boolean;
   message: string;
   content?: {

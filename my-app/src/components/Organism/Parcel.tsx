@@ -21,7 +21,7 @@ import {
 } from '@/redux/display/displaySlice';
 import Loading from '../Atom/Loading';
 import SlimCard from '../Atom/SlimCard';
-import Display_ParcelLogs_Popup from '../Molecule/Display_ParcelLogs_Popup';
+import Cookies from 'js-cookie';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
@@ -36,6 +36,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
 
   //Hooks
   const dispatch = useDispatch();
+
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
 
   //RTK Query
   const {
@@ -58,6 +63,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   );
   const displayParcelLogPopup = useSelector(
     (state: RootState) => state.display.displayParcelLogPopup
+  );
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
   );
   const id = useSelector((state: RootState) => state.display.id);
 
@@ -174,6 +182,10 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 <div className="flex w-full justify-between">
                   <div className="flex items-center">
                     <Image
+                      style={{
+                        display:
+                          userId === currentGarden?.authorId ? 'block' : 'none',
+                      }}
                       className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
                       src="/image/icons/add.png"
                       alt="Add line"
@@ -182,6 +194,10 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                       onClick={addLine}
                     />
                     <Image
+                      style={{
+                        display:
+                          userId === currentGarden?.authorId ? 'block' : 'none',
+                      }}
                       className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
                       src="/image/icons/edit.png"
                       alt="Edit parcel"
@@ -212,6 +228,10 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                       }
                     />
                     <Image
+                      style={{
+                        display:
+                          userId === currentGarden?.authorId ? 'block' : 'none',
+                      }}
                       className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
                       src="/image/icons/trash.png"
                       alt="Deleting parcel"

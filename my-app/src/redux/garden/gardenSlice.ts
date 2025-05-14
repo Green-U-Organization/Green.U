@@ -1,10 +1,10 @@
 import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
-import { Garden, GardenFull } from '@/utils/types';
+import { Garden } from '@/utils/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GardenState {
   gardens: Garden[];
-  selectedGarden: GardenFull | null;
+  selectedGarden: Garden | null;
   loading: boolean;
   error: string | null;
   scale: number;
@@ -40,7 +40,7 @@ const gardenSlice = createSlice({
   name: 'garden',
   initialState,
   reducers: {
-    setSelectedGarden: (state, action: PayloadAction<GardenFull>) => {
+    setSelectedGarden: (state, action: PayloadAction<Garden>) => {
       state.selectedGarden = action.payload;
     },
     clearSelectedGarden: (state) => {

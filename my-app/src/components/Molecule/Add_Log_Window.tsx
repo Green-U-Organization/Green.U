@@ -2,8 +2,7 @@ import React, { useState, FC } from 'react';
 import SlimCard from '../Atom/SlimCard';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import { useDispatch } from 'react-redux';
 import { setDisplayAddLogWindow } from '@/redux/display/displaySlice';
 import { useCreateLogMutation } from '@/slice/fetch';
 
@@ -20,9 +19,6 @@ const Add_Log_Window: FC<AddLogWindow> = ({ id, logObject, userId }) => {
   const [comment, setComment] = useState<string>('');
 
   //Selectors
-  const displayAddLog = useSelector(
-    (state: RootState) => state.display.displayAddLogWindow
-  );
 
   //Hooks
   const dispatch = useDispatch();
@@ -114,11 +110,11 @@ const Add_Log_Window: FC<AddLogWindow> = ({ id, logObject, userId }) => {
     <SlimCard className="m-2">
       <form onSubmit={handleSubmit} className="flex flex-col justify-center">
         <div className="flex">
-          <label className="ml-2" htmlFor="action">
+          <label className="ml-3" htmlFor="action">
             Action :{' '}
           </label>
           <select
-            className="ml-2"
+            className="ml-3"
             name="action"
             id="action"
             onChange={(e) => {
@@ -149,11 +145,12 @@ const Add_Log_Window: FC<AddLogWindow> = ({ id, logObject, userId }) => {
           ></TextInput>
         </div>
 
-        <label className="ml-2" htmlFor="comment">
+        <label className="ml-3" htmlFor="comment">
           Comment :
         </label>
         <textarea
           onChange={(e) => setComment(e.target.value)}
+          rows={3}
           name="comment"
           id="comment"
           placeholder="You can add some details about what you did..."

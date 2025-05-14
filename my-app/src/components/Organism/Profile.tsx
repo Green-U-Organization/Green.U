@@ -7,7 +7,7 @@ import {
 } from '@/slice/fetch';
 import React from 'react';
 import Card from '../Atom/Card';
-//import { FaEnvelope } from 'react-icons/fa';
+import { FaEnvelope } from 'react-icons/fa';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
@@ -140,12 +140,12 @@ const Profile = ({ userId }: { userId: number }) => {
               <h2 className="mb-2 text-2xl font-semibold">
                 🌿 {translations.participating}
               </h2>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="flex flex-col items-center justify-center">
                 {userId &&
                   gardens?.content.map((garden) => (
                     <SlimCard
                       bgColor="bg-cardbackground"
-                      className="bg-parcel mt-[2vh] ml-[0vw] flex min-h-[5vh] w-[90vw] flex-col justify-center"
+                      className="bg-parcel mt-[2vh] ml-[0vw] flex min-h-[5vh] w-[85vw] flex-col justify-center"
                       key={garden.id}
                     >
                       <div className="flex items-center justify-between">

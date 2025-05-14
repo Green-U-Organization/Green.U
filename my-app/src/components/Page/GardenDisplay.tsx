@@ -25,6 +25,9 @@ const GardenDisplay = () => {
 
   //Cookies
   const garden = Cookies.get('selected_garden');
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
 
   //Hooks
   const dispatch = useDispatch();
@@ -53,7 +56,15 @@ const GardenDisplay = () => {
             <Garden garden={currentGarden} scale={scale}></Garden>
           )}
         </div>
-        <MenuSandwich iconList={[]}></MenuSandwich>
+
+        <div
+          style={{
+            display: userId === currentGarden?.authorId ? 'block' : 'none',
+          }}
+        >
+          <MenuSandwich iconList={[]}></MenuSandwich>
+        </div>
+
         <div className="fixed right-0 bottom-[20px] left-0 z-49 flex items-center justify-center">
           <Button
             className="bg-bgbutton relative px-6 py-3.5"
