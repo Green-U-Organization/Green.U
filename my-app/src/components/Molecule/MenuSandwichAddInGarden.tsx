@@ -148,9 +148,12 @@ const MenuSandwich: React.FC<MenuSandwichProps> = () => {
   }, [clickMenuDisplay]);
 
   return (
-    <section ref={menuRef} className="fixed right-[20px] bottom-[20px] z-50">
+    <section
+      ref={menuRef}
+      className={`fixed right-[20px] bottom-[20px] ${clickMenuDisplay ? 'z-11' : 'z-10'}`}
+    >
       <Button
-        className="bg-bgbutton z-50 h-[60px] w-[60px]"
+        className="bg-bgbutton z-10 h-[60px] w-[60px]"
         onClick={handleClickMenu}
       >
         <Image
