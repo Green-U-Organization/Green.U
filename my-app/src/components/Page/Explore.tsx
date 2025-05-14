@@ -562,9 +562,7 @@ const Explore = () => {
                                             dispatch(setSelectedGarden(garden));
                                             clearSelectedGarden();
                                             setSelectedGardenCookies(garden);
-                                            router.push(
-                                              `/garden/display?id=${garden.id}`
-                                            );
+                                            router.push(`/garden/display`);
                                           }
                                         }}
                                       >
@@ -648,9 +646,7 @@ const Explore = () => {
                                             dispatch(setSelectedGarden(garden));
                                             clearSelectedGarden();
                                             setSelectedGardenCookies(garden);
-                                            router.push(
-                                              `/garden/display?id=${garden.id}`
-                                            );
+                                            router.push(`/garden/display`);
                                           }
                                         }}
                                       >
