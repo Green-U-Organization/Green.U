@@ -9,6 +9,7 @@ import Confirmation from '../Molecule/Confirmation_Popup';
 import AddCropPopup from '../Molecule/Add_Crop_Popup';
 import ExistentCropPopup from '../Molecule/ExistentCrop_Popup';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
 import {
   useDeleteOneLineByLineIdMutation,
   useGetCropByLineIdQuery,
@@ -41,6 +42,11 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   const cropPopupRef = useRef<HTMLDivElement>(null);
   const existantPopupRef = useRef<HTMLDivElement>(null);
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
+
   //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
@@ -56,6 +62,9 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   );
   const displayCropLogPopup = useSelector(
     (state: RootState) => state.display.displayCropLogPopup
+  );
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
   );
   const id = useSelector((state: RootState) => state.display.id);
 
@@ -224,47 +233,6 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
     <>
       {deleteLinesIsLoading && <LoadingModal />}
       <div
-        className={`relative z-0`}
-        style={{
-          width: line.length * scale,
-          height: (2 * scale) / 100,
-          display: graphicMode ? 'block' : 'none',
-        }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        // onClick={handleClick}
-      >
-        {/* Image du légume - z-index inférieur */}
-        <div
-          // className={`${cropIcon[selectedCrop]} absolute bottom-0 z-10`} // z-10 pour l'image
-          style={{
-            width: line.length * scale,
-            height: 0.2 * scale,
-          }}
-        ></div>
-
-        {/* Popup d'information - z-index supérieur */}
-        {displayInfo && (
-          <div
-            className="absolute left-20 z-50 flex w-40 flex-col items-start border-2 bg-gray-200 p-2 shadow-lg"
-            style={{
-              transform: 'translateY(-100%)', // Pour faire apparaître la popup au-dessus
-              top: '0',
-            }}
-          >
-            {/* <h3 className="font-bold">{line.crop.vegetable}</h3>
-          <h4 className="text-sm italic">{line.crop.variety}</h4>
-          <h5 className="mt-1 text-xs">{line.status}</h5> */}
-            <div className="mt-2 flex w-full flex-row justify-evenly">
-              <button className="border-2 bg-white px-2">❗</button>
-              <button className="border-2 bg-white px-2">👍</button>
-              <button className="border-2 bg-white px-2">❓</button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div
         className="ml-5 flex flex-col"
         style={{
           display: graphicMode ? 'none' : 'flex',
@@ -295,15 +263,16 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
 
           <div className="mr-[5vw] flex">
             <Image
+              style={{
+                display: userId === currentGarden?.authorId ? 'block' : 'none',
+                width: '5vw',
+                height: '5vw',
+              }}
               width={50}
               height={50}
               className="mx-[3vw]"
               src="/image/icons/add.png"
               alt="Add crop"
-              style={{
-                width: '5vw',
-                height: '5vw',
-              }}
               onClick={() => handleClickAddCrop()}
             />
             <Image
@@ -313,6 +282,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
               src="/image/icons/edit.png"
               alt="Edit line"
               style={{
+                display: userId === currentGarden?.authorId ? 'block' : 'none',
                 width: '5vw',
                 height: '5vw',
               }}
@@ -343,6 +313,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
               src="/image/icons/trash.png"
               alt="Delete line"
               style={{
+                display: userId === currentGarden?.authorId ? 'block' : 'none',
                 width: '5vw',
                 height: '5vw',
               }}

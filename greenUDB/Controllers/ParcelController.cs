@@ -7,119 +7,151 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using Docker.DotNet.Models;
 
 namespace GreenUApi.Controllers
 {
     [Route("garden/parcel")]
     [ApiController]
     // [Authorize]
-    public class ParcelController : ControllerBase
+    public class ParcelController(GreenUDB _db) : ControllerBase
     {
-        private readonly GreenUDB _context;
-
-        public ParcelController(GreenUDB context)
-        {
-            _context = context;
-        }
+        private readonly GreenUDB _db = _db;
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Parcel>>> GetParcel(long id)
+        public async Task<ActionResult<IEnumerable<Parcel>>> GetParcelWithGardenId(long id)
         {
-            var parcel = await _context.Parcels.Where(g => g.GardenId == id)
-                                        .ToListAsync();;
+            var parcel = await _db.Parcels
+                .Where(g => g.GardenId == id)
+                .ToListAsync();
 
-            if (parcel == null)
+            if (parcel.Count == 0)
             {
-                return NotFound();
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect"});
             }
 
-            return parcel;
+            return Ok(new { isEmpty = false, message = "All parcel for this garden", content = parcel});
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PutParcel(long id, Parcel parcel)
+        public async Task<IActionResult> PatchParcel(long id, Parcel modifiedParcel)
         {
-            if (id != parcel.Id)
+            var parcel = await _db.Parcels
+                .FindAsync(id);
+
+            if (parcel == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
+
+            string modificationLog = "";
+
+            if (modifiedParcel.Length != null)
             {
-                return BadRequest();
+                modificationLog += $"Edit the length : {parcel.Length} => {modifiedParcel.Length}; ";
+                parcel.Length = modifiedParcel.Length;
             }
 
-            _context.Entry(parcel).State = EntityState.Modified;
-
-            try
+            if (modifiedParcel.Width != null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParcelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                modificationLog += $"Edit the width : {parcel.Width} => {modifiedParcel.Width}; ";
+                parcel.Width = modifiedParcel.Width;
             }
 
-            return NoContent();
+            if (modifiedParcel.NLine != null)
+            {
+                modificationLog += $"Edit number of line : {parcel.NLine} => {modifiedParcel.NLine}; ";
+                parcel.NLine = modifiedParcel.NLine;
+            }
+
+            if (modifiedParcel.ParcelAngle != null)
+            {
+                modificationLog += $"Edit angle : {parcel.ParcelAngle} => {modifiedParcel.ParcelAngle}; ";
+                parcel.ParcelAngle = modifiedParcel.ParcelAngle;
+            }
+
+            _db.Update(parcel);
+
+            Log log = new()
+            {
+                GardenId = parcel.GardenId,
+                ParcelId = parcel.Id,
+                Action = "Edit parcel",
+                Comment = modificationLog,
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "Your parcel is modified", content = parcel });
         }
 
         [HttpPost]
         public async Task<ActionResult<Parcel>> PostParcel(Parcel parcel)
         {
-            var GardenExist = await _context.Gardens
+            var GardenExist = await _db.Gardens
                 .FirstOrDefaultAsync(garden => garden.Id == parcel.GardenId);
 
-            if (GardenExist == null)
-            {
-                return BadRequest(new { message = "Garden id is incorrect..."});
-            }
+            if (GardenExist == null) return BadRequest(new { isEmpty = true, message = "Garden id is incorrect..."});
 
-            _context.Parcels.Add(parcel);
-            await _context.SaveChangesAsync();
+            _db.Parcels.Add(parcel);
+
+            Log log = new()
+            {
+                GardenId = parcel.GardenId,
+                ParcelId = parcel.Id,
+                Action = "Create parcel",
+                Comment = $"Length : {parcel.Length}. Width : {parcel.Width}",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
+            await _db.SaveChangesAsync();
             
-            return CreatedAtAction("GetParcel", new { id = parcel.Id }, parcel);
+            return Ok(new { isEmpty = false, message = "The parcel is created !", content = parcel});
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParcel(long id)
         {
-            try
+            var parcel = await _db.Parcels
+                .FindAsync(id);
+
+            if (parcel == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
+
+            var lines = await _db.Lines
+                .Where(l => l.ParcelId == id)
+                .ToListAsync();
+
+            foreach (var line in lines)
             {
-                var parcel = await _context.Parcels.FindAsync(id);
-                if (parcel == null)
+                var crops = await _db.Crops
+                    .Where(c => c.LineId == line.Id)
+                    .ToListAsync();
+                foreach (var crop in crops)
                 {
-                    return NotFound();
+                    crop.LineId = null;
                 }
-
-                var lines = await _context.Lines.Where(l => l.ParcelId == parcel.Id).ToListAsync();
-
-                foreach(var line in lines)
-                {
-                    var crops = await _context.Crops.Where(c => c.LineId == line.Id).ToListAsync();
-                    foreach (var crop in crops)
-                    {
-                        _context.Crops.Remove(crop); 
-                    }
-                    _context.Lines.Remove(line);
-                }
-
-                _context.Parcels.Remove(parcel);
-                await _context.SaveChangesAsync();
-
-                return NoContent();
+                _db.Lines.Remove(line);
             }
-            catch (Exception ex)
+
+            Log log = new()
             {
-                // Log l'exception pour obtenir plus d'informations
-                return StatusCode(500, $"Internal server error: {ex.InnerException?.Message ?? ex.Message}");
-            }
+                GardenId = parcel.GardenId,
+                ParcelId = parcel.Id,
+                Action = "Delete parcel",
+                Comment = $"Length : {parcel.Length}. Width : {parcel.Width}",
+                Type = "Automatic",
+            };
+            _db.Add(log);
+
+            _db.Remove(parcel);
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, messsage = "This parcel is deleted", content = parcel });
+
         }
 
-        private bool ParcelExists(long id)
-        {
-            return _context.Parcels.Any(e => e.Id == id);
-        }
     }
 }

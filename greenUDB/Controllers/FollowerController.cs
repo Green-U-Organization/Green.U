@@ -21,31 +21,19 @@ namespace GreenUApi.Controllers
         public async Task<ActionResult<Follower>> FollowAnUser(long id, Follower followerData)
         {
 
-            if (followerData.FollowerId == 0)
-            {
-                return BadRequest(new { isEmpty = true, message = "Follower id is missed" });
-            }
+            if (followerData.FollowerId == 0) return BadRequest(new { isEmpty = true, message = "Follower id is missed" });
 
             var User = await _db.Users.FindAsync(id);
             var CheckFollowerId = await _db.Users.FindAsync(followerData.FollowerId);
 
-            if (User == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "User not found" });
-            }
+            if (User == null) return BadRequest(new { isEmpty = true, message = "User not found" });
 
-            if (CheckFollowerId == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "Follow id user not found" });
-            }
+            if (CheckFollowerId == null) return BadRequest(new { isEmpty = true, message = "Follow id user not found" });
 
             bool followExists = await _db.Followers
                 .AnyAsync(f => f.UserId == id && f.FollowerId == followerData.FollowerId);
 
-            if (followExists)
-            {
-                return Conflict(new { isEmpty = true, message = "This follow row is already exist" });
-            }
+            if (followExists) return Conflict(new { isEmpty = true, message = "This follow row is already exist" });
 
             followerData.UserId = id;
 
@@ -61,10 +49,7 @@ namespace GreenUApi.Controllers
 
             var User = await _db.Users.FindAsync(id);
 
-            if (User == null)
-            {
-                return BadRequest(new {isEmpty = true, message = "The user id doesn't exist" });
-            }
+            if (User == null) return BadRequest(new {isEmpty = true, message = "The user id doesn't exist" });
 
             var Follow = await _db.Followers
                    .Where(f => f.UserId == id)
@@ -80,11 +65,7 @@ namespace GreenUApi.Controllers
                )
                    .ToListAsync();
 
-            if (Follow.Count == 0)
-            {
-                return NotFound(new { isEmpty = true, message = "This user didn't have follower" });
-            }
-
+            if (Follow.Count == 0) return NotFound(new { isEmpty = true, message = "This user didn't have follower" });
 
 
             return Ok(new { isEmpty = false, message = "The list of follower", content = Follow });
@@ -99,10 +80,7 @@ namespace GreenUApi.Controllers
             var followExist = await _db.Followers
                 .FirstOrDefaultAsync(f => f.UserId == id && f.FollowerId == follower.FollowerId);
 
-            if (followExist == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "We have an inccorect id" });
-            }
+            if (followExist == null) return BadRequest(new { isEmpty = true, message = "We have an inccorect id" });
 
             _db.Followers.Remove(followExist);
             await _db.SaveChangesAsync();
@@ -115,31 +93,19 @@ namespace GreenUApi.Controllers
         public async Task<ActionResult<Follower>> FollowAGarden(long id, Follower followerData)
         {
 
-            if (followerData.FollowerId == 0)
-            {
-                return BadRequest(new { isEmpty = true, message = "Follower id is missed" });
-            }
+            if (followerData.FollowerId == 0) return BadRequest(new { isEmpty = true, message = "Follower id is missed" });
 
             var Garden = await _db.Gardens.FindAsync(id);
             var CheckFollowerId = await _db.Users.FindAsync(followerData.FollowerId);
 
-            if (Garden == null)
-            {
-                return NotFound(new { isEmpty = true, message = "Garden not found" });
-            }
+            if (Garden == null) return NotFound(new { isEmpty = true, message = "Garden not found" });
 
-            if (CheckFollowerId == null)
-            {
-                return NotFound(new { isEmpty = true, message = "Follow id user not found" });
-            }
+            if (CheckFollowerId == null) return NotFound(new { isEmpty = true, message = "Follow id user not found" });
 
             bool followExists = await _db.Followers
                 .AnyAsync(f => f.GardenId == id && f.FollowerId == followerData.FollowerId);
 
-            if (followExists)
-            {
-                return Conflict(new { isEmpty = true, message = "This follow row is already exist" });
-            }
+            if (followExists) return Conflict(new { isEmpty = true, message = "This follow row is already exist" });
 
             followerData.GardenId = id;
 
@@ -155,31 +121,23 @@ namespace GreenUApi.Controllers
 
             var Garden = await _db.Gardens.FindAsync(id);
 
-            if (Garden == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "The garden id doesn't exist" });
-            }
+            if (Garden == null) return BadRequest(new { isEmpty = true, message = "The garden id doesn't exist" });
 
             var Follow = await _db.Followers
                    .Where(f => f.GardenId == id)
                    .Join(
-               _db.Users,
-               follower => follower.FollowerId,
-               user => user.Id,
-               (follower, user) => new
-               {
-                   follower.FollowerId,
-                   user.Username,
-               }
-               )
+                   _db.Users,
+                   follower => follower.FollowerId,
+                   user => user.Id,
+                   (follower, user) => new
+                   {
+                       follower.FollowerId,
+                       user.Username,
+                   }
+                   )
                    .ToListAsync();
 
-            if (Follow.Count == 0)
-            {
-                return NotFound(new { isEmpty = true, message = "This garden didn't have follower" });
-            }
-
-
+            if (Follow.Count == 0) return NotFound(new { isEmpty = true, message = "This garden didn't have follower" });
 
             return Ok(new { isEmpty = false, message = "The list of garden follower", content = Follow });
         }
@@ -193,10 +151,7 @@ namespace GreenUApi.Controllers
             var followExist = await _db.Followers
                 .FirstOrDefaultAsync(f => f.GardenId == id && f.FollowerId == follower.FollowerId);
 
-            if (followExist == null)
-            {
-                return BadRequest(new { isEmpty = true, message = "We have an inccorect id" });
-            }
+            if (followExist == null) return BadRequest(new { isEmpty = true, message = "We have an inccorect id" });
 
             _db.Followers.Remove(followExist);
             await _db.SaveChangesAsync();

@@ -14,6 +14,8 @@ public partial class Log
 
     public long? AuthorId { get; set; }
 
+    public string? Username { get; set; }
+
     public long? GardenId { get; set; }
 
     public long? ParcelId { get; set; }
@@ -28,17 +30,7 @@ public partial class Log
 
     public string? Comment { get; set; }
 
-    public string Status { get; set; } = null!;
+    public string Type { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-    public virtual User? Author { get; set; }
-
-    public virtual Crop? Crop { get; set; }
-
-    public virtual Garden? Garden { get; set; }
-
-    public virtual Line? Line { get; set; }
-
-    public virtual Parcel? Parcel { get; set; }
 }

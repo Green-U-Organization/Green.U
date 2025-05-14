@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 import {
   useLazyGetAllGardensByTagQuery,
@@ -14,11 +13,32 @@ import Card from '../Atom/Card';
 import Button from '../Atom/Button';
 import SlimCard from '../Atom/SlimCard';
 import Radio from '../Atom/Radio';
-import { Tag } from '@/utils/types';
+import { Garden, Tag } from '@/utils/types';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
+import { setSelectedGardenCookies } from '@/utils/selectedGardenCookies';
+
+import {
+  clearSelectedGarden,
+  setSelectedGarden,
+} from '@/redux/garden/gardenSlice';
+import { RootState, useDispatch, useSelector } from '@/redux/store';
 
 const Explore = () => {
+  // Selectors
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
+  );
+
+  //Hooks
+  const dispatch = useDispatch();
   const router = useRouter();
+
+  // //Check du State global du garden si jamais refresh de la page
+  // if (!currentGarden && garden) {
+  //   const parsedGarden: Garden = JSON.parse(garden);
+  //   dispatch(setSelectedGarden(parsedGarden));
+  // }
 
   const gardenTypeLabels: Record<number, string> = {
     0: 'Personnal',
@@ -536,12 +556,14 @@ const Explore = () => {
                                     <tr key={garden.id}>
                                       <td
                                         className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
-                                        onClick={() =>
-                                          garden.privacy === 2 &&
-                                          router.push(
-                                            `/garden/display?id=${garden.id}`
-                                          )
-                                        }
+                                        onClick={() => {
+                                          if (garden.privacy === 2) {
+                                            dispatch(setSelectedGarden(garden));
+                                            clearSelectedGarden();
+                                            setSelectedGardenCookies(garden);
+                                            router.push(`/garden/display`);
+                                          }
+                                        }}
                                       >
                                         {garden.name}
                                       </td>
@@ -618,12 +640,14 @@ const Explore = () => {
                                     <tr key={garden.id}>
                                       <td
                                         className={`border border-black px-4 py-2 ${garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
-                                        onClick={() =>
-                                          garden.privacy === 2 &&
-                                          router.push(
-                                            `/garden/display?id=${garden.id}`
-                                          )
-                                        }
+                                        onClick={() => {
+                                          if (garden.privacy === 2) {
+                                            dispatch(setSelectedGarden(garden));
+                                            clearSelectedGarden();
+                                            setSelectedGardenCookies(garden);
+                                            router.push(`/garden/display`);
+                                          }
+                                        }}
                                       >
                                         {garden.name}
                                       </td>

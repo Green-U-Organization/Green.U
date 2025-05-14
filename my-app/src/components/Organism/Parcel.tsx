@@ -1,7 +1,6 @@
 'use client';
 import React, { FC, useState } from 'react';
 import Line from './Line';
-import styles from '../../app/Assets.module.css';
 import Image from 'next/image';
 import { ParcelProps, type Parcel } from '@/utils/types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,8 +31,6 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
     useState<boolean>(false);
 
   // Variables
-  const parcelY = parcel?.length;
-  const parcelX = parcel?.width;
 
   //Hooks
   const dispatch = useDispatch();
@@ -58,9 +55,6 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   // console.log('lines : ', lines);
 
   //Selectors
-  const graphicMode = useSelector(
-    (state: RootState) => state.garden.graphicMode
-  );
   const editParcelPopupDisplay = useSelector(
     (state: RootState) => state.display.editParcelPopup
   );

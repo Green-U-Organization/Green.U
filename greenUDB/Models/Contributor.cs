@@ -19,7 +19,7 @@ public partial class Contributor
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-    public virtual Garden Garden { get; set; } = null!;
+    public virtual Garden? Garden { get; set; } = null!;
 
-    public virtual User User { get; set; } = null!;
+    public virtual User? User { get; set; } = null!;
 }

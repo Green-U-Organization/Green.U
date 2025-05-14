@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace GreenUApi.Controllers
 {
@@ -24,100 +19,133 @@ namespace GreenUApi.Controllers
     // [Authorize]
     public class LineController : ControllerBase
     {
-        private readonly GreenUDB _context;
+        private readonly GreenUDB _db;
 
         public LineController(GreenUDB context)
         {
-            _context = context;
+            _db = context;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<LineDto>>> GetLine(long id)
+        public async Task<ActionResult<Line>> GetLines(long id)
         {
-            var lines = await _context.Lines
+
+            bool ParcelExist = await _db.Parcels
+                .Where(p => p.Id == id)
+                .AnyAsync();
+
+            if (!ParcelExist) return BadRequest(new { isEmpty = true, message = "The parcel Id is incorrect" });
+
+            var lines = await _db.Lines
                 .Where(l => l.ParcelId == id)
-                .Select(l => new LineDto
-                {
-                    Id = l.Id,
-                    ParcelId = l.ParcelId,
-                    PlantNurseryId = l.PLantNurseryId,
-                    Length = l.Length
-                })
                 .ToListAsync();
 
-            if (lines == null || !lines.Any())
-            {
-                return NotFound();
-            }
+            if (lines.Count == 0) return Ok(new { isEmpty = true, message = "No line in this parcel", content = lines });
 
-            return lines;
+            return Ok(new { isEmpty = false, message = "Every lines from the parcel id", content = lines});
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchLine(long id, Line line)
+        public async Task<ActionResult<Line>> PatchLine(long id, Line modifiedLine)
         {
-            if (id != line.Id)
+            var line = await _db.Lines
+                .FindAsync(id);
+
+            if (line == null) return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
+
+            if (modifiedLine.Length != null)
             {
-                return BadRequest();
+
+            Log log = new()
+            {
+                GardenId = line.GardenId,
+                LineId = line.Id,
+                ParcelId = line.ParcelId,
+                PlantNurseryId = line.PLantNurseryId,
+                Action = "Edit line",
+                Comment = $"Edit the length {line.Length} to {modifiedLine.Length}",
+                Type = "Automatic",
+            };
+
+            _db.Add(log);
+
+                line.Length = modifiedLine.Length;
             }
 
-            _context.Entry(line).State = EntityState.Modified;
+            _db.Update(line);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LineExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "This line is modified", content = line});
+
         }
 
        [HttpPost]
-        public async Task<ActionResult<Line>> PostLine(LineDto line)
+        public async Task<ActionResult<Line>> PostLine(Line line)
         {
-            var newLine = new Line{
-                Id = line.Id,
+            var parcel = await _db.Parcels
+                .FindAsync(line.ParcelId);
+
+            if (parcel == null) return BadRequest(new { isEmpty = true, message = "Parcel id is incorrect" });
+
+            if (line.Length == null) return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
+
+            line.GardenId = parcel.GardenId;
+
+            _db.Add(line);
+
+            Log log = new() 
+            {
+                GardenId = line.GardenId,
                 ParcelId = line.ParcelId,
-                PLantNurseryId = line.PlantNurseryId,
-                Length = line.Length
+                PlantNurseryId = line.PLantNurseryId,
+                Action = "Create a new line",
+                Comment = $"length : {line.Length}",
+                Type = "Automatic",
             };
-            
 
-            _context.Lines.Add(newLine);
-            await _context.SaveChangesAsync();
+            _db.Add(log);
 
-            // Retourner la réponse avec l'URL de la ressource créée
-            return Ok(newLine);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "The line is created !", content = line});
+
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLine(long id)
         {
-            var line = await _context.Lines.FindAsync(id);
-            if (line == null)
+            var line = await _db.Lines.FindAsync(id);
+
+            if (line == null) return BadRequest(new { isEmpty = true, message = "The id of line is incorrect" });
+
+            var crop = await _db.Crops
+                .Where(c => c.LineId == id)
+                .FirstOrDefaultAsync();
+
+            if (crop != null)
             {
-                return NotFound();
+                crop.LineId = null;
             }
 
-            _context.Lines.Remove(line);
-            await _context.SaveChangesAsync();
+            Log log = new()
+            {
+                GardenId = line.GardenId,
+                LineId = line.Id,
+                ParcelId = line.ParcelId,
+                PlantNurseryId = line.PLantNurseryId,
+                Action = "Delete a line",
+                Comment = $"Length : {line.Length}",
+                Type = "Automatic",
+            };
+            _db.Add(log);
+            _db.Lines.Remove(line);
 
-            return NoContent();
-        }
-        
-        private bool LineExists(long id)
-        {
-            return _context.Lines.Any(e => e.Id == id);
+            await _db.SaveChangesAsync();
+
+            return Ok(new { isEmpty = false, message = "This line is deleted", content = line });
         }
     }
 }

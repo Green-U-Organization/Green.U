@@ -342,20 +342,7 @@ type GetAllGardensByTagRequest = {
 type GetAllGardensByTagResponse = {
   isEmpty: boolean;
   message: string;
-  content: {
-    id: number;
-    name: string;
-    description: string;
-    type: number;
-    privacy: number;
-    tagsInterests: {
-      id: number;
-      userId: number;
-      gardenId: number;
-      hashtag: string;
-      created_at: Date;
-    }[];
-  }[];
+  content: Garden[];
 };
 
 type GetPopularTagsResponse = {

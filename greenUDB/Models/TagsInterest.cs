@@ -10,7 +10,7 @@ public partial class TagsInterest
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long? Id { get; set; }
-
+    
     public long? UserId { get; set; }
 
     public long? GardenId { get; set; }

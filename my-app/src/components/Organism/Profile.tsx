@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 import {
   useGetAllGardenByUserIdQuery,
@@ -7,7 +6,6 @@ import {
 } from '@/slice/fetch';
 import React from 'react';
 import Card from '../Atom/Card';
-import { FaEnvelope } from 'react-icons/fa';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import Button from '../Atom/Button';
 import { useRouter } from 'next/navigation';
@@ -21,7 +19,6 @@ import H2 from '../Atom/H2';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import Loading from '../Atom/Loading';
-import { forIn } from 'lodash';
 import Image from 'next/image';
 
 const Profile = ({ userId }: { userId: number }) => {

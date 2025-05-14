@@ -150,31 +150,65 @@ const CreateGardenForm = () => {
             {translations.yourGardenIs} <span>{gardenLength}</span>{' '}
             {translations.metersLong}
           </label>
-          <input
-            name="gardenLength"
-            type="range"
-            min="1"
-            max="500"
-            step="1"
-            value={gardenLength}
-            onChange={handleLengthChange}
-            className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
-          />
+
+          <div className="flex items-center justify-around">
+            <p
+              onClick={() =>
+                setGardenLength((prev) => (prev === 0 ? 0 : prev - 1))
+              }
+            >
+              -
+            </p>
+            <input
+              name="gardenLength"
+              type="range"
+              min="1"
+              max="500"
+              step="1"
+              value={gardenLength}
+              onChange={handleLengthChange}
+              className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
+            />
+            <p
+              onClick={() =>
+                setGardenLength((prev) => (prev === 500 ? 500 : prev + 1))
+              }
+            >
+              +
+            </p>
+          </div>
 
           <label htmlFor="gardenWidth">
             {translations.yourGardenIs} <span>{gardenWidth}</span>{' '}
             {translations.metersLarge}
           </label>
-          <input
-            name="gardenWidth"
-            type="range"
-            min="1"
-            max="500"
-            step="1"
-            value={gardenWidth}
-            onChange={handleWidthChange}
-            className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
-          />
+
+          <div className="flex items-center justify-around">
+            <p
+              onClick={() =>
+                setGardenWidth((prev) => (prev === 0 ? 0 : prev - 1))
+              }
+            >
+              -
+            </p>
+            <input
+              name="gardenWidth"
+              type="range"
+              min="1"
+              max="500"
+              step="1"
+              value={gardenWidth}
+              onChange={handleWidthChange}
+              className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
+            />
+            <p
+              onClick={() =>
+                setGardenWidth((prev) => (prev === 500 ? 500 : prev + 1))
+              }
+            >
+              +
+            </p>
+          </div>
 
           {/* Intégration de la map de localisation du terrain */}
           <LocationPicker

@@ -241,7 +241,7 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
                 <tbody>
                   {crops?.content.map((crop) => (
                     <>
-                      <tr key={crop.id}>
+                      <tr key={crop.id * Math.random()}>
                         <td className="border-1 p-1">{crop.vegetable}</td>
                         <td className="border-1 p-1">{crop.variety}</td>
                         <td className="border-1 p-1">{crop.nPot}</td>
@@ -274,6 +274,7 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
                           />
                         </td>
                       </tr>
+
                       {displayCropLogPopup && id === crop.id && (
                         <tr>
                           <td colSpan={6} className="p-0">

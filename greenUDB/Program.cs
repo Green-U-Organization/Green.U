@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using GreenUApi.Controllers;
 using GreenUApi.Models;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,7 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 Env.Load();
-var builder = WebApplication.CreateBuilder(args);
+
+// OLD JWT VERIF
+//var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //    .AddJwtBearer(options =>
@@ -26,7 +27,37 @@ var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.AddAuthorization();
 
-// Autres services
+var builder = WebApplication.CreateBuilder(args);
+
+string? secret = Environment.GetEnvironmentVariable("SECRET_JWT");
+string? apiLink = Environment.GetEnvironmentVariable("ISSUER");
+string? prodLink = Environment.GetEnvironmentVariable("AUDIENCE");
+if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(apiLink) || string.IsNullOrEmpty(prodLink))
+{
+    throw new InvalidOperationException("Environment variable 'SECRET' is not set.");
+}
+
+// REBUIL DEFAULT AUTHORI
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = apiLink,
+            ValidAudience = prodLink,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret))
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+// Other services
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -48,16 +79,23 @@ var connectionString = $"server={Environment.GetEnvironmentVariable("SERVEUR")};
 // Load the DB context 
 builder.Services.AddDbContext<GreenUDB>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-);
+);      
 
 // Use Cors with .env
-var allowedOrigins = new string[] { "http://localhost:3000", "http://192.168.0.71:3000" };
-Console.WriteLine("Allowed Origins:");
-foreach (var origin in allowedOrigins)
-{
-    Console.WriteLine(origin);
-}
-    builder.Services.AddCors(options =>
+var allowedOriginsWithNull = new string?[] {
+    Environment.GetEnvironmentVariable("ALLOWED_HOST1"),
+    Environment.GetEnvironmentVariable("ALLOWED_HOST2"),
+    Environment.GetEnvironmentVariable("ALLOWED_HOST3"),
+    Environment.GetEnvironmentVariable("ALLOWED_HOST4"),
+    Environment.GetEnvironmentVariable("ALLOWED_HOST5")
+};
+
+var allowedOrigins = allowedOriginsWithNull
+    .Where(origin => origin != null)
+    .Select(origin => origin!) 
+    .ToArray();
+
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
     policy => policy.WithOrigins(allowedOrigins)
@@ -65,13 +103,12 @@ foreach (var origin in allowedOrigins)
                     .AllowAnyMethod()
                     .AllowCredentials());
 });
-
 // Add other services
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;  // Ignore les boucles de référence
-        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;  // Ignore les valeurs null
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;  // Ignore reference loops
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;  // Ignore null value
     });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddEndpointsApiExplorer();
@@ -87,8 +124,9 @@ var app = builder.Build();
 app.UseCors("AllowSpecificOrigin");
 
 app.UseRouting();
-//app.UseAuthorization();
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 if (app.Environment.IsDevelopment())

@@ -1,10 +1,19 @@
 using GreenUApi.authentification;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace GreenUApi.Controllers
 {
+    public class LoginModel
+    {
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
     [ApiController]
     [Route("/")]
     public class AuthController : ControllerBase
@@ -17,54 +26,48 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("login")]
-
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel cred)
         {
-            var (success, token, message) = await Authentification.Login(model.Email, model.Password, _db);
             
-            if (success)
+            UserDTO userData = await Authentification.VerifyCredentials(cred.Email, cred.Password, _db);
+
+            if (userData.Error == null)
             {
-                return Ok(new { message, token });
+                var token = GenerateJwtToken(cred.Email);
+                return Ok(new { isEmpty = false, message = "Token are created !", token = token, content = userData});
             }
-            else
-            {
-                return Unauthorized(new { message });
-            }
+            return Unauthorized();
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        private static string GenerateJwtToken(string email)
         {
-            var userDbData = await _db.Users
-            .Where(u => u.Username == user.Username)
-            .Select(u => new User { Username = u.Username })
-            .ToArrayAsync();
-
-            if (userDbData.Length != 0)
+            var claims = new[]
             {
-                return Conflict(new { message = "This username already exists" });
+               new Claim(JwtRegisteredClaimNames.Sub, email),
+               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+           };
+
+            string? secret = Environment.GetEnvironmentVariable("SECRET_JWT");
+            string? apiLink = Environment.GetEnvironmentVariable("ISSUER");
+            string? prodLink = Environment.GetEnvironmentVariable("AUDIENCE");  
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(apiLink) || string.IsNullOrEmpty(prodLink))
+            {
+                throw new InvalidOperationException("Environment variable 'SECRET' is not set.");
             }
 
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            if (user.Password == null)
-            {
-                return BadRequest(new { message = "Password is missing" });
-            }
+            var token = new JwtSecurityToken(
+            issuer: apiLink,
+            audience: prodLink,
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(15),
+            signingCredentials: creds);
 
-            string[] hashSalt = Authentification.Hasher(user.Password, null);
-            user.Password = hashSalt[0];
-            user.Salt = hashSalt[1];
-
-            _db.Users.Add(user);
-            await _db.SaveChangesAsync();
-
-            return Ok(new { message = "User created !" });
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
     }
 
-    public class LoginModel
-    {
-        public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
 }

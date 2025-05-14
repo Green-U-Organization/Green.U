@@ -6,8 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace GreenUApi.Models;
 
 public enum GardenPrivacy{
-    Public,
-    Private
+    Private,
+    SemiPrivate,
+    Public
 }
 
 public enum GardenType{
@@ -29,6 +30,8 @@ public partial class Garden
 
     public string Description { get; set; } = null!;
 
+    public string? GardenColor { get; set; }
+
     public double Latitude { get; set; }
 
     public double Longitude { get; set; }
@@ -47,9 +50,9 @@ public partial class Garden
 
     public virtual ICollection<Follower> Followers { get; set; } = new List<Follower>();
 
-    public virtual ICollection<Log> Logs { get; set; } = new List<Log>();
-
     public virtual ICollection<Parcel> Parcels { get; set; } = new List<Parcel>();
+
+    public virtual ICollection<PlantNursery>? PlantNurseries { get; set; } = new List<PlantNursery>();
 
     public virtual ICollection<TagsInterest> TagsInterests { get; set; } = new List<TagsInterest>();
 }
