@@ -48,7 +48,7 @@ namespace GreenUApi.Controllers
                 .Where(c => c.LineId == id)
                 .ToListAsync();
 
-            if (crops.Count == 0) return Ok(new { isEmpty = true, message = "No crop here...", content = Array.Empty<object>() });
+            if (crops.Count == 0) return Ok(new { isEmpty = true, message = "No crop here..." });
 
             return Ok(new { isEmpty = false, message = "All crops with line id", content = crops });
         }
@@ -61,7 +61,7 @@ namespace GreenUApi.Controllers
                 .Where(c => c.PlantNurseryId == id)
                 .ToListAsync();
 
-            if (crops.Count == 0) return Ok(new { isEmpty = true, message = "No crops...", content = Array.Empty<object>() });
+            if (crops.Count == 0) return Ok(new { isEmpty = true, message = "No crops..."});
 
             return Ok(new { isEmpty = false, message = "All crops with plant nursery id", content = crops });
         }
