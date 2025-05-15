@@ -65,9 +65,9 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   });
   const [patchCrop] = usePatchCropMutation();
 
+  // Fetch crops for each nursery and store them in an array
   const crops =
     nurseries?.content.map((nursery) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const { data: crop } = useGetCropByNurseryIdQuery({
         nurseryId: nursery.id,
       });
