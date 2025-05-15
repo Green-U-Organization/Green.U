@@ -129,6 +129,12 @@ namespace GreenUApi.Controllers
                 existingCrop.PotSize = crop.PotSize;
             }
 
+            if (crop.PlantNurseryId == 0)
+            {
+                crop.PlantNurseryId = null;
+                modificationLog += $"Make plant nursery Null";
+            }
+
             if (crop.PlantNurseryId != null)
             {
                 bool existingPlantNursery = await _db.PlantNursery
