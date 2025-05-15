@@ -204,7 +204,7 @@ const MenuSandwichOptionInGarden: React.FC<MenuSandwichProps> = () => {
             style={{
               display: userId === currentGarden?.authorId ? 'block' : 'none',
             }}
-            onClick={() => router.push('/garden/edit')}
+            onClick={() => router.push('/WorkInProgress')}
             className="bg-nursery my-5"
           >
             <SlimCard

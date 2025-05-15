@@ -275,7 +275,7 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
               alt="Add crop"
               onClick={() => handleClickAddCrop()}
             />
-            <Image
+            {/* <Image
               width={50}
               height={50}
               className="mx-[3vw]"
@@ -286,7 +286,7 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
                 width: '5vw',
                 height: '5vw',
               }}
-            />
+            /> */}
             <Image
               width={50}
               height={50}

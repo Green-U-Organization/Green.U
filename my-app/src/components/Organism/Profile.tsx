@@ -257,7 +257,7 @@ const Profile = ({ userId }: { userId: number }) => {
         <Button
           style={{ display: userId === cookieId ? 'block' : 'none' }}
           className="bg-bgbutton relative m-5 px-6 py-2"
-          onClick={() => router.push(`/profile/edit/${userId}`)}
+          onClick={() => router.push('/WorkInProgress')}
         >
           {translations.edit}
         </Button>
