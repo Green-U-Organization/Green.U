@@ -124,7 +124,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 <Image
                   onClick={() => setDisplayParcelInfo((prev) => !prev)}
                   className="mr-[2vw] h-[3vw] w-[auto]"
-                  src="/image/icons/chevronBas.webp"
+                  src={
+                    displayParcelInfo
+                      ? '/image/icons/chevronHaut.webp'
+                      : '/image/icons/chevronBas.webp'
+                  }
                   alt="Parcel Image"
                   width={50}
                   height={50}
