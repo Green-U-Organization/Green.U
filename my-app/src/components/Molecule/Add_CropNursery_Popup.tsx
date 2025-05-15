@@ -15,6 +15,7 @@ import {
 } from '@/slice/fetch';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
+import LoadingModal from './LoadingModal';
 
 const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   //Local State
@@ -51,7 +52,8 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   );
 
   //RTK Query
-  const [createCropToNursery] = useCreateCropToNurseryMutation();
+  const [createCropToNursery, { isLoading: newCropNurseryIsLoading }] =
+    useCreateCropToNurseryMutation();
   const [addXp] = useEditUserByUserIdMutation();
   const user = useGetUserByIdQuery({ userId: id });
 
@@ -122,6 +124,8 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
         display: display ? 'flex' : 'none',
       }}
     >
+      {newCropNurseryIsLoading && <LoadingModal />}
+
       <Card className="bg-cardbackground flex w-[80vw] flex-col justify-center">
         <form onSubmit={handleSubmit} className="m-[3vw]">
           <TextInput
