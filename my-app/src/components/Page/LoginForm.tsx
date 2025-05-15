@@ -116,7 +116,7 @@ const LoginForm = () => {
             </div>
 
             <div>
-              {/* {error && <p className="text-red-500">{error}</p>} */}
+              {error && <p className="text-red-500">{error}</p>}
 
               {/*POUR TEST 
 							{userId && <p>ID utilisateur : {userId}</p>}
