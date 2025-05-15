@@ -41,7 +41,6 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
     '/image/assets/vegetables/icon/potato.png',
     '/image/assets/vegetables/icon/tomato.png',
   ];
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
   //Hooks
   const dispatch = useDispatch();
@@ -195,7 +194,7 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
                 alt={`icon-${key}`}
                 key={icon}
                 onClick={handleClickIcon}
-                className={`mx-[2vw] ${baseURL + icon === selectedIcon ? 'z-50 rounded-lg border-2' : 'border-0'}`}
+                className={`mx-[2vw] ${icon.split('/').pop() === selectedIcon.split('/').pop() ? 'z-50 rounded-lg border-2 bg-amber-300' : 'border-0'}`}
               />
             ))}
           </div>
