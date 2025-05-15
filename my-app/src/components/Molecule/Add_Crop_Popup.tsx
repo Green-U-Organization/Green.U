@@ -111,6 +111,13 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
 
       try {
         await patchCrop(cropData).unwrap();
+
+        dispatch(
+          setAddCropPopup({
+            state: false,
+            id: Number(lineId),
+          })
+        );
       } catch {
         console.log('Error patching crop');
       }
