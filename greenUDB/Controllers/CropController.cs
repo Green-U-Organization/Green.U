@@ -48,9 +48,9 @@ namespace GreenUApi.Controllers
                 .Where(c => c.LineId == id)
                 .ToListAsync();
 
-            if (crops.Count == 0) return Ok(new { isEmpty = true, message = "No crop here..." });
+            if (crops.Count == 0) return BadRequest(new { isEmpty = true, message = "No crop here..." });
 
-            return BadRequest(new { isEmpty = false, message = "All crops with line id", content = crops });
+            return Ok(new { isEmpty = false, message = "All crops with line id", content = crops });
         }
 
         [HttpGet("plantNursery/{id}")]
