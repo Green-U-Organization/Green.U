@@ -131,6 +131,7 @@ namespace GreenUApi.Controllers
 
             if (crop.PlantNurseryId == 0)
             {
+                existingCrop.PlantNurseryId = null;
                 crop.PlantNurseryId = null;
                 modificationLog += $"Make plant nursery Null";
             }
