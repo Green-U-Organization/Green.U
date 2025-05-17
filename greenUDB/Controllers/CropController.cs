@@ -61,7 +61,7 @@ namespace GreenUApi.Controllers
                 .Where(c => c.PlantNurseryId == id)
                 .ToListAsync();
 
-            if (crops.Count == 0) return BadRequest(new { isEmpty = true, message = "No crops..." });
+            if (crops.Count == 0) return BadRequest(new { isEmpty = true, message = "No crops..."});
 
             return Ok(new { isEmpty = false, message = "All crops with plant nursery id", content = crops });
         }
@@ -127,6 +127,13 @@ namespace GreenUApi.Controllers
             {
                 modificationLog += $"Edit the PotSize: {existingCrop.PotSize} => {crop.PotSize} \n";
                 existingCrop.PotSize = crop.PotSize;
+            }
+
+            if (crop.PlantNurseryId == 0)
+            {
+                existingCrop.PlantNurseryId = null;
+                crop.PlantNurseryId = null;
+                modificationLog += $"Make plant nursery Null";
             }
 
             if (crop.PlantNurseryId != null)

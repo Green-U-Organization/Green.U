@@ -16,15 +16,11 @@ const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  // const [errorEmail, setErrorEmail] = useState<boolean>(false);
-  // const [errorPassword, setErrorPassword] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
   const { translations } = useLanguage();
 
   const router = useRouter();
   const dispatch = useDispatch();
-
-  // A DEGAGER
 
   //RTK Queries
   const [loginUser] = useLoginUserMutation();
@@ -33,6 +29,13 @@ const LoginForm = () => {
     email: false,
     password: false,
   });
+
+  interface ApiError {
+    status?: number;
+    data?: {
+      title?: string;
+    };
+  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
     const value = e.target.value;
@@ -72,7 +75,7 @@ const LoginForm = () => {
       };
       try {
         const response = await loginUser(user).unwrap();
-        console.log('login success');
+        //console.log('login success');
         dispatch(
           setCredentials({
             id: response.content.id,
@@ -92,13 +95,14 @@ const LoginForm = () => {
         );
 
         router.push('/landing');
-      } catch (err: any) {
+      } catch (err: unknown) {
+        const error = err as ApiError;
         const errorMsg =
-          err?.status === 401
+          error?.status === 401
             ? 'Invalid email or password.'
-            : err?.data?.title || 'Une erreur inconnue est survenue';
+            : error?.data?.title || 'An unknown error has occurred';
         setError(errorMsg);
-        console.log('Erreur login:', err);
+        console.log('Erreur login:', error);
       }
     }
   };

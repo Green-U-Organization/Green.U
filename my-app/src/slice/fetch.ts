@@ -192,8 +192,8 @@ type CreateCropToNurseryRequest = {
 
 type PatchCropRequest = {
   cropId?: number;
-  lineId?: number;
-  plantNurseryId?: number;
+  lineId?: number | null;
+  plantNurseryId?: number | null;
 };
 
 type GetCropByLineIdResponse = {
