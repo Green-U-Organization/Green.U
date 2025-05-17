@@ -67,6 +67,7 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
       } catch {
         console.log('error creating parcel');
       }
+      dispatch(setAddParcelPopup({ state: false, id: 0 }));
     }
   };
 

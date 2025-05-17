@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Card from '../Atom/Card';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
@@ -9,14 +9,30 @@ import Image from 'next/image';
 
 const Landing = () => {
   const router = useRouter();
-
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const dispatch = useDispatch();
 
   //Cookies
   const token = Cookies.get('access_token');
 
+  const handlePlayMusic = () => {
+    setHasInteracted(true);
+    if (audioRef.current) {
+      audioRef.current
+        .play()
+        .catch((e) => console.error('Audio playback failed:', e));
+    }
+  };
+
   return (
     <Card className="relative flex h-screen w-screen flex-col items-center justify-center">
+      {/* Background Music */}
+      <audio ref={audioRef} loop>
+        <source src="./music/bgMusic.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+
       {/* Background */}
       <div className="absolute h-screen w-screen overflow-hidden opacity-100">
         <Image
