@@ -332,7 +332,11 @@ const RegisterForm = () => {
 
   const handleDateChange = (value: Value) => {
     if (value instanceof Date) {
-      const formattedDate = value.toISOString().split('T')[0]; //Format YYYY-MM-DD
+      const year = value.getFullYear();
+      const month = String(value.getMonth() + 1).padStart(2, '0');
+      const day = String(value.getDate()).padStart(2, '0');
+
+      const formattedDate = `${year}-${month}-${day}`; // Format YYYY-MM-DD
       setFormDataRegister((prevFormData) => ({
         ...prevFormData,
         birthDate: formattedDate,

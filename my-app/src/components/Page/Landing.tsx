@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Card from '../Atom/Card';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
@@ -9,7 +9,7 @@ import Image from 'next/image';
 
 const Landing = () => {
   const router = useRouter();
-
+  const audioRef = useRef<HTMLAudioElement>(null);
   const dispatch = useDispatch();
 
   //Cookies
@@ -22,21 +22,21 @@ const Landing = () => {
         <Image
           width={50}
           height={50}
-          src={'/image/divers/gifs/1.gif'}
+          src={'/image/divers/gifs/1.gif'} //L'image de fond
           alt={'Loading...'}
-          className="absolute -top-0 -right-0 h-screen w-screen overflow-hidden object-cover"
+          className="absolute -top-0 -right-0 h-screen w-screen overflow-auto object-cover"
         />
         <Image
           width={50}
           height={50}
-          src={'/image/divers/gifs/loading.gif'}
+          src={'/image/divers/gifs/loading.gif'} //Le moulin
           alt={'Loading...'}
-          className="absolute top-45 -right-25 h-[70vh] w-[100vh] overflow-hidden object-cover"
+          className="absolute top-45 -right-25 h-[70vh] w-[100vh] overflow-x-visible object-cover"
         />
         <Image
           width={50}
           height={50}
-          src={'/image/divers/gifs/2.gif'}
+          src={'/image/divers/gifs/2.gif'} //Les herbes et fleurs en 1er plan
           alt={'Loading...'}
           className="absolute -top-0 -right-0 h-screen w-screen overflow-hidden object-cover"
         />
