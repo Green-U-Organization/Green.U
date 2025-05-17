@@ -10,49 +10,33 @@ import Image from 'next/image';
 const Landing = () => {
   const router = useRouter();
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const dispatch = useDispatch();
 
   //Cookies
   const token = Cookies.get('access_token');
 
-  const handlePlayMusic = () => {
-    setHasInteracted(true);
-    if (audioRef.current) {
-      audioRef.current
-        .play()
-        .catch((e) => console.error('Audio playback failed:', e));
-    }
-  };
-
   return (
     <Card className="relative flex h-screen w-screen flex-col items-center justify-center">
-      {/* Background Music */}
-      <audio ref={audioRef} loop>
-        <source src="./music/bgMusic.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
-
       {/* Background */}
       <div className="absolute h-screen w-screen overflow-hidden opacity-100">
         <Image
           width={50}
           height={50}
-          src={'/image/divers/gifs/1.gif'}
+          src={'/image/divers/gifs/1.gif'} //L'image de fond
           alt={'Loading...'}
-          className="absolute -top-0 -right-0 h-screen w-screen overflow-hidden object-cover"
+          className="absolute -top-0 -right-0 h-screen w-screen overflow-auto object-cover"
         />
         <Image
           width={50}
           height={50}
-          src={'/image/divers/gifs/loading.gif'}
+          src={'/image/divers/gifs/loading.gif'} //Le moulin
           alt={'Loading...'}
-          className="absolute top-45 -right-25 h-[70vh] w-[100vh] overflow-hidden object-cover"
+          className="absolute top-45 -right-25 h-[70vh] w-[100vh] overflow-x-visible object-cover"
         />
         <Image
           width={50}
           height={50}
-          src={'/image/divers/gifs/2.gif'}
+          src={'/image/divers/gifs/2.gif'} //Les herbes et fleurs en 1er plan
           alt={'Loading...'}
           className="absolute -top-0 -right-0 h-screen w-screen overflow-hidden object-cover"
         />
