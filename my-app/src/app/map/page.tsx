@@ -1,14 +1,20 @@
+'use client';
 import LocationPicker from '@/components/UI/LocationPicker';
+import { useGetAllGardensLocalisationQuery } from '@/slice/fetch';
 
 const Map = () => {
+  const { data: gardens, error } = useGetAllGardensLocalisationQuery();
+
+  if (error) {
+    console.log("Error in Gardens' location");
+  }
+
   return (
     <LocationPicker
       readOnly={true}
-      multipleMarkers={[
-        { lat: 50.65, lng: 5.35 },
-        { lat: 50.7, lng: 5.4 },
-        { lat: 50.66899394836384, lng: 5.572265633381904 },
-      ]}
+      multipleMarkers={gardens?.content?.map((g) => ({
+        garden: g,
+      }))}
       enableRadius={true}
       showUserPosition={true}
     />

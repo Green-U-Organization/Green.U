@@ -142,6 +142,7 @@
   "metersLong": "mètres de long",
   "metersLarge": "mètres de large",
   "kindOfGarden": "De quel genre de jardin s'agit-il?",
+  "gardenType": "Type:",
   "gardenType0": "Personnel",
   "gardenType1": "Famillial",
   "gardenType2": "Collectif",

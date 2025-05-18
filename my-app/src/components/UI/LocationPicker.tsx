@@ -13,8 +13,17 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
-import { LocationPickerProps } from '@/utils/types';
+import { Garden, LocationPickerProps } from '@/utils/types';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
+import { gardenTypeLabels } from '@/constants/garden';
+import { setSelectedGardenCookies } from '@/utils/selectedGardenCookies';
+import Image from 'next/image';
+import {
+  setSelectedGarden,
+  clearSelectedGarden,
+} from '@/redux/garden/gardenSlice';
+import { useDispatch } from '@/redux/store';
+import { useRouter } from 'next/navigation';
 
 // Recentrer dynamiquement la map sur la position utilisateur
 const CenterMapOnUser: React.FC<{ position: { lat: number; lng: number } }> = ({
@@ -54,7 +63,13 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   enableRadius = false,
   showUserPosition = false,
 }) => {
+  //Hooks
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const { translations } = useLanguage();
+
+  const [pinsInCircleCount, setPinsInCircleCount] = useState<number>(0);
 
   const [markerPosition, setMarkerPosition] = useState<{
     lat: number;
@@ -70,7 +85,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
 
   const [radius, setRadius] = useState<number>(5);
   const [distance, setDistance] = useState<number | null>(null);
-  console.log(distance);
+  //console.log(distance);
 
   useEffect(() => {}, [translations]);
 
@@ -125,12 +140,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   //Fonction pour filtrer les points dans le rayon
   const filterMarkerInRadius = (
     center: { lat: number; lng: number },
-    points: { lat: number; lng: number }[],
+    points: { garden: Garden }[],
     radius: number
   ) => {
     const centerPoint = L.latLng(center.lat, center.lng);
     return points.filter((point) => {
-      const p = L.latLng(point.lat, point.lng);
+      const p = L.latLng(point.garden.latitude, point.garden.longitude);
       return centerPoint.distanceTo(p) <= radius * 1000;
     });
   };
@@ -139,6 +154,17 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     readOnly && userPosition
       ? filterMarkerInRadius(userPosition, multipleMarkers, radius)
       : multipleMarkers;
+
+  useEffect(() => {
+    if (userPosition && enableRadius && readOnly) {
+      const gardensInCircle = filterMarkerInRadius(
+        userPosition,
+        multipleMarkers,
+        radius
+      );
+      setPinsInCircleCount(gardensInCircle.length);
+    }
+  }, [userPosition, multipleMarkers, radius, enableRadius, readOnly]);
 
   // Fonction qui permet d'intercepter un clic sur la carte
   // et d'ajouter ce point sur la carte si aucun point n'existe déjà
@@ -176,6 +202,16 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     setRadius(value);
   };
 
+  const handleGardenClick = (garden: Garden) => {
+    if (garden.privacy === 2) {
+      dispatch(setSelectedGarden(garden));
+      clearSelectedGarden();
+      setSelectedGardenCookies(garden);
+      //router.push('/garden/display');
+      window.location.href = '/garden/display';
+    }
+  };
+
   return (
     <div className={`flex flex-col ${markerPosition ? 'mb-0' : 'mb-5'}`}>
       {!enableRadius && <p>{translations.addGardenPosition}</p>}
@@ -203,6 +239,11 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             />
             km
           </div>
+          <div className="absolute top-30 left-15 z-[1000] rounded bg-white p-2 shadow-md">
+            <p>
+              Gardens found: <strong>{pinsInCircleCount}</strong>
+            </p>
+          </div>
         </div>
       )}
 
@@ -212,8 +253,11 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         <MapContainer
           center={
             markerPosition ||
-            multipleMarkers[0] ||
-            userPosition || { lat: 50.8503, lng: 4.3517 } //Bruxelles
+            (multipleMarkers[0] && {
+              lat: multipleMarkers[0].garden.latitude,
+              lng: multipleMarkers[0].garden.longitude,
+            }) ||
+            userPosition || { lat: 50.8503, lng: 4.3517 } // Bruxelles
           }
           zoom={13}
           scrollWheelZoom={true}
@@ -244,6 +288,14 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             <Marker
               position={userPosition}
               icon={customUserIcon}
+              draggable={true}
+              eventHandlers={{
+                dragend: (e) => {
+                  const marker = e.target;
+                  const position = marker.getLatLng();
+                  setUserPosition({ lat: position.lat, lng: position.lng });
+                },
+              }}
               //title={translations.youarehere}
             />
           )}
@@ -256,18 +308,53 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           {/* Marqueurs dans le rayon */}
           {readOnly &&
             filteredMarkers.map((pos, idx) => (
-              <Marker key={idx} position={pos} icon={customIcon}>
+              <Marker
+                key={idx}
+                position={[pos.garden.latitude, pos.garden.longitude]}
+                icon={customIcon}
+              >
                 {/* Ajout d'une popup pour avoir des infos sur le jardin sélectionné par clic */}
                 <Popup>
-                  <div className="text-sm">
+                  <div className="flex flex-col gap-2 text-sm">
+                    <div
+                      className={`${pos.garden.privacy === 2 ? 'cursor-pointer text-amber-500 hover:text-amber-600' : ''}`}
+                      onClick={() => handleGardenClick(pos.garden)}
+                    >
+                      <strong>{pos.garden.name}</strong>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      {pos.garden.privacy === 0 ? (
+                        <Image
+                          width={50}
+                          height={50}
+                          src="/image/icons/lockClose.png"
+                          alt="Private"
+                          className="h-8 w-8"
+                        />
+                      ) : pos.garden.privacy === 2 ? (
+                        <Image
+                          width={50}
+                          height={50}
+                          src="/image/icons/lockOpen.png"
+                          alt="Public"
+                          className="h-8 w-8"
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
                     <div>
+                      <strong>{translations.gardenType}</strong>{' '}
+                      {gardenTypeLabels[pos.garden.type] ?? 'N/A'}
+                    </div>
+                    {/* <div>
                       <strong>{translations.latitude}</strong>{' '}
                       {pos.lat.toFixed(5)}
                     </div>
                     <div>
                       <strong>{translations.longitude}</strong>{' '}
                       {pos.lng.toFixed(5)}
-                    </div>
+                    </div> */}
                     {userPosition && (
                       <div>
                         <strong>{translations.distance}</strong>{' '}
@@ -275,7 +362,9 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
                           L.latLng(
                             userPosition.lat,
                             userPosition.lng
-                          ).distanceTo(L.latLng(pos.lat, pos.lng)) / 1000
+                          ).distanceTo(
+                            L.latLng(pos.garden.latitude, pos.garden.longitude)
+                          ) / 1000
                         ).toFixed(2)}{' '}
                         km
                       </div>
@@ -286,6 +375,18 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             ))}
         </MapContainer>
       </div>
+      {userPosition && (
+        <div className="mx-auto">
+          {' '}
+          <Button
+            className="bg-bgbutton relative m-5 px-6 py-2"
+            type="button"
+            onClick={() => router.push('/')}
+          >
+            Home
+          </Button>
+        </div>
+      )}
 
       {/* Coordonnées du champ et suppression du pin */}
       {!readOnly && markerPosition && (

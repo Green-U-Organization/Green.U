@@ -63,7 +63,7 @@ const Landing = () => {
       <div className="flex h-[60vh] w-[70vw] flex-col items-center justify-center p-10">
         <div
           onClick={token ? () => router.push('/garden') : () => {}}
-          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl bg-none select-none"
+          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl bg-none transition-transform duration-150 select-none active:scale-98"
         >
           <div
             className={`${token ? 'bg-bgbutton opacity-0' : 'opacity-0'} absolute h-[10vh] w-[50vw] rounded-xl`}
@@ -77,7 +77,7 @@ const Landing = () => {
 
         <div
           onClick={token ? () => router.push('/profile') : () => {}}
-          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl bg-none select-none"
+          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl bg-none transition-transform duration-150 select-none active:scale-98"
         >
           <div
             className={`${token ? 'bg-bgbutton opacity-0' : 'opacity-0'} absolute h-[10vh] w-[50vw] rounded-xl`}
@@ -91,7 +91,7 @@ const Landing = () => {
 
         <div
           onClick={token ? () => router.push('/explore') : () => {}}
-          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl bg-none select-none"
+          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl bg-none transition-transform duration-150 select-none active:scale-98"
         >
           <div
             className={`${token ? 'bg-bgbutton opacity-0' : 'opacity-0'} absolute h-[10vh] w-[50vw] rounded-xl`}
@@ -112,12 +112,12 @@ const Landing = () => {
                 }
               : () => router.push('login')
           }
-          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] bg-none select-none"
+          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] bg-none transition-transform duration-150 select-none active:scale-98 sm:w-[20vw]"
         >
           <div
-            className={`${token ? 'bg-bgbutton' : 'bg-bgbutton'} absolute h-[10vh] w-[50vw] rounded-xl opacity-80`}
+            className={`${token ? 'bg-bgbutton' : 'bg-bgbutton'} absolute h-[10vh] w-[50vw] rounded-xl opacity-80 sm:w-[20vw]`}
           ></div>
-          <p className="absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745]">
+          <p className="absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] sm:w-[20vw]">
             {token ? 'Logout' : 'Login'}
           </p>
         </div>

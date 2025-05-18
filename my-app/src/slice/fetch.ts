@@ -449,6 +449,12 @@ type GetGardenFullByIdRequest = {
   id: number;
 };
 
+type GetAllGardensLocalisationResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: Garden[];
+};
+
 type createLogRequest = {
   id: number;
   gardenId?: number;
@@ -952,6 +958,17 @@ export const extendedGardenAPI = api
         ],
       }),
 
+      //GetAllGardensLocalisation
+      getAllGardensLocalisation: builder.query<
+        GetAllGardensLocalisationResponse,
+        void
+      >({
+        query: () => ({
+          url: '/garden',
+          methd: 'GET',
+        }),
+      }),
+
       CreateLogBugReport: builder.mutation<void, GetCreateLogBugReportRequest>({
         query: (arg) => ({
           url: `/bug/`,
@@ -1003,4 +1020,5 @@ export const {
   useLazyGetGardensByNameQuery,
   useLazyGetUserByUsernameQuery,
   useCreateLogBugReportMutation,
+  useGetAllGardensLocalisationQuery,
 } = extendedGardenAPI;
