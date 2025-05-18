@@ -49,6 +49,7 @@ const Explore = () => {
   );
   const [isUsersTableVisible, setIsUsersTableVisible] = useState(true);
   const [isGardensTableVisible, setIsGardensTableVisible] = useState(true);
+  const [isPopularTagsVisible, setIsPopularTagsVisible] = useState(true);
   const [searchValue, setSearchValue] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [searchExecuted, setSearchExecuted] = useState(false);
@@ -99,6 +100,9 @@ const Explore = () => {
     setError(null);
     setSearchMessages({});
     setSearchExecuted(false);
+    type !== 'tag'
+      ? setIsPopularTagsVisible(false)
+      : setIsPopularTagsVisible(true);
   };
 
   // Mise à jour de la liste des tags à rechercher lors d'un clic
@@ -179,8 +183,8 @@ const Explore = () => {
           triggerGardensByTag(requestData),
         ]);
 
-        //console.log('usersResponseByTag : ', usersResponse); //A EFFACER
-        //console.log('gardenResponseByTag : ', gardensResponse); //A EFFACER
+        // console.log('usersResponseByTag : ', usersResponse); //A EFFACER
+        // console.log('gardenResponseByTag : ', gardensResponse); //A EFFACER
 
         if (usersResponse.isError || usersResponse.data?.isEmpty) {
           setSearchMessages((prev) => ({
@@ -202,8 +206,6 @@ const Explore = () => {
         await triggerUserByUsername({
           username: searchTerm,
         });
-
-        //console.log('usersByUsername : ', result); //A EFFACER
       } else if (searchType === 'garden') {
         await triggerGardenByName({ inputuser: searchTerm });
 
@@ -221,30 +223,34 @@ const Explore = () => {
     <Card className="bg-cardbackground flex h-screen min-h-screen w-full flex-col px-5 pt-5 pb-23">
       {/* Zone des résultats avec défilement */}
       <div className="mb-5 flex-1 overflow-y-auto">
-        <p>The most used tags:</p>
-        <div className="mb-5 flex flex-row flex-wrap gap-2">
-          {Array.isArray(hashTags?.content) && hashTags.content.length > 0 ? (
-            hashTags.content.slice(0, 5).map((tag: Tag) => (
-              <SlimCard
-                key={tag.tag}
-                bgColor="bg-bgcard"
-                className={`flex w-fit cursor-pointer justify-center px-2 hover:bg-amber-400 active:scale-95 ${
-                  selectedTags.includes(tag.tag)
-                    ? 'bg-amber-400'
-                    : 'bg-amber-200'
-                }`}
-                onClick={() => handleTagClick(tag.tag)}
-              >
-                #{tag.tag}
-              </SlimCard>
-            ))
-          ) : (
-            <p className="italic">
-              <i>No popular tags found</i>
-            </p>
-          )}
-        </div>
-
+        {isPopularTagsVisible && (
+          <>
+            <p>The most used tags:</p>
+            <div className="mb-5 flex flex-row flex-wrap gap-2">
+              {Array.isArray(hashTags?.content) &&
+              hashTags.content.length > 0 ? (
+                hashTags.content.slice(0, 5).map((tag: Tag) => (
+                  <SlimCard
+                    key={tag.tag}
+                    bgColor="bg-bgcard"
+                    className={`flex w-fit cursor-pointer justify-center px-2 hover:bg-amber-400 active:scale-95 ${
+                      selectedTags.includes(tag.tag)
+                        ? 'bg-amber-400'
+                        : 'bg-amber-200'
+                    }`}
+                    onClick={() => handleTagClick(tag.tag)}
+                  >
+                    #{tag.tag}
+                  </SlimCard>
+                ))
+              ) : (
+                <p className="italic">
+                  <i>No popular tags found</i>
+                </p>
+              )}
+            </div>
+          </>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="flex gap-3">
             <Radio
@@ -356,7 +362,6 @@ const Explore = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {/* Le reste de votre code de tableau reste inchangé */}
                             {searchType === 'tag' ? (
                               usersStatus === 'rejected' ? (
                                 <tr>
