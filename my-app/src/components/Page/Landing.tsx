@@ -31,7 +31,7 @@ const Landing = () => {
           height={50}
           src={'/image/divers/gifs/loading.gif'} //Le moulin
           alt={'Loading...'}
-          className="absolute top-45 -right-25 h-[70vh] w-[100vh] overflow-x-visible overflow-y-visible object-cover"
+          className="absolute top-45 -right-25 h-[70vh] w-[100vh] overflow-visible object-cover"
         />
         <Image
           width={50}
