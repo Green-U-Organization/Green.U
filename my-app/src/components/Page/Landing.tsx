@@ -112,12 +112,12 @@ const Landing = () => {
                 }
               : () => router.push('login')
           }
-          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] bg-none transition-transform duration-150 select-none active:scale-98 sm:w-[20vw]"
+          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] bg-none transition-transform duration-150 select-none active:scale-98"
         >
           <div
-            className={`${token ? 'bg-bgbutton' : 'bg-bgbutton'} absolute h-[10vh] w-[50vw] rounded-xl opacity-80 sm:w-[20vw]`}
+            className={`${token ? 'bg-bgbutton' : 'bg-bgbutton'} absolute h-[10vh] w-[50vw] rounded-xl opacity-80`}
           ></div>
-          <p className="absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745] sm:w-[20vw]">
+          <p className="absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745]">
             {token ? 'Logout' : 'Login'}
           </p>
         </div>
