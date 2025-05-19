@@ -15,18 +15,18 @@ import {
 } from '@/slice/fetch';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
-import type { AddCropPopup, CropType } from '@/utils/types';
+import type { AddCropPopupProps, Crop } from '@/utils/types';
 import { setAddCropPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import { RootState, useSelector } from '@/redux/store';
 
-const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
+const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
   //Local State
   const [plantationDistance, setPlantationDistance] = useState<number>(10);
   const [selectedIcon, setSelectedIcon] = useState<string>('');
   const [action, setAction] = useState<string>('sowing');
   const [origin, setOrigin] = useState<string>('fromScratch');
-  const [selectedCropToPlant, setSelectedCropToPlant] = useState<CropType>();
+  const [selectedCropToPlant, setSelectedCropToPlant] = useState<Crop>();
   const [vegetable, setVegetable] = useState('');
   const [variety, setVariety] = useState('');
 
@@ -153,7 +153,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
     setOrigin(e.target.value);
   };
 
-  const handleSelectRow = (crop: CropType) => {
+  const handleSelectRow = (crop: Crop) => {
     setSelectedCropToPlant(crop);
     setVegetable(crop.vegetable);
     setVariety(crop.variety);

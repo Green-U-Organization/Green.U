@@ -14,6 +14,7 @@ import {
 } from '@/slice/fetch';
 import VegetableIcon from '../Atom/VegetableIcon';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
+
 import {
   setDisplayParcelLogPopup,
   setEditParcelPopup,

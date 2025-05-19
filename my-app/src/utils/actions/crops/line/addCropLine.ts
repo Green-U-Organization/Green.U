@@ -1,6 +1,6 @@
-import { CropType } from '@/utils/types';
+import { Crop } from '@/utils/types';
 
-export const addCropLine = async (crop: CropType): Promise<CropType> => {
+export const addCropLine = async (crop: Crop): Promise<Crop> => {
   try {
     const response = await fetch(process.env.NEXT_PUBLIC_API + '/crops', {
       method: 'POST',

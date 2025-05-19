@@ -24,17 +24,17 @@ const initialState: GardenState = {
   graphicMode: false,
 };
 
-export const getGardenByUserIdFct = createAsyncThunk(
-  'garden/getGardenByUserId',
-  async (userId: number, { rejectWithValue }) => {
-    try {
-      const gardens = await getAllGardenByUserId(userId);
-      return gardens;
-    } catch (error) {
-      return rejectWithValue((error as Error).message);
-    }
-  }
-);
+// export const getGardenByUserIdFct = createAsyncThunk(
+//   'garden/getGardenByUserId',
+//   async (userId: number, { rejectWithValue }) => {
+//     try {
+//       const gardens = await getAllGardenByUserId(userId);
+//       return gardens;
+//     } catch (error) {
+//       return rejectWithValue((error as Error).message);
+//     }
+//   }
+// );
 
 const gardenSlice = createSlice({
   name: 'garden',
@@ -59,24 +59,24 @@ const gardenSlice = createSlice({
       state.graphicMode = !state.graphicMode;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getGardenByUserIdFct.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        getGardenByUserIdFct.fulfilled,
-        (state, action: PayloadAction<Garden[]>) => {
-          state.loading = false;
-          state.gardens = action.payload;
-        }
-      )
-      .addCase(getGardenByUserIdFct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-  },
+  // extraReducers: (builder) => {
+  //   builder
+  //     .addCase(getGardenByUserIdFct.pending, (state) => {
+  //       state.loading = true;
+  //       state.error = null;
+  //     })
+  //     .addCase(
+  //       getGardenByUserIdFct.fulfilled,
+  //       (state, action: PayloadAction<Garden[]>) => {
+  //         state.loading = false;
+  //         state.gardens = action.payload;
+  //       }
+  //     )
+  //     .addCase(getGardenByUserIdFct.rejected, (state, action) => {
+  //       state.loading = false;
+  //       state.error = action.payload as string;
+  //     });
+  // },
 });
 
 export const {

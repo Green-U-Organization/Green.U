@@ -1,15 +1,104 @@
+export type GardenQuery = {
+  isEmpty: boolean;
+  message: string;
+  content: Garden;
+};
+
+export type Garden = {
+  id: number;
+  authorId: number;
+  name: string;
+  deleted: boolean;
+  description: string;
+  latitude: number;
+  longitude: number;
+  length: number;
+  width: number;
+  createdAt: string;
+  privacy: number;
+  type: number;
+  constributors: string[]; // A changer
+  followers: string[]; // A changer
+  parcels: Parcel[];
+  plantNurseries: Nurcery[];
+  tagsInterests: Tag[];
+};
+
+export type Parcel = {
+  id: number;
+  gardenId: number;
+  length: number;
+  width: number;
+  nLine: number;
+  parcelAngle: number;
+  createdAt: string;
+  lines?: Line[];
+  logs?: Log[];
+};
+
+export type Line = {
+  id: number;
+  gardenId: number;
+  parcelId: number;
+  length: number;
+  createdAt: string;
+  crops?: Crop[];
+};
+
+export type Nurcery = {
+  id: number;
+  gardenId: number;
+  name: string;
+  type: string;
+  createdAt: string;
+  comments: string;
+  crops: Crop[];
+};
+
+export type SelectOption = {
+  value: string | number;
+  label: string;
+};
+
+export type Crop = {
+  id: number;
+  lineId?: number;
+  nurseryId?: number;
+  vegetable: string;
+  variety: string;
+  sowing: string;
+  planting: string;
+  harvesting: string;
+  icon: string;
+  createdAt: string;
+};
+
+export type Log = {
+  id: number;
+  gardenId?: number;
+  parcelId?: number;
+  lineId?: number;
+  cropId?: number;
+  nurseryId?: number;
+  greenhouseId?: number;
+  action: string;
+  comment?: string;
+  authorId?: number;
+  username?: string;
+  type: string;
+  createdAt: string;
+};
+
+export type Tag = { tag: string; count: number };
+
+//#region
+
 export type BentoCardHeaderProps = {
   containerName: string;
   className?: string;
   children?: React.ReactNode;
   pageLink: string;
 };
-
-// export type ButtonProps =
-//   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-//   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-//   disabled?: boolean;
-// }
 
 export type CardProps = {
   children: React.ReactNode;
@@ -43,33 +132,6 @@ export type GardenProps = {
   scale: number;
 };
 
-export type Garden = {
-  id?: number;
-  authorId: number;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  length: number;
-  width: number;
-  privacy: number;
-  type: number;
-  hashtags: string[];
-};
-
-export type Parcel = {
-  id: number;
-  gardenId: number;
-  length: number;
-  width: number;
-  nLine: number;
-  parcelAngle: number;
-  createdAt: string;
-  garden?: string;
-  lines?: [];
-  logs?: [];
-};
-
 export type GardenCardHeaderProps = {
   containerName: string;
   className?: string;
@@ -93,20 +155,6 @@ export type LocationPickerProps = {
   multipleMarkers?: { lat: number; lng: number }[];
   enableRadius?: boolean;
   showUserPosition?: boolean;
-};
-
-export type ParcelProps = {
-  parcel: Parcel;
-  scale: number;
-  parcelKey: number;
-};
-
-export type Line = {
-  id: number;
-  parcelId: number;
-  length: number;
-  // crop: string;
-  // status: string;
 };
 
 export type RadioProps = {
@@ -147,24 +195,6 @@ export type ZoomSliderProps = {
   className?: string;
 };
 
-export type NurceryProps = {
-  nursery: Nurcery;
-  scale: number;
-  nurseryKey: number;
-};
-
-export type Nurcery = {
-  id: number;
-  name: string;
-  comments: string;
-  type: string;
-};
-
-export type SelectOption = {
-  value: string | number;
-  label: string;
-};
-
 export type SelectInputProps = {
   label: string;
   name: string;
@@ -181,7 +211,7 @@ export type VegetableIconProps = {
   id: number;
 };
 
-export type AddCropPopup = {
+export type AddCropPopupProps = {
   lineId: number | null;
 };
 
@@ -191,7 +221,7 @@ export type ConfirmationProps = {
   handleNoClick: () => void;
 };
 
-export type EditParcelPopup = {
+export type EditParcelPopupProps = {
   parcel: Parcel;
 };
 
@@ -231,98 +261,28 @@ export type SubmenuProps = {
   displayCondition: boolean;
   children?: React.ReactNode;
 };
+export type NurceryProps = {
+  nursery: Nurcery;
 
-export type GardenType = {
-  authorId: number;
-  name: string;
-  description: string;
-  latitude: number;
-  longitude: number;
-  length: number;
-  width: number;
-  privacy: number;
-  type: number;
-  hashtags: string[];
+  nurseryKey: number;
+};
+export type ParcelProps = {
+  parcel: Parcel;
+
+  parcelKey: number;
 };
 
-export type CropType = {
-  id?: number;
-  lineId?: number;
-  nurseryId?: number;
-  vegetable: string;
-  variety: string;
-  sowing: string;
-  planting: string;
-  harvesting: string;
-  icon: string;
-};
+// export type GardenType = {
+//   authorId: number;
+//   name: string;
+//   description: string;
+//   latitude: number;
+//   longitude: number;
+//   length: number;
+//   width: number;
+//   privacy: number;
+//   type: number;
+//   hashtags: string[];
+// };
 
-export type Log = {
-  id: number;
-  gardenId?: number;
-  parcelId?: number;
-  lineId?: number;
-  cropId?: number;
-  nurseryId?: number;
-  greenhouseId?: number;
-  action: string;
-  comment?: string;
-  authorId?: number;
-  username?: string;
-  type: string;
-  createdAt: string;
-};
-
-export type Tag = { tag: string; count: number };
-
-export type GardenFull = {
-  id: number;
-  authorId: number;
-  name: string;
-  description: string;
-  length: number;
-  width: number;
-  privacy: number;
-  type: number;
-  nursery: {
-    id: number;
-    name: string;
-    comments: string;
-    type: string;
-    crop: {
-      id: number;
-      vegetable: string;
-      variety: string;
-      icon: string;
-      sowing: string;
-      planting: string;
-      distance_plantation: number;
-      comments: string;
-    }[];
-  }[];
-  parcel: {
-    id: number;
-    gardenId: number;
-    length: number;
-    width: number;
-    nLine: number;
-    parcelAngle: number;
-    createdAt: string;
-    lines: {
-      id: number;
-      parcelId: number;
-      length: number;
-      createdAt: string;
-      crop: {
-        id: number;
-        vegetable: string;
-        variety: string;
-        icon: string;
-        sowing: string;
-        planting: string;
-        distance_plantation: number;
-        comments: string;
-      }[];
-    }[];
-  }[];
-};
+//#endregion

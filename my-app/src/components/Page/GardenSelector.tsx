@@ -73,7 +73,7 @@ const GardenSelector = () => {
                       dispatch(setSelectedGarden(garden));
                       clearSelectedGarden();
                       setSelectedGardenCookies(garden);
-                      router.push('/garden/display');
+                      router.push(`/garden/display/${garden.id}/`);
                     }}
                     className="flex w-[80vw] flex-col"
                   >
