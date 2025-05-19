@@ -85,7 +85,7 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
   //console.log(currentPath);
   return (
     <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-      <SlimCard className="bg-cardbackground p-0">
+      <SlimCard className="bg-cardbackground cursor-default! p-0">
         <H1>Bug Report</H1>
         <H2>On Page {currentPath}</H2>
         <form onSubmit={handleSubmit} className="flex flex-col justify-center">
