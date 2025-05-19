@@ -1,6 +1,6 @@
 import { Garden, GardenFull } from '@/utils/types';
 import api from './api';
-import { Log } from '@/utils/types';
+import { Log, Parcel } from '@/utils/types';
 
 // type LoginUserRequest = {
 //   email: string;
@@ -49,10 +49,10 @@ type CreateNewParcelRequest = {
   gardenId: number;
   length: number;
   width: number;
-  x_position: number;
-  y_position: number;
-  parcel_angle: number;
+  iteration: number;
 };
+
+type CreateNewParcelResponse = Parcel[];
 
 type EditParcelRequest = {
   parcelId: number;
@@ -503,7 +503,10 @@ export const extendedGardenAPI = api
       //EditLine >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
       //CreateNewParcel >> OK
-      createNewParcel: builder.mutation<void, CreateNewParcelRequest>({
+      createNewParcel: builder.mutation<
+        CreateNewParcelResponse,
+        CreateNewParcelRequest
+      >({
         query: (arg) => ({
           url: `/garden/parcel/`,
           method: 'POST',

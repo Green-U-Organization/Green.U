@@ -1,5 +1,5 @@
 import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
-import { Garden } from '@/utils/types';
+import { Garden, Parcel } from '@/utils/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GardenState {
@@ -42,6 +42,11 @@ const gardenSlice = createSlice({
   reducers: {
     setSelectedGarden: (state, action: PayloadAction<Garden>) => {
       state.selectedGarden = action.payload;
+    },
+    addParcel: (state, action: PayloadAction<Parcel[]>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels.push(...action.payload);
+      }
     },
     clearSelectedGarden: (state) => {
       state.selectedGarden = null;
@@ -86,5 +91,6 @@ export const {
   setFullscreen,
   setReload,
   setGraphicMode,
+  addParcel,
 } = gardenSlice.actions;
 export default gardenSlice.reducer;
