@@ -1,20 +1,17 @@
-module.exports = {
-	webpack: (config) => {
-		config.module.rules.push({
-			test: /\.(png|jpg|gif)$/i,
-			use: [
-				{
-					loader: "url-loader",
-					options: {
-						limit: 8192,
-					},
+export function webpack(config) {
+	config.module.rules.push({
+		test: /\.(png|jpg|gif)$/i,
+		use: [
+			{
+				loader: "url-loader",
+				options: {
+					limit: 8192,
 				},
-			],
-		});
-		return config;
-	},
-
-	images: {
-		domains: ["localhost"],
-	},
+			},
+		],
+	});
+	return config;
+}
+export const images = {
+	domains: ["localhost"],
 };

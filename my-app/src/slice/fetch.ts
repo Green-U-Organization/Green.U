@@ -481,6 +481,7 @@ export const extendedGardenAPI = api
       'tags-user',
       'tags-userInterest',
       'tags-logs',
+      'garden-patch-crops',
     ],
   })
   .injectEndpoints({
@@ -492,7 +493,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-lines', 'tags-logs'],
+        invalidatesTags: ['garden-lines'],
       }),
 
       //GelAllLineByParcelId >> OK
@@ -517,7 +518,7 @@ export const extendedGardenAPI = api
           method: 'DELETE',
           body: arg,
         }),
-        invalidatesTags: ['garden-lines', 'tags-logs'],
+        invalidatesTags: ['garden-lines'],
       }),
 
       //EditLine >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -529,7 +530,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels', 'tags-logs'],
+        invalidatesTags: ['garden-parcels'],
       }),
 
       createLogBugReport: builder.mutation<void, GetCreateLogBugReportRequest>({
@@ -584,7 +585,7 @@ export const extendedGardenAPI = api
           method: 'DELETE',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels', 'tags-logs'],
+        invalidatesTags: ['garden-parcels'],
       }),
 
       //EditParcel >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -594,7 +595,7 @@ export const extendedGardenAPI = api
           method: 'PATCH',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels', 'tags-logs'],
+        invalidatesTags: ['garden-parcels'],
       }),
 
       //CreateNewGarden >> OK
@@ -604,7 +605,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-gardens', 'tags-logs'],
+        invalidatesTags: ['garden-gardens'],
       }),
 
       //GetAllGardeByUserId >> OK
@@ -640,7 +641,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-crops', 'tags-logs'],
+        invalidatesTags: ['garden-crops'],
       }),
 
       //CreateCropToNursery >> OK + TO IMPLEMENT
@@ -650,7 +651,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-crops', 'tags-logs'],
+        invalidatesTags: ['garden-crops'],
       }),
 
       //PatchCrop >>
@@ -660,7 +661,7 @@ export const extendedGardenAPI = api
           method: 'PATCH',
           body: arg,
         }),
-        invalidatesTags: ['garden-crops', 'tags-logs'],
+        invalidatesTags: ['garden-crops', 'garden-patch-crops'],
       }),
 
       //EditCropByCropId >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -686,7 +687,7 @@ export const extendedGardenAPI = api
           url: `/crops/plantnursery/${arg.nurseryId}`,
           method: 'GET',
         }),
-        providesTags: ['garden-crops'],
+        providesTags: ['garden-crops', 'garden-patch-crops'],
       }),
 
       //GetCropsByVegetableName >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -698,7 +699,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-nursery', 'tags-logs'],
+        invalidatesTags: ['garden-nursery'],
       }),
 
       //GetNurseryByGardenId >> OK
@@ -725,7 +726,7 @@ export const extendedGardenAPI = api
           method: 'DELETE',
           body: arg,
         }),
-        invalidatesTags: ['garden-nursery', 'tags-logs'],
+        invalidatesTags: ['garden-nursery'],
       }),
 
       // USER CONNECTION
