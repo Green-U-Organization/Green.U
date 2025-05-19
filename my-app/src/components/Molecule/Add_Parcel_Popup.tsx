@@ -62,7 +62,7 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
         userId: id,
         xp: (user?.data?.content?.xp ?? 0) + XpTable.addParcel,
       });
-      console.log('parcel created');
+      console.log('parcel(s) created');
     } catch {
       console.log('error creating parcel');
     }
