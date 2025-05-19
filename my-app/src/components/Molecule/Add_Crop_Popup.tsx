@@ -55,24 +55,34 @@ const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
 
   //Selectors
   const garden = useSelector((state: RootState) => state.garden.selectedGarden);
+  const nurseries = useSelector(
+    (state: RootState) => state.garden.selectedGarden?.plantNurseries
+  );
+  const crops = useSelector((state: RootState) => {
+    const nurseries = state.garden.selectedGarden?.plantNurseries || [];
+
+    const foundCrops = nurseries.flatMap((n) => n.crops || []);
+
+    return foundCrops.length > 0 ? foundCrops : undefined;
+  });
 
   //RTK Query
   const [createCropToLine] = useCreateCropToLineMutation();
   const [addXp] = useEditUserByUserIdMutation();
   const user = useGetUserByIdQuery({ userId: id });
-  const { data: nurseries } = useGetNurseryByGardenIdQuery({
-    gardenId: garden?.id ?? 0,
-  });
+  // const { data: nurseries } = useGetNurseryByGardenIdQuery({
+  //   gardenId: garden?.id ?? 0,
+  // });
   const [patchCrop] = usePatchCropMutation();
 
-  const crops =
-    nurseries?.content.map((nursery) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const { data: crop } = useGetCropByNurseryIdQuery({
-        nurseryId: nursery.id,
-      });
-      return crop;
-    }) || [];
+  // const crops =
+  //   nurseries?.map((nursery) => {
+  //     // eslint-disable-next-line react-hooks/rules-of-hooks
+  //     const { data: crop } = useGetCropByNurseryIdQuery({
+  //       nurseryId: nursery.id,
+  //     });
+  //     return crop;
+  //   }) || [];
 
   //Handlers
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -213,8 +223,8 @@ const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
               </tr>
             </thead>
             <tbody>
-              {crops.map((cropObject) =>
-                cropObject?.content.map((crop) => (
+              {crops?.map((cropObject) =>
+                cropObject?.map((crop) => (
                   <tr
                     key={crop.id}
                     onClick={() => handleSelectRow(crop)}

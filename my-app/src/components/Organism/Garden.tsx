@@ -28,7 +28,7 @@ const Garden = () => {
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
-  let garden = useSelector((state: RootState) => state.garden.selectedGarden);
+  // let garden = useSelector((state: RootState) => state.garden.selectedGarden);
   let parcels = useSelector(
     (state: RootState) => state.garden.selectedGarden?.parcels
   );

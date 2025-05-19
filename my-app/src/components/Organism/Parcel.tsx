@@ -25,7 +25,7 @@ import Cookies from 'js-cookie';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
 
-const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
+const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
   //Local State
   const [displayParcelInfo, setDisplayParcelInfo] = useState<boolean>(false);
   const [displayDeletingParcelPopup, setDisplayDeletingParcelPopup] =
@@ -42,11 +42,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   const userId = Number(userCookie?.id);
 
   //RTK Query
-  const {
-    data: lines,
-    isLoading: linesIsLoading,
-    isError: linesIsError,
-  } = useGetAllLinesByParcelIdQuery({ parcelId: parcel.id });
+  // const {
+  //   data: lines,
+  //   isLoading: linesIsLoading,
+  //   isError: linesIsError,
+  // } = useGetAllLinesByParcelIdQuery({ parcelId: parcel.id });
   const [createNewLine, { isLoading: newLineIsLoading }] =
     useCreateNewGardenLineMutation();
   const [deleteParcel, { isLoading: deleteParcelIsLoading }] =
@@ -65,7 +65,14 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
+  const lines = useSelector(
+    (state: RootState) =>
+      state.garden.selectedGarden?.parcels.find((p) => p.id === parcel.id)
+        ?.lines
+  );
   const id = useSelector((state: RootState) => state.display.id);
+
+  console.log('lines : ', lines);
 
   //Fetch
   const addLine = () => {
@@ -94,12 +101,12 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
 
   // Loading and Error Handling
 
-  if (linesIsLoading) {
-    return <Loading />;
-  }
-  if (linesIsError) {
-    console.log('error in currentparcel : ', parcel.id);
-  }
+  // if (linesIsLoading) {
+  //   return <Loading />;
+  // }
+  // if (linesIsError) {
+  //   console.log('error in currentparcel : ', parcel.id);
+  // }
   // if (lines?. === 0) {
   //   console.log('Oups, no lines find...');
   // }
@@ -118,9 +125,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
               <div className="flex items-center justify-between">
                 <H2>Parcel {parcelKey}</H2>
 
-                {lines?.content.map((line) => (
+                {/* {lines?.map((line) => (
                   <VegetableIcon id={line.id} key={line.id} />
-                ))}
+                ))} */}
 
                 <Image
                   onClick={() => setDisplayParcelInfo((prev) => !prev)}
@@ -245,14 +252,14 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 <H2>Oup&apos;s there is no line in this parcel.</H2>
               </div>
             ) : (
-              lines?.content.map((line, index) => (
+              lines?.map((line, index) => (
                 <div
                   key={line.id}
                   style={{
                     display: displayParcelInfo ? 'block' : 'none',
                   }}
                 >
-                  <Line line={line} lineIndex={index + 1} scale={scale} />
+                  <Line line={line} lineIndex={index + 1} />
                 </div>
               ))
             )}

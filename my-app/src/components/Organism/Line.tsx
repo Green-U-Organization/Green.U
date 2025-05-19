@@ -33,9 +33,9 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
   //RTK Query
   const [deleteLineMutation, { isLoading: deleteLinesIsLoading }] =
     useDeleteOneLineByLineIdMutation();
-  const { data: crops } = useGetCropByLineIdQuery({
-    lineId: line.id,
-  });
+  // const { data: crops } = useGetCropByLineIdQuery({
+  //   lineId: line.id,
+  // });
 
   //Hooks
   const dispatch = useDispatch();
@@ -66,7 +66,19 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
+  const crops = useSelector((state: RootState) => {
+    const parcels = state.garden.selectedGarden?.parcels || [];
+
+    const foundLines = parcels
+      .flatMap((p) => p.lines || [])
+      .filter((l) => l.id === line.id);
+
+    return foundLines.length > 0 ? foundLines[0].crops : undefined;
+  });
   const id = useSelector((state: RootState) => state.display.id);
+
+  //Debug
+  console.log('crops : ', crops);
 
   // Fetch
   const deletingLine = () => {
@@ -244,9 +256,9 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
           {
             <img
               src={
-                crops?.content[0].icon === ''
+                crops && crops[0]?.icon === ''
                   ? '/image/icons/info.png'
-                  : crops?.content[0].icon
+                  : crops && crops[0]?.icon
               }
               className="w-[6vw]"
               alt=""
@@ -254,7 +266,9 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
                 dispatch(
                   setDisplayCropLogPopup({
                     state: !displayCropLogPopup,
-                    id: Number(crops?.content[0].id),
+                    id: Number(
+                      crops && crops.length > 0 ? crops[0].id : undefined
+                    ),
                   })
                 )
               }
@@ -328,13 +342,13 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
       <div
         style={{
           display:
-            displayCropLogPopup && id === crops?.content[0].id
+            displayCropLogPopup && id === (crops && crops[0]?.id)
               ? 'block'
               : 'none',
         }}
       >
         <Display_Logs_Popup
-          id={crops?.content[0].id}
+          id={crops && crops.length > 0 ? crops[0].id : undefined}
           display={displayCropLogPopup}
           logObject={'crop'}
         />

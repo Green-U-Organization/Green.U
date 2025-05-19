@@ -70,6 +70,8 @@ export type Crop = {
   planting: string;
   harvesting: string;
   icon: string;
+  nPot?: number;
+  potSize?: number;
   createdAt: string;
 };
 
@@ -143,7 +145,6 @@ export type GardenCardHeaderProps = {
 
 export type LineProps = {
   line: Line;
-  scale: number;
   lineIndex: number;
 };
 

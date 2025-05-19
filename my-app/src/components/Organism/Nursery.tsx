@@ -28,11 +28,11 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
     useState<boolean>(false);
 
   // RTK Query
-  const {
-    data: crops,
-    isLoading: cropsIsLoading,
-    isError: cropsIsError,
-  } = useGetCropByNurseryIdQuery({ nurseryId: nursery.id });
+  // const {
+  //   data: crops,
+  //   isLoading: cropsIsLoading,
+  //   isError: cropsIsError,
+  // } = useGetCropByNurseryIdQuery({ nurseryId: nursery.id });
   const [deleteNursery, { isLoading: deleteNurseryIsLoading }] =
     useDeleteOneNurseryByNurseryIdMutation();
 
@@ -61,6 +61,12 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
+  const crops = useSelector((state: RootState) => {
+    const nurseryObj = state.garden.selectedGarden?.plantNurseries.find(
+      (n) => n.id === nursery.id
+    );
+    return nurseryObj?.crops;
+  });
   const id = useSelector((state: RootState) => state.display.id);
 
   // Fetch
@@ -76,15 +82,15 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
   };
 
   // Loading and Error Handling
-  if (cropsIsLoading) {
-    return <div className="m-10">Loading...</div>;
-  }
-  if (cropsIsError) {
-    console.log('error in current nursery : ', nursery.id);
-  }
-  if (crops?.isEmpty) {
-    console.log('Oups, no crops find...');
-  }
+  // if (cropsIsLoading) {
+  //   return <div className="m-10">Loading...</div>;
+  // }
+  // if (cropsIsError) {
+  //   console.log('error in current nursery : ', nursery.id);
+  // }
+  // if (crops?.isEmpty) {
+  //   console.log('Oups, no crops find...');
+  // }
 
   return (
     <>
@@ -239,7 +245,7 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {crops?.content.map((crop) => (
+                  {crops?.map((crop) => (
                     <>
                       <tr key={crop.id * Math.random()}>
                         <td className="border-1 p-1">{crop.vegetable}</td>
