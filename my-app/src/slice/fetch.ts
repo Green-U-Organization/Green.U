@@ -19,6 +19,7 @@ import { Log, Parcel } from '@/utils/types';
 
 type CreateNewGardenLineRequest = {
   parcelId: number;
+  gardenId: number;
   length: number;
 };
 

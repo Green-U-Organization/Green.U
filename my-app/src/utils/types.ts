@@ -44,7 +44,7 @@ export type Line = {
   length: number;
   createdAt: string;
   crops?: Crop[];
-  log?: Log[];
+  // log?: Log[];
 };
 
 export type Nursery = {
