@@ -116,6 +116,9 @@ namespace GreenUApi.Migrations
                     b.Property<int?>("Distance_plantation")
                         .HasColumnType("int");
 
+                    b.Property<long?>("GardenId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateOnly?>("Harvesting")
                         .HasColumnType("date");
 
@@ -128,6 +131,9 @@ namespace GreenUApi.Migrations
 
                     b.Property<short?>("NPot")
                         .HasColumnType("smallint");
+
+                    b.Property<long?>("ParcelId")
+                        .HasColumnType("bigint");
 
                     b.Property<long?>("PlantNurseryId")
                         .HasColumnType("bigint");
