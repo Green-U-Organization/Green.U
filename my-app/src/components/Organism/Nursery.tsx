@@ -8,7 +8,7 @@ import {
   useGetCropByNurseryIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
 } from '@/slice/fetch';
-import { NurceryProps } from '@/utils/types';
+import { NurseryProps } from '@/utils/types';
 import AddCropNurseryPopup from '../Molecule/Add_CropNursery_Popup';
 import {
   setAddCropNurseryPopup,
@@ -21,7 +21,7 @@ import Cookies from 'js-cookie';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
 
-const Nursery: FC<NurceryProps> = ({ nursery }) => {
+const Nursery: FC<NurseryProps> = ({ nursery }) => {
   // Local State
   const [displayNurseryInfo, setDisplayNurseryInfo] = useState<boolean>(false);
   const [displayDeletingNurseryPopup, setDisplayDeletingNurseryPopup] =

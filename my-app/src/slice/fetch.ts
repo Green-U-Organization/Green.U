@@ -1,4 +1,4 @@
-import { Garden, GardenFull } from '@/utils/types';
+import { Crop, Garden, GardenFull, Line, Nursery } from '@/utils/types';
 import api from './api';
 import { Log, Parcel } from '@/utils/types';
 
@@ -21,6 +21,8 @@ type CreateNewGardenLineRequest = {
   parcelId: number;
   length: number;
 };
+
+type CreateNewGardenLineResponse = Line;
 
 type GetAllLinesByParcelIdRequest = {
   parcelId: number;
@@ -151,10 +153,11 @@ type CreateCropToLineRequest = {
   icon: string;
   sowing: string;
   planting: string;
-  harvesting: string;
   distancePlantation: number;
   comments: string;
 };
+
+type CreateCropToLineResponse = Crop;
 
 type CreateCropToNurseryRequest = {
   nurseryId: number;
@@ -169,6 +172,8 @@ type CreateCropToNurseryRequest = {
   harvesting: string;
   distance_plantation: number;
 };
+
+type CreateCropToNurseryResponse = Crop;
 
 type PatchCropRequest = {
   cropId?: number;
@@ -223,6 +228,8 @@ type CreateNurseryRequest = {
   name: string;
   type: string;
 };
+
+type CreateNurseryResponse = Nursery;
 
 type GetNurseryByGardenIdResponse = {
   isEmpty: boolean;
@@ -466,13 +473,16 @@ export const extendedGardenAPI = api
   .injectEndpoints({
     endpoints: (builder) => ({
       //CreateNewGardenLine >> OK
-      createNewGardenLine: builder.mutation<void, CreateNewGardenLineRequest>({
+      createNewGardenLine: builder.mutation<
+        CreateNewGardenLineResponse,
+        CreateNewGardenLineRequest
+      >({
         query: (arg) => ({
           url: `/garden/parcel/line/`,
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-lines', 'tags-logs'],
+        // invalidatesTags: ['garden-lines', 'tags-logs'],
       }),
 
       // //GelAllLineByParcelId >> OK
@@ -497,7 +507,7 @@ export const extendedGardenAPI = api
           method: 'DELETE',
           body: arg,
         }),
-        invalidatesTags: ['garden-lines', 'tags-logs'],
+        // invalidatesTags: ['garden-lines', 'tags-logs'],
       }),
 
       //EditLine >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -617,7 +627,10 @@ export const extendedGardenAPI = api
       //EditGarden >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
       //CreateCropToLine >> OK
-      createCropToLine: builder.mutation<void, CreateCropToLineRequest>({
+      createCropToLine: builder.mutation<
+        CreateCropToLineResponse,
+        CreateCropToLineRequest
+      >({
         query: (arg) => ({
           url: `/crops/line/${arg.lineId}`,
           method: 'POST',
@@ -627,7 +640,10 @@ export const extendedGardenAPI = api
       }),
 
       //CreateCropToNursery >> OK + TO IMPLEMENT
-      createCropToNursery: builder.mutation<void, CreateCropToNurseryRequest>({
+      createCropToNursery: builder.mutation<
+        CreateCropToNurseryResponse,
+        CreateCropToNurseryRequest
+      >({
         query: (arg) => ({
           url: `/crops/plantnursery/${arg.nurseryId}`,
           method: 'POST',
@@ -675,7 +691,10 @@ export const extendedGardenAPI = api
       //GetCropsByVegetableName >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<
 
       //CreateNursery >> OK + TO IMPLEMENT
-      createNursery: builder.mutation<void, CreateNurseryRequest>({
+      createNursery: builder.mutation<
+        CreateNurseryResponse,
+        CreateNurseryRequest
+      >({
         query: (arg) => ({
           url: `/plantnursery`,
           method: 'POST',

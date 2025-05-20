@@ -20,8 +20,9 @@ export type Garden = {
   constributors: string[]; // A changer
   followers: string[]; // A changer
   parcels: Parcel[];
-  plantNurseries: Nurcery[];
+  plantNurseries: Nursery[];
   tagsInterests: Tag[];
+  log?: Log[];
 };
 
 export type Parcel = {
@@ -33,7 +34,7 @@ export type Parcel = {
   parcelAngle: number;
   createdAt: string;
   lines?: Line[];
-  logs?: Log[];
+  log?: Log[];
 };
 
 export type Line = {
@@ -43,16 +44,18 @@ export type Line = {
   length: number;
   createdAt: string;
   crops?: Crop[];
+  log?: Log[];
 };
 
-export type Nurcery = {
+export type Nursery = {
   id: number;
   gardenId: number;
   name: string;
   type: string;
   createdAt: string;
   comments: string;
-  crops: Crop[];
+  crops?: Crop[];
+  log?: Log[];
 };
 
 export type SelectOption = {
@@ -73,6 +76,7 @@ export type Crop = {
   nPot?: number;
   potSize?: number;
   createdAt: string;
+  log?: Log[];
 };
 
 export type Log = {
@@ -262,8 +266,8 @@ export type SubmenuProps = {
   displayCondition: boolean;
   children?: React.ReactNode;
 };
-export type NurceryProps = {
-  nursery: Nurcery;
+export type NurseryProps = {
+  nursery: Nursery;
 
   nurseryKey: number;
 };

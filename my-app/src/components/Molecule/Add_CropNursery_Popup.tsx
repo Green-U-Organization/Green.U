@@ -6,7 +6,7 @@ import Button from '../Atom/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';
-import { Nurcery } from '@/utils/types';
+import { Nursery } from '@/utils/types';
 import H2 from '../Atom/H2';
 import {
   useCreateCropToNurseryMutation,
@@ -16,7 +16,7 @@ import {
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 
-const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
+const AddCropNurseryPopup: FC<{ nursery: Nursery }> = ({ nursery }) => {
   //Local State
   const [potSize, setPotSize] = useState<number>(5);
   const [typeOfAction, setTypeOfAction] = useState<string>('sowing');
