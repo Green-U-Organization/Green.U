@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { FC, useState } from 'react';
 import TextInput from '../Atom/TextInput';
 import Card from '../Atom/Card';
@@ -7,13 +8,25 @@ import { RootState } from '@/redux/store';
 import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';
 import { Nurcery } from '@/utils/types';
 import H2 from '../Atom/H2';
-import { useCreateCropToNurseryMutation } from '@/slice/fetch';
+import {
+  useCreateCropToNurseryMutation,
+  useEditUserByUserIdMutation,
+  useGetUserByIdQuery,
+} from '@/slice/fetch';
+import XpTable from '@/utils/Xp';
+import Cookies from 'js-cookie';
+import LoadingModal from './LoadingModal';
 
 const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   //Local State
   const [potSize, setPotSize] = useState<number>(5);
   const [typeOfAction, setTypeOfAction] = useState<string>('sowing');
   const [selectedIcon, setSelectedIcon] = useState<string>('');
+
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const id = Number(userCookie?.id);
 
   //Variables
   const iconList = [
@@ -29,7 +42,6 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
     '/image/assets/vegetables/icon/potato.png',
     '/image/assets/vegetables/icon/tomato.png',
   ];
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
   //Hooks
   const dispatch = useDispatch();
@@ -40,7 +52,10 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
   );
 
   //RTK Query
-  const [createCropToNursery] = useCreateCropToNurseryMutation();
+  const [createCropToNursery, { isLoading: newCropNurseryIsLoading }] =
+    useCreateCropToNurseryMutation();
+  const [addXp] = useEditUserByUserIdMutation();
+  const user = useGetUserByIdQuery({ userId: id });
 
   //Handlers
   const handlePotSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +98,10 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
 
     try {
       await createCropToNursery(cropData).unwrap();
+      await addXp({
+        userId: id,
+        xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
+      });
       console.log('crop created');
       dispatch(
         setAddCropNurseryPopup({
@@ -105,6 +124,8 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
         display: display ? 'flex' : 'none',
       }}
     >
+      {newCropNurseryIsLoading && <LoadingModal />}
+
       <Card className="bg-cardbackground flex w-[80vw] flex-col justify-center">
         <form onSubmit={handleSubmit} className="m-[3vw]">
           <TextInput
@@ -172,13 +193,12 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
           <H2>Choose your crop icon :</H2>
           <div className="flex flex-wrap items-center justify-center">
             {iconList.map((icon, key) => (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={icon}
                 alt={`icon-${key}`}
                 key={icon}
                 onClick={handleClickIcon}
-                className={`mx-[2vw] ${baseURL + icon === selectedIcon ? 'rounded-lg border-2' : 'border-0'}`}
+                className={`mx-[2vw] ${icon.split('/').pop() === selectedIcon.split('/').pop() ? 'z-50 rounded-lg border-2 bg-amber-300' : 'border-0'}`}
               />
             ))}
           </div>
@@ -186,6 +206,7 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
           <div className="flex justify-center">
             <Button
               className="bg-bgbutton relative m-5 px-6 py-2"
+              type="button"
               onClick={() =>
                 dispatch(
                   setAddCropNurseryPopup({

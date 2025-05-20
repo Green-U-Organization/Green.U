@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 import React from 'react';
+import Image from 'next/image';
 
 const AddIconPopup = () => {
   //Variables
@@ -20,7 +20,9 @@ const AddIconPopup = () => {
   return (
     <div className="flex flex-wrap">
       {iconList.map((icon, index) => (
-        <img
+        <Image
+          width={50}
+          height={50}
           src={icon}
           alt={`icon-${index}`}
           key={index * Math.random() * 100 * Math.random()}

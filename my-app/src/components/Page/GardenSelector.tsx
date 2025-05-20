@@ -82,7 +82,7 @@ const GardenSelector = () => {
                   </div>
 
                   <img
-                    // onClick={handleConfigurationClick}
+                    onClick={() => router.push('/WorkInProgress')}
                     className="image mr-[5vw] h-[10vw] w-[10vw] object-contain"
                     src="/image/icons/gear.png"
                     alt=""

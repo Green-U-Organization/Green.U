@@ -1,7 +1,6 @@
 'use client';
 import React, { FC, useState } from 'react';
 import Line from './Line';
-import styles from '../../app/Assets.module.css';
 import Image from 'next/image';
 import { ParcelProps, type Parcel } from '@/utils/types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,9 +14,15 @@ import {
 } from '@/slice/fetch';
 import VegetableIcon from '../Atom/VegetableIcon';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
-import { setEditParcelPopup } from '@/redux/display/displaySlice';
+import {
+  setDisplayParcelLogPopup,
+  setEditParcelPopup,
+} from '@/redux/display/displaySlice';
 import Loading from '../Atom/Loading';
 import SlimCard from '../Atom/SlimCard';
+import Cookies from 'js-cookie';
+import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
+import LoadingModal from '../Molecule/LoadingModal';
 
 const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   //Local State
@@ -26,37 +31,44 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
     useState<boolean>(false);
 
   // Variables
-  const parcelY = parcel?.length;
-  const parcelX = parcel?.width;
 
   //Hooks
   const dispatch = useDispatch();
+
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
 
   //RTK Query
   const {
     data: lines,
     isLoading: linesIsLoading,
     isError: linesIsError,
-  } = useGetAllLinesByParcelIdQuery({
-    parcelId: parcel.id,
-  });
-  const [createNewLine] = useCreateNewGardenLineMutation();
-  const [deleteParcel] = useDeleteOneParcelByParcelIdMutation();
+  } = useGetAllLinesByParcelIdQuery({ parcelId: parcel.id });
+  const [createNewLine, { isLoading: newLineIsLoading }] =
+    useCreateNewGardenLineMutation();
+  const [deleteParcel, { isLoading: deleteParcelIsLoading }] =
+    useDeleteOneParcelByParcelIdMutation();
 
   //Debug
-  console.log('lines : ', lines);
+  // console.log('lines : ', lines);
 
   //Selectors
-  const graphicMode = useSelector(
-    (state: RootState) => state.garden.graphicMode
-  );
   const editParcelPopupDisplay = useSelector(
     (state: RootState) => state.display.editParcelPopup
+  );
+  const displayParcelLogPopup = useSelector(
+    (state: RootState) => state.display.displayParcelLogPopup
+  );
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
   );
   const id = useSelector((state: RootState) => state.display.id);
 
   //Fetch
   const addLine = () => {
+    setDisplayParcelInfo(true);
     try {
       createNewLine({
         parcelId: parcel.id,
@@ -92,54 +104,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   // }
 
   return (
-    <section className="z-10 ml-[5vw]">
-      <div className="flex flex-col">
-        {/* //BorderTopGlobal */}
-        <div
-          className="mt-5 flex"
-          style={{
-            display: graphicMode ? 'flex' : 'none',
-          }}
-        >
-          {/* //BorderTopLeft */}
-          <div
-            className={`${styles.parcelBorderTopLeft} `}
-            style={{
-              width: scale * 0.1,
-              height: scale * 0.1,
-            }}
-          ></div>
-
-          {/* //BorderTop */}
-          <div
-            className={`${styles.parcelBorderTop} `}
-            style={{
-              width: parcelY * scale,
-              height: scale * 0.1,
-            }}
-          ></div>
-
-          {/* //BorderTopRight */}
-          <div
-            className={`${styles.parcelBorderTopRight} `}
-            style={{
-              width: scale * 0.1,
-              height: scale * 0.1,
-            }}
-          ></div>
-        </div>
-
-        <div className="flex">
-          {/* //BorderLeft */}
-          <div
-            className={`${styles.parcelBorderLeft} `}
-            style={{
-              display: graphicMode ? 'flex' : 'none',
-              width: 0.1 * scale,
-              height: parcelX * scale,
-            }}
-          ></div>
-
+    <>
+      <section className="-z-0 ml-[5vw]">
+        <div className="flex flex-col">
           {/* //MainCore */}
           <SlimCard
             bgColor="bg-cardbackground"
@@ -157,7 +124,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 <Image
                   onClick={() => setDisplayParcelInfo((prev) => !prev)}
                   className="mr-[2vw] h-[3vw] w-[auto]"
-                  src="/image/icons/chevronBas.png"
+                  src={
+                    displayParcelInfo
+                      ? '/image/icons/chevronHaut.webp'
+                      : '/image/icons/chevronBas.webp'
+                  }
                   alt="Parcel Image"
                   width={50}
                   height={50}
@@ -167,16 +138,24 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
               <div className="flex w-full justify-between">
                 <div className="flex items-center">
                   <Image
+                    style={{
+                      display:
+                        userId === currentGarden?.authorId ? 'block' : 'none',
+                    }}
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                    src="/image/icons/add.png"
+                    src="/image/icons/add.webp"
                     alt="Add line"
                     width={50}
                     height={50}
                     onClick={addLine}
                   />
                   <Image
+                    style={{
+                      display:
+                        userId === currentGarden?.authorId ? 'block' : 'none',
+                    }}
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                    src="/image/icons/edit.png"
+                    src="/image/icons/edit.webp"
                     alt="Edit parcel"
                     width={50}
                     height={50}
@@ -191,14 +170,26 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                   />
                   <Image
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                    src="/image/icons/info.png"
+                    src="/image/icons/info.webp"
                     alt="Display info about parcel"
                     width={50}
                     height={50}
+                    onClick={() =>
+                      dispatch(
+                        setDisplayParcelLogPopup({
+                          state: !displayParcelLogPopup,
+                          id: Number(parcel.id),
+                        })
+                      )
+                    }
                   />
                   <Image
+                    style={{
+                      display:
+                        userId === currentGarden?.authorId ? 'block' : 'none',
+                    }}
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                    src="/image/icons/trash.png"
+                    src="/image/icons/trash.webp"
                     alt="Deleting parcel"
                     width={50}
                     height={50}
@@ -222,6 +213,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 />
               </div>
 
+              {/* Edit Popup */}
               <div
                 style={{
                   display:
@@ -233,7 +225,19 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 <EditParcelPopup parcel={parcel} />
               </div>
             </section>
-
+            {/* Display Log Popup */}
+            <div
+              style={{
+                display:
+                  displayParcelLogPopup && id === parcel.id ? 'block' : 'none',
+              }}
+            >
+              <Display_Logs_Popup
+                id={parcel.id}
+                display={displayParcelLogPopup}
+                logObject={'parcel'}
+              />
+            </div>
             {/* //Line map */}
             {!lines ? (
               <div
@@ -256,52 +260,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
               ))
             )}
           </SlimCard>
-
-          {/* //BorderRight */}
-          <div
-            className={`${styles.parcelBorderRight} `}
-            style={{
-              display: graphicMode ? 'flex' : 'none',
-              width: 0.1 * scale,
-              height: parcelX * scale,
-            }}
-          ></div>
         </div>
-        {/* //BorderBottomGlobal */}
-        <div className="flex">
-          {/* //BorderBottomLeft */}
-          <div
-            className={`${styles.parcelBorderBottomLeft} `}
-            style={{
-              display: graphicMode ? 'flex' : 'none',
-              width: scale * 0.1,
-              height: scale * 0.1,
-            }}
-          ></div>
-
-          {/* //BorderBottom */}
-          <div
-            className={`${styles.parcelBorderBottom} `}
-            style={{
-              display: graphicMode ? 'flex' : 'none',
-              width: parcelY * scale,
-              height: scale * 0.1,
-            }}
-          ></div>
-
-          {/* //BorderBottomRight */}
-          <div
-            className={`${styles.parcelBorderBottomRight} `}
-            style={{
-              display: graphicMode ? 'flex' : 'none',
-              width: scale * 0.1,
-              height: scale * 0.1,
-            }}
-          ></div>
-        </div>
-      </div>
-    </section>
+      </section>
+      {deleteParcelIsLoading && <LoadingModal />}
+      {newLineIsLoading && <LoadingModal />}
+    </>
   );
 };
-
 export default Parcel;

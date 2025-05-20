@@ -10,7 +10,6 @@ export function middleware(req: NextRequest) {
     '/map',
     '/editProfile',
     '/garden-manager',
-    '/landing',
     '/profile',
     '/todo',
   ];

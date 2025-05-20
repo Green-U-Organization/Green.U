@@ -88,8 +88,8 @@ const GardenCardHeader: FC<GardenCardHeaderProps> = ({
             <option value="" disabled></option>
             {gardens &&
               Array.isArray(gardens.content) &&
-              gardens.content.map((garden, index) => (
-                <option key={index} value={garden.id}>
+              gardens.content.map((garden) => (
+                <option key={garden.id} value={garden.id}>
                   {garden.name}
                 </option>
               ))}

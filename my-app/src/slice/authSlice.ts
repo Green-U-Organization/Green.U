@@ -19,7 +19,7 @@ const authSlice = createSlice({
       // Stockage dans les cookies
       setAuthCookies(
         { accessToken, refreshToken },
-        { username: user.username, id: user.id }
+        { username: user.username, id: user.id, xp: user.xp }
       );
     },
     logout: (state) => {

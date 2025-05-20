@@ -24,7 +24,7 @@ const Radio: React.FC<RadioProps> = ({
       <label htmlFor={id}>{id}:</label>
 
       <div
-        className={`mr-5 ml-5 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full transition-all ${hover ? 'bg-bginput' : 'bg-gray-100'} ${checked ? 'bg-bgbutton border-2' : 'border border-gray-400'}`}
+        className={`mr-4 ml-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full transition-all ${hover ? 'bg-bginput' : 'bg-gray-100'} ${checked ? 'bg-bgbutton border-2' : 'border border-gray-400'}`}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         onClick={handleClick}

@@ -45,7 +45,6 @@ const CreateGardenForm = () => {
   const userData = Cookies.get('user_data');
   const userCookie = userData ? JSON.parse(userData) : null;
   const id = Number(userCookie?.id);
-  console.log('id : ', typeof id, id);
 
   // RTHK Query
   const [createNewGarden] = useCreateNewGardenMutation();
@@ -96,8 +95,6 @@ const CreateGardenForm = () => {
         hashtags: formData.getAll('gardenHashtag') as string[],
       };
 
-      console.log('Garden Data:', gardenData);
-
       try {
         createNewGarden(gardenData).unwrap();
         console.log('Garden created with success');
@@ -114,7 +111,7 @@ const CreateGardenForm = () => {
 
   return (
     <>
-      <Card className="bg-cardbackground h-full max-w-screen px-8 pt-5 pb-10">
+      <Card className="bg-cardbackground h-full min-h-screen max-w-screen px-8 pt-5 pb-10">
         <h1 className="mb-5 text-center text-4xl">
           {translations.gardenCreator}
         </h1>
@@ -153,48 +150,81 @@ const CreateGardenForm = () => {
             {translations.yourGardenIs} <span>{gardenLength}</span>{' '}
             {translations.metersLong}
           </label>
-          <input
-            name="gardenLength"
-            type="range"
-            min="1"
-            max="500"
-            step="1"
-            value={gardenLength}
-            onChange={handleLengthChange}
-            className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
-          />
+
+          <div className="flex items-center justify-around">
+            <p
+              onClick={() =>
+                setGardenLength((prev) => (prev === 0 ? 0 : prev - 1))
+              }
+            >
+              -
+            </p>
+            <input
+              name="gardenLength"
+              type="range"
+              min="1"
+              max="500"
+              step="1"
+              value={gardenLength}
+              onChange={handleLengthChange}
+              className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
+            />
+            <p
+              onClick={() =>
+                setGardenLength((prev) => (prev === 500 ? 500 : prev + 1))
+              }
+            >
+              +
+            </p>
+          </div>
 
           <label htmlFor="gardenWidth">
             {translations.yourGardenIs} <span>{gardenWidth}</span>{' '}
             {translations.metersLarge}
           </label>
-          <input
-            name="gardenWidth"
-            type="range"
-            min="1"
-            max="500"
-            step="1"
-            value={gardenWidth}
-            onChange={handleWidthChange}
-            className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
-          />
+
+          <div className="flex items-center justify-around">
+            <p
+              onClick={() =>
+                setGardenWidth((prev) => (prev === 0 ? 0 : prev - 1))
+              }
+            >
+              -
+            </p>
+            <input
+              name="gardenWidth"
+              type="range"
+              min="1"
+              max="500"
+              step="1"
+              value={gardenWidth}
+              onChange={handleWidthChange}
+              className={`bg-border mt-5 mr-5 mb-5 ml-5 h-2 cursor-cell appearance-none`}
+            />
+            <p
+              onClick={() =>
+                setGardenWidth((prev) => (prev === 500 ? 500 : prev + 1))
+              }
+            >
+              +
+            </p>
+          </div>
 
           {/* Intégration de la map de localisation du terrain */}
           <LocationPicker
             initialLat={0} //Pour ne pas avoir un pin par défaut
             initialLng={0} //Idem
             //showUserPosition={true}
-            onLocationChange={(lat, lng) => console.log(lat, lng)}
           />
 
           <SelectInput
             label={translations.kindOfGarden}
             name="gardenType"
             options={[
-              { value: 0, label: translations.gardenType0 },
-              { value: 1, label: translations.gardenType1 },
-              { value: 2, label: translations.gardenType2 },
-              { value: 3, label: translations.gardenType3 },
+              { value: 0, label: translations.gardenType0 }, //Personnal
+              { value: 1, label: translations.gardenType1 }, //Famillial
+              { value: 2, label: translations.gardenType2 }, //Collective
+              { value: 3, label: translations.gardenType3 }, //Professionnal
             ]}
             value={selectedType}
             onChange={(e) => setSelectedType(Number(e.target.value))}
@@ -205,7 +235,7 @@ const CreateGardenForm = () => {
             name="gardenPrivacy"
             options={[
               { value: 0, label: translations.privateGarden },
-              { value: 1, label: translations.semiPrivateGarden },
+              //{ value: 1, label: translations.semiPrivateGarden },
               { value: 2, label: translations.publicGarden },
             ]}
             garden-manager

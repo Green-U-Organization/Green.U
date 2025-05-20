@@ -21,7 +21,6 @@ const Todo = ({
   const [checked, setChecked] = useState(false);
 
   const handleCheck = () => {
-    console.log('checked');
     setChecked((prev) => !prev);
     onStatusChange(id, 0);
     //TODO Changer le status dans la DB + faire disparaitre de l'écran pour afficher todo suivant

@@ -8,27 +8,31 @@ import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/Confirmation_Popup';
 import AddCropPopup from '../Molecule/Add_Crop_Popup';
 import ExistentCropPopup from '../Molecule/ExistentCrop_Popup';
+import Image from 'next/image';
+import Cookies from 'js-cookie';
 import {
   useDeleteOneLineByLineIdMutation,
   useGetCropByLineIdQuery,
 } from '@/slice/fetch';
 import {
   setAddCropPopup,
+  setDisplayCropLogPopup,
+  setDisplayLineLogPopup,
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
+import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
+import LoadingModal from '../Molecule/LoadingModal';
 
-const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
+const Line: FC<LineProps> = ({ line, lineIndex }) => {
   // Local State
-  const [displayInfo, SetDisplayInfo] = useState(false);
+  // const [displayInfo, SetDisplayInfo] = useState(false);
   const [displayDeletingLinePopup, setDisplayDeletingLinePopup] =
     useState<boolean>(false);
   const [cropIsPresent, setCropIsPresent] = useState<boolean>(false);
 
   //RTK Query
-  const [
-    deleteLineMutation,
-    //  { data: lines }
-  ] = useDeleteOneLineByLineIdMutation();
+  const [deleteLineMutation, { isLoading: deleteLinesIsLoading }] =
+    useDeleteOneLineByLineIdMutation();
   const { data: crops } = useGetCropByLineIdQuery({
     lineId: line.id,
   });
@@ -37,6 +41,11 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   const dispatch = useDispatch();
   const cropPopupRef = useRef<HTMLDivElement>(null);
   const existantPopupRef = useRef<HTMLDivElement>(null);
+
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
 
   //Selectors
   const graphicMode = useSelector(
@@ -47,6 +56,15 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
   );
   const ExistantCropPopupDisplay = useSelector(
     (state: RootState) => state.display.existantCropPopup
+  );
+  const displayLineLogPopup = useSelector(
+    (state: RootState) => state.display.displayLineLogPopup
+  );
+  const displayCropLogPopup = useSelector(
+    (state: RootState) => state.display.displayCropLogPopup
+  );
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
   );
   const id = useSelector((state: RootState) => state.display.id);
 
@@ -149,20 +167,22 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
     }
   };
 
-  const handleMouseEnter = () => {
-    SetDisplayInfo(true);
-  };
+  // const handleMouseEnter = () => {
+  //   SetDisplayInfo(true);
+  // };
 
-  const handleMouseLeave = () => {
-    SetDisplayInfo(false);
-  };
+  // const handleMouseLeave = () => {
+  //   SetDisplayInfo(false);
+  // };
 
   //Modal Closing
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
       if (
         cropPopupRef.current &&
-        !cropPopupRef.current.contains(event.target as Node)
+        !cropPopupRef.current.contains(target) &&
+        !target.closest('[data-modal]')
       ) {
         dispatch(
           setAddCropPopup({
@@ -184,9 +204,12 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+
       if (
         existantPopupRef.current &&
-        !existantPopupRef.current.contains(event.target as Node)
+        !existantPopupRef.current.contains(target) &&
+        !target.closest('[data-modal]')
       ) {
         dispatch(
           setExistantCropPopup({
@@ -208,47 +231,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
 
   return (
     <>
-      <div
-        className={`relative z-0`}
-        style={{
-          width: line.length * scale,
-          height: (2 * scale) / 100,
-          display: graphicMode ? 'block' : 'none',
-        }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        // onClick={handleClick}
-      >
-        {/* Image du légume - z-index inférieur */}
-        <div
-          // className={`${cropIcon[selectedCrop]} absolute bottom-0 z-10`} // z-10 pour l'image
-          style={{
-            width: line.length * scale,
-            height: 0.2 * scale,
-          }}
-        ></div>
-
-        {/* Popup d'information - z-index supérieur */}
-        {displayInfo && (
-          <div
-            className="absolute left-20 z-50 flex w-40 flex-col items-start border-2 bg-gray-200 p-2 shadow-lg"
-            style={{
-              transform: 'translateY(-100%)', // Pour faire apparaître la popup au-dessus
-              top: '0',
-            }}
-          >
-            {/* <h3 className="font-bold">{line.crop.vegetable}</h3>
-          <h4 className="text-sm italic">{line.crop.variety}</h4>
-          <h5 className="mt-1 text-xs">{line.status}</h5> */}
-            <div className="mt-2 flex w-full flex-row justify-evenly">
-              <button className="border-2 bg-white px-2">❗</button>
-              <button className="border-2 bg-white px-2">👍</button>
-              <button className="border-2 bg-white px-2">❓</button>
-            </div>
-          </div>
-        )}
-      </div>
-
+      {deleteLinesIsLoading && <LoadingModal />}
       <div
         className="ml-5 flex flex-col"
         style={{
@@ -257,30 +240,56 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
       >
         <div className="flex items-center justify-between">
           <H2>Line {lineIndex}</H2>
-          {crops?.content[0]?.icon && crops.content[0].icon !== '' && (
-            <img src={crops.content[0].icon} alt="" />
-          )}
-          <div className="mr-[5vw] flex">
+
+          {
             <img
-              className="mx-[3vw]"
-              src="/image/icons/add.png"
-              alt="Add crop"
+              src={
+                crops?.content[0].icon === ''
+                  ? '/image/icons/info.png'
+                  : crops?.content[0].icon
+              }
+              className="w-[6vw]"
+              alt=""
+              onClick={() =>
+                dispatch(
+                  setDisplayCropLogPopup({
+                    state: !displayCropLogPopup,
+                    id: Number(crops?.content[0].id),
+                  })
+                )
+              }
+            />
+          }
+
+          <div className="mr-[5vw] flex">
+            <Image
               style={{
+                display: userId === currentGarden?.authorId ? 'block' : 'none',
                 width: '5vw',
                 height: '5vw',
               }}
+              width={50}
+              height={50}
+              className="mx-[3vw]"
+              src="/image/icons/add.png"
+              alt="Add crop"
               onClick={() => handleClickAddCrop()}
             />
-            <img
+            {/* <Image
+              width={50}
+              height={50}
               className="mx-[3vw]"
               src="/image/icons/edit.png"
               alt="Edit line"
               style={{
+                display: userId === currentGarden?.authorId ? 'block' : 'none',
                 width: '5vw',
                 height: '5vw',
               }}
-            />
-            <img
+            /> */}
+            <Image
+              width={50}
+              height={50}
               className="mx-[3vw]"
               src="/image/icons/info.png"
               alt="Display info about line"
@@ -288,12 +297,23 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
                 width: '5vw',
                 height: '5vw',
               }}
+              onClick={() =>
+                dispatch(
+                  setDisplayLineLogPopup({
+                    state: !displayLineLogPopup,
+                    id: Number(line.id),
+                  })
+                )
+              }
             />
-            <img
+            <Image
+              width={50}
+              height={50}
               className="mx-[3vw]"
               src="/image/icons/trash.png"
               alt="Delete line"
               style={{
+                display: userId === currentGarden?.authorId ? 'block' : 'none',
                 width: '5vw',
                 height: '5vw',
               }}
@@ -304,6 +324,22 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
       </div>
 
       {/* POPUP */}
+      {/* Log Popup */}
+      <div
+        style={{
+          display:
+            displayCropLogPopup && id === crops?.content[0].id
+              ? 'block'
+              : 'none',
+        }}
+      >
+        <Display_Logs_Popup
+          id={crops?.content[0].id}
+          display={displayCropLogPopup}
+          logObject={'crop'}
+        />
+      </div>
+
       <div
         style={{
           display: displayDeletingLinePopup ? 'block' : 'none',
@@ -316,6 +352,7 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
         />
       </div>
 
+      {/* Add Crop Popup */}
       <div
         ref={cropPopupRef}
         style={{
@@ -324,10 +361,12 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
               ? 'block'
               : 'none',
         }}
+        data-modal
       >
         <AddCropPopup lineId={line.id} />
       </div>
 
+      {/* Exist Crop Popup */}
       <div
         ref={existantPopupRef}
         style={{
@@ -336,8 +375,22 @@ const Line: FC<LineProps> = ({ line, scale, lineIndex }) => {
               ? 'block'
               : 'none',
         }}
+        data-modal
       >
         <ExistentCropPopup lineId={line.id} />
+      </div>
+
+      {/* Log Popup */}
+      <div
+        style={{
+          display: displayLineLogPopup && id === line.id ? 'block' : 'none',
+        }}
+      >
+        <Display_Logs_Popup
+          id={line.id}
+          display={displayLineLogPopup}
+          logObject={'line'}
+        />
       </div>
     </>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useGetCropByLineIdQuery } from '@/slice/fetch';
 import { VegetableIconProps } from '@/utils/types';
 

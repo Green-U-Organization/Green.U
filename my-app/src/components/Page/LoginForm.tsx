@@ -19,6 +19,7 @@ const LoginForm = () => {
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [errorPassword, setErrorPassword] = useState<boolean>(false);
   const { translations } = useLanguage();
+  const [errorEmailPassword, setErrorEmailPassword] = useState<boolean>(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ const LoginForm = () => {
       };
       try {
         const response = await loginUser(user).unwrap();
-        console.log('login sucess');
+        console.log('login success');
         dispatch(
           setCredentials({
             id: response.content.id,
@@ -73,18 +74,20 @@ const LoginForm = () => {
           {
             username: response.content.username,
             id: response.content.id,
+            xp: response.content.id,
           }
         );
 
-        router.push('./landing');
+        router.push('/landing');
       } catch {
         console.log('error login');
+        setErrorEmailPassword(true);
       }
     }
   };
   return (
-    <section className="flex max-h-[calc(100vh-15px)] items-center justify-center overflow-auto">
-      <Card className={'bg-cardbackground max-w-screen px-8 pt-7'}>
+    <section className="flex min-h-screen items-center justify-center overflow-auto">
+      <Card className={'bg-cardbackground h-screen max-w-screen px-8 pt-7'}>
         {/*}flex flex-col p-5 max-w-150*/}
         <form id="loginForm" onSubmit={handleSubmit}>
           <div className="flex flex-col items-center justify-center">
@@ -121,21 +124,26 @@ const LoginForm = () => {
             </div>
 
             <br />
+            {errorEmailPassword && (
+              <p className="text-red-500"> Invalid password or Email </p>
+            )}
             <div className="flex flex-row justify-between pb-5">
               <Button
                 className="bg-bgbutton relative m-5 px-6 py-2"
+                type="button"
+                onClick={() => router.push('/register')}
+              >
+                {translations.register}
+              </Button>
+              <Button
+                className="bg-bgbutton relative m-5 px-6 py-2"
+                type="submit"
                 onClick={(e) => {
                   e.preventDefault();
                   handleSubmit(e as unknown as FormEvent<HTMLFormElement>);
                 }}
               >
                 {translations.login}
-              </Button>
-              <Button
-                className="bg-bgbutton relative m-5 px-6 py-2"
-                onClick={() => router.push('/signin')}
-              >
-                {translations.signup}
               </Button>
             </div>
           </div>

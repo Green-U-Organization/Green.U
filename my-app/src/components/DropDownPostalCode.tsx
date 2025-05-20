@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import postalCodes from '@/data/postalCodesBE.json';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 
@@ -58,6 +58,23 @@ const DropDownPostalCode: React.FC<DropDownProps> = ({
       ),
     [search]
   );
+
+  // Préremplir le champ si une seule option est valide
+  useEffect(() => {
+    if (filteredOptions.length === 1) {
+      const { code, city } = filteredOptions[0];
+      const postalCodeValue = `${code}-${city}`;
+      if (value !== postalCodeValue) {
+        // Utilisez une fonction pour déclencher le changement
+        const event = {
+          target: { value: postalCodeValue, name: 'postalCode' },
+        } as React.ChangeEvent<HTMLInputElement>;
+        onChange(event);
+        // Valider la valeur préremplie
+        validatePostalCode(postalCodeValue);
+      }
+    }
+  }, [filteredOptions, value, onChange, validatePostalCode]);
 
   return (
     <div className="mb-4 flex flex-col">
