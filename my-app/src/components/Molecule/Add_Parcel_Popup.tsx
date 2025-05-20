@@ -14,13 +14,9 @@ import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
 import { addParcel } from '@/redux/garden/gardenSlice';
+import Loading from '../Atom/Loading';
 
 const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
-  //Local Variables
-  const [length, setLength] = useState<number>(1);
-  const [width, setWidth] = useState<number>(1);
-  const [repeat, setRepeat] = useState<number>(1);
-
   //USER info
   const userData = Cookies.get('user_data');
   const userCookie = userData ? JSON.parse(userData) : null;
@@ -32,7 +28,18 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
     { isLoading: createNewParcelIsLoading },
   ] = useCreateNewParcelMutation();
   const [addXp] = useEditUserByUserIdMutation();
-  const user = useGetUserByIdQuery({ userId: id });
+  const {
+    data: user,
+    isError: userIsError,
+    isSuccess: userIsSuccess,
+  } = useGetUserByIdQuery({
+    userId: id,
+  });
+
+  //Local Variables
+  const [length, setLength] = useState<number>(1);
+  const [width, setWidth] = useState<number>(1);
+  const [repeat, setRepeat] = useState<number>(1);
 
   //Hooks
   const dispatch = useDispatch();
@@ -45,22 +52,34 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
   //   (state: RootState) => state.display.addParcelPopup
   // );
 
+  if (!userIsSuccess) return <Loading />;
+
+  //Handlers
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newParcel = {
-      gardenId: actualGarden?.id ?? 0,
-      length: length,
-      width: width,
-      iteration: repeat,
+      Parcel: {
+        gardenId: actualGarden?.id ?? 0,
+        length: length,
+        width: width,
+      },
+      Iteration: repeat,
     };
 
     try {
       const newParcelResponse = await createNewParcel(newParcel).unwrap();
-      dispatch(addParcel(newParcelResponse));
+
+      console.log('newParcelResponse : ', newParcelResponse);
+
+      dispatch(addParcel(newParcelResponse.content));
+
+      console.log(user.content.xp);
+      const newXp = user.content.xp + XpTable.addParcel * repeat;
+      console.log(newXp);
 
       await addXp({
         userId: id,
-        xp: (user?.data?.content?.xp ?? 0) + XpTable.addParcel,
+        xp: newXp,
       });
       console.log('parcel(s) created');
     } catch {

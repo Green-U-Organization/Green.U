@@ -48,13 +48,15 @@ type DeleteOneParcelByParcelIdRequest = {
 };
 
 type CreateNewParcelRequest = {
-  gardenId: number;
-  length: number;
-  width: number;
-  iteration: number;
+  Parcel: { gardenId: number; length: number; width: number };
+  Iteration: number;
 };
 
-type CreateNewParcelResponse = Parcel[];
+type CreateNewParcelResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: Parcel[];
+};
 
 type EditParcelRequest = {
   parcelId: number;
