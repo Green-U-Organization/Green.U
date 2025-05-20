@@ -646,7 +646,7 @@ export const extendedGardenAPI = api
         invalidatesTags: ['garden-crops'],
       }),
 
-      //CreateCropToNursery >> OK + TO IMPLEMENT
+      //CreateCropToNursery >> OK
       createCropToNursery: builder.mutation<
         CreateCropToNurseryResponse,
         CreateCropToNurseryRequest
