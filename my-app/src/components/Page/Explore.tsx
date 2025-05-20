@@ -299,7 +299,7 @@ const Explore = () => {
             onKeyDown={handleKeyDown}
           />
 
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-txterror">{error}</p>}
           {/* {searchMessages.usersMessage && (
             <p className="text-red-500">{searchMessages.usersMessage}</p>
           )}

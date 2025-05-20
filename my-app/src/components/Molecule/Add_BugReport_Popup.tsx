@@ -14,34 +14,51 @@ type AddBugReport = {
 };
 
 const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
-  //Variables locales
   const [category, setCategory] = useState<string>('graphic');
   const [customAction, setCustomAction] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
+  const [fieldErrors, setFieldErrors] = useState<{
+    title?: string;
+    comment?: string;
+    customAction?: string;
+  }>({});
 
-  //Selectors
-
-  //Hooks
   const dispatch = useDispatch();
 
   const currentPath =
     typeof window !== 'undefined' ? window.location.pathname : '';
 
-  //RTK Query
   const [createLog] = useCreateLogBugReportMutation();
-  // route CreatLog
-
-  //Redux
   const changeDisplayBugReport = setDisplayBugReportPopup;
 
-  //Handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    //const finalCategory = category === 'other' ? customAction : category;
+    const newErrors: {
+      title?: string;
+      comment?: string;
+      customAction?: string;
+    } = {};
+
+    if (!title.trim()) {
+      newErrors.title = 'Title is required.';
+    }
+    if (!message.trim()) {
+      newErrors.comment = 'Message is required.';
+    }
+    if (category === 'other' && !customAction.trim()) {
+      newErrors.customAction = 'Please specify the type.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setFieldErrors(newErrors);
+      return;
+    }
+
+    setFieldErrors({});
 
     const query = {
       authorid: userId,
@@ -54,9 +71,7 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
     try {
       await createLog(query).unwrap();
       setSuccess(true);
-      console.log('Success bug report!');
 
-      // Réinitialiser les états du formulaire
       setCategory('graphic');
       setCustomAction('');
       setTitle('');
@@ -79,17 +94,16 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
     setTimeout(() => {
       setError(null);
       dispatch(changeDisplayBugReport({ state: false, id: 0 }));
-    }, 1500); // Délai court pour permettre la réinitialisation
+    }, 1500);
   };
 
-  //console.log(currentPath);
   return (
     <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
       <SlimCard className="bg-cardbackground cursor-default! p-0">
         <H1>Bug Report</H1>
         <H2>On Page {currentPath}</H2>
         <form onSubmit={handleSubmit} className="flex flex-col justify-center">
-          <div className={`flex pt-5 ${category !== 'other' ? 'mb-5' : ''}`}>
+          <div>
             <label className="ml-3" htmlFor="action">
               Type :{' '}
             </label>
@@ -99,6 +113,10 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
               id="action"
               onChange={(e) => {
                 setCategory(e.target.value);
+                setFieldErrors((prev) => ({
+                  ...prev,
+                  customAction: undefined,
+                }));
               }}
               value={category}
             >
@@ -108,23 +126,34 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
               <option value="translation">Translation</option>
               <option value="usability">Usability</option>
               <option value="functionality">Functional</option>
-              <option value="other">Other</option>{' '}
+              <option value="other">Other</option>
             </select>
           </div>
 
-          <div style={{ display: category === 'other' ? 'block' : 'none' }}>
-            <TextInput
-              className="mx-5"
-              name="otherAction"
-              id="otherAction"
-              placeholder="Enter a type"
-              onChange={(e) => {
-                setCustomAction(e.target.value);
-                console.log(customAction);
-              }}
-              value={customAction}
-            ></TextInput>
-          </div>
+          {category === 'other' && (
+            <div>
+              <TextInput
+                className="mx-5"
+                name="otherAction"
+                id="otherAction"
+                placeholder="Enter a type"
+                onChange={(e) => {
+                  setCustomAction(e.target.value);
+                  setFieldErrors((prev) => ({
+                    ...prev,
+                    customAction: undefined,
+                  }));
+                }}
+                value={customAction}
+              />
+              {fieldErrors.customAction && (
+                <p className="text-txterror -mt-5 px-5">
+                  {fieldErrors.customAction}
+                </p>
+              )}
+            </div>
+          )}
+
           <div>
             <label className="ml-3" htmlFor="title">
               Title :
@@ -134,27 +163,43 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
               name="title"
               id="title"
               placeholder="Enter a title"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                setFieldErrors((prev) => ({ ...prev, title: undefined }));
+              }}
               value={title}
-            ></TextInput>
+            />
+            {fieldErrors.title && (
+              <p className="text-txterror -mt-5 px-5">{fieldErrors.title}</p>
+            )}
           </div>
-          <label className="ml-3" htmlFor="comment">
-            Message :
-          </label>
-          <textarea
-            onChange={(e) => setMessage(e.target.value)}
-            rows={3}
-            name="comment"
-            id="comment"
-            placeholder="Give us details about what happened"
-            className="bg-bginput mx-5 border-0 px-3"
-            value={message}
-          ></textarea>
 
-          {error && <p className="px-5 py-2 text-red-500">{error}</p>}
+          <div className="flex flex-col justify-center">
+            <label className="ml-3" htmlFor="comment">
+              Message :
+            </label>
+            <textarea
+              onChange={(e) => {
+                setMessage(e.target.value);
+                setFieldErrors((prev) => ({ ...prev, comment: undefined }));
+              }}
+              rows={3}
+              name="comment"
+              id="comment"
+              placeholder="Give us details about what happened"
+              className="bg-bginput max-w-auto mx-5 w-auto border-0 px-3"
+              value={message}
+            ></textarea>
+            {fieldErrors.comment && (
+              <p className="text-txterror px-5">{fieldErrors.comment}</p>
+            )}
+          </div>
+
+          {error && <p className="text-txterror px-5 py-2">{error}</p>}
           {success && (
             <p className="px-5 py-2 text-green-600">Bug reported !</p>
           )}
+
           <Button
             className="bg-bgbutton relative mx-8 my-5 px-6 py-2"
             type="submit"
