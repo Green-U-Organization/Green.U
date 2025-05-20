@@ -11,6 +11,10 @@ public partial class Crop
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long? Id { get; set; }
 
+    public long? GardenId { get; set; }
+
+    public long? ParcelId { get; set; }
+
     public long? LineId { get; set; }
 
     public long? PlantNurseryId { get; set; }
