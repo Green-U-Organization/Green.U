@@ -25,5 +25,7 @@ public partial class Parcel
 
     public virtual Garden? Garden { get; set; }
 
+    public virtual ICollection<Log> Logs { get; set; } = new List<Log>();
+
     public virtual ICollection<Line> Lines { get; set; } = new List<Line>();
 }
