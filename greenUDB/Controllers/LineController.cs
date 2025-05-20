@@ -6,6 +6,11 @@ using GreenUApi.Models;
 namespace GreenUApi.Controllers
 {
 
+    //public class LineCreationRequest
+    //{
+    //    public required Line Line { get; set; }
+    //}
+
     public class LineDto
     {
         public long? Id { get; set; }
@@ -83,26 +88,25 @@ namespace GreenUApi.Controllers
         }
 
        [HttpPost]
-        public async Task<ActionResult<Line>> PostLine(Line line)
+        public async Task<ActionResult<Line>> PostLine(Line request)
         {
             var parcel = await _db.Parcels
-                .FindAsync(line.ParcelId);
+                .AnyAsync(p => p.Id == request.ParcelId);
 
-            if (parcel == null) return BadRequest(new { isEmpty = true, message = "Parcel id is incorrect" });
+            if (!parcel) return BadRequest(new { isEmpty = true, message = "Parcel id is incorrect" });
 
-            if (line.Length == null) return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
+            if (request.Length == null) return BadRequest(new { isEmpty = false, message = "The lenght is requierd" });
 
-            line.GardenId = parcel.GardenId;
 
-            _db.Add(line);
+            _db.Add(request);
 
             Log log = new() 
             {
-                GardenId = line.GardenId,
-                ParcelId = line.ParcelId,
-                PlantNurseryId = line.PLantNurseryId,
+                GardenId = request.GardenId,
+                ParcelId = request.ParcelId,
+                PlantNurseryId = request.PLantNurseryId,
                 Action = "Create a new line",
-                Comment = $"length : {line.Length}",
+                Comment = $"length : {request.Length}",
                 Type = "Automatic",
             };
 
@@ -110,7 +114,9 @@ namespace GreenUApi.Controllers
 
             await _db.SaveChangesAsync();
 
-            return Ok(new { isEmpty = false, message = "The line is created !", content = line});
+
+
+            return Ok(new { isEmpty = false, message = "The line is created !", content = request});
 
         }
 
