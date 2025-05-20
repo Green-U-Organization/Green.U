@@ -48,6 +48,13 @@ const gardenSlice = createSlice({
         state.selectedGarden.parcels.push(...action.payload);
       }
     },
+    deleteParcelStore: (state, action: PayloadAction<number>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels = state.selectedGarden.parcels.filter(
+          (p) => p.id !== action.payload
+        );
+      }
+    },
     clearSelectedGarden: (state) => {
       state.selectedGarden = null;
     },
@@ -92,5 +99,6 @@ export const {
   setReload,
   setGraphicMode,
   addParcel,
+  deleteParcelStore,
 } = gardenSlice.actions;
 export default gardenSlice.reducer;
