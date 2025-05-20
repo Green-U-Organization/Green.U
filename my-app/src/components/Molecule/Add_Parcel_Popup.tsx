@@ -13,7 +13,7 @@ import { setAddParcelPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
-import { addParcel } from '@/redux/garden/gardenSlice';
+import { addParcelStore } from '@/redux/garden/gardenSlice';
 import Loading from '../Atom/Loading';
 
 const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
@@ -71,7 +71,7 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
 
       console.log('newParcelResponse : ', newParcelResponse);
 
-      dispatch(addParcel(newParcelResponse.content));
+      dispatch(addParcelStore(newParcelResponse.content));
 
       console.log('parcel(s) created');
 
