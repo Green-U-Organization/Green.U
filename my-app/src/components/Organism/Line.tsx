@@ -381,7 +381,7 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
         }}
         data-modal
       >
-        <AddCropPopup lineId={line.id} />
+        <AddCropPopup line={line} />
       </div>
 
       {/* Exist Crop Popup */}

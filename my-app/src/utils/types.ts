@@ -89,6 +89,8 @@ export type SelectOption = {
 
 export type Crop = {
   id: number;
+  gardenId?: number;
+  parcelId?: number;
   lineId?: number;
   nurseryId?: number;
   vegetable: string;

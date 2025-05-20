@@ -15,12 +15,12 @@ import {
 } from '@/slice/fetch';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
-import type { AddCropPopupProps, Crop } from '@/utils/types';
+import type { AddCropPopupProps, Crop, Line } from '@/utils/types';
 import { setAddCropPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import { RootState, useSelector } from '@/redux/store';
 
-const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
+const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
   //Local State
   const [plantationDistance, setPlantationDistance] = useState<number>(10);
   const [selectedIcon, setSelectedIcon] = useState<string>('');
@@ -54,7 +54,9 @@ const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
   const dispatch = useDispatch();
 
   //Selectors
-  const garden = useSelector((state: RootState) => state.garden.selectedGarden);
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
+  );
   const nurseries = useSelector(
     (state: RootState) => state.garden.selectedGarden?.plantNurseries
   );
@@ -99,7 +101,9 @@ const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
       formData.get('cropAction') === 'planting' ? formatDate(new Date()) : '';
 
     const cropData = {
-      lineId: Number(lineId),
+      lineId: Number(line.id),
+      gardenId: currentGarden?.id ?? 0,
+      parcelId: line.parcelId,
       vegetable: formData.get('vegetable') as string,
       variety: formData.get('variety') as string,
       icon: selectedIcon,
@@ -113,7 +117,7 @@ const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
     if (origin === 'fromNursery' && selectedCropToPlant?.id) {
       const cropData = {
         cropId: selectedCropToPlant?.id,
-        lineId: Number(lineId),
+        lineId: Number(line.id),
         plantNurseryId: 0,
       };
 
@@ -125,6 +129,8 @@ const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
     } else {
       try {
         await createCropToLine(cropData).unwrap();
+
+        //Xp
         await addXp({
           userId: id,
           xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
@@ -134,7 +140,7 @@ const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
         dispatch(
           setAddCropPopup({
             state: false,
-            id: Number(lineId),
+            id: Number(line.id),
           })
         );
       } catch {
@@ -350,7 +356,7 @@ const AddCropPopup: FC<AddCropPopupProps> = ({ lineId }) => {
               dispatch(
                 setAddCropPopup({
                   state: false,
-                  id: Number(lineId),
+                  id: Number(line.id),
                 })
               )
             }

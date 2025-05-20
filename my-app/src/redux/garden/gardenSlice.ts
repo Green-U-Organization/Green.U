@@ -1,5 +1,6 @@
+import { addCropLine } from '@/utils/actions/crops/line/addCropLine';
 import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
-import { Garden, Line, Parcel } from '@/utils/types';
+import { Crop, Garden, Line, Parcel } from '@/utils/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GardenState {
@@ -86,6 +87,23 @@ const gardenSlice = createSlice({
     //Nurseries
 
     //Crops
+    addCropLineStore: (state, action: PayloadAction<Crop>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels.forEach((parcel) => {
+          if (parcel.id === action.payload.parcelId && parcel.lines) {
+            const line = parcel.lines.find(
+              (l) => l.id === action.payload.lineId
+            );
+            if (line) {
+              if (!line.crops) {
+                line.crops = [];
+              }
+              line.crops.push(action.payload);
+            }
+          }
+        });
+      }
+    },
 
     //Garden
     setSelectedGarden: (state, action: PayloadAction<Garden>) => {
