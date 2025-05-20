@@ -86,7 +86,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
 
   if (!userIsSuccess) return <Loading />;
 
-  //Fetch
+  //Queries
   const addLine = async () => {
     setDisplayParcelInfo(true);
 

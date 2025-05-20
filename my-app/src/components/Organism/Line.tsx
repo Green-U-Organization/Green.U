@@ -22,6 +22,7 @@ import {
 } from '@/redux/display/displaySlice';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
+import { deleteLineStore } from '@/redux/garden/gardenSlice';
 
 const Line: FC<LineProps> = ({ line, lineIndex }) => {
   // Local State
@@ -80,12 +81,15 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
   //Debug
   // console.log('crops : ', crops);
 
-  // Fetch
+  //Queries
   const deletingLine = () => {
     try {
       deleteLineMutation({
         lineId: line.id,
       }).unwrap();
+
+      dispatch(deleteLineStore(line.id));
+
       console.log('line deleted');
     } catch {
       console.log('error deleting line');
