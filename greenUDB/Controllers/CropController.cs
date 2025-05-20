@@ -162,38 +162,38 @@ namespace GreenUApi.Controllers
         }
 
         [HttpPost("line/{id}")]
-        public async Task<ActionResult<Crop>> PostCropLine(long id, [FromBody] Crop crop)
+        public async Task<ActionResult<Crop>> PostCropLine(long id, [FromBody] Crop request)
         {
-            if (crop == null) return BadRequest(new { isEmpty = true, message = "The body does not look like the model..." });
+            if (request == null) return BadRequest(new { isEmpty = true, message = "The body does not look like the model..." });
 
-            crop.LineId = id;
+            request.LineId = id;
 
-            if (!crop.LineId.HasValue)
+            if (!request.LineId.HasValue)
             {
                 return BadRequest(new { isEmpty = true, message = "No id for line" });
             }
 
 
             var ExistingLine = await _db.Lines
-                .FindAsync(crop.LineId);
+                .AnyAsync(line => line.Id  == request.LineId);
 
-            if (ExistingLine == null) return BadRequest(new { isEmpty = true, message = "Line id is incorrect" });
+            if (!ExistingLine) return BadRequest(new { isEmpty = true, message = "Line id is incorrect" });
 
             var ExistingCropLine = await _db.Crops
-                .Where(c => c.LineId == crop.LineId)
+                .Where(c => c.LineId == request.LineId)
                 .FirstOrDefaultAsync();
 
             if (ExistingCropLine != null) return Conflict(new { isEmpty = true, message = "This line have a crop..." });
 
-            _db.Crops.Add(crop);
+            _db.Crops.Add(request);
 
             Log log = new()
             {
-                GardenId = ExistingLine.GardenId,
-                ParcelId = ExistingLine.ParcelId,
+                GardenId = request.GardenId,
+                ParcelId = request.ParcelId,
                 LineId = id,
                 Action = "Plant a crop",
-                Comment = $"{crop.Vegetable} {crop.Variety}",
+                Comment = $"{request.Vegetable} {request.Variety}",
                 Type = "Automatic",
             };
 
@@ -201,7 +201,7 @@ namespace GreenUApi.Controllers
 
             await _db.SaveChangesAsync();
 
-            return Ok(new { isEmpty = false, message = "Your crop are created !", content = crop, log = log });
+            return Ok(new { isEmpty = false, message = "Your crop are created !", content = request, log = log });
 
         }
 

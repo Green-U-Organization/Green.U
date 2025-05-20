@@ -11,6 +11,10 @@ public partial class Crop
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long? Id { get; set; }
 
+    public long? GardenId { get; set; }
+
+    public long? ParcelId { get; set; }
+
     public long? LineId { get; set; }
 
     public long? PlantNurseryId { get; set; }
@@ -32,7 +36,9 @@ public partial class Crop
     public DateOnly? Planting { get; set; }
 
     public DateOnly? Harvesting { get; set; }
+
     public int? Distance_plantation { get; set; }
+
     public string? Comments { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
