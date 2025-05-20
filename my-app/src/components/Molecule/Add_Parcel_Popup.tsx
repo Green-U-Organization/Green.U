@@ -73,15 +73,14 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
 
       dispatch(addParcel(newParcelResponse.content));
 
-      console.log(user.content.xp);
-      const newXp = user.content.xp + XpTable.addParcel * repeat;
-      console.log(newXp);
+      console.log('parcel(s) created');
 
+      //XP
+      const newXp = user.content.xp + XpTable.addParcel * repeat;
       await addXp({
         userId: id,
         xp: newXp,
       });
-      console.log('parcel(s) created');
     } catch {
       console.log('error creating parcel');
     }

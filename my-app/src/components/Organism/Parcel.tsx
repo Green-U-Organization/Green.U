@@ -11,6 +11,8 @@ import {
   useCreateNewGardenLineMutation,
   useGetAllLinesByParcelIdQuery,
   useDeleteOneParcelByParcelIdMutation,
+  useGetUserByIdQuery,
+  useEditUserByUserIdMutation,
 } from '@/slice/fetch';
 import VegetableIcon from '../Atom/VegetableIcon';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
@@ -25,6 +27,7 @@ import Cookies from 'js-cookie';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
 import { deleteParcelStore } from '@/redux/garden/gardenSlice';
+import XpTable from '@/utils/Xp';
 
 const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
   //Local State
@@ -52,6 +55,14 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
     useCreateNewGardenLineMutation();
   const [deleteParcel, { isLoading: deleteParcelIsLoading }] =
     useDeleteOneParcelByParcelIdMutation();
+  const [addXp] = useEditUserByUserIdMutation();
+  const {
+    data: user,
+    isError: userIsError,
+    isSuccess: userIsSuccess,
+  } = useGetUserByIdQuery({
+    userId: userId,
+  });
 
   //Debug
   // console.log('lines : ', lines);
@@ -73,7 +84,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
   );
   const id = useSelector((state: RootState) => state.display.id);
 
-  console.log('lines : ', lines);
+  if (!userIsSuccess) return <Loading />;
 
   //Fetch
   const addLine = () => {
@@ -98,6 +109,14 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
 
       dispatch(deleteParcelStore(parcel.id));
       console.log('parcel deleted');
+
+      //XP
+      console.log(user?.content.xp);
+      const newXp = (user?.content?.xp ?? 0) - XpTable.deleteParcel;
+      addXp({
+        userId: userId,
+        xp: newXp,
+      });
     } catch {
       console.log('error deleting parcel');
     }
