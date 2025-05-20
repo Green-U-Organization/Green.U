@@ -26,7 +26,7 @@ import SlimCard from '../Atom/SlimCard';
 import Cookies from 'js-cookie';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
-import { deleteParcelStore } from '@/redux/garden/gardenSlice';
+import { addLineStore, deleteParcelStore } from '@/redux/garden/gardenSlice';
 import XpTable from '@/utils/Xp';
 
 const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
@@ -87,15 +87,25 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
   if (!userIsSuccess) return <Loading />;
 
   //Fetch
-  const addLine = () => {
+  const addLine = async () => {
     setDisplayParcelInfo(true);
 
     try {
-      createNewLine({
+      const newLineResponse = await createNewLine({
         parcelId: parcel.id,
+        gardenId: currentGarden?.id ?? 0,
         length: parcel.length, // Je force la longueur de la line égale a la longueur de la parcelle
       }).unwrap();
+
+      dispatch(addLineStore(newLineResponse.content));
       console.log('Line created');
+
+      //XP
+      const newXp = (user?.content?.xp ?? 0) + XpTable.addLine;
+      addXp({
+        userId: userId,
+        xp: newXp,
+      });
     } catch {
       console.log('Error creating line');
     }
@@ -111,7 +121,6 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
       console.log('parcel deleted');
 
       //XP
-      console.log(user?.content.xp);
       const newXp = (user?.content?.xp ?? 0) - XpTable.deleteParcel;
       addXp({
         userId: userId,
@@ -121,18 +130,6 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
       console.log('error deleting parcel');
     }
   };
-
-  // Loading and Error Handling
-
-  // if (linesIsLoading) {
-  //   return <Loading />;
-  // }
-  // if (linesIsError) {
-  //   console.log('error in currentparcel : ', parcel.id);
-  // }
-  // if (lines?. === 0) {
-  //   console.log('Oups, no lines find...');
-  // }
 
   return (
     <>
@@ -259,11 +256,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
                   displayParcelLogPopup && id === parcel.id ? 'block' : 'none',
               }}
             >
-              <Display_Logs_Popup
+              {/* <Display_Logs_Popup
                 id={parcel.id}
                 display={displayParcelLogPopup}
                 logObject={'parcel'}
-              />
+              /> */}
             </div>
             {/* //Line map */}
             {!lines ? (

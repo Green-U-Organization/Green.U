@@ -210,11 +210,11 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
                 displayNurseryLogPopup && id === nursery.id ? 'block' : 'none',
             }}
           >
-            <Display_Logs_Popup
+            {/* <Display_Logs_Popup
               id={nursery.id}
               display={displayNurseryLogPopup}
               logObject={'nursery'}
-            />
+            /> */}
           </div>
           {/* //crops map */}
 
@@ -285,11 +285,11 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
                         <tr>
                           <td colSpan={6} className="p-0">
                             <div className="relative w-full">
-                              <Display_Logs_Popup
+                              {/* <Display_Logs_Popup
                                 id={crop.id}
                                 display={true}
                                 logObject={'crop'}
-                              />
+                              /> */}
                             </div>
                           </td>
                         </tr>

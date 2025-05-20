@@ -4,6 +4,30 @@ export type GardenQuery = {
   content: Garden;
 };
 
+export type ParcelQuery = {
+  isEmpty: boolean;
+  message: string;
+  content: Parcel;
+};
+
+export type LineQuery = {
+  isEmpty: boolean;
+  message: string;
+  content: Line;
+};
+
+export type NurseryQuery = {
+  isEmpty: boolean;
+  message: string;
+  content: Nursery;
+};
+
+export type CropQuery = {
+  isEmpty: boolean;
+  message: string;
+  content: Crop;
+};
+
 export type Garden = {
   id: number;
   authorId: number;

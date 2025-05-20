@@ -118,5 +118,7 @@ export const {
   setGraphicMode,
   addParcelStore,
   deleteParcelStore,
+  addLineStore,
+  deleteLineStore,
 } = gardenSlice.actions;
 export default gardenSlice.reducer;

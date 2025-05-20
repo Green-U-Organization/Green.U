@@ -78,7 +78,7 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
   const id = useSelector((state: RootState) => state.display.id);
 
   //Debug
-  console.log('crops : ', crops);
+  // console.log('crops : ', crops);
 
   // Fetch
   const deletingLine = () => {
@@ -347,11 +347,11 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
               : 'none',
         }}
       >
-        <Display_Logs_Popup
+        {/* <Display_Logs_Popup
           id={crops && crops.length > 0 ? crops[0].id : undefined}
           display={displayCropLogPopup}
           logObject={'crop'}
-        />
+        /> */}
       </div>
 
       <div
@@ -400,11 +400,11 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
           display: displayLineLogPopup && id === line.id ? 'block' : 'none',
         }}
       >
-        <Display_Logs_Popup
+        {/* <Display_Logs_Popup
           id={line.id}
           display={displayLineLogPopup}
           logObject={'line'}
-        />
+        /> */}
       </div>
     </>
   );

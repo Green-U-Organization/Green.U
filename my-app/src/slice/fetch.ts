@@ -23,7 +23,11 @@ type CreateNewGardenLineRequest = {
   length: number;
 };
 
-type CreateNewGardenLineResponse = Line;
+type CreateNewGardenLineResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: Line;
+};
 
 type GetAllLinesByParcelIdRequest = {
   parcelId: number;
@@ -525,7 +529,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels', 'tags-logs'],
+        invalidatesTags: ['garden-parcels'],
       }),
 
       createLogBugReport: builder.mutation<void, GetCreateLogBugReportRequest>({
@@ -580,7 +584,7 @@ export const extendedGardenAPI = api
           method: 'DELETE',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels', 'tags-logs'],
+        invalidatesTags: ['garden-parcels'],
       }),
 
       //EditParcel >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -590,7 +594,7 @@ export const extendedGardenAPI = api
           method: 'PATCH',
           body: arg,
         }),
-        invalidatesTags: ['garden-parcels', 'tags-logs'],
+        invalidatesTags: ['garden-parcels'],
       }),
 
       //CreateNewGarden >> OK
@@ -600,7 +604,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-gardens', 'tags-logs'],
+        invalidatesTags: ['garden-gardens'],
       }),
 
       //GetAllGardenByUserId >> OK
@@ -639,7 +643,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-crops', 'tags-logs'],
+        invalidatesTags: ['garden-crops'],
       }),
 
       //CreateCropToNursery >> OK + TO IMPLEMENT
@@ -652,7 +656,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-crops', 'tags-logs'],
+        invalidatesTags: ['garden-crops'],
       }),
 
       //PatchCrop >>
@@ -662,7 +666,7 @@ export const extendedGardenAPI = api
           method: 'PATCH',
           body: arg,
         }),
-        invalidatesTags: ['garden-crops', 'tags-logs'],
+        invalidatesTags: ['garden-crops'],
       }),
 
       //EditCropByCropId >> TODO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -703,7 +707,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['garden-nursery', 'tags-logs'],
+        invalidatesTags: ['garden-nursery'],
       }),
 
       // //GetNurseryByGardenId >> OK
@@ -730,7 +734,7 @@ export const extendedGardenAPI = api
           method: 'DELETE',
           body: arg,
         }),
-        invalidatesTags: ['garden-nursery', 'tags-logs'],
+        invalidatesTags: ['garden-nursery'],
       }),
 
       // USER CONNECTION
@@ -936,7 +940,7 @@ export const extendedGardenAPI = api
           method: 'POST',
           body: arg,
         }),
-        invalidatesTags: ['tags-logs'],
+        // invalidatesTags: ['tags-logs'],
       }),
 
       // //GetGardenFullById

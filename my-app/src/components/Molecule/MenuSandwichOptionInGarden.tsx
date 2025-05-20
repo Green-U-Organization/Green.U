@@ -245,11 +245,11 @@ const MenuSandwichOptionInGarden: React.FC<MenuSandwichProps> = () => {
           </div>
 
           {/* Garden Log Popup */}
-          <Display_Logs_Popup
+          {/* <Display_Logs_Popup
             id={garden?.id}
             display={displayGardenLogs}
             logObject={'garden'}
-          />
+          /> */}
 
           {/* <Add_Parcel_Popup display={addParcelDisplay}></Add_Parcel_Popup>
 

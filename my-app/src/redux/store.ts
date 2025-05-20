@@ -10,8 +10,8 @@ import { thunk } from 'redux-thunk';
 import api from '@/slice/api';
 
 import gardenReducer from './garden/gardenSlice';
-import parcelReducer from './parcel/parcelSlice';
-import lineReducer from './line/lineSlice';
+// import parcelReducer from './parcel/parcelSlice';
+// import lineReducer from './line/lineSlice';
 import displayReducer from './display/displaySlice';
 import authReducer from '../slice/authSlice';
 
@@ -21,8 +21,8 @@ const isSerializable = (value: Date) => value instanceof Date || isPlain(value);
 export const store = configureStore({
   reducer: {
     garden: gardenReducer,
-    parcel: parcelReducer,
-    line: lineReducer,
+    // parcel: parcelReducer,
+    // line: lineReducer,
     display: displayReducer,
     auth: authReducer,
 
