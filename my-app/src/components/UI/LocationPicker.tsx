@@ -24,6 +24,7 @@ import {
 } from '@/redux/garden/gardenSlice';
 import { useDispatch } from '@/redux/store';
 import { useRouter } from 'next/navigation';
+import { LocateFixed } from 'lucide-react';
 
 // Recentrer dynamiquement la map sur la position utilisateur
 const CenterMapOnUser: React.FC<{ position: { lat: number; lng: number } }> = ({
@@ -212,6 +213,32 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     }
   };
 
+  //Localisation demandée par l'utilisateur
+  const handleLocateUser = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const coords = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          //setUserPosition(coords);
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          alert(translations.errCheckPermissions);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        }
+      );
+    } else {
+      alert('Geolocation is not supported by your browser.');
+    }
+  };
+
   return (
     <div className={`flex flex-col ${markerPosition ? 'mb-0' : 'mb-5'}`}>
       {!enableRadius && <p>{translations.addGardenPosition}</p>}
@@ -239,9 +266,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             />
             km
           </div>
-          <div className="absolute top-30 left-15 z-[1000] rounded bg-white p-2 shadow-md">
+          <div className="absolute top-29 left-14 z-[1] rounded border-1 bg-white p-2 shadow-md select-none">
             <p>
-              Gardens found: <strong>{pinsInCircleCount}</strong>
+              {pinsInCircleCount > 1 ? 'Gardens found: ' : 'Garden found: '}{' '}
+              <strong>{pinsInCircleCount}</strong>
             </p>
           </div>
         </div>
@@ -263,15 +291,24 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           scrollWheelZoom={true}
           className="z-0 h-full w-full"
         >
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleLocateUser();
+            }}
+            className="pointer-events-auto absolute top-21 left-2.5 z-[1000] rounded-full border border-black bg-red-500 p-2 text-white shadow-md transition-colors hover:bg-gray-700"
+            title="Locate me"
+          >
+            <LocateFixed className="h-6 w-6" />
+          </button>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; OpenStreetMap contributors"
           />
-
           {/* Recentrage dynamique sur la position de l'utilisateur */}
           {userPosition && <CenterMapOnUser position={userPosition} />}
           {!readOnly && <MapClickHandler />}
-
           {/* Cercle autour de la position de l'utilisateur */}
           {userPosition && enableRadius && (
             <>
@@ -284,7 +321,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           )}
 
           {/* Ajout d'un pin pour localiser l'utilisateur */}
-          {userPosition && (
+          {userPosition && window.location.pathname === '/map' && (
             <Marker
               position={userPosition}
               icon={customUserIcon}
@@ -299,12 +336,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
               //title={translations.youarehere}
             />
           )}
-
           {/* Marqueur positionné manuellement */}
           {markerPosition && !readOnly && (
             <Marker position={markerPosition} icon={customIcon} />
           )}
-
           {/* Marqueurs dans le rayon */}
           {readOnly &&
             filteredMarkers.map((pos, idx) => (

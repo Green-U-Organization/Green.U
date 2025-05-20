@@ -14,6 +14,7 @@ type AddBugReport = {
 };
 
 const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
+  //Variables locales
   const [category, setCategory] = useState<string>('graphic');
   const [customAction, setCustomAction] = useState<string>('');
   const [title, setTitle] = useState<string>('');
@@ -26,14 +27,21 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
     customAction?: string;
   }>({});
 
+  //Selectors
+
+  //Hooks
   const dispatch = useDispatch();
 
   const currentPath =
     typeof window !== 'undefined' ? window.location.pathname : '';
 
-  const [createLog] = useCreateLogBugReportMutation();
+  //RTK Query
+  const [createLog] = useCreateLogBugReportMutation(); // route CreatLog
+
+  //Redux
   const changeDisplayBugReport = setDisplayBugReportPopup;
 
+  //Handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -72,6 +80,7 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
       await createLog(query).unwrap();
       setSuccess(true);
 
+      // Réinitialiser les états du formulaire
       setCategory('graphic');
       setCustomAction('');
       setTitle('');
@@ -94,7 +103,7 @@ const Add_BugReport_Popup: FC<AddBugReport> = ({ userId }) => {
     setTimeout(() => {
       setError(null);
       dispatch(changeDisplayBugReport({ state: false, id: 0 }));
-    }, 1500);
+    }, 1500); // Délai court pour permettre la réinitialisation
   };
 
   return (
