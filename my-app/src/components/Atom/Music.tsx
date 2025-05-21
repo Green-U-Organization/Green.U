@@ -1,6 +1,7 @@
 'use client';
 import React, { useRef, useState } from 'react';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
+import Image from 'next/image';
 
 export default function MusicToggle() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -20,17 +21,23 @@ export default function MusicToggle() {
   };
 
   return (
-    <div className="fixed top-3 left-3 z-1">
+    <div className="w-full">
       <audio ref={audioRef} loop>
         <source src="/music/bgMusic.mp3" type="audio/mpeg" />
       </audio>
 
-      <button
+      <Image
+        width={50}
+        height={50}
+        src={
+          playing
+            ? '/image/icons/volume-high.svg'
+            : '/image/icons/volume-mute.svg'
+        }
+        alt="Toggle music"
+        className="h-[6vh] w-[6vh] cursor-pointer"
         onClick={toggleMusic}
-        className="rounded-full bg-black p-2 text-white shadow-lg transition"
-      >
-        {playing ? <FaVolumeUp size={20} /> : <FaVolumeMute size={20} />}
-      </button>
+      />
     </div>
   );
 }

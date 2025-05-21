@@ -5,7 +5,7 @@ import ThemeApp from '@/components/ThemeApp';
 import { LanguageProvider } from '@/app/contexts/LanguageProvider';
 import { StoreProvider } from '@/redux/StoreProvider';
 import BugReport from '@/components/Atom/BugReport';
-import Music from '@/components/Atom/Music';
+import SlideMenu from '@/components/Molecule/SlideMenu';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -41,9 +41,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
         >
           <LanguageProvider>
-            <Music />
-            <BugReport />
-            {/* <Navbar /> */}
+            <SlideMenu />
             <ThemeApp>{children}</ThemeApp>
           </LanguageProvider>
         </body>

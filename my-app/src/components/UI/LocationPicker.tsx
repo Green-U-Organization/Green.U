@@ -222,7 +222,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          //setUserPosition(coords);
+          setUserPosition(coords);
         },
         (error) => {
           console.error('Geolocation error:', error);
@@ -293,11 +293,15 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         >
           <button
             onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
+              // e.stopPropagation();
+              // e.preventDefault();
               handleLocateUser();
             }}
-            className="pointer-events-auto absolute top-21 left-2.5 z-[1000] rounded-full border border-black bg-red-500 p-2 text-white shadow-md transition-colors hover:bg-gray-700"
+            // onMouseDown={(e) => {
+            //   e.stopPropagation();
+            //   e.preventDefault();
+            // }}
+            className="pointer-events-auto absolute top-21 left-2.5 z-[1000] rounded-full border border-black p-2 text-black shadow-md transition-colors hover:bg-gray-200"
             title="Locate me"
           >
             <LocateFixed className="h-6 w-6" />
