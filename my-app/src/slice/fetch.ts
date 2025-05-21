@@ -164,7 +164,12 @@ type CreateCropToLineRequest = {
   comments: string;
 };
 
-type CreateCropToLineResponse = Crop;
+type CreateCropToLineResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: Crop;
+  log: Log;
+};
 
 type CreateCropToNurseryRequest = {
   nurseryId: number;
@@ -184,8 +189,8 @@ type CreateCropToNurseryResponse = Crop;
 
 type PatchCropRequest = {
   cropId?: number;
-  lineId?: number;
-  plantNurseryId?: number;
+  lineId?: number | null;
+  plantNurseryId?: number | null;
 };
 
 type GetCropByLineIdResponse = {

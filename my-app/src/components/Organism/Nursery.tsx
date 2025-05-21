@@ -107,7 +107,7 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
             <Image
               onClick={() => setDisplayNurseryInfo((prev) => !prev)}
               className="mr-[2vw] h-[3vw] w-[auto]"
-              src="/image/icons/chevronBas.png"
+              src="/image/icons/chevronBas.webp"
               alt="Parcel Image"
               width={50}
               height={50}
@@ -122,7 +122,7 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
                     userId === currentGarden?.authorId ? 'block' : 'none',
                 }}
                 className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                src="/image/icons/add.png"
+                src="/image/icons/add.webp"
                 alt="Add crop"
                 width={50}
                 height={50}
@@ -142,14 +142,14 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
                     userId === currentGarden?.authorId ? 'block' : 'none',
                 }}
                 className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                src="/image/icons/edit.png"
+                src="/image/icons/edit.webp"
                 alt="Edit nursery"
                 width={50}
                 height={50}
               />
               <Image
                 className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                src="/image/icons/info.png"
+                src="/image/icons/info.webp"
                 alt="Display info about nursery"
                 width={50}
                 height={50}
@@ -168,7 +168,7 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
                     userId === currentGarden?.authorId ? 'block' : 'none',
                 }}
                 className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                src="/image/icons/trash.png"
+                src="/image/icons/trash.webp"
                 alt="Deleting nursery"
                 width={50}
                 height={50}
@@ -270,7 +270,7 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
                         <td className="border-1 p-1">
                           <img
                             className="mx-auto"
-                            src="/image/icons/trash.png"
+                            src="/image/icons/trash.webp"
                             alt="Delete line"
                             style={{
                               width: '5vw',

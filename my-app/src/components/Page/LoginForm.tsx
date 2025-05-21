@@ -19,6 +19,7 @@ const LoginForm = () => {
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [errorPassword, setErrorPassword] = useState<boolean>(false);
   const { translations } = useLanguage();
+  const [errorEmailPassword, setErrorEmailPassword] = useState<boolean>(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -80,6 +81,7 @@ const LoginForm = () => {
         router.push('/landing');
       } catch {
         console.log('error login');
+        setErrorEmailPassword(true);
       }
     }
   };
@@ -122,6 +124,9 @@ const LoginForm = () => {
             </div>
 
             <br />
+            {errorEmailPassword && (
+              <p className="text-red-500"> Invalid password or Email </p>
+            )}
             <div className="flex flex-row justify-between pb-5">
               <Button
                 className="bg-bgbutton relative m-5 px-6 py-2"

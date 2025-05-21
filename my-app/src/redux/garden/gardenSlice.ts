@@ -1,6 +1,6 @@
 import { addCropLine } from '@/utils/actions/crops/line/addCropLine';
 import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
-import { Crop, Garden, Line, Parcel } from '@/utils/types';
+import { Crop, CropQuery, Garden, Line, Parcel } from '@/utils/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GardenState {
@@ -138,5 +138,6 @@ export const {
   deleteParcelStore,
   addLineStore,
   deleteLineStore,
+  addCropLineStore,
 } = gardenSlice.actions;
 export default gardenSlice.reducer;

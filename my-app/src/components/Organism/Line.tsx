@@ -22,7 +22,7 @@ import {
 } from '@/redux/display/displaySlice';
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
-import { deleteLineStore } from '@/redux/garden/gardenSlice';
+import { addCropLineStore, deleteLineStore } from '@/redux/garden/gardenSlice';
 
 const Line: FC<LineProps> = ({ line, lineIndex }) => {
   // Local State
@@ -52,30 +52,35 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
+
   const addCropPopupDisplay = useSelector(
     (state: RootState) => state.display.addCropPopup
   );
+
   const ExistantCropPopupDisplay = useSelector(
     (state: RootState) => state.display.existantCropPopup
   );
+
   const displayLineLogPopup = useSelector(
     (state: RootState) => state.display.displayLineLogPopup
   );
+
   const displayCropLogPopup = useSelector(
     (state: RootState) => state.display.displayCropLogPopup
   );
+
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
+
   const crops = useSelector((state: RootState) => {
     const parcels = state.garden.selectedGarden?.parcels || [];
-
     const foundLines = parcels
       .flatMap((p) => p.lines || [])
       .filter((l) => l.id === line.id);
-
     return foundLines.length > 0 ? foundLines[0].crops : undefined;
   });
+
   const id = useSelector((state: RootState) => state.display.id);
 
   //Debug
@@ -163,8 +168,11 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
   //Handlers
   const handleClickAddCrop = async () => {
     const actualCrops = crops;
+    console.log(crops);
 
-    if (actualCrops) {
+    if (!actualCrops) return;
+
+    if (actualCrops?.length > 0) {
       setCropIsPresent(true);
       dispatch(
         setExistantCropPopup({
@@ -293,7 +301,7 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
               alt="Add crop"
               onClick={() => handleClickAddCrop()}
             />
-            <Image
+            {/* <Image
               width={50}
               height={50}
               className="mx-[3vw]"
@@ -304,7 +312,7 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
                 width: '5vw',
                 height: '5vw',
               }}
-            />
+            /> */}
             <Image
               width={50}
               height={50}

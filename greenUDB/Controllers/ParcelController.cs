@@ -18,7 +18,7 @@ namespace GreenUApi.Controllers
 
     public class ParcelCreationRequest
     {
-        public required Parcel Parcel {  get; set; }
+        public required Parcel Parcel { get; set; }
         public int Iteration { get; set; }
     }
 
@@ -38,10 +38,10 @@ namespace GreenUApi.Controllers
 
             if (parcel.Count == 0)
             {
-                return BadRequest(new { isEmpty = true, message = "The id is incorrect"});
+                return BadRequest(new { isEmpty = true, message = "The id is incorrect" });
             }
 
-            return Ok(new { isEmpty = false, message = "All parcel for this garden", content = parcel});
+            return Ok(new { isEmpty = false, message = "All parcel for this garden", content = parcel });
         }
 
         [HttpPatch("{id}")]
@@ -102,28 +102,45 @@ namespace GreenUApi.Controllers
             var GardenExist = await _db.Gardens
                 .AnyAsync(garden => garden.Id == request.Parcel.GardenId);
 
-            if (!GardenExist) return BadRequest(new { isEmpty = true, message = "Garden id is incorrect..."});
+            if (!GardenExist) return BadRequest(new { isEmpty = true, message = "Garden id is incorrect..." });
 
-            _db.Parcels.Add(request.Parcel);
+            List<Parcel> createdParcels = new List<Parcel>();
 
-            Log log = new()
+            for (int i = 0; i < request.Iteration; i++)
             {
-                GardenId = request.Parcel.GardenId,
-                ParcelId = request.Parcel.Id,
-                Action = "Create parcel",
-                Comment = $"Length : {request.Parcel.Length}. Width : {request.Parcel.Width}",
-                Type = "Automatic",
-            };
+   
+                Parcel newParcel = new Parcel
+                {
+                    GardenId = request.Parcel.GardenId,
+                    Length = request.Parcel.Length,
+                    Width = request.Parcel.Width,
+                    NLine = request.Parcel.NLine,
+                    ParcelAngle = request.Parcel.ParcelAngle
+                };
 
-            _db.Add(log);
+                _db.Parcels.Add(newParcel);
+
+                Log log = new()
+                {
+                    GardenId = newParcel.GardenId,
+                    ParcelId = newParcel.Id,
+                    Action = "Create parcel",
+                    Comment = $"Length : {newParcel.Length}. Width : {newParcel.Width}",
+                    Type = "Automatic",
+                };
+
+                _db.Add(log);
+
+                createdParcels.Add(newParcel);
+            }
 
             await _db.SaveChangesAsync();
 
             return Ok(new
             {
                 isEmpty = false,
-                message = "The parcel is created!",
-                content = request.Parcel
+                message = $"Successfully created {request.Iteration} parcels",
+                content = createdParcels
             });
         }
 

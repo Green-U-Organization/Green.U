@@ -152,7 +152,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
                 <Image
                   onClick={() => setDisplayParcelInfo((prev) => !prev)}
                   className="mr-[2vw] h-[3vw] w-[auto]"
-                  src="/image/icons/chevronBas.png"
+                  src={
+                    displayParcelInfo
+                      ? '/image/icons/chevronHaut.webp'
+                      : '/image/icons/chevronBas.webp'
+                  }
                   alt="Parcel Image"
                   width={50}
                   height={50}
@@ -167,7 +171,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
                         userId === currentGarden?.authorId ? 'block' : 'none',
                     }}
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                    src="/image/icons/add.png"
+                    src="/image/icons/add.webp"
                     alt="Add line"
                     width={50}
                     height={50}
@@ -179,7 +183,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
                         userId === currentGarden?.authorId ? 'block' : 'none',
                     }}
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                    src="/image/icons/edit.png"
+                    src="/image/icons/edit.webp"
                     alt="Edit parcel"
                     width={50}
                     height={50}
@@ -194,7 +198,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
                   />
                   <Image
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                    src="/image/icons/info.png"
+                    src="/image/icons/info.webp"
                     alt="Display info about parcel"
                     width={50}
                     height={50}
@@ -213,7 +217,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
                         userId === currentGarden?.authorId ? 'block' : 'none',
                     }}
                     className="mx-[3vw] mb-[2vw] h-[5vw] w-[5vw]"
-                    src="/image/icons/trash.png"
+                    src="/image/icons/trash.webp"
                     alt="Deleting parcel"
                     width={50}
                     height={50}

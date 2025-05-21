@@ -26,6 +26,7 @@ export type CropQuery = {
   isEmpty: boolean;
   message: string;
   content: Crop;
+  log: Log;
 };
 
 export type Garden = {
