@@ -5,8 +5,10 @@ import Image from 'next/image';
 import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/Confirmation_Popup';
 import {
-  useGetCropByNurseryIdQuery,
+  // useGetCropByNurseryIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
+  useEditUserByUserIdMutation,
+  useGetUserByIdQuery,
 } from '@/slice/fetch';
 import { NurseryProps } from '@/utils/types';
 import AddCropNurseryPopup from '../Molecule/Add_CropNursery_Popup';
@@ -18,8 +20,10 @@ import {
 import SlimCard from '../Atom/SlimCard';
 import Cookies from 'js-cookie';
 
-import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
+// import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
+import { deleteNurseryStore } from '@/redux/garden/gardenSlice';
+import XpTable from '@/utils/Xp';
 
 const Nursery: FC<NurseryProps> = ({ nursery }) => {
   // Local State
@@ -27,14 +31,22 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
   const [displayDeletingNurseryPopup, setDisplayDeletingNurseryPopup] =
     useState<boolean>(false);
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
+
   // RTK Query
-  // const {
-  //   data: crops,
-  //   isLoading: cropsIsLoading,
-  //   isError: cropsIsError,
-  // } = useGetCropByNurseryIdQuery({ nurseryId: nursery.id });
   const [deleteNursery, { isLoading: deleteNurseryIsLoading }] =
     useDeleteOneNurseryByNurseryIdMutation();
+  const [addXp] = useEditUserByUserIdMutation();
+  const {
+    data: user,
+    isError: userIsError,
+    isSuccess: userIsSuccess,
+  } = useGetUserByIdQuery({
+    userId: userId,
+  });
 
   // Debug,
   // console.log('nurseryId : ', nursery.id);
@@ -42,11 +54,6 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
 
   // Hooks
   const dispatch = useDispatch();
-
-  //USER info
-  const userData = Cookies.get('user_data');
-  const userCookie = userData ? JSON.parse(userData) : null;
-  const userId = Number(userCookie?.id);
 
   // Selectors
   const addCropPopupDisplay = useSelector(
@@ -75,7 +82,16 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
       deleteNursery({
         nurseryId: nursery.id,
       }).unwrap();
+
+      dispatch(deleteNurseryStore(nursery.id));
       console.log('Nursery deletes');
+
+      //XP
+      const newXp = (user?.content?.xp ?? 0) - XpTable.deleteNursery;
+      addXp({
+        userId: userId,
+        xp: newXp,
+      });
     } catch {
       console.log('error deleting nursery');
     }
@@ -247,7 +263,7 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
                 <tbody>
                   {crops?.map((crop) => (
                     <>
-                      <tr key={crop.id * Math.random()}>
+                      <tr key={crop.id}>
                         <td className="border-1 p-1">{crop.vegetable}</td>
                         <td className="border-1 p-1">{crop.variety}</td>
                         <td className="border-1 p-1">{crop.nPot}</td>

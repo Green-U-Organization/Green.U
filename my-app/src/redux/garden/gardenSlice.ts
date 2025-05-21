@@ -89,6 +89,14 @@ const gardenSlice = createSlice({
         state.selectedGarden.plantNurseries.push(action.payload);
       }
     },
+    deleteNurseryStore: (state, action: PayloadAction<number>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.plantNurseries =
+          state.selectedGarden.plantNurseries.filter(
+            (p) => p.id !== action.payload
+          );
+      }
+    },
 
     //Crops
     addCropLineStore: (state, action: PayloadAction<Crop>) => {
@@ -158,5 +166,6 @@ export const {
   addCropLineStore,
   addCropNurseryStore,
   addPlantNurseryStore,
+  deleteNurseryStore,
 } = gardenSlice.actions;
 export default gardenSlice.reducer;

@@ -80,15 +80,6 @@ const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
   // });
   const [patchCrop] = usePatchCropMutation();
 
-  // const crops =
-  //   nurseries?.map((nursery) => {
-  //     // eslint-disable-next-line react-hooks/rules-of-hooks
-  //     const { data: crop } = useGetCropByNurseryIdQuery({
-  //       nurseryId: nursery.id,
-  //     });
-  //     return crop;
-  //   }) || [];
-
   //Handlers
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

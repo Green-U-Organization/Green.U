@@ -72,6 +72,7 @@ const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
       console.log(nursery);
       dispatch(addPlantNurseryStore(nursery.content));
 
+      //XP
       await addXp({
         userId: id,
         xp: (user?.data?.content?.xp ?? 0) + XpTable.addNursery,
