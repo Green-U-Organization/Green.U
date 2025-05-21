@@ -22,6 +22,7 @@ import {
   setSelectedGarden,
 } from '@/redux/garden/gardenSlice';
 import { useDispatch } from '@/redux/store';
+import { MapIcon } from 'lucide-react';
 
 const Explore = () => {
   // Selectors
@@ -275,6 +276,24 @@ const Explore = () => {
               onChange={() => handleSearchTypeChange('garden')}
             />
           </div>
+
+          {searchType === 'garden' && (
+            <div className="content-base mb-4 flex items-center">
+              <p className="flex items-center gap-2">
+                Search on the map :
+                <button
+                  className="cursor-pointer transition duration-150"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    router.push('/map');
+                  }}
+                >
+                  <MapIcon className="text-border hover:text-shadow active:text-border h-7 w-7 active:scale-90" />
+                </button>
+              </p>
+            </div>
+          )}
 
           <TextInput
             className="mb-5!"

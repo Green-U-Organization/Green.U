@@ -420,9 +420,9 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
             type="button"
-            onClick={() => router.push('/')}
+            onClick={() => router.back()}
           >
-            Home
+            Back
           </Button>
         </div>
       )}
