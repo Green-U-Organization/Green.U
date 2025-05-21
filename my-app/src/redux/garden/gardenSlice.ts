@@ -1,7 +1,5 @@
-import { addCropLine } from '@/utils/actions/crops/line/addCropLine';
-import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
-import { Crop, CropQuery, Garden, Line, Parcel } from '@/utils/types';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Crop, Garden, Line, Nursery, Parcel } from '@/utils/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GardenState {
   gardens: Garden[];
@@ -85,6 +83,12 @@ const gardenSlice = createSlice({
     editLineStore: (state, action: PayloadAction<Line>) => {},
 
     //Nurseries
+    addPlantNurseryStore: (state, action: PayloadAction<Nursery>) => {
+      if (state.selectedGarden) {
+        console.log('slice : ', action.payload);
+        state.selectedGarden.plantNurseries.push(action.payload);
+      }
+    },
 
     //Crops
     addCropLineStore: (state, action: PayloadAction<Crop>) => {
@@ -106,17 +110,11 @@ const gardenSlice = createSlice({
     },
     addCropNurseryStore: (state, action: PayloadAction<Crop>) => {
       if (state.selectedGarden) {
-        console.log('step 1');
         state.selectedGarden.plantNurseries.forEach((nursery) => {
-          console.log('nursery.id : ', nursery.id);
-          console.log('payload : ', action.payload);
           if (nursery.id === action.payload.plantNurseryId) {
-            console.log('step 2');
             if (!nursery.crops) {
-              console.log('step 3');
               nursery.crops = [];
             }
-            console.log('final step');
             nursery.crops.push(action.payload);
           }
         });
@@ -159,5 +157,6 @@ export const {
   deleteLineStore,
   addCropLineStore,
   addCropNurseryStore,
+  addPlantNurseryStore,
 } = gardenSlice.actions;
 export default gardenSlice.reducer;

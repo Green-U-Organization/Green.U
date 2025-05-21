@@ -246,7 +246,11 @@ type CreateNurseryRequest = {
   type: string;
 };
 
-type CreateNurseryResponse = Nursery;
+type CreateNurseryResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: Nursery;
+};
 
 type GetNurseryByGardenIdResponse = {
   isEmpty: boolean;

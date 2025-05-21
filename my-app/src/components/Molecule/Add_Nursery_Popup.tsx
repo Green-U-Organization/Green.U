@@ -12,6 +12,7 @@ import { setAddNurseryPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
+import { addPlantNurseryStore } from '@/redux/garden/gardenSlice';
 
 const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
   //Local State
@@ -67,11 +68,15 @@ const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
     };
 
     try {
-      await createNewNursery(newNursery).unwrap();
+      const nursery = await createNewNursery(newNursery).unwrap();
+      console.log(nursery);
+      dispatch(addPlantNurseryStore(nursery.content));
+
       await addXp({
         userId: id,
         xp: (user?.data?.content?.xp ?? 0) + XpTable.addNursery,
       });
+
       console.log('nursery created');
     } catch {
       console.log('error creating nursery');

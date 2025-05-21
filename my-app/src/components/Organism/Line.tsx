@@ -12,7 +12,7 @@ import Image from 'next/image';
 import Cookies from 'js-cookie';
 import {
   useDeleteOneLineByLineIdMutation,
-  useGetCropByLineIdQuery,
+  // useGetCropByLineIdQuery,
 } from '@/slice/fetch';
 import {
   setAddCropPopup,

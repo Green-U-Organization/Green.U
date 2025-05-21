@@ -5,10 +5,10 @@ import styles from '../../app/Assets.module.css';
 import { GardenProps, type Garden } from '@/utils/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import {
-  useGetAllParcelByGardenIdQuery,
-  useGetNurseryByGardenIdQuery,
-} from '@/slice/fetch';
+// import {
+//   useGetAllParcelByGardenIdQuery,
+//   useGetNurseryByGardenIdQuery,
+// } from '@/slice/fetch';
 import H1 from '../Atom/H1';
 import Nursery from './Nursery';
 import Loading from '../Atom/Loading';
