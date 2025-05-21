@@ -1,4 +1,4 @@
-import { Crop, Garden, GardenFull, Line, Nursery } from '@/utils/types';
+import { Crop, Garden, Line, Nursery } from '@/utils/types';
 import api from './api';
 import { Log, Parcel } from '@/utils/types';
 
@@ -185,7 +185,12 @@ type CreateCropToNurseryRequest = {
   distance_plantation: number;
 };
 
-type CreateCropToNurseryResponse = Crop;
+type CreateCropToNurseryResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: Crop;
+  log: Log;
+};
 
 type PatchCropRequest = {
   cropId?: number;
@@ -442,7 +447,7 @@ type GetAllLogsRequest = {
   id?: number;
 };
 
-type GetGardenFullByIdResponse = GardenFull;
+// type GetGardenFullByIdResponse = GardenFull;
 
 type GetGardenFullByIdRequest = {
   id: number;
@@ -979,20 +984,20 @@ export const extendedGardenAPI = api
 
 export const {
   useCreateNewGardenLineMutation,
-  useGetAllLinesByParcelIdQuery,
+  // useGetAllLinesByParcelIdQuery,
   useDeleteOneLineByLineIdMutation,
   useCreateNewParcelMutation,
   useDeleteOneParcelByParcelIdMutation,
-  useGetAllParcelByGardenIdQuery,
+  // useGetAllParcelByGardenIdQuery,
   useCreateNewGardenMutation,
   useGetAllGardenByUserIdQuery,
   useGetOneGardenByGardenIdQuery,
   useCreateCropToLineMutation,
   useCreateCropToNurseryMutation,
-  useGetCropByLineIdQuery,
-  useGetCropByNurseryIdQuery,
+  // useGetCropByLineIdQuery,
+  // useGetCropByNurseryIdQuery,
   useCreateNurseryMutation,
-  useGetNurseryByGardenIdQuery,
+  // useGetNurseryByGardenIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
   useEditParcelMutation,
   useLoginUserMutation,
@@ -1013,7 +1018,7 @@ export const {
   useCreateLogMutation,
   useLazyGetAllGardensByTagQuery,
   useLazyGetAllUsersByTagQuery,
-  useLazyGetGardenFullByIdQuery,
+  // useLazyGetGardenFullByIdQuery,
   useLazyGetGardensByNameQuery,
   useLazyGetUserByUsernameQuery,
   useCreateLogBugReportMutation,

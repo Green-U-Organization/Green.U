@@ -244,48 +244,46 @@ const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
                 </tr>
               </thead>
               <tbody>
-                {crops?.map((cropObject) =>
-                  cropObject?.map((crop) => (
-                    <tr
-                      key={crop.id}
-                      onClick={() => handleSelectRow(crop)}
-                      className={`${selectedCropToPlant?.id === crop.id ? 'bg-[#f6d4ba]' : ''}`}
-                    >
-                      <td className="border-1 p-1">
-                        <img src={crop.icon} alt="" className="mx-auto" />
-                      </td>
-                      <td className="border-1 p-1">{crop.vegetable}</td>
-                      <td className="border-1 p-1">{crop.variety}</td>
-                      <td className="border-1 p-1">{crop.nPot}</td>
-                      <td className="border-1 p-1">
-                        {crop.potSize}x{crop.potSize}
-                      </td>
-                      <td className="border-1 p-1">
-                        <img
-                          className="mx-auto"
-                          src="/image/icons/info.png"
-                          alt="Display info about line"
-                          style={{
-                            width: '5vw',
-                            height: '5vw',
-                          }}
-                        />
-                      </td>
-                      <td className="border-1 p-1">
-                        <img
-                          className="mx-auto"
-                          src="/image/icons/trash.png"
-                          alt="Delete line"
-                          style={{
-                            width: '5vw',
-                            height: '5vw',
-                          }}
-                          // onClick={() => setDisplayDeletingLinePopup(true)}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                )}
+                {crops?.map((crop) => (
+                  <tr
+                    key={crop.id}
+                    onClick={() => handleSelectRow(crop)}
+                    className={`${selectedCropToPlant?.id === crop.id ? 'bg-[#f6d4ba]' : ''}`}
+                  >
+                    <td className="border-1 p-1">
+                      <img src={crop.icon} alt="" className="mx-auto" />
+                    </td>
+                    <td className="border-1 p-1">{crop.vegetable}</td>
+                    <td className="border-1 p-1">{crop.variety}</td>
+                    <td className="border-1 p-1">{crop.nPot}</td>
+                    <td className="border-1 p-1">
+                      {crop.potSize}x{crop.potSize}
+                    </td>
+                    <td className="border-1 p-1">
+                      <img
+                        className="mx-auto"
+                        src="/image/icons/info.png"
+                        alt="Display info about line"
+                        style={{
+                          width: '5vw',
+                          height: '5vw',
+                        }}
+                      />
+                    </td>
+                    <td className="border-1 p-1">
+                      <img
+                        className="mx-auto"
+                        src="/image/icons/trash.png"
+                        alt="Delete line"
+                        style={{
+                          width: '5vw',
+                          height: '5vw',
+                        }}
+                        // onClick={() => setDisplayDeletingLinePopup(true)}
+                      />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

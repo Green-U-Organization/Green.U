@@ -93,7 +93,7 @@ export type Crop = {
   gardenId?: number;
   parcelId?: number;
   lineId?: number;
-  nurseryId?: number;
+  plantNurseryId?: number;
   vegetable: string;
   variety: string;
   sowing: string;

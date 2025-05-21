@@ -16,6 +16,7 @@ import {
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
+import { addCropNurseryStore } from '@/redux/garden/gardenSlice';
 
 const AddCropNurseryPopup: FC<{ nursery: Nursery }> = ({ nursery }) => {
   //Local State
@@ -97,7 +98,12 @@ const AddCropNurseryPopup: FC<{ nursery: Nursery }> = ({ nursery }) => {
     };
 
     try {
-      await createCropToNursery(cropData).unwrap();
+      const crop = await createCropToNursery(cropData).unwrap();
+
+      console.log(crop.content);
+      dispatch(addCropNurseryStore(crop.content));
+
+      //XP
       await addXp({
         userId: id,
         xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,

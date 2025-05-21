@@ -104,6 +104,25 @@ const gardenSlice = createSlice({
         });
       }
     },
+    addCropNurseryStore: (state, action: PayloadAction<Crop>) => {
+      if (state.selectedGarden) {
+        console.log('step 1');
+        state.selectedGarden.plantNurseries.forEach((nursery) => {
+          console.log('nursery.id : ', nursery.id);
+          console.log('payload : ', action.payload);
+          if (nursery.id === action.payload.plantNurseryId) {
+            console.log('step 2');
+            if (!nursery.crops) {
+              console.log('step 3');
+              nursery.crops = [];
+            }
+            console.log('final step');
+            nursery.crops.push(action.payload);
+          }
+        });
+      }
+      console.log('end');
+    },
 
     //Garden
     setSelectedGarden: (state, action: PayloadAction<Garden>) => {
@@ -139,5 +158,6 @@ export const {
   addLineStore,
   deleteLineStore,
   addCropLineStore,
+  addCropNurseryStore,
 } = gardenSlice.actions;
 export default gardenSlice.reducer;
