@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { setDisplayBugReportPopup } from '@/redux/display/displaySlice';
 import H1 from '../Atom/H1';
 import H2 from '../Atom/H2';
-import { useCreateLogBugReportMutation } from '@/slice/fetch';
+import { useCreateLogBugReportMutation } from '@/redux/api/fetch';
 
 type AddBugReport = {
   userId: number;

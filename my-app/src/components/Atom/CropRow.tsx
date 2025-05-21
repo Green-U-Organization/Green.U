@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { useGetCropByNurseryIdQuery } from '@/slice/fetch';
+import { useGetCropByNurseryIdQuery } from '@/redux/fetch';
 import { CropType } from '@/utils/types';
 import { FC } from 'react';
 

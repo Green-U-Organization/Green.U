@@ -11,7 +11,7 @@ import {
   // useGetNurseryByGardenIdQuery,
   useGetUserByIdQuery,
   usePatchCropMutation,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import type { AddCropPopupProps, Crop, Line } from '@/utils/types';
@@ -21,6 +21,7 @@ import { RootState, useSelector } from '@/redux/store';
 import LoadingModal from './LoadingModal';
 import CropRow from '../Atom/CropRow';
 import { addCropLineStore } from '@/redux/garden/gardenSlice';
+import { setXpUser } from '@/redux/user/userSlice';
 
 const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
   //Local State
@@ -134,10 +135,12 @@ const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
         dispatch(addCropLineStore(crop.content));
 
         //Xp
+        const newXp = (user?.data?.content?.xp ?? 0) + XpTable.addCrop;
         await addXp({
           userId: id,
-          xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
+          xp: newXp,
         });
+        dispatch(setXpUser(newXp));
 
         console.log('crop created');
         dispatch(
@@ -242,7 +245,11 @@ const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
                     className={`${selectedCropToPlant?.id === crop.id ? 'bg-[#f6d4ba]' : ''}`}
                   >
                     <td className="border-1 p-1">
-                      <img src={crop.icon} alt="" className="mx-auto" />
+                      <img
+                        src={crop.icon ? crop.icon : '/image/icons/info.webp'}
+                        alt=""
+                        className="mx-auto"
+                      />
                     </td>
                     <td className="border-1 p-1">{crop.vegetable}</td>
                     <td className="border-1 p-1">{crop.variety}</td>

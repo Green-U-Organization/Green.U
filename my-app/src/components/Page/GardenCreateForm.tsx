@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import LocationPicker from '../UI/LocationPicker';
 import { useLanguage } from '../../app/contexts/LanguageProvider';
-import { useCreateNewGardenMutation } from '@/slice/fetch';
+import { useCreateNewGardenMutation } from '@/redux/api/fetch';
 import { Garden } from '@/utils/types';
 import { useDispatch } from 'react-redux';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';

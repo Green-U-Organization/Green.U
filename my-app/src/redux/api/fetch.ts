@@ -2,21 +2,6 @@ import { Crop, Garden, Line, Nursery } from '@/utils/types';
 import api from './api';
 import { Log, Parcel } from '@/utils/types';
 
-// type LoginUserRequest = {
-//   email: string;
-//   password: string;
-// };
-
-// type LoginUserResponse = {
-//   isEmpty: string;
-//   message: string;
-//   token: string;
-//   content: {
-//     id: number;
-//     username: string;
-//   };
-// };
-
 type CreateNewGardenLineRequest = {
   parcelId: number;
   gardenId: number;
@@ -29,20 +14,20 @@ type CreateNewGardenLineResponse = {
   content: Line;
 };
 
-type GetAllLinesByParcelIdRequest = {
-  parcelId: number;
-};
+// type GetAllLinesByParcelIdRequest = {
+//   parcelId: number;
+// };
 
-type GetAllLinesByParcelIdResponse = {
-  isEmpty: boolean;
-  message: string;
-  content: {
-    id: number;
-    parcelId: number;
-    length: number;
-    createdAt: string;
-  }[];
-};
+// type GetAllLinesByParcelIdResponse = {
+//   isEmpty: boolean;
+//   message: string;
+//   content: {
+//     id: number;
+//     parcelId: number;
+//     length: number;
+//     createdAt: string;
+//   }[];
+// };
 
 type DeleteOneLineByLineIdRequest = {
   lineId: number;
@@ -113,25 +98,25 @@ type GetGardensByNameSuccessResponse = {
   }[];
 };
 
-type GetAllParcelByGardenIdRequest = {
-  gardenId: number;
-};
+// type GetAllParcelByGardenIdRequest = {
+//   gardenId: number;
+// };
 
-type GetAllParcelByGardenIdResponse = {
-  isEmpty: boolean;
-  message: string;
-  content: {
-    id: number;
-    gardenId: number;
-    length: number;
-    width: number;
-    nLine: number;
-    parcelAngle: number;
-    createdAt: string;
-    lines: [];
-    logs: [];
-  }[];
-};
+// type GetAllParcelByGardenIdResponse = {
+//   isEmpty: boolean;
+//   message: string;
+//   content: {
+//     id: number;
+//     gardenId: number;
+//     length: number;
+//     width: number;
+//     nLine: number;
+//     parcelAngle: number;
+//     createdAt: string;
+//     lines: [];
+//     logs: [];
+//   }[];
+// };
 
 type GetAllGardenByUserIdResponse = {
   isEmpty: boolean;
@@ -198,47 +183,47 @@ type PatchCropRequest = {
   plantNurseryId?: number | null;
 };
 
-type GetCropByLineIdResponse = {
-  isEmpty: boolean;
-  message: string;
-  content: {
-    id: number;
-    vegetable: string;
-    variety: string;
-    icon: string;
-    sowing: string;
-    planting: string;
-    harvesting: string;
-    distance_plantation: number;
-    comments: string;
-  }[];
-};
+// type GetCropByLineIdResponse = {
+//   isEmpty: boolean;
+//   message: string;
+//   content: {
+//     id: number;
+//     vegetable: string;
+//     variety: string;
+//     icon: string;
+//     sowing: string;
+//     planting: string;
+//     harvesting: string;
+//     distance_plantation: number;
+//     comments: string;
+//   }[];
+// };
 
-type GetCropByLineIdRequest = {
-  lineId: number;
-};
+// type GetCropByLineIdRequest = {
+//   lineId: number;
+// };
 
-type GetCropByNurseryIdResponse = {
-  isEmpty: boolean;
-  message: string;
-  content: {
-    id: number;
-    vegetable: string;
-    variety: string;
-    sowing: string;
-    icon: string;
-    planting: string;
-    harvesting: string;
-    nPot: number;
-    potSize: number;
-    distance_plantation: number;
-    comments: string;
-  }[];
-};
+// type GetCropByNurseryIdResponse = {
+//   isEmpty: boolean;
+//   message: string;
+//   content: {
+//     id: number;
+//     vegetable: string;
+//     variety: string;
+//     sowing: string;
+//     icon: string;
+//     planting: string;
+//     harvesting: string;
+//     nPot: number;
+//     potSize: number;
+//     distance_plantation: number;
+//     comments: string;
+//   }[];
+// };
 
-type GetCropByNurseryIdRequest = {
-  nurseryId: number;
-};
+// type GetCropByNurseryIdRequest = {
+//   nurseryId: number;
+// };
 
 type CreateNurseryRequest = {
   gardenId?: number;
@@ -252,20 +237,20 @@ type CreateNurseryResponse = {
   content: Nursery;
 };
 
-type GetNurseryByGardenIdResponse = {
-  isEmpty: boolean;
-  message: string;
-  content: {
-    id: number;
-    name: string;
-    comments: string;
-    type: string;
-  }[];
-};
+// type GetNurseryByGardenIdResponse = {
+//   isEmpty: boolean;
+//   message: string;
+//   content: {
+//     id: number;
+//     name: string;
+//     comments: string;
+//     type: string;
+//   }[];
+// };
 
-type GetNurseryByGardenIdRequest = {
-  gardenId: number;
-};
+// type GetNurseryByGardenIdRequest = {
+//   gardenId: number;
+// };
 
 type DeleteOneNurseryByNurseryIdRequest = {
   nurseryId: number;
@@ -750,15 +735,6 @@ export const extendedGardenAPI = api
         }),
         invalidatesTags: ['garden-nursery'],
       }),
-
-      // USER CONNECTION
-      // loginUser: builder.mutation<LoginUserResponse, LoginUserRequest>({
-      //   query: (arg) => ({
-      //     url: `/login`,
-      //     method: 'POST',
-      //     body: arg,
-      //   }),
-      // }),
 
       registerUser: builder.mutation<RegisterUserResponse, RegisterUserRequest>(
         {

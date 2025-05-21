@@ -5,7 +5,8 @@ import {
   useGetPopularTagsQuery,
   useLazyGetUserByUsernameQuery,
   useLazyGetGardensByNameQuery,
-} from '@/slice/fetch';
+  useGetUserByIdQuery,
+} from '@/redux/api/fetch';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState, KeyboardEvent } from 'react';
 import TextInput from '../Atom/TextInput';
@@ -21,7 +22,9 @@ import {
   clearSelectedGarden,
   setSelectedGarden,
 } from '@/redux/garden/gardenSlice';
-import { useDispatch } from '@/redux/store';
+import { RootState, useDispatch, useSelector } from '@/redux/store';
+import { setUserData } from '@/redux/user/userSlice';
+import Cookies from 'js-cookie';
 
 const Explore = () => {
   // Selectors
@@ -30,11 +33,22 @@ const Explore = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  // //Check du State global du garden si jamais refresh de la page
-  // if (!currentGarden && garden) {
-  //   const parsedGarden: Garden = JSON.parse(garden);
-  //   dispatch(setSelectedGarden(parsedGarden));
-  // }
+  //Cookies
+  const userDataC = Cookies.get('user_data');
+  const userCookie = userDataC ? JSON.parse(userDataC) : null;
+  const id = Number(userCookie?.id);
+
+  //RTK Query
+  const user = useGetUserByIdQuery({ userId: id });
+
+  //UserStore
+  const userStored = useSelector((state: RootState) => state.user.userData);
+  if (!userStored) {
+    if (user.data) {
+      console.log(user.data.content);
+      dispatch(setUserData(user.data.content));
+    }
+  }
 
   const gardenTypeLabels: Record<number, string> = {
     0: 'Personnal',

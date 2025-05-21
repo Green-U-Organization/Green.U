@@ -1,6 +1,5 @@
-// Externals
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getAuthCookies } from '../utils/authCookies';
+import { getAuthCookies } from '../../utils/authCookies';
 
 type LoginUserRequest = {
   email: string;

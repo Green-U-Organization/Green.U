@@ -7,13 +7,14 @@ import {
 import type { TypedUseSelectorHook } from 'react-redux';
 import type { ThunkAction } from 'redux-thunk';
 import { thunk } from 'redux-thunk';
-import api from '@/slice/api';
+import api from '@/redux/api/api';
 
 import gardenReducer from './garden/gardenSlice';
 // import parcelReducer from './parcel/parcelSlice';
 // import lineReducer from './line/lineSlice';
 import displayReducer from './display/displaySlice';
-import authReducer from '../slice/authSlice';
+import authReducer from '../redux/auth/authSlice';
+import userReducer from '../redux/user/userSlice';
 
 // Augment middleware to consider Immutable.JS iterables serializable
 const isSerializable = (value: Date) => value instanceof Date || isPlain(value);
@@ -25,6 +26,7 @@ export const store = configureStore({
     // line: lineReducer,
     display: displayReducer,
     auth: authReducer,
+    user: userReducer,
 
     // API reducer
     api: api.reducer,

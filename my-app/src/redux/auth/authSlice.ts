@@ -1,7 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { setAuthCookies, clearAuthCookies } from '../utils/authCookies';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { setAuthCookies, clearAuthCookies } from '../../utils/authCookies';
+import { User } from '@/utils/types';
 
-const initialState = {
+interface AuthState {
+  id: number | null;
+  user: any | null;
+  token: string | null;
+}
+
+const initialState: AuthState = {
   id: null,
   user: null,
   token: null,
@@ -22,6 +29,7 @@ const authSlice = createSlice({
         { username: user.username, id: user.id, xp: user.xp }
       );
     },
+
     logout: (state) => {
       state.user = null;
       state.token = null;

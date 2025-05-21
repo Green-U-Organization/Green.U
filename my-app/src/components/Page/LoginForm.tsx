@@ -7,8 +7,8 @@ import TextInput from '@/components/Atom/TextInput';
 import Button from '@/components/Atom/Button';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import { useRouter } from 'next/navigation';
-import { setCredentials } from '../../slice/authSlice';
-import { useLoginUserMutation } from '@/slice/fetch';
+import { setCredentials } from '../../redux/auth/authSlice';
+import { useLoginUserMutation } from '@/redux/api/fetch';
 import { useDispatch } from '@/redux/store';
 import { setAuthCookies } from '@/utils/authCookies';
 
@@ -29,6 +29,7 @@ const LoginForm = () => {
   //RTK Queries
   const [loginUser] = useLoginUserMutation();
 
+  //Handlers
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     setErrorEmail(false);
@@ -59,14 +60,16 @@ const LoginForm = () => {
       };
       try {
         const response = await loginUser(user).unwrap();
+
         console.log('login success');
         dispatch(
           setCredentials({
             id: response.content.id,
-            user: response.content.username,
+            user: response.content,
             token: response.token,
           })
         );
+
         setAuthCookies(
           {
             accessToken: response.token,

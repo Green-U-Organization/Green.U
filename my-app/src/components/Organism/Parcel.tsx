@@ -9,14 +9,13 @@ import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/Confirmation_Popup';
 import {
   useCreateNewGardenLineMutation,
-  useGetAllLinesByParcelIdQuery,
+  // useGetAllLinesByParcelIdQuery,
   useDeleteOneParcelByParcelIdMutation,
   useGetUserByIdQuery,
   useEditUserByUserIdMutation,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import VegetableIcon from '../Atom/VegetableIcon';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
-
 import {
   setDisplayParcelLogPopup,
   setEditParcelPopup,
@@ -28,6 +27,7 @@ import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
 import { addLineStore, deleteParcelStore } from '@/redux/garden/gardenSlice';
 import XpTable from '@/utils/Xp';
+import { setXpUser } from '@/redux/user/userSlice';
 
 const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
   //Local State
@@ -106,6 +106,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
         userId: userId,
         xp: newXp,
       });
+      dispatch(setXpUser(newXp));
     } catch {
       console.log('Error creating line');
     }
@@ -126,6 +127,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
         userId: userId,
         xp: newXp,
       });
+      dispatch(setXpUser(newXp));
     } catch {
       console.log('error deleting parcel');
     }

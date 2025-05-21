@@ -7,7 +7,7 @@ import { Menu, X } from 'lucide-react';
 import Cookies from 'js-cookie';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../slice/authSlice';
+import { logout } from '../../redux/api/authSlice';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

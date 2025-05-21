@@ -12,11 +12,12 @@ import {
   useCreateCropToNurseryMutation,
   useEditUserByUserIdMutation,
   useGetUserByIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
 import { addCropNurseryStore } from '@/redux/garden/gardenSlice';
+import { setXpUser } from '@/redux/user/userSlice';
 
 const AddCropNurseryPopup: FC<{ nursery: Nursery }> = ({ nursery }) => {
   //Local State
@@ -104,10 +105,13 @@ const AddCropNurseryPopup: FC<{ nursery: Nursery }> = ({ nursery }) => {
       dispatch(addCropNurseryStore(crop.content));
 
       //XP
+      const newXp = (user?.data?.content?.xp ?? 0) + XpTable.addCrop;
       await addXp({
         userId: id,
-        xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
+        xp: newXp,
       });
+      dispatch(setXpUser(newXp));
+
       console.log('crop created');
       dispatch(
         setAddCropNurseryPopup({

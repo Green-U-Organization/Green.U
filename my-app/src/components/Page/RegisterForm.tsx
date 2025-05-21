@@ -14,13 +14,13 @@ import HashtagInput from '@/components/HashtagInput';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from '@/redux/store';
-import { setCredentials } from '../../slice/authSlice';
+import { setCredentials } from '../../redux/auth/authSlice';
 import { setAuthCookies } from '@/utils/authCookies';
 import {
   useCreateTagsListByUserMutation,
   useLoginUserMutation,
   useRegisterUserMutation,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 // import { addUser } from '@/utils/actions/user/addUser';
 type Value = CalendarProps['value'];
 

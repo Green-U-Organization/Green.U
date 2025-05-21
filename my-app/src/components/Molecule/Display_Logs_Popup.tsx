@@ -8,7 +8,7 @@ import {
   useGetAllLogsByLineIdQuery,
   useGetAllLogsByNurseryIdQuery,
   useGetAllLogsByParcelIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import Loading from '../Atom/Loading';
 import { Log } from '@/utils/types';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';

@@ -3,7 +3,7 @@ import {
   useGetAllGardenByUserIdQuery,
   useGetTagsByUserQuery,
   useGetUserByIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import React from 'react';
 import Card from '../Atom/Card';
 import { useLanguage } from '@/app/contexts/LanguageProvider';

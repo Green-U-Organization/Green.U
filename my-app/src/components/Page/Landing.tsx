@@ -4,16 +4,34 @@ import Card from '../Atom/Card';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../slice/authSlice';
+import { setUserData } from '../../redux/user/userSlice';
+import { logout } from '../../redux/auth/authSlice';
 import Image from 'next/image';
+import { useGetUserByIdQuery } from '@/redux/api/fetch';
+import { useSelector, RootState } from '@/redux/store';
 
 const Landing = () => {
+  //Hooks
   const router = useRouter();
-
   const dispatch = useDispatch();
 
   //Cookies
   const token = Cookies.get('access_token');
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const id = Number(userCookie?.id);
+
+  //RTK Query
+  const user = useGetUserByIdQuery({ userId: id });
+
+  //UserStore
+  const userStored = useSelector((state: RootState) => state.user.userData);
+  if (!userStored) {
+    if (user.data) {
+      console.log(user.data.content);
+      dispatch(setUserData(user.data.content));
+    }
+  }
 
   return (
     <Card className="relative flex h-screen w-screen flex-col items-center justify-center">

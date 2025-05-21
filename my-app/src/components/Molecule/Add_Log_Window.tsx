@@ -4,7 +4,7 @@ import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
 import { useDispatch } from 'react-redux';
 import { setDisplayAddLogWindow } from '@/redux/display/displaySlice';
-import { useCreateLogMutation } from '@/slice/fetch';
+import { useCreateLogMutation } from '@/redux/api/fetch';
 
 type AddLogWindow = {
   id?: number;

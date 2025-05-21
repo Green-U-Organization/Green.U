@@ -13,7 +13,7 @@ import Cookies from 'js-cookie';
 import {
   useDeleteOneLineByLineIdMutation,
   // useGetCropByLineIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import {
   setAddCropPopup,
   setDisplayCropLogPopup,

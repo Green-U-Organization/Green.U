@@ -12,8 +12,12 @@ import { setSelectedGarden } from '@/redux/garden/gardenSlice';
 import MenuSandwichOptionInGarden from '../Molecule/MenuSandwichOptionInGarden';
 import { useRouter } from 'next/navigation';
 import Button from '../Atom/Button';
-import { useGetOneGardenByGardenIdQuery } from '@/slice/fetch';
+import {
+  useGetOneGardenByGardenIdQuery,
+  useGetUserByIdQuery,
+} from '@/redux/api/fetch';
 import Loading from '../Atom/Loading';
+import { setUserData } from '@/redux/user/userSlice';
 
 type GardenDisplayProps = {
   gardenId: number;
@@ -24,12 +28,27 @@ const GardenDisplay = ({ gardenId }: GardenDisplayProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  //Cookies
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const id = Number(userCookie?.id);
+
   // RTK Query
   const {
     data: gardenRaw,
     isLoading: gardensIsLoading,
     isError: gardensIsError,
   } = useGetOneGardenByGardenIdQuery({ gardenId });
+  const user = useGetUserByIdQuery({ userId: id });
+
+  //UserStore
+  const userStored = useSelector((state: RootState) => state.user.userData);
+  if (!userStored) {
+    if (user.data) {
+      console.log(user.data.content);
+      dispatch(setUserData(user.data.content));
+    }
+  }
 
   // Selectors
   const currentGarden = useSelector(

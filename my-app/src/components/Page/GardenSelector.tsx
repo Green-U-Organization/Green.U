@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import { useDispatch } from '@/redux/store';
-import { useGetAllGardenByUserIdQuery } from '@/slice/fetch';
+import { RootState, useDispatch, useSelector } from '@/redux/store';
+import {
+  useGetAllGardenByUserIdQuery,
+  useGetUserByIdQuery,
+} from '@/redux/api/fetch';
 import Cookies from 'js-cookie';
 import React from 'react';
 import Card from '../Atom/Card';
@@ -16,6 +19,7 @@ import {
 } from '@/redux/garden/gardenSlice';
 import Loading from '../Atom/Loading';
 import { setSelectedGardenCookies } from '@/utils/selectedGardenCookies';
+import { setUserData } from '@/redux/user/userSlice';
 
 const GardenSelector = () => {
   //Hooks
@@ -37,6 +41,16 @@ const GardenSelector = () => {
   } = useGetAllGardenByUserIdQuery({
     userId: id,
   }); // get de donnés des données
+  const user = useGetUserByIdQuery({ userId: id });
+
+  //UserStore
+  const userStored = useSelector((state: RootState) => state.user.userData);
+  if (!userStored) {
+    if (user.data) {
+      console.log(user.data.content);
+      dispatch(setUserData(user.data.content));
+    }
+  }
 
   if (gardensIsLoading) {
     return (

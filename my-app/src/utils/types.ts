@@ -124,6 +124,25 @@ export type Log = {
 
 export type Tag = { tag: string; count: number };
 
+export type User = {
+  id: number;
+  username: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  country: string;
+  gender: string;
+  birthday: string;
+  bio: string;
+  tagsinterest?: Tag[];
+  skill_level: number;
+  xp: number;
+  newsletter: boolean;
+  tou: boolean;
+  deleted: boolean;
+  createdAt: string;
+};
+
 //#region
 
 export type BentoCardHeaderProps = {

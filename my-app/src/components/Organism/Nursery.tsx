@@ -9,7 +9,7 @@ import {
   useDeleteOneNurseryByNurseryIdMutation,
   useEditUserByUserIdMutation,
   useGetUserByIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import { NurseryProps } from '@/utils/types';
 import AddCropNurseryPopup from '../Molecule/Add_CropNursery_Popup';
 import {
@@ -24,6 +24,7 @@ import Cookies from 'js-cookie';
 import LoadingModal from '../Molecule/LoadingModal';
 import { deleteNurseryStore } from '@/redux/garden/gardenSlice';
 import XpTable from '@/utils/Xp';
+import { setXpUser } from '@/redux/user/userSlice';
 
 const Nursery: FC<NurseryProps> = ({ nursery }) => {
   // Local State
@@ -92,6 +93,7 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
         userId: userId,
         xp: newXp,
       });
+      dispatch(setXpUser(newXp));
     } catch {
       console.log('error deleting nursery');
     }
@@ -281,7 +283,13 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
                             )
                           }
                         >
-                          <img src={crop.icon} alt="" className="mx-auto" />
+                          <img
+                            src={
+                              crop.icon ? crop.icon : '/image/icons/info.webp'
+                            }
+                            alt=""
+                            className="mx-auto"
+                          />
                         </td>
                         <td className="border-1 p-1">
                           <img

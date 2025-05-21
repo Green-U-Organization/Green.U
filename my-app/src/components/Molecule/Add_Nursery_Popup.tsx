@@ -6,13 +6,14 @@ import {
   useCreateNurseryMutation,
   useEditUserByUserIdMutation,
   useGetUserByIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import { RootState, useDispatch, useSelector } from '@/redux/store';
 import { setAddNurseryPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
 import { addPlantNurseryStore } from '@/redux/garden/gardenSlice';
+import { setXpUser } from '@/redux/user/userSlice';
 
 const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
   //Local State
@@ -73,10 +74,12 @@ const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
       dispatch(addPlantNurseryStore(nursery.content));
 
       //XP
+      const newXp = (user?.data?.content?.xp ?? 0) + XpTable.addNursery;
       await addXp({
         userId: id,
-        xp: (user?.data?.content?.xp ?? 0) + XpTable.addNursery,
+        xp: newXp,
       });
+      dispatch(setXpUser(newXp));
 
       console.log('nursery created');
     } catch {

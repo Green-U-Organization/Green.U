@@ -8,7 +8,7 @@ import { RootState } from '@/redux/store';
 // import {
 //   useGetAllParcelByGardenIdQuery,
 //   useGetNurseryByGardenIdQuery,
-// } from '@/slice/fetch';
+// } from '@/redux/api/fetch';
 import H1 from '../Atom/H1';
 import Nursery from './Nursery';
 import Loading from '../Atom/Loading';

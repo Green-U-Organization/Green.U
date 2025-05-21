@@ -7,7 +7,7 @@ import {
   useCreateNewParcelMutation,
   useEditUserByUserIdMutation,
   useGetUserByIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 
 import { setAddParcelPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
@@ -15,6 +15,7 @@ import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
 import { addParcelStore } from '@/redux/garden/gardenSlice';
 import Loading from '../Atom/Loading';
+import { setXpUser } from '@/redux/user/userSlice';
 
 const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
   //USER info
@@ -81,6 +82,7 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
         userId: id,
         xp: newXp,
       });
+      dispatch(setXpUser(newXp));
     } catch {
       console.log('error creating parcel');
     }
