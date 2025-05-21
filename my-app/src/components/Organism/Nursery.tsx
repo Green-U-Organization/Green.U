@@ -25,6 +25,8 @@ import LoadingModal from '../Molecule/LoadingModal';
 import { deleteNurseryStore } from '@/redux/garden/gardenSlice';
 import XpTable from '@/utils/Xp';
 import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from '../Molecule/Toast_XP';
 
 const Nursery: FC<NurseryProps> = ({ nursery }) => {
   // Local State
@@ -94,6 +96,9 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
         xp: newXp,
       });
       dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.deleteNursery} />);
     } catch {
       console.log('error deleting nursery');
     }

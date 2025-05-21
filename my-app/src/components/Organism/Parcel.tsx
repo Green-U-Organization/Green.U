@@ -28,6 +28,8 @@ import LoadingModal from '../Molecule/LoadingModal';
 import { addLineStore, deleteParcelStore } from '@/redux/garden/gardenSlice';
 import XpTable from '@/utils/Xp';
 import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from '../Molecule/Toast_XP';
 
 const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
   //Local State
@@ -107,6 +109,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
         xp: newXp,
       });
       dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.addLine} />);
     } catch {
       console.log('Error creating line');
     }
@@ -128,6 +133,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
         xp: newXp,
       });
       dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.deleteParcel} />);
     } catch {
       console.log('error deleting parcel');
     }

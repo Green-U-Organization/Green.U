@@ -9,6 +9,7 @@ import { logout } from '../../redux/auth/authSlice';
 import Image from 'next/image';
 import { useGetUserByIdQuery } from '@/redux/api/fetch';
 import { useSelector, RootState } from '@/redux/store';
+import toast from 'react-hot-toast';
 
 const Landing = () => {
   //Hooks
@@ -120,6 +121,20 @@ const Landing = () => {
             Explore
           </p>
         </div>
+
+        {/* <div
+          onClick={() => toast.success('Successfully toasted!')}
+          className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl bg-none select-none"
+        >
+          <div
+            className={`${token ? 'bg-bgbutton opacity-0' : 'opacity-0'} absolute h-[10vh] w-[50vw] rounded-xl`}
+          ></div>
+          <p
+            className={`${token ? 'bg-bgbutton border-4 border-[#28a745] opacity-80' : 'border-none opacity-0'} absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl`}
+          >
+            Toast
+          </p>
+        </div> */}
 
         <div
           onClick={

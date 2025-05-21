@@ -16,6 +16,8 @@ import LoadingModal from './LoadingModal';
 import { addParcelStore } from '@/redux/garden/gardenSlice';
 import Loading from '../Atom/Loading';
 import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from './Toast_XP';
 
 const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
   //USER info
@@ -83,6 +85,9 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
         xp: newXp,
       });
       dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.addParcel * repeat} />);
     } catch {
       console.log('error creating parcel');
     }

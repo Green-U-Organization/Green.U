@@ -18,6 +18,8 @@ import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
 import { addCropNurseryStore } from '@/redux/garden/gardenSlice';
 import { setXpUser } from '@/redux/user/userSlice';
+import Toast_XP from './Toast_XP';
+import toast from 'react-hot-toast';
 
 const AddCropNurseryPopup: FC<{ nursery: Nursery }> = ({ nursery }) => {
   //Local State
@@ -111,6 +113,8 @@ const AddCropNurseryPopup: FC<{ nursery: Nursery }> = ({ nursery }) => {
         xp: newXp,
       });
       dispatch(setXpUser(newXp));
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.addCrop} />);
 
       console.log('crop created');
       dispatch(

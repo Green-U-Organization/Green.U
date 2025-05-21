@@ -5,6 +5,7 @@ import ThemeApp from '@/components/ThemeApp';
 import { LanguageProvider } from '@/app/contexts/LanguageProvider';
 import { StoreProvider } from '@/redux/StoreProvider';
 import BugReport from '@/components/Atom/BugReport';
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -43,6 +44,7 @@ export default function RootLayout({
             <BugReport />
             {/* <Navbar /> */}
             <ThemeApp>{children}</ThemeApp>
+            <Toaster position="top-right" reverseOrder={false} />
           </LanguageProvider>
         </body>
       </html>

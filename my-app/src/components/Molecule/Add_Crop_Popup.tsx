@@ -22,6 +22,8 @@ import LoadingModal from './LoadingModal';
 import CropRow from '../Atom/CropRow';
 import { addCropLineStore } from '@/redux/garden/gardenSlice';
 import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from './Toast_XP';
 
 const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
   //Local State
@@ -141,6 +143,9 @@ const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
           xp: newXp,
         });
         dispatch(setXpUser(newXp));
+
+        //Toast XP
+        toast.custom((t) => <Toast_XP t={t} xp={XpTable.addCrop} />);
 
         console.log('crop created');
         dispatch(

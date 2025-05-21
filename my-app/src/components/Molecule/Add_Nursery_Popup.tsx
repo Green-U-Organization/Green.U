@@ -14,6 +14,8 @@ import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
 import { addPlantNurseryStore } from '@/redux/garden/gardenSlice';
 import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from './Toast_XP';
 
 const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
   //Local State
@@ -80,6 +82,9 @@ const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
         xp: newXp,
       });
       dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.addNursery} />);
 
       console.log('nursery created');
     } catch {

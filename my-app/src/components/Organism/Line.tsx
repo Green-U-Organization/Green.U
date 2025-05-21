@@ -12,6 +12,8 @@ import Image from 'next/image';
 import Cookies from 'js-cookie';
 import {
   useDeleteOneLineByLineIdMutation,
+  useEditUserByUserIdMutation,
+  useGetUserByIdQuery,
   // useGetCropByLineIdQuery,
 } from '@/redux/api/fetch';
 import {
@@ -23,6 +25,10 @@ import {
 import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
 import { addCropLineStore, deleteLineStore } from '@/redux/garden/gardenSlice';
+import XpTable from '@/utils/Xp';
+import toast from 'react-hot-toast';
+import Toast_XP from '../Molecule/Toast_XP';
+import { setXpUser } from '@/redux/user/userSlice';
 
 const Line: FC<LineProps> = ({ line, lineIndex }) => {
   // Local State
@@ -31,22 +37,28 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
     useState<boolean>(false);
   const [cropIsPresent, setCropIsPresent] = useState<boolean>(false);
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
+
   //RTK Query
   const [deleteLineMutation, { isLoading: deleteLinesIsLoading }] =
     useDeleteOneLineByLineIdMutation();
   // const { data: crops } = useGetCropByLineIdQuery({
   //   lineId: line.id,
   // });
+  const [addXp] = useEditUserByUserIdMutation();
+  const {
+    data: user,
+    isError: userIsError,
+    isSuccess: userIsSuccess,
+  } = useGetUserByIdQuery({ userId: userId });
 
   //Hooks
   const dispatch = useDispatch();
   const cropPopupRef = useRef<HTMLDivElement>(null);
   const existantPopupRef = useRef<HTMLDivElement>(null);
-
-  //USER info
-  const userData = Cookies.get('user_data');
-  const userCookie = userData ? JSON.parse(userData) : null;
-  const userId = Number(userCookie?.id);
 
   //Selectors
   const graphicMode = useSelector(
@@ -94,6 +106,17 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
       }).unwrap();
 
       dispatch(deleteLineStore(line.id));
+
+      //XP
+      const newXp = (user?.content?.xp ?? 0) + XpTable.deleteLine;
+      addXp({
+        userId: userId,
+        xp: newXp,
+      });
+      dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.deleteLine} />);
 
       console.log('line deleted');
     } catch {
