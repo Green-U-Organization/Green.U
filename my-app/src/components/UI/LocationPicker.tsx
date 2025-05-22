@@ -24,7 +24,7 @@ import {
 } from '@/redux/garden/gardenSlice';
 import { useDispatch } from '@/redux/store';
 import { useRouter } from 'next/navigation';
-import { LocateFixed } from 'lucide-react';
+import { LocateFixed, Radius } from 'lucide-react';
 
 // Recentrer dynamiquement la map sur la position utilisateur
 const CenterMapOnUser: React.FC<{ position: { lat: number; lng: number } }> = ({
@@ -86,57 +86,19 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
 
   const [radius, setRadius] = useState<number>(5);
   const [distance, setDistance] = useState<number | null>(null);
-  //console.log(distance);
+
+  const [locationEnabled, setLocationEnabled] = useState<boolean | null>(null);
+  //true : localisation activée
+  //false : refusée ou erreur
+  //null : pas encore testée
 
   useEffect(() => {}, [translations]);
 
   useEffect(() => {
-    if (showUserPosition && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const coords = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setUserPosition(coords);
-        },
-        (error) => {
-          console.error(translations.errgeo, error);
-          let errorMessage = translations.errPosition;
-          switch (error.code) {
-            case error.PERMISSION_DENIED:
-              errorMessage = translations.errGeoPermissionRefused;
-              break;
-            case error.POSITION_UNAVAILABLE:
-              errorMessage = translations.errPositionUnavailable;
-              break;
-            case error.TIMEOUT:
-              errorMessage = translations.errWaitingTime;
-              break;
-            default:
-              errorMessage = translations.errUnknown;
-          }
-          alert(errorMessage + translations.errCheckPermissions);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0,
-        }
-      );
+    if (showUserPosition) {
+      handleLocateUser(); // Appelle la fonction qui gère tout
     }
-  }, [
-    markerPosition,
-    multipleMarkers,
-    showUserPosition,
-    translations.errCheckPermissions,
-    translations.errGeoPermissionRefused,
-    translations.errPosition,
-    translations.errPositionUnavailable,
-    translations.errUnknown,
-    translations.errWaitingTime,
-    translations.errgeo,
-  ]);
+  }, [showUserPosition]);
 
   //Fonction pour filtrer les points dans le rayon
   const filterMarkerInRadius = (
@@ -218,6 +180,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          setLocationEnabled(true);
           const coords = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -226,7 +189,22 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         },
         (error) => {
           console.error('Geolocation error:', error);
-          alert(translations.errCheckPermissions);
+          setLocationEnabled(false);
+          let errorMessage = translations.errPosition;
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage = translations.errGeoPermissionRefused;
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage = translations.errPositionUnavailable;
+              break;
+            case error.TIMEOUT:
+              errorMessage = translations.errWaitingTime;
+              break;
+            default:
+              errorMessage = translations.errUnknown;
+          }
+          alert(errorMessage + translations.errCheckPermissions);
         },
         {
           enableHighAccuracy: true,
@@ -235,6 +213,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         }
       );
     } else {
+      setLocationEnabled(false);
       alert('Geolocation is not supported by your browser.');
     }
   };
@@ -278,6 +257,15 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
       <div
         className={`${enableRadius ? 'h-[70vh]' : 'h-70'} mb-2 overflow-hidden`}
       >
+        <div className="absolute top-26 left-0 z-[1000]">
+          <button
+            onClick={handleLocateUser}
+            className={`pointer-events-auto absolute top-21 left-2.5 z-[1000] rounded-full border border-black p-2 text-black shadow-md transition-colors hover:bg-gray-200 ${locationEnabled === true ? 'bg-green-300' : locationEnabled === false ? 'bg-red-400' : 'bg-white'}`}
+            title="Locate me"
+          >
+            <LocateFixed className="h-6 w-6" />
+          </button>
+        </div>
         <MapContainer
           center={
             markerPosition ||
@@ -291,21 +279,6 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           scrollWheelZoom={true}
           className="z-0 h-full w-full"
         >
-          <button
-            onClick={(e) => {
-              // e.stopPropagation();
-              // e.preventDefault();
-              handleLocateUser();
-            }}
-            // onMouseDown={(e) => {
-            //   e.stopPropagation();
-            //   e.preventDefault();
-            // }}
-            className="pointer-events-auto absolute top-21 left-2.5 z-[1000] rounded-full border border-black p-2 text-black shadow-md transition-colors hover:bg-gray-200"
-            title="Locate me"
-          >
-            <LocateFixed className="h-6 w-6" />
-          </button>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; OpenStreetMap contributors"
@@ -344,7 +317,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           {markerPosition && !readOnly && (
             <Marker position={markerPosition} icon={customIcon} />
           )}
-          {/* Marqueurs dans le rayon */}
+          {/* Marqueurs de jardins dans le rayon */}
           {readOnly &&
             filteredMarkers.map((pos, idx) => (
               <Marker

@@ -4,7 +4,6 @@ import './globals.css';
 import ThemeApp from '@/components/ThemeApp';
 import { LanguageProvider } from '@/app/contexts/LanguageProvider';
 import { StoreProvider } from '@/redux/StoreProvider';
-import BugReport from '@/components/Atom/BugReport';
 import SlideMenu from '@/components/Molecule/SlideMenu';
 
 const geistSans = Geist({

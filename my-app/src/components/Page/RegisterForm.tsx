@@ -500,7 +500,7 @@ const RegisterForm = () => {
     <Card
       className={'bg-cardbackground h-full min-h-screen max-w-screen px-8 pt-5'}
     >
-      <h1 className="mb-5 text-4xl">{translations.register}: </h1>
+      <h1 className="mb-5 text-4xl">{translations.registration}: </h1>
 
       <form
         ref={formRef}

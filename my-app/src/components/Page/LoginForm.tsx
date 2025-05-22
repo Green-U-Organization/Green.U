@@ -94,7 +94,7 @@ const LoginForm = () => {
           }
         );
 
-        router.push('/landing');
+        router.push('/');
       } catch (err: unknown) {
         const error = err as ApiError;
         const errorMsg =
@@ -112,7 +112,7 @@ const LoginForm = () => {
         {/*}flex flex-col p-5 max-w-150*/}
         <form id="loginForm" onSubmit={handleSubmit}>
           <div className="flex flex-col items-center justify-center">
-            <h2 className="mb-10 text-7xl">*Green-U*</h2>
+            <h2 className="mb-10 text-7xl select-none">*Green-U*</h2>
 
             <div className="flex w-full flex-col justify-center">
               <TextInput

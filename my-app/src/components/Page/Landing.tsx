@@ -6,17 +6,18 @@ import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../slice/authSlice';
 import Image from 'next/image';
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 const Landing = () => {
   const router = useRouter();
-  const audioRef = useRef<HTMLAudioElement>(null);
   const dispatch = useDispatch();
+  const { translations } = useLanguage();
 
   //Cookies
   const token = Cookies.get('access_token');
 
   return (
-    <Card className="relative flex h-screen w-screen flex-col items-center justify-center">
+    <Card className="relative flex h-screen w-screen flex-col items-center justify-center select-none">
       {/* Background */}
       <div className="absolute h-screen w-screen overflow-hidden opacity-100">
         <Image
@@ -60,6 +61,7 @@ const Landing = () => {
       </div>
 
       {/* Menu */}
+      {/* Garden */}
       <div className="flex h-[60vh] w-[70vw] flex-col items-center justify-center p-10">
         <div
           onClick={token ? () => router.push('/garden') : () => {}}
@@ -71,10 +73,11 @@ const Landing = () => {
           <p
             className={`${token ? 'bg-bgbutton border-4 border-[#28a745] opacity-80' : 'border-none opacity-0'} absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl`}
           >
-            Garden
+            {translations.garden}
           </p>
         </div>
 
+        {/* Profile */}
         <div
           onClick={token ? () => router.push('/profile') : () => {}}
           className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl bg-none transition-transform duration-150 select-none active:scale-98"
@@ -85,10 +88,11 @@ const Landing = () => {
           <p
             className={`${token ? 'bg-bgbutton border-4 border-[#28a745] opacity-80' : 'border-none opacity-0'} absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl`}
           >
-            Profil
+            {translations.profile}
           </p>
         </div>
 
+        {/* Explore */}
         <div
           onClick={token ? () => router.push('/explore') : () => {}}
           className="relative m-2 flex h-[10vh] w-[50vw] items-center justify-center rounded-xl bg-none transition-transform duration-150 select-none active:scale-98"
@@ -99,16 +103,17 @@ const Landing = () => {
           <p
             className={`${token ? 'bg-bgbutton border-4 border-[#28a745] opacity-80' : 'border-none opacity-0'} absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl`}
           >
-            Explore
+            {translations.explore}
           </p>
         </div>
 
+        {/* Logout/Login */}
         <div
           onClick={
             token
               ? () => {
                   dispatch(logout());
-                  router.push('landing');
+                  router.push('/');
                 }
               : () => router.push('login')
           }
@@ -118,17 +123,22 @@ const Landing = () => {
             className={`${token ? 'bg-bgbutton' : 'bg-bgbutton'} absolute h-[10vh] w-[50vw] rounded-xl opacity-80`}
           ></div>
           <p className="absolute flex h-[10vh] w-[50vw] items-center justify-center rounded-xl border-4 border-[#28a745]">
-            {token ? 'Logout' : 'Login'}
+            {token ? translations.logout : translations.login}
           </p>
         </div>
       </div>
+
+      {/* Register */}
       <p
         style={{ display: token ? 'none' : 'block' }}
         className="z-50 text-base text-white"
       >
-        Don&apos;t have account ? Don&apos;t panic and{' '}
-        <span onClick={() => router.push('register')} className="text-border">
-          Register !
+        {translations.noAccount}
+        <span
+          onClick={() => router.push('register')}
+          className="text-bginput cursor-pointer rounded px-1 text-2xl"
+        >
+          {translations.register}
         </span>
       </p>
     </Card>
