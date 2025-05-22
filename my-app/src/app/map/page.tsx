@@ -1,6 +1,7 @@
 'use client';
 import LocationPicker from '@/components/UI/LocationPicker';
 import { useGetAllGardensLocalisationQuery } from '@/slice/fetch';
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 const Map = () => {
   const {
@@ -10,21 +11,21 @@ const Map = () => {
     isFetching,
   } = useGetAllGardensLocalisationQuery();
 
+  const { translations } = useLanguage();
+
   if (isLoading || isFetching) {
-    return <p className="text-center">Loading the map...</p>;
+    return <p className="text-center">{translations.loadingMap}</p>;
   }
 
   if (error) {
-    console.error('Erreur lors de la récupération des localisations :', error);
+    console.error(translations.errRetrievingLocations, error);
     return (
-      <p className="text-center text-red-600">
-        An error occurred while loading the map.
-      </p>
+      <p className="text-txterror text-center">{translations.errLoadingMap}</p>
     );
   }
 
   if (!gardens || !gardens.content) {
-    return <p className="text-center">No gardens to display.</p>;
+    return <p className="text-center">{translations.noGarden}</p>;
   }
 
   return (

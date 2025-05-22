@@ -670,9 +670,9 @@ const RegisterForm = () => {
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
             type="button"
-            onClick={() => router.push('login')}
+            onClick={() => router.push('/')}
           >
-            Back
+            {translations.back}
           </Button>
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"

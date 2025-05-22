@@ -1,4 +1,3 @@
-'use client';
 import React, { useEffect, useState } from 'react';
 import {
   MapContainer,
@@ -24,7 +23,8 @@ import {
 } from '@/redux/garden/gardenSlice';
 import { useDispatch } from '@/redux/store';
 import { useRouter } from 'next/navigation';
-import { LocateFixed, Radius } from 'lucide-react';
+import { LocateFixed } from 'lucide-react';
+import Checkbox from '../Atom/Checkbox';
 
 // Recentrer dynamiquement la map sur la position utilisateur
 const CenterMapOnUser: React.FC<{ position: { lat: number; lng: number } }> = ({
@@ -33,15 +33,22 @@ const CenterMapOnUser: React.FC<{ position: { lat: number; lng: number } }> = ({
   const map = useMap();
 
   useEffect(() => {
-    map.setView(position, 13); // tu peux changer le zoom ici
+    map.setView(position, 13); // zoom
   }, [position, map]);
 
   return null;
 };
 
-// Icône pour la localisation des terrains
-const customIcon = L.icon({
-  iconUrl: '/image/divers/field-location-v2.png',
+// Icônes pour la localisation des terrains
+const customPublicIcon = L.icon({
+  iconUrl: '/image/divers/field-location-public.png',
+  iconSize: [30, 26],
+  iconAnchor: [15, 26],
+  popupAnchor: [0, -26],
+});
+
+const customPrivateIcon = L.icon({
+  iconUrl: '/image/divers/field-location-private.png',
   iconSize: [30, 26],
   iconAnchor: [15, 26],
   popupAnchor: [0, -26],
@@ -64,13 +71,15 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   enableRadius = false,
   showUserPosition = false,
 }) => {
-  //Hooks
+  // Hooks
   const dispatch = useDispatch();
   const router = useRouter();
 
   const { translations } = useLanguage();
 
   const [pinsInCircleCount, setPinsInCircleCount] = useState<number>(0);
+  const [publicGardensCount, setPublicGardensCount] = useState<number>(0);
+  const [privateGardensCount, setPrivateGardensCount] = useState<number>(0);
 
   const [markerPosition, setMarkerPosition] = useState<{
     lat: number;
@@ -88,19 +97,23 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   const [distance, setDistance] = useState<number | null>(null);
 
   const [locationEnabled, setLocationEnabled] = useState<boolean | null>(null);
-  //true : localisation activée
-  //false : refusée ou erreur
-  //null : pas encore testée
+  const [gardenTypeFilters, setGardenTypeFilters] = useState<{
+    public: boolean;
+    private: boolean;
+  }>({
+    public: true,
+    private: true,
+  });
 
   useEffect(() => {}, [translations]);
 
   useEffect(() => {
     if (showUserPosition) {
-      handleLocateUser(); // Appelle la fonction qui gère tout
+      handleLocateUser();
     }
   }, [showUserPosition]);
 
-  //Fonction pour filtrer les points dans le rayon
+  // Fonction pour filtrer les points dans le rayon
   const filterMarkerInRadius = (
     center: { lat: number; lng: number },
     points: { garden: Garden }[],
@@ -115,7 +128,15 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
 
   const filteredMarkers =
     readOnly && userPosition
-      ? filterMarkerInRadius(userPosition, multipleMarkers, radius)
+      ? filterMarkerInRadius(userPosition, multipleMarkers, radius).filter(
+          (pos) => {
+            if (gardenTypeFilters.public && pos.garden.privacy === 2)
+              return true;
+            if (gardenTypeFilters.private && pos.garden.privacy === 0)
+              return true;
+            return false;
+          }
+        )
       : multipleMarkers;
 
   useEffect(() => {
@@ -125,12 +146,31 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         multipleMarkers,
         radius
       );
+
+      // Compter les jardins publics et privés
+      const publicGardens = gardensInCircle.filter(
+        (pos) => pos.garden.privacy === 2
+      ).length;
+      const privateGardens = gardensInCircle.filter(
+        (pos) => pos.garden.privacy === 0
+      ).length;
+
+      setPublicGardensCount(publicGardens);
+      setPrivateGardensCount(privateGardens);
       setPinsInCircleCount(gardensInCircle.length);
     }
-  }, [userPosition, multipleMarkers, radius, enableRadius, readOnly]);
+  }, [
+    userPosition,
+    multipleMarkers,
+    radius,
+    enableRadius,
+    readOnly,
+    gardenTypeFilters,
+  ]);
 
   // Fonction qui permet d'intercepter un clic sur la carte
   // et d'ajouter ce point sur la carte si aucun point n'existe déjà
+  // Utilisé dans la création d'un jardin
   const MapClickHandler = () => {
     useMapEvents({
       click(e) {
@@ -139,7 +179,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         setMarkerPosition({ lat, lng });
         onLocationChange?.(lat, lng);
 
-        //Calcul de la distance (en mètres) entre 2 points
+        // Calcul de la distance (en mètres) entre 2 points
         if (showUserPosition && userPosition) {
           const userLatLng = L.latLng(userPosition.lat, userPosition.lng);
           const clickedLatLng = L.latLng(lat, lng);
@@ -151,31 +191,31 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     return null;
   };
 
-  //Fonction de suppression du pin de localisation d'un jardin
+  // Fonction de suppression du pin de localisation d'un jardin
   const handleRemovePin = () => {
     setMarkerPosition(null);
-    setDistance(null); //Utile ?
+    setDistance(null); // Utile ?
     onLocationChange?.(0, 0);
   };
 
-  //Restriction du rayon lors de la saisie
+  // Restriction du rayon lors de la saisie
   const handleRadiusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = Number(e.target.value);
     if (value > 30) value = 30;
     setRadius(value);
   };
 
+  // Permet d'accéder à un jardin si il est public
   const handleGardenClick = (garden: Garden) => {
     if (garden.privacy === 2) {
       dispatch(setSelectedGarden(garden));
       clearSelectedGarden();
       setSelectedGardenCookies(garden);
-      //router.push('/garden/display');
       window.location.href = '/garden/display';
     }
   };
 
-  //Localisation demandée par l'utilisateur
+  // Recentrage sur la position de l'utilisateur
   const handleLocateUser = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -214,17 +254,27 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
       );
     } else {
       setLocationEnabled(false);
-      alert('Geolocation is not supported by your browser.');
+      alert(translations.errGeoNavigator);
     }
   };
 
+  // Filtrage dynamique des jardins affichés selon les cases à cocher sélectionnées
+  const handleCheckboxChange = (type: 'public' | 'private') => {
+    setGardenTypeFilters({
+      ...gardenTypeFilters,
+      [type]: !gardenTypeFilters[type],
+    });
+  };
+
   return (
-    <div className={`flex flex-col ${markerPosition ? 'mb-0' : 'mb-5'}`}>
+    <div
+      className={`bg-extbutton flex h-full flex-col ${markerPosition ? 'mb-0' : 'mb-5'}`}
+    >
       {!enableRadius && <p>{translations.addGardenPosition}</p>}
 
       {/* Si le rayon est activé : on affiche l'input */}
       {enableRadius && (
-        <div className="mx-auto mt-4 w-full max-w-md bg-white p-4">
+        <div className="bg-extbutton mx-auto w-full max-w-md p-5">
           <label className="block font-semibold">{translations.radius}</label>
           <div className="flex items-center">
             <input
@@ -233,7 +283,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
               max="30"
               value={radius}
               onChange={(e) => setRadius(Number(e.target.value))}
-              className="mt-2 w-full"
+              className="bg-border mr-2 h-2 w-full appearance-none"
             />
             <input
               type="number"
@@ -245,11 +295,34 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             />
             km
           </div>
-          <div className="absolute top-29 left-14 z-[1] rounded border-1 bg-white p-2 shadow-md select-none">
+          <div className="absolute top-27 left-14 z-[1] rounded border-1 bg-white p-2 shadow-md select-none">
             <p>
-              {pinsInCircleCount > 1 ? 'Gardens found: ' : 'Garden found: '}{' '}
-              <strong>{pinsInCircleCount}</strong>
+              {filteredMarkers.length > 1
+                ? translations.gardensFound
+                : translations.gardenFound}
+              <strong>
+                {filteredMarkers.length}/{pinsInCircleCount}
+              </strong>
             </p>
+
+            <div className="flex items-center gap-1">
+              <Checkbox
+                checked={gardenTypeFilters.public}
+                onChange={() => handleCheckboxChange('public')}
+              />
+              {publicGardensCount > 1
+                ? translations.publics
+                : translations.public}
+              <strong className="mr-3">{publicGardensCount}</strong>
+              <Checkbox
+                checked={gardenTypeFilters.private}
+                onChange={() => handleCheckboxChange('private')}
+              />
+              {privateGardensCount > 1
+                ? translations.privates
+                : translations.private}
+              <strong>{privateGardensCount}</strong>
+            </div>
           </div>
         </div>
       )}
@@ -257,15 +330,17 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
       <div
         className={`${enableRadius ? 'h-[70vh]' : 'h-70'} mb-2 overflow-hidden`}
       >
-        <div className="absolute top-26 left-0 z-[1000]">
-          <button
-            onClick={handleLocateUser}
-            className={`pointer-events-auto absolute top-21 left-2.5 z-[1000] rounded-full border border-black p-2 text-black shadow-md transition-colors hover:bg-gray-200 ${locationEnabled === true ? 'bg-green-300' : locationEnabled === false ? 'bg-red-400' : 'bg-white'}`}
-            title="Locate me"
-          >
-            <LocateFixed className="h-6 w-6" />
-          </button>
-        </div>
+        {enableRadius && (
+          <div className="absolute top-25 left-0 z-[50]">
+            <button
+              onClick={handleLocateUser}
+              className={`pointer-events-auto absolute top-21 left-2.5 rounded-full border border-black p-2 text-black shadow-md transition-colors hover:bg-gray-200 ${locationEnabled === true ? 'bg-green-300' : locationEnabled === false ? 'bg-red-400' : 'bg-white'}`}
+              title={translations.locateMe}
+            >
+              <LocateFixed className="h-6 w-6" />
+            </button>
+          </div>
+        )}
         <MapContainer
           center={
             markerPosition ||
@@ -298,7 +373,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           )}
 
           {/* Ajout d'un pin pour localiser l'utilisateur */}
-          {userPosition && window.location.pathname === '/map' && (
+          {userPosition && (
             <Marker
               position={userPosition}
               icon={customUserIcon}
@@ -315,15 +390,17 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
           )}
           {/* Marqueur positionné manuellement */}
           {markerPosition && !readOnly && (
-            <Marker position={markerPosition} icon={customIcon} />
+            <Marker position={markerPosition} icon={customPublicIcon} />
           )}
           {/* Marqueurs de jardins dans le rayon */}
           {readOnly &&
-            filteredMarkers.map((pos, idx) => (
+            filteredMarkers.map((pos) => (
               <Marker
-                key={idx}
+                key={pos.garden.id}
                 position={[pos.garden.latitude, pos.garden.longitude]}
-                icon={customIcon}
+                icon={
+                  pos.garden.type === 0 ? customPrivateIcon : customPublicIcon
+                }
               >
                 {/* Ajout d'une popup pour avoir des infos sur le jardin sélectionné par clic */}
                 <Popup>
@@ -359,14 +436,6 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
                       <strong>{translations.gardenType}</strong>{' '}
                       {gardenTypeLabels[pos.garden.type] ?? 'N/A'}
                     </div>
-                    {/* <div>
-                      <strong>{translations.latitude}</strong>{' '}
-                      {pos.lat.toFixed(5)}
-                    </div>
-                    <div>
-                      <strong>{translations.longitude}</strong>{' '}
-                      {pos.lng.toFixed(5)}
-                    </div> */}
                     {userPosition && (
                       <div>
                         <strong>{translations.distance}</strong>{' '}
@@ -389,13 +458,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
       </div>
       {userPosition && (
         <div className="mx-auto">
-          {' '}
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
             type="button"
             onClick={() => router.back()}
           >
-            Back
+            {translations.back}
           </Button>
         </div>
       )}

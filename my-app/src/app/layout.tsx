@@ -35,7 +35,7 @@ export default function RootLayout({
 }) {
   return (
     <StoreProvider>
-      <html lang="en" className="bg-white">
+      <html lang="en" className="bg-extbutton">
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
         >
