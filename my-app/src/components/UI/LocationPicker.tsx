@@ -1,3 +1,4 @@
+// Importations React et composants Leaflet
 import React, { useEffect, useState } from 'react';
 import {
   MapContainer,
@@ -10,13 +11,17 @@ import {
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+
+// Composants internes
 import TextInput from '../Atom/TextInput';
 import Button from '../Atom/Button';
+import Checkbox from '../Atom/Checkbox';
+
+// Types et outils
 import { Garden, LocationPickerProps } from '@/utils/types';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import { gardenTypeLabels } from '@/constants/garden';
 import { setSelectedGardenCookies } from '@/utils/selectedGardenCookies';
-import Image from 'next/image';
 import {
   setSelectedGarden,
   clearSelectedGarden,
@@ -24,22 +29,22 @@ import {
 import { useDispatch } from '@/redux/store';
 import { useRouter } from 'next/navigation';
 import { LocateFixed } from 'lucide-react';
-import Checkbox from '../Atom/Checkbox';
+import Image from 'next/image';
 
-// Recentrer dynamiquement la map sur la position utilisateur
+// Composant utilitaire : recentre la carte sur une position
 const CenterMapOnUser: React.FC<{ position: { lat: number; lng: number } }> = ({
   position,
 }) => {
   const map = useMap();
 
   useEffect(() => {
-    map.setView(position, 13); // zoom
+    map.setView(position, 10); // Zoom level (0 à)
   }, [position, map]);
 
-  return null;
+  return null; // Ce composant n'affiche rien
 };
 
-// Icônes pour la localisation des terrains
+// Définition des icônes personnalisées
 const customPublicIcon = L.icon({
   iconUrl: '/image/divers/field-location-public.png',
   iconSize: [30, 26],
@@ -54,14 +59,14 @@ const customPrivateIcon = L.icon({
   popupAnchor: [0, -26],
 });
 
-// Icône de l'utilisateur
 const customUserIcon = L.icon({
   iconUrl: '/image/divers/my-location.png',
-  iconSize: [25.5, 38], // Taille de l'icône
-  iconAnchor: [12.75, 38], // Point d'ancrage de l'icône
-  popupAnchor: [0, -38], // Point d'ancrage du popup
+  iconSize: [25.5, 38],
+  iconAnchor: [12.75, 38],
+  popupAnchor: [0, -38],
 });
 
+// Composant principal : carte interactive avec sélection de localisation
 const LocationPicker: React.FC<LocationPickerProps> = ({
   initialLat,
   initialLng,
@@ -71,12 +76,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   enableRadius = false,
   showUserPosition = false,
 }) => {
-  // Hooks
+  // Initialisation des hooks
   const dispatch = useDispatch();
   const router = useRouter();
-
   const { translations } = useLanguage();
 
+  // États pour les pins, les positions, le rayon et les filtres
   const [pinsInCircleCount, setPinsInCircleCount] = useState<number>(0);
   const [publicGardensCount, setPublicGardensCount] = useState<number>(0);
   const [privateGardensCount, setPrivateGardensCount] = useState<number>(0);
@@ -92,11 +97,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     lat: number;
     lng: number;
   } | null>(null);
-
   const [radius, setRadius] = useState<number>(5);
   const [distance, setDistance] = useState<number | null>(null);
-
   const [locationEnabled, setLocationEnabled] = useState<boolean | null>(null);
+
   const [gardenTypeFilters, setGardenTypeFilters] = useState<{
     public: boolean;
     private: boolean;
@@ -105,15 +109,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     private: true,
   });
 
-  useEffect(() => {}, [translations]);
-
+  // Obtenir la position de l'utilisateur au montage si demandée
   useEffect(() => {
-    if (showUserPosition) {
-      handleLocateUser();
-    }
+    if (showUserPosition) handleLocateUser();
   }, [showUserPosition]);
 
-  // Fonction pour filtrer les points dans le rayon
+  // Fonction : retourne les jardins dans un rayon donné
   const filterMarkerInRadius = (
     center: { lat: number; lng: number },
     points: { garden: Garden }[],
@@ -122,10 +123,11 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     const centerPoint = L.latLng(center.lat, center.lng);
     return points.filter((point) => {
       const p = L.latLng(point.garden.latitude, point.garden.longitude);
-      return centerPoint.distanceTo(p) <= radius * 1000;
+      return centerPoint.distanceTo(p) <= radius * 1000; // conversion km -> mètres
     });
   };
 
+  // Filtres appliqués uniquement en lecture seule
   const filteredMarkers =
     readOnly && userPosition
       ? filterMarkerInRadius(userPosition, multipleMarkers, radius).filter(
@@ -139,6 +141,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         )
       : multipleMarkers;
 
+  // Mise à jour des compteurs si position utilisateur et rayon sont actifs
   useEffect(() => {
     if (userPosition && enableRadius && readOnly) {
       const gardensInCircle = filterMarkerInRadius(
@@ -146,8 +149,6 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         multipleMarkers,
         radius
       );
-
-      // Compter les jardins publics et privés
       const publicGardens = gardensInCircle.filter(
         (pos) => pos.garden.privacy === 2
       ).length;
@@ -168,9 +169,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     gardenTypeFilters,
   ]);
 
-  // Fonction qui permet d'intercepter un clic sur la carte
-  // et d'ajouter ce point sur la carte si aucun point n'existe déjà
-  // Utilisé dans la création d'un jardin
+  // Gestion des clics sur la carte (ajoute un pin)
   const MapClickHandler = () => {
     useMapEvents({
       click(e) {
@@ -179,7 +178,6 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         setMarkerPosition({ lat, lng });
         onLocationChange?.(lat, lng);
 
-        // Calcul de la distance (en mètres) entre 2 points
         if (showUserPosition && userPosition) {
           const userLatLng = L.latLng(userPosition.lat, userPosition.lng);
           const clickedLatLng = L.latLng(lat, lng);
@@ -191,21 +189,21 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     return null;
   };
 
-  // Fonction de suppression du pin de localisation d'un jardin
+  // Supprime le pin principal
   const handleRemovePin = () => {
     setMarkerPosition(null);
-    setDistance(null); // Utile ?
+    setDistance(null);
     onLocationChange?.(0, 0);
   };
 
-  // Restriction du rayon lors de la saisie
+  // Limite le rayon à 30 km max
   const handleRadiusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = Number(e.target.value);
     if (value > 30) value = 30;
     setRadius(value);
   };
 
-  // Permet d'accéder à un jardin si il est public
+  // Accède à un jardin public
   const handleGardenClick = (garden: Garden) => {
     if (garden.privacy === 2) {
       dispatch(setSelectedGarden(garden));
@@ -215,7 +213,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     }
   };
 
-  // Recentrage sur la position de l'utilisateur
+  // Récupère la position géographique de l'utilisateur
   const handleLocateUser = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -230,6 +228,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         (error) => {
           console.error('Geolocation error:', error);
           setLocationEnabled(false);
+
+          // Message d'erreur personnalisé
           let errorMessage = translations.errPosition;
           switch (error.code) {
             case error.PERMISSION_DENIED:
@@ -258,7 +258,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     }
   };
 
-  // Filtrage dynamique des jardins affichés selon les cases à cocher sélectionnées
+  // Gère les changements de filtres publics/privés
   const handleCheckboxChange = (type: 'public' | 'private') => {
     setGardenTypeFilters({
       ...gardenTypeFilters,
@@ -371,13 +371,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
               />
             </>
           )}
-
           {/* Ajout d'un pin pour localiser l'utilisateur */}
           {userPosition && (
             <Marker
               position={userPosition}
               icon={customUserIcon}
-              draggable={true}
+              draggable={!enableRadius || enableRadius === null ? false : true} //Bloque le déplacement lors de la création d'un jardin
               eventHandlers={{
                 dragend: (e) => {
                   const marker = e.target;
@@ -399,7 +398,9 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
                 key={pos.garden.id}
                 position={[pos.garden.latitude, pos.garden.longitude]}
                 icon={
-                  pos.garden.type === 0 ? customPrivateIcon : customPublicIcon
+                  pos.garden.privacy === 0
+                    ? customPrivateIcon
+                    : customPublicIcon
                 }
               >
                 {/* Ajout d'une popup pour avoir des infos sur le jardin sélectionné par clic */}
@@ -456,10 +457,12 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             ))}
         </MapContainer>
       </div>
-      {userPosition && (
-        <div className="mx-auto">
+
+      {/*Bouton de retour à la page Explore*/}
+      {enableRadius && (
+        <div className="flex justify-center">
           <Button
-            className="bg-bgbutton relative m-5 px-6 py-2"
+            className="bg-bgbutton jersey15! relative m-5 px-6 py-2"
             type="button"
             onClick={() => router.back()}
           >

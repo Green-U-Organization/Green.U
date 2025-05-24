@@ -42,7 +42,7 @@ const SlideMenu = () => {
       <button
         {...swipeHandlers}
         onClick={() => setIsOpen(true)}
-        className="bg-bgbutton hover:bg-bginput fixed top-15 h-30 w-3 cursor-pointer rounded-full border-1"
+        className="bg-bgbutton hover:bg-bginput fixed top-15 -left-0.5 h-30 w-3.5 cursor-pointer rounded-r-xl border-1"
       ></button>
 
       {/* Menu coulissant */}
