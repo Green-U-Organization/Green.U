@@ -1,7 +1,8 @@
 'use client';
 import { setDisplayBugReportPopup } from '@/redux/display/displaySlice';
 import { RootState, useSelector } from '@/redux/store';
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { useDispatch } from 'react-redux';
 import Add_BugReport_Popup from '../Molecule/Add_BugReport_Popup';
 import Cookies from 'js-cookie';
@@ -23,9 +24,16 @@ const BugReport = () => {
 
   return (
     <>
-      <div style={{ display: displayBugReport ? 'block' : 'none' }}>
-        <Add_BugReport_Popup userId={id} />
-      </div>
+      {/* Popup rendu via React Portal, 
+      nécessaire pour qu'elle s'affiche en dehors du menu*/}
+      {displayBugReport &&
+        typeof window !== 'undefined' && // Vérifie que l'on est côté client
+        ReactDOM.createPortal(
+          <Add_BugReport_Popup userId={id} />,
+          document.body
+        )}
+
+      {/* Bouton bug report */}
       <div
         onClick={() =>
           dispatch(
@@ -35,13 +43,14 @@ const BugReport = () => {
             })
           )
         }
+        className="cursor-pointer"
       >
         <Image
           width={50}
           height={50}
           src={'/image/icons/bug.png'}
           alt={'Bug report'}
-          className="border-4object-cover fixed top-2 right-2 z-50 h-[6vh] w-[6vh] overflow-hidden p-1 opacity-100"
+          className="border-4object-cover z-50 h-[6vh] w-[6vh] overflow-hidden opacity-100"
         />
       </div>
     </>

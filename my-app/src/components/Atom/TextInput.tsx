@@ -17,7 +17,7 @@ const TextInput: FC<TextInputProps> = ({
   return (
     <div className={`${className} mb-5`}>
       {label && (
-        <label htmlFor={props.id || props.name} className="mr-3">
+        <label htmlFor={props.id || props.name} className="mr-3 select-none">
           {label}:
         </label>
       )}

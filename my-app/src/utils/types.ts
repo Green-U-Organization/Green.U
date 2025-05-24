@@ -90,7 +90,7 @@ export type LocationPickerProps = {
   initialLng?: number;
   onLocationChange?: (lat: number, lng: number) => void;
   readOnly?: boolean;
-  multipleMarkers?: { lat: number; lng: number }[];
+  multipleMarkers?: { garden: Garden }[];
   enableRadius?: boolean;
   showUserPosition?: boolean;
 };

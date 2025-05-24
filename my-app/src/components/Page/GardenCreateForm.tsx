@@ -151,7 +151,7 @@ const CreateGardenForm = () => {
             {translations.metersLong}
           </label>
 
-          <div className="flex items-center justify-around">
+          <div className="flex items-center justify-center">
             <p
               onClick={() =>
                 setGardenLength((prev) => (prev === 0 ? 0 : prev - 1))
@@ -183,7 +183,7 @@ const CreateGardenForm = () => {
             {translations.metersLarge}
           </label>
 
-          <div className="flex items-center justify-around">
+          <div className="flex items-center justify-center">
             <p
               onClick={() =>
                 setGardenWidth((prev) => (prev === 0 ? 0 : prev - 1))
@@ -214,7 +214,7 @@ const CreateGardenForm = () => {
           <LocationPicker
             initialLat={0} //Pour ne pas avoir un pin par défaut
             initialLng={0} //Idem
-            //showUserPosition={true}
+            showUserPosition={true}
           />
 
           <SelectInput

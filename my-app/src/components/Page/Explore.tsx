@@ -16,12 +16,13 @@ import Radio from '../Atom/Radio';
 import { Tag } from '@/utils/types';
 import Image from 'next/image';
 import { setSelectedGardenCookies } from '@/utils/selectedGardenCookies';
-
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 import {
   clearSelectedGarden,
   setSelectedGarden,
 } from '@/redux/garden/gardenSlice';
 import { useDispatch } from '@/redux/store';
+import { MapIcon } from 'lucide-react';
 
 const Explore = () => {
   // Selectors
@@ -36,19 +37,23 @@ const Explore = () => {
   //   dispatch(setSelectedGarden(parsedGarden));
   // }
 
+  const { translations } = useLanguage();
+
   const gardenTypeLabels: Record<number, string> = {
-    0: 'Personnal',
-    1: 'Famillial',
-    2: 'Collective',
-    3: 'Professionnal',
+    0: translations.gardenType0,
+    1: translations.gardenType1,
+    2: translations.gardenType2,
+    3: translations.gardenType3,
   };
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchType, setSearchType] = useState<'tag' | 'user' | 'garden'>(
     'tag'
   );
+
   const [isUsersTableVisible, setIsUsersTableVisible] = useState(true);
   const [isGardensTableVisible, setIsGardensTableVisible] = useState(true);
+  const [isPopularTagsVisible, setIsPopularTagsVisible] = useState(true);
   const [searchValue, setSearchValue] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [searchExecuted, setSearchExecuted] = useState(false);
@@ -99,6 +104,9 @@ const Explore = () => {
     setError(null);
     setSearchMessages({});
     setSearchExecuted(false);
+    type !== 'tag'
+      ? setIsPopularTagsVisible(false)
+      : setIsPopularTagsVisible(true);
   };
 
   // Mise à jour de la liste des tags à rechercher lors d'un clic
@@ -109,6 +117,9 @@ const Explore = () => {
         ? prev.filter((t) => t !== tag)
         : [...prev, tag];
       setSearchValue(newTags.join(';'));
+      if (error) {
+        setError(null);
+      }
       return newTags;
     });
   };
@@ -124,10 +135,19 @@ const Explore = () => {
     setSelectedTags(
       sanitizedValue.split(';').filter((tag) => tag.trim() !== '')
     );
+    if (error) {
+      setError(null);
+    }
   };
 
   // Lorsqu'on appuie sur une touche lors de la saisie dans l'input
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    //Pour empêcher la carte de s'ouvrir lorsqu'on saisi le nom d'un jardin
+    //et qu'on appuie sur Enter
+    if (e.key === 'Enter') {
+      e.stopPropagation();
+      e.preventDefault();
+    }
     if (searchType !== 'tag') return;
 
     if (e.key === ' ' || e.key === ';') {
@@ -160,7 +180,7 @@ const Explore = () => {
     try {
       const searchTerm = searchValue.trim();
       if (!searchTerm) {
-        setError(`Search term can't be empty`);
+        setError(translations.errSearchTerm);
         return;
       }
 
@@ -179,14 +199,14 @@ const Explore = () => {
           triggerGardensByTag(requestData),
         ]);
 
-        //console.log('usersResponseByTag : ', usersResponse); //A EFFACER
-        //console.log('gardenResponseByTag : ', gardensResponse); //A EFFACER
+        // console.log('usersResponseByTag : ', usersResponse); //A EFFACER
+        // console.log('gardenResponseByTag : ', gardensResponse); //A EFFACER
 
         if (usersResponse.isError || usersResponse.data?.isEmpty) {
           setSearchMessages((prev) => ({
             ...prev,
             usersMessage:
-              usersResponse.data?.message || 'No user found with these tags',
+              usersResponse.data?.message || translations.noUserFoundTags,
           }));
         }
 
@@ -194,16 +214,13 @@ const Explore = () => {
           setSearchMessages((prev) => ({
             ...prev,
             gardensMessage:
-              gardensResponse.data?.message ||
-              'No garden found with these tags',
+              gardensResponse.data?.message || translations.noGardenWithTags,
           }));
         }
       } else if (searchType === 'user') {
         await triggerUserByUsername({
           username: searchTerm,
         });
-
-        //console.log('usersByUsername : ', result); //A EFFACER
       } else if (searchType === 'garden') {
         await triggerGardenByName({ inputuser: searchTerm });
 
@@ -213,56 +230,60 @@ const Explore = () => {
 
       setSearchExecuted(true);
     } catch {
-      setError('error searching tags');
+      setError(translations.errSearchingTag);
     }
   };
 
   return (
-    <Card className="bg-cardbackground flex h-screen min-h-screen w-full flex-col px-5 pt-5 pb-23">
+    <Card className="bg-cardbackground flex h-screen min-h-screen w-full flex-col px-5 pt-5 pb-23 select-none!">
       {/* Zone des résultats avec défilement */}
       <div className="mb-5 flex-1 overflow-y-auto">
-        <p>The most used tags:</p>
-        <div className="mb-5 flex flex-row flex-wrap gap-2">
-          {Array.isArray(hashTags?.content) && hashTags.content.length > 0 ? (
-            hashTags.content.slice(0, 5).map((tag: Tag) => (
-              <SlimCard
-                key={tag.tag}
-                bgColor="bg-bgcard"
-                className={`flex w-fit cursor-pointer justify-center px-2 hover:bg-amber-400 active:scale-95 ${
-                  selectedTags.includes(tag.tag)
-                    ? 'bg-amber-400'
-                    : 'bg-amber-200'
-                }`}
-                onClick={() => handleTagClick(tag.tag)}
-              >
-                #{tag.tag}
-              </SlimCard>
-            ))
-          ) : (
-            <p className="italic">
-              <i>No popular tags found</i>
-            </p>
-          )}
-        </div>
-
+        {isPopularTagsVisible && (
+          <>
+            <p>{translations.usedTags}</p>
+            <div className="mb-5 flex flex-row flex-wrap gap-2">
+              {Array.isArray(hashTags?.content) &&
+              hashTags.content.length > 0 ? (
+                hashTags.content.slice(0, 5).map((tag: Tag) => (
+                  <SlimCard
+                    key={tag.tag}
+                    bgColor="bg-bgcard"
+                    className={`flex w-fit cursor-pointer justify-center px-2 hover:bg-amber-400 active:scale-95 ${
+                      selectedTags.includes(tag.tag)
+                        ? 'bg-amber-400'
+                        : 'bg-amber-200'
+                    }`}
+                    onClick={() => handleTagClick(tag.tag)}
+                  >
+                    #{tag.tag}
+                  </SlimCard>
+                ))
+              ) : (
+                <p className="italic">
+                  <i>{translations.noPopularTags}</i>
+                </p>
+              )}
+            </div>
+          </>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="flex gap-3">
             <Radio
-              id="Tag"
+              id={translations.tag}
               name="searchType"
               value="tag"
               checked={searchType === 'tag'}
               onChange={() => handleSearchTypeChange('tag')}
             />
             <Radio
-              id="User"
+              id={translations.user}
               name="searchType"
               value="user"
               checked={searchType === 'user'}
               onChange={() => handleSearchTypeChange('user')}
             />
             <Radio
-              id="Garden"
+              id={translations.garden}
               name="searchType"
               value="garden"
               checked={searchType === 'garden'}
@@ -270,36 +291,48 @@ const Explore = () => {
             />
           </div>
 
+          {searchType === 'garden' && (
+            <div className="content-base mb-4 flex items-center">
+              <p className="flex items-center gap-2">
+                {translations.searchOnTheMap}
+                <button
+                  className="cursor-pointer transition duration-150"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    router.push('/map');
+                  }}
+                >
+                  <MapIcon className="text-border hover:text-shadow active:text-border h-7 w-7 active:scale-90" />
+                </button>
+              </p>
+            </div>
+          )}
+
           <TextInput
             className="mb-5!"
             type="text"
             label={
               searchType === 'tag'
-                ? 'Search by tag (separate with ;)'
+                ? translations.searchByTag
                 : searchType === 'user'
-                  ? 'Search by username'
-                  : 'Search by garden name'
+                  ? translations.searchByUsername
+                  : translations.searchByGardenName
             }
             name="search"
             placeholder={
               searchType === 'tag'
                 ? 'tag1;tag2;tag3'
                 : searchType === 'user'
-                  ? 'Enter a username'
-                  : 'Enter a garden name'
+                  ? translations.enterUsername
+                  : translations.enterGardenName
             }
             value={searchValue}
             onChange={handleTagInputChange}
             onKeyDown={handleKeyDown}
           />
 
-          {error && <p className="text-red-500">{error}</p>}
-          {/* {searchMessages.usersMessage && (
-            <p className="text-red-500">{searchMessages.usersMessage}</p>
-          )}
-          {searchMessages.gardensMessage && (
-            <p className="text-red-500">{searchMessages.gardensMessage}</p>
-          )} */}
+          {error && <p className="text-txterror">{error}</p>}
         </form>
 
         {/* Affichage conditionnel des résultats */}
@@ -310,7 +343,7 @@ const Explore = () => {
               {(searchType === 'tag' || searchType === 'user') && (
                 <>
                   <div className="sticky flex items-center gap-2">
-                    <h3 className="text-m">Users</h3>
+                    <h3 className="text-m">{translations.users}</h3>
                     <button
                       onClick={() =>
                         setIsUsersTableVisible(!isUsersTableVisible)
@@ -321,7 +354,7 @@ const Explore = () => {
                           width={50}
                           height={50}
                           src="/image/icons/chevronBas.png"
-                          alt="Cacher"
+                          alt={translations.hide}
                           className="h-3 w-4 rotate-180 transform"
                         />
                       ) : (
@@ -329,7 +362,7 @@ const Explore = () => {
                           width={50}
                           height={50}
                           src="/image/icons/chevronBas.png"
-                          alt="Afficher"
+                          alt={translations.show}
                           className="h-3 w-4"
                         />
                       )}
@@ -342,21 +375,20 @@ const Explore = () => {
                           <thead>
                             <tr className="bg-amber-200">
                               <th className="border border-black px-4 py-2 text-left">
-                                Name
+                                {translations.theadName}
                               </th>
                               <th className="border border-black px-4 py-2 text-left">
-                                XP
+                                {translations.theadXp}
                               </th>
                               <th className="border border-black px-4 py-2 text-left">
-                                Country
+                                {translations.theadCountry}
                               </th>
                               <th className="border border-black px-4 py-2 text-left">
-                                Biography
+                                {translations.theadBio}
                               </th>
                             </tr>
                           </thead>
                           <tbody>
-                            {/* Le reste de votre code de tableau reste inchangé */}
                             {searchType === 'tag' ? (
                               usersStatus === 'rejected' ? (
                                 <tr>
@@ -389,7 +421,7 @@ const Explore = () => {
                                         {user.country || 'N/A'}
                                       </td>
                                       <td className="border border-black px-4 py-2">
-                                        {user.bio || 'No bio'}
+                                        {user.bio || translations.noBio}
                                       </td>
                                     </tr>
                                   ))
@@ -400,7 +432,7 @@ const Explore = () => {
                                       className="border border-black px-4 py-2 text-center"
                                     >
                                       {searchMessages.usersMessage ||
-                                        'No user found with these tags'}
+                                        translations.noUserFoundTags}
                                     </td>
                                   </tr>
                                 )
@@ -425,7 +457,7 @@ const Explore = () => {
                                     className="border border-black px-4 py-2 text-center"
                                   >
                                     {searchMessages.usersMessage || ''}
-                                    {'No user found'}
+                                    {translations.noUserFound}
                                   </td>
                                 </tr>
                               ) : userData?.content ? (
@@ -449,7 +481,7 @@ const Explore = () => {
                                         {user.country || 'N/A'}
                                       </td>
                                       <td className="border border-black px-4 py-2">
-                                        {user.bio || 'No bio'}
+                                        {user.bio || translations.noBio}
                                       </td>
                                     </tr>
                                   ))
@@ -488,7 +520,7 @@ const Explore = () => {
               {(searchType === 'tag' || searchType === 'garden') && (
                 <>
                   <div className="sticky flex items-center gap-2">
-                    <h3 className="text-m">Gardens</h3>
+                    <h3 className="text-m">{translations.gardens}</h3>
                     <button
                       onClick={() =>
                         setIsGardensTableVisible(!isGardensTableVisible)
@@ -499,7 +531,7 @@ const Explore = () => {
                           width={50}
                           height={50}
                           src="/image/icons/chevronBas.png"
-                          alt="Cacher"
+                          alt={translations.hide}
                           className="h-3 w-4 rotate-180 transform"
                         />
                       ) : (
@@ -507,7 +539,7 @@ const Explore = () => {
                           width={50}
                           height={50}
                           src="/image/icons/chevronBas.png"
-                          alt="Afficher"
+                          alt={translations.show}
                           className="h-3 w-4"
                         />
                       )}
@@ -520,16 +552,16 @@ const Explore = () => {
                           <thead>
                             <tr className="bg-amber-200">
                               <th className="border border-black px-4 py-2 text-left">
-                                Name
+                                {translations.theadName}
                               </th>
                               <th className="border border-black px-4 py-2 text-left">
-                                Description
+                                {translations.theadDescription}
                               </th>
                               <th className="border border-black px-4 py-2 text-left">
-                                Type
+                                {translations.theadType}
                               </th>
                               <th className="border border-black px-4 py-2 text-left">
-                                Privacy
+                                {translations.theadPrivacy}
                               </th>
                             </tr>
                           </thead>
@@ -568,7 +600,7 @@ const Explore = () => {
                                       </td>
                                       <td className="border border-black px-4 py-2">
                                         {gardenTypeLabels[garden.type] ??
-                                          'Unknown'}
+                                          translations.unknown}
                                       </td>
                                       <td className="border border-black px-4 py-2">
                                         {garden.privacy === 0 ? (
@@ -576,7 +608,7 @@ const Explore = () => {
                                             width={50}
                                             height={50}
                                             src="/image/icons/lockClose.png"
-                                            alt="Private"
+                                            alt={translations.private}
                                             className="h-10 w-10"
                                           />
                                         ) : garden.privacy === 2 ? (
@@ -584,7 +616,7 @@ const Explore = () => {
                                             width={50}
                                             height={50}
                                             src="/image/icons/lockOpen.png"
-                                            alt="Public"
+                                            alt={translations.public}
                                             className="h-10 w-10"
                                           />
                                         ) : (
@@ -600,7 +632,7 @@ const Explore = () => {
                                       className="border border-black px-4 py-2 text-center"
                                     >
                                       {searchMessages.gardensMessage ||
-                                        'No garden found with these tags'}
+                                        translations.noGardenWithTags}
                                     </td>
                                   </tr>
                                 )
@@ -626,7 +658,7 @@ const Explore = () => {
                                     className="border border-black px-4 py-2 text-center"
                                   >
                                     {searchMessages.gardensMessage ||
-                                      'No garden found'}
+                                      translations.noGardenFound}
                                     {/*Garden by name rejected */}
                                   </td>
                                 </tr>
@@ -652,7 +684,7 @@ const Explore = () => {
                                       </td>
                                       <td className="border border-black px-4 py-2">
                                         {gardenTypeLabels[garden.type] ??
-                                          'Unknown'}
+                                          translations.unknown}
                                       </td>
                                       <td className="border border-black px-4 py-2">
                                         {garden.privacy === 0 ? (
@@ -660,7 +692,7 @@ const Explore = () => {
                                             width={50}
                                             height={50}
                                             src="/image/icons/lockClose.png"
-                                            alt="Private"
+                                            alt={translations.private}
                                             className="h-10 w-10"
                                           />
                                         ) : garden.privacy === 2 ? (
@@ -668,7 +700,7 @@ const Explore = () => {
                                             width={50}
                                             height={50}
                                             src="/image/icons/lockOpen.png"
-                                            alt="Public"
+                                            alt={translations.public}
                                             className="h-10 w-10"
                                           />
                                         ) : (
@@ -684,7 +716,7 @@ const Explore = () => {
                                       className="border border-black px-4 py-2 text-center"
                                     >
                                       {searchMessages.gardensMessage ||
-                                        'No garden found'}
+                                        translations.noGardenFound}
                                       {/*Garden by name not found (length===0)*/}
                                     </td>
                                   </tr>
@@ -718,14 +750,14 @@ const Explore = () => {
             type="button"
             onClick={() => router.push('landing')}
           >
-            Home
+            {translations.home}
           </Button>
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
             type="submit"
             onClick={handleSearchClick}
           >
-            Search
+            {translations.search}
           </Button>
         </div>
       </div>
