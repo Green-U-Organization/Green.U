@@ -8,7 +8,7 @@ It's very simple! Go to the project and select your **branch** !
 ### See this example
 If you want to work on the front, go to frontDev and create a new branch.
 ```shell
-git checkout -b frontDev/mapImprovement 
+git checkout -b front/mapImprovement 
 ```
 Work on your branch with regular and clean commits/pushes.
 ### When it's finished, go on GitHub
