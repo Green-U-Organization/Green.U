@@ -332,7 +332,11 @@ const RegisterForm = () => {
 
   const handleDateChange = (value: Value) => {
     if (value instanceof Date) {
-      const formattedDate = value.toISOString().split('T')[0]; //Format YYYY-MM-DD
+      const year = value.getFullYear();
+      const month = String(value.getMonth() + 1).padStart(2, '0');
+      const day = String(value.getDate()).padStart(2, '0');
+
+      const formattedDate = `${year}-${month}-${day}`; // Format YYYY-MM-DD
       setFormDataRegister((prevFormData) => ({
         ...prevFormData,
         birthDate: formattedDate,
@@ -496,7 +500,7 @@ const RegisterForm = () => {
     <Card
       className={'bg-cardbackground h-full min-h-screen max-w-screen px-8 pt-5'}
     >
-      <h1 className="mb-5 text-4xl">{translations.register}: </h1>
+      <h1 className="mb-5 text-4xl">{translations.registration}: </h1>
 
       <form
         ref={formRef}
@@ -666,9 +670,9 @@ const RegisterForm = () => {
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"
             type="button"
-            onClick={() => router.push('login')}
+            onClick={() => router.push('/')}
           >
-            Back
+            {translations.back}
           </Button>
           <Button
             className="bg-bgbutton relative m-5 px-6 py-2"

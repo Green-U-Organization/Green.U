@@ -31,11 +31,7 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
     { isLoading: createNewParcelIsLoading },
   ] = useCreateNewParcelMutation();
   const [addXp] = useEditUserByUserIdMutation();
-  const {
-    data: user,
-    isError: userIsError,
-    isSuccess: userIsSuccess,
-  } = useGetUserByIdQuery({
+  const { data: user, isSuccess: userIsSuccess } = useGetUserByIdQuery({
     userId: id,
   });
 

@@ -52,7 +52,7 @@ const gardenSlice = createSlice({
         );
       }
     },
-    editParcelStore: (state, action: PayloadAction<Parcel>) => {},
+    // editParcelStore: (state, action: PayloadAction<Parcel>) => {},
 
     //Lines
     addLineStore: (state, action: PayloadAction<Line>) => {
@@ -80,7 +80,7 @@ const gardenSlice = createSlice({
       }
     },
 
-    editLineStore: (state, action: PayloadAction<Line>) => {},
+    // editLineStore: (state, action: PayloadAction<Line>) => {},
 
     //Nurseries
     addPlantNurseryStore: (state, action: PayloadAction<Nursery>) => {

@@ -43,11 +43,7 @@ const Nursery: FC<NurseryProps> = ({ nursery }) => {
   const [deleteNursery, { isLoading: deleteNurseryIsLoading }] =
     useDeleteOneNurseryByNurseryIdMutation();
   const [addXp] = useEditUserByUserIdMutation();
-  const {
-    data: user,
-    isError: userIsError,
-    isSuccess: userIsSuccess,
-  } = useGetUserByIdQuery({
+  const { data: user } = useGetUserByIdQuery({
     userId: userId,
   });
 

@@ -10,7 +10,6 @@ import { setDisplayGardenLogPopup } from '@/redux/display/displaySlice';
 import SlimCard from '../Atom/SlimCard';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import Display_Logs_Popup from './Display_Logs_Popup';
 
 const MenuSandwichOptionInGarden: React.FC<MenuSandwichProps> = () => {
   //Local State

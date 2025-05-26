@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { setAuthCookies, clearAuthCookies } from '../../utils/authCookies';
 import { User } from '@/utils/types';
 
 interface AuthState {
   id: number | null;
-  user: any | null;
+  user: User | null;
   token: string | null;
 }
 

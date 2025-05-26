@@ -1,8 +1,7 @@
 'use client';
-import React, { FC, useEffect, useState } from 'react';
+import React from 'react';
 import Parcel from './Parcel';
-import styles from '../../app/Assets.module.css';
-import { GardenProps, type Garden } from '@/utils/types';
+import { type Garden } from '@/utils/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 // import {
@@ -11,7 +10,6 @@ import { RootState } from '@/redux/store';
 // } from '@/redux/api/fetch';
 import H1 from '../Atom/H1';
 import Nursery from './Nursery';
-import Loading from '../Atom/Loading';
 import SlimCard from '../Atom/SlimCard';
 
 const Garden = () => {
@@ -29,10 +27,10 @@ const Garden = () => {
     (state: RootState) => state.garden.graphicMode
   );
   // let garden = useSelector((state: RootState) => state.garden.selectedGarden);
-  let parcels = useSelector(
+  const parcels = useSelector(
     (state: RootState) => state.garden.selectedGarden?.parcels
   );
-  let nurseries = useSelector(
+  const nurseries = useSelector(
     (state: RootState) => state.garden.selectedGarden?.plantNurseries
   );
 

@@ -51,9 +51,9 @@ const GardenDisplay = ({ gardenId }: GardenDisplayProps) => {
   }
 
   // Selectors
-  const currentGarden = useSelector(
-    (state: RootState) => state.garden.selectedGarden
-  );
+  // const currentGarden = useSelector(
+  //   (state: RootState) => state.garden.selectedGarden
+  // );
   const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
 
   // Cookies - utilisation de useEffect pour éviter les différences SSR/CSR

@@ -1,4 +1,4 @@
-import { Crop, Garden, Line, Nursery, Parcel, User } from '@/utils/types';
+import { User } from '@/utils/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {

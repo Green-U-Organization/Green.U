@@ -22,9 +22,8 @@ import {
   setDisplayLineLogPopup,
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
-import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
-import { addCropLineStore, deleteLineStore } from '@/redux/garden/gardenSlice';
+import { deleteLineStore } from '@/redux/garden/gardenSlice';
 import XpTable from '@/utils/Xp';
 import toast from 'react-hot-toast';
 import Toast_XP from '../Molecule/Toast_XP';
@@ -49,11 +48,7 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
   //   lineId: line.id,
   // });
   const [addXp] = useEditUserByUserIdMutation();
-  const {
-    data: user,
-    isError: userIsError,
-    isSuccess: userIsSuccess,
-  } = useGetUserByIdQuery({ userId: userId });
+  const { data: user } = useGetUserByIdQuery({ userId: userId });
 
   //Hooks
   const dispatch = useDispatch();

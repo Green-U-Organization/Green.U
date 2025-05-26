@@ -1,4 +1,4 @@
-import { Crop, Garden, Line, Nursery } from '@/utils/types';
+import { Crop, Garden, Line, Nursery, Tag } from '@/utils/types';
 import api from './api';
 import { Log, Parcel } from '@/utils/types';
 
@@ -67,7 +67,7 @@ type CreateNewGardenRequest = {
   width: number;
   privacy: number;
   type: number;
-  hashtags: string[];
+  tagsInterests: Tag[];
 };
 
 type GetGardensByNameRequest = {
@@ -83,19 +83,7 @@ type GetGardensByNameErrorResponse = {
 type GetGardensByNameSuccessResponse = {
   isEmpty: boolean;
   message: string;
-  content: {
-    id: number;
-    authorId: number;
-    name: string;
-    description: string;
-    latitude: number;
-    longitude: number;
-    length: number;
-    width: number;
-    privacy: number;
-    type: number;
-    hashtags: [];
-  }[];
+  content: Garden[];
 };
 
 // type GetAllParcelByGardenIdRequest = {
@@ -438,8 +426,10 @@ type GetAllLogsRequest = {
 
 // type GetGardenFullByIdResponse = GardenFull;
 
-type GetGardenFullByIdRequest = {
-  id: number;
+type GetAllGardensLocalisationResponse = {
+  isEmpty: boolean;
+  message: string;
+  content: Garden[];
 };
 
 type createLogRequest = {
@@ -951,6 +941,17 @@ export const extendedGardenAPI = api
       //   ],
       // }),
 
+      //GetAllGardensLocalisation
+      getAllGardensLocalisation: builder.query<
+        GetAllGardensLocalisationResponse,
+        void
+      >({
+        query: () => ({
+          url: '/garden',
+          methd: 'GET',
+        }),
+      }),
+
       CreateLogBugReport: builder.mutation<void, GetCreateLogBugReportRequest>({
         query: (arg) => ({
           url: `/bug/`,
@@ -1002,4 +1003,5 @@ export const {
   useLazyGetGardensByNameQuery,
   useLazyGetUserByUsernameQuery,
   useCreateLogBugReportMutation,
+  useGetAllGardensLocalisationQuery,
 } = extendedGardenAPI;

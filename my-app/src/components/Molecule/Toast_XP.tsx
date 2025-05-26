@@ -1,9 +1,9 @@
 import React from 'react';
-import toast from 'react-hot-toast';
+import Image from 'next/image';
 
 interface ToastXPProps {
   xp: number;
-  t: any;
+  t: { visible: boolean };
 }
 
 const Toast_XP: React.FC<ToastXPProps> = ({ xp, t }) => {
@@ -15,7 +15,7 @@ const Toast_XP: React.FC<ToastXPProps> = ({ xp, t }) => {
     >
       <div className="flex items-center justify-between">
         <div className="flex-shrink-0 pt-0.5">
-          <img
+          <Image
             className="h-15 w-15 rounded-full"
             src="/image/icons/medal.png"
             alt=""

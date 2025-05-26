@@ -14,12 +14,12 @@ import {
 } from '@/redux/api/fetch';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
-import type { AddCropPopupProps, Crop, Line } from '@/utils/types';
+import type { Crop, Line } from '@/utils/types';
 import { setAddCropPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import { RootState, useSelector } from '@/redux/store';
 import LoadingModal from './LoadingModal';
-import CropRow from '../Atom/CropRow';
+// import CropRow from '../Atom/CropRow';
 import { addCropLineStore } from '@/redux/garden/gardenSlice';
 import { setXpUser } from '@/redux/user/userSlice';
 import toast from 'react-hot-toast';
@@ -62,9 +62,9 @@ const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
-  const nurseries = useSelector(
-    (state: RootState) => state.garden.selectedGarden?.plantNurseries
-  );
+  // const nurseries = useSelector(
+  //   (state: RootState) => state.garden.selectedGarden?.plantNurseries
+  // );
   const crops = useSelector((state: RootState) => {
     const nurseries = state.garden.selectedGarden?.plantNurseries || [];
 

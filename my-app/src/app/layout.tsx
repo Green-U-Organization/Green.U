@@ -4,7 +4,7 @@ import './globals.css';
 import ThemeApp from '@/components/ThemeApp';
 import { LanguageProvider } from '@/app/contexts/LanguageProvider';
 import { StoreProvider } from '@/redux/StoreProvider';
-import BugReport from '@/components/Atom/BugReport';
+import SlideMenu from '@/components/Molecule/SlideMenu';
 import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
@@ -36,13 +36,12 @@ export default function RootLayout({
 }) {
   return (
     <StoreProvider>
-      <html lang="en" className="bg-white">
+      <html lang="en" className="bg-extbutton">
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${jersey15.variable} antialiased`}
         >
           <LanguageProvider>
-            <BugReport />
-            {/* <Navbar /> */}
+            <SlideMenu />
             <ThemeApp>{children}</ThemeApp>
             <Toaster position="top-right" reverseOrder={false} />
           </LanguageProvider>

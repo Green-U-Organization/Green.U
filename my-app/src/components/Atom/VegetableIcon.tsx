@@ -1,8 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
-import { useGetCropByLineIdQuery } from '@/redux/api/fetch';
-import { VegetableIconProps } from '@/utils/types';
-
-const VegetableIcon = ({ id }: VegetableIconProps) => {
+const VegetableIcon = () => {
   // const { data: crops } = useGetCropByLineIdQuery({
   //   lineId: id,
   // });

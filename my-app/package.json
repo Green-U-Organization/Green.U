@@ -29,6 +29,7 @@
     "react-leaflet": "^5.0.0",
     "react-p5": "^1.4.1",
     "react-redux": "^9.2.0",
+    "react-swipeable": "^7.0.2",
     "redux": "^5.0.1"
   },
   "devDependencies": {

@@ -1,7 +1,8 @@
 import GardenDisplay from '@/components/Page/GardenDisplay';
 import React, { FC } from 'react';
+import { PageProps } from '../../../../../.next/types/app/page';
 
-type GardenDiplsayPageProps = {
+type GardenDiplsayPageProps = PageProps & {
   params: { id: string };
 };
 

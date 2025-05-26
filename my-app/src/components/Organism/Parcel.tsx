@@ -14,7 +14,6 @@ import {
   useGetUserByIdQuery,
   useEditUserByUserIdMutation,
 } from '@/redux/api/fetch';
-import VegetableIcon from '../Atom/VegetableIcon';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
 import {
   setDisplayParcelLogPopup,
@@ -23,7 +22,6 @@ import {
 import Loading from '../Atom/Loading';
 import SlimCard from '../Atom/SlimCard';
 import Cookies from 'js-cookie';
-import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
 import { addLineStore, deleteParcelStore } from '@/redux/garden/gardenSlice';
 import XpTable from '@/utils/Xp';
@@ -58,11 +56,7 @@ const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
   const [deleteParcel, { isLoading: deleteParcelIsLoading }] =
     useDeleteOneParcelByParcelIdMutation();
   const [addXp] = useEditUserByUserIdMutation();
-  const {
-    data: user,
-    isError: userIsError,
-    isSuccess: userIsSuccess,
-  } = useGetUserByIdQuery({
+  const { data: user, isSuccess: userIsSuccess } = useGetUserByIdQuery({
     userId: userId,
   });
 

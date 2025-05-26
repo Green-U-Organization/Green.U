@@ -16,51 +16,66 @@ const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [errorEmail, setErrorEmail] = useState<boolean>(false);
-  const [errorPassword, setErrorPassword] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { translations } = useLanguage();
-  const [errorEmailPassword, setErrorEmailPassword] = useState<boolean>(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
-
-  // A DEGAGER
 
   //RTK Queries
   const [loginUser] = useLoginUserMutation();
 
   //Handlers
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setErrorEmail(false);
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false,
+  });
+
+  interface ApiError {
+    status?: number;
+    data?: {
+      title?: string;
+    };
+  }
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
+    const value = e.target.value;
+    if (field === 'email') {
+      setEmail(value);
+    } else if (field === 'password') {
+      setPassword(value);
+    }
+    setErrors((prev) => ({
+      ...prev,
+      [field]: false,
+    }));
   };
 
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setErrorPassword(false);
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    // checkPassword(newPassword);
+  //Set si le password est visible ou pas
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const validateForm = () => {
+    const newErrors = {
+      email: !email,
+      password: !password,
+    };
+    setErrors(newErrors);
+    return !newErrors.email && !newErrors.password;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
 
-    if (!email) {
-      setErrorEmail(true);
-    }
-    if (!password) {
-      setErrorPassword(true);
-    } else {
-      setErrorEmail(false);
-      setErrorPassword(false);
+    if (validateForm()) {
       const user = {
         email: email,
         password: password,
       };
       try {
         const response = await loginUser(user).unwrap();
-
         console.log('login success');
         dispatch(
           setCredentials({
@@ -81,10 +96,15 @@ const LoginForm = () => {
           }
         );
 
-        router.push('/landing');
-      } catch {
-        console.log('error login');
-        setErrorEmailPassword(true);
+        router.push('/');
+      } catch (err: unknown) {
+        const error = err as ApiError;
+        const errorMsg =
+          error?.status === 401
+            ? 'Invalid email or password.'
+            : error?.data?.title || 'An unknown error has occurred';
+        setError(errorMsg);
+        console.log('Erreur login:', error);
       }
     }
   };
@@ -94,49 +114,58 @@ const LoginForm = () => {
         {/*}flex flex-col p-5 max-w-150*/}
         <form id="loginForm" onSubmit={handleSubmit}>
           <div className="flex flex-col items-center justify-center">
-            <h2 className="mb-10 text-7xl">*Green-U*</h2>
+            <h2 className="mb-10 text-7xl select-none">*Green-U*</h2>
 
-            <div className="flex flex-col justify-center">
+            <div className="flex w-full flex-col justify-center">
               <TextInput
                 type="email"
                 label={translations.email}
                 value={email}
                 name="email"
                 placeholder={translations.enteremail}
-                onChange={handleEmailChange}
-                error={errorEmail}
+                onChange={(e) => handleChange(e, 'email')}
+                error={errors.email}
               />
-              <br />
+            </div>
+
+            <div className="relative flex w-full flex-col justify-center">
               <TextInput
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 label={translations.password}
                 value={password}
                 name="password"
                 placeholder={translations.enterpassword}
-                onChange={handlePasswordChange}
-                error={errorPassword}
+                onChange={(e) => handleChange(e, 'password')}
+                error={errors.password}
               />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute top-8.5 right-2 text-gray-500"
+              >
+                {showPassword ? (
+                  <i className="fa fa-eye-slash"></i>
+                ) : (
+                  <i className="fa fa-eye"></i>
+                )}
+              </button>
             </div>
 
             <div>
-              {error && <p className="text-red-500">{error}</p>}
+              {error && <p className="text-txterror">{error}</p>}
 
               {/*POUR TEST 
 							{userId && <p>ID utilisateur : {userId}</p>}
 							*/}
             </div>
 
-            <br />
-            {errorEmailPassword && (
-              <p className="text-red-500"> Invalid password or Email </p>
-            )}
             <div className="flex flex-row justify-between pb-5">
               <Button
                 className="bg-bgbutton relative m-5 px-6 py-2"
                 type="button"
-                onClick={() => router.push('/register')}
+                onClick={() => router.push('/')}
               >
-                {translations.register}
+                {translations.back}
               </Button>
               <Button
                 className="bg-bgbutton relative m-5 px-6 py-2"
