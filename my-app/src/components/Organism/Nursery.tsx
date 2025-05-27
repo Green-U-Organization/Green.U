@@ -5,10 +5,12 @@ import Image from 'next/image';
 import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/Confirmation_Popup';
 import {
-  useGetCropByNurseryIdQuery,
+  // useGetCropByNurseryIdQuery,
   useDeleteOneNurseryByNurseryIdMutation,
-} from '@/slice/fetch';
-import { NurceryProps } from '@/utils/types';
+  useEditUserByUserIdMutation,
+  useGetUserByIdQuery,
+} from '@/redux/api/fetch';
+import { NurseryProps } from '@/utils/types';
 import AddCropNurseryPopup from '../Molecule/Add_CropNursery_Popup';
 import {
   setAddCropNurseryPopup,
@@ -18,23 +20,32 @@ import {
 import SlimCard from '../Atom/SlimCard';
 import Cookies from 'js-cookie';
 
-import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
+// import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
+import { deleteNurseryStore } from '@/redux/garden/gardenSlice';
+import XpTable from '@/utils/Xp';
+import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from '../Molecule/Toast_XP';
 
-const Nursery: FC<NurceryProps> = ({ nursery }) => {
+const Nursery: FC<NurseryProps> = ({ nursery }) => {
   // Local State
   const [displayNurseryInfo, setDisplayNurseryInfo] = useState<boolean>(false);
   const [displayDeletingNurseryPopup, setDisplayDeletingNurseryPopup] =
     useState<boolean>(false);
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
+
   // RTK Query
-  const {
-    data: crops,
-    isLoading: cropsIsLoading,
-    isError: cropsIsError,
-  } = useGetCropByNurseryIdQuery({ nurseryId: nursery.id });
   const [deleteNursery, { isLoading: deleteNurseryIsLoading }] =
     useDeleteOneNurseryByNurseryIdMutation();
+  const [addXp] = useEditUserByUserIdMutation();
+  const { data: user } = useGetUserByIdQuery({
+    userId: userId,
+  });
 
   // Debug,
   // console.log('nurseryId : ', nursery.id);
@@ -42,11 +53,6 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
 
   // Hooks
   const dispatch = useDispatch();
-
-  //USER info
-  const userData = Cookies.get('user_data');
-  const userCookie = userData ? JSON.parse(userData) : null;
-  const userId = Number(userCookie?.id);
 
   // Selectors
   const addCropPopupDisplay = useSelector(
@@ -61,6 +67,12 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
+  const crops = useSelector((state: RootState) => {
+    const nurseryObj = state.garden.selectedGarden?.plantNurseries.find(
+      (n) => n.id === nursery.id
+    );
+    return nurseryObj?.crops;
+  });
   const id = useSelector((state: RootState) => state.display.id);
 
   // Fetch
@@ -69,22 +81,35 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
       deleteNursery({
         nurseryId: nursery.id,
       }).unwrap();
+
+      dispatch(deleteNurseryStore(nursery.id));
       console.log('Nursery deletes');
+
+      //XP
+      const newXp = (user?.content?.xp ?? 0) - XpTable.deleteNursery;
+      addXp({
+        userId: userId,
+        xp: newXp,
+      });
+      dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.deleteNursery} />);
     } catch {
       console.log('error deleting nursery');
     }
   };
 
   // Loading and Error Handling
-  if (cropsIsLoading) {
-    return <div className="m-10">Loading...</div>;
-  }
-  if (cropsIsError) {
-    console.log('error in current nursery : ', nursery.id);
-  }
-  if (crops?.isEmpty) {
-    console.log('Oups, no crops find...');
-  }
+  // if (cropsIsLoading) {
+  //   return <div className="m-10">Loading...</div>;
+  // }
+  // if (cropsIsError) {
+  //   console.log('error in current nursery : ', nursery.id);
+  // }
+  // if (crops?.isEmpty) {
+  //   console.log('Oups, no crops find...');
+  // }
 
   return (
     <>
@@ -204,11 +229,11 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
                 displayNurseryLogPopup && id === nursery.id ? 'block' : 'none',
             }}
           >
-            <Display_Logs_Popup
+            {/* <Display_Logs_Popup
               id={nursery.id}
               display={displayNurseryLogPopup}
               logObject={'nursery'}
-            />
+            /> */}
           </div>
           {/* //crops map */}
 
@@ -239,9 +264,9 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {crops?.content.map((crop) => (
+                  {crops?.map((crop) => (
                     <>
-                      <tr key={crop.id * Math.random()}>
+                      <tr key={crop.id}>
                         <td className="border-1 p-1">{crop.vegetable}</td>
                         <td className="border-1 p-1">{crop.variety}</td>
                         <td className="border-1 p-1">{crop.nPot}</td>
@@ -259,7 +284,13 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
                             )
                           }
                         >
-                          <img src={crop.icon} alt="" className="mx-auto" />
+                          <img
+                            src={
+                              crop.icon ? crop.icon : '/image/icons/info.webp'
+                            }
+                            alt=""
+                            className="mx-auto"
+                          />
                         </td>
                         <td className="border-1 p-1">
                           <img
@@ -279,11 +310,11 @@ const Nursery: FC<NurceryProps> = ({ nursery }) => {
                         <tr>
                           <td colSpan={6} className="p-0">
                             <div className="relative w-full">
-                              <Display_Logs_Popup
+                              {/* <Display_Logs_Popup
                                 id={crop.id}
                                 display={true}
                                 logObject={'crop'}
-                              />
+                              /> */}
                             </div>
                           </td>
                         </tr>

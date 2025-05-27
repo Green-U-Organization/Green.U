@@ -7,18 +7,19 @@ import {
   useCreateNewParcelMutation,
   useEditUserByUserIdMutation,
   useGetUserByIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
+
 import { setAddParcelPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
+import { addParcelStore } from '@/redux/garden/gardenSlice';
+import Loading from '../Atom/Loading';
+import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from './Toast_XP';
 
 const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
-  //Local Variables
-  const [length, setLength] = useState<number>(1);
-  const [width, setWidth] = useState<number>(1);
-  const [repeat, setRepeat] = useState<number>(1);
-
   //USER info
   const userData = Cookies.get('user_data');
   const userCookie = userData ? JSON.parse(userData) : null;
@@ -30,7 +31,14 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
     { isLoading: createNewParcelIsLoading },
   ] = useCreateNewParcelMutation();
   const [addXp] = useEditUserByUserIdMutation();
-  const user = useGetUserByIdQuery({ userId: id });
+  const { data: user, isSuccess: userIsSuccess } = useGetUserByIdQuery({
+    userId: id,
+  });
+
+  //Local Variables
+  const [length, setLength] = useState<number>(1);
+  const [width, setWidth] = useState<number>(1);
+  const [repeat, setRepeat] = useState<number>(1);
 
   //Hooks
   const dispatch = useDispatch();
@@ -43,30 +51,41 @@ const NewParcelForm: React.FC<{ display: boolean }> = ({ display }) => {
   //   (state: RootState) => state.display.addParcelPopup
   // );
 
+  if (!userIsSuccess) return <Loading />;
+
+  //Handlers
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newParcel = {
-      gardenId: actualGarden?.id ?? 0,
-      length: length,
-      width: width,
-      nLine: 1,
-      parcelAngle: 0,
-      x_position: 0,
-      y_position: 0,
-      parcel_angle: 0,
+      Parcel: {
+        gardenId: actualGarden?.id ?? 0,
+        length: length,
+        width: width,
+      },
+      Iteration: repeat,
     };
 
-    for (let i = 0; i < repeat; i++) {
-      try {
-        await createNewParcel(newParcel).unwrap();
-        await addXp({
-          userId: id,
-          xp: (user?.data?.content?.xp ?? 0) + XpTable.addParcel,
-        });
-        console.log('parcel created');
-      } catch {
-        console.log('error creating parcel');
-      }
+    try {
+      const newParcelResponse = await createNewParcel(newParcel).unwrap();
+
+      console.log('newParcelResponse : ', newParcelResponse);
+
+      dispatch(addParcelStore(newParcelResponse.content));
+
+      console.log('parcel(s) created');
+
+      //XP
+      const newXp = user.content.xp + XpTable.addParcel * repeat;
+      await addXp({
+        userId: id,
+        xp: newXp,
+      });
+      dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.addParcel * repeat} />);
+    } catch {
+      console.log('error creating parcel');
     }
   };
 

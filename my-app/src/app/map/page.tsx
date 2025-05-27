@@ -1,14 +1,39 @@
+'use client';
 import LocationPicker from '@/components/UI/LocationPicker';
+import { useGetAllGardensLocalisationQuery } from '@/redux/api/fetch';
+import { useLanguage } from '@/app/contexts/LanguageProvider';
 
 const Map = () => {
+  const {
+    data: gardens,
+    error,
+    isLoading,
+    isFetching,
+  } = useGetAllGardensLocalisationQuery();
+
+  const { translations } = useLanguage();
+
+  if (isLoading || isFetching) {
+    return <p className="text-center">{translations.loadingMap}</p>;
+  }
+
+  if (error) {
+    console.error(translations.errRetrievingLocations, error);
+    return (
+      <p className="text-txterror text-center">{translations.errLoadingMap}</p>
+    );
+  }
+
+  if (!gardens || !gardens.content) {
+    return <p className="text-center">{translations.noGarden}</p>;
+  }
+
   return (
     <LocationPicker
       readOnly={true}
-      multipleMarkers={[
-        { lat: 50.65, lng: 5.35 },
-        { lat: 50.7, lng: 5.4 },
-        { lat: 50.66899394836384, lng: 5.572265633381904 },
-      ]}
+      multipleMarkers={gardens.content.map((g) => ({
+        garden: g,
+      }))}
       enableRadius={true}
       showUserPosition={true}
     />

@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import LocationPicker from '../UI/LocationPicker';
 import { useLanguage } from '../../app/contexts/LanguageProvider';
-import { useCreateNewGardenMutation } from '@/slice/fetch';
+import { useCreateNewGardenMutation } from '@/redux/api/fetch';
 import { Garden } from '@/utils/types';
 import { useDispatch } from 'react-redux';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
@@ -92,7 +92,16 @@ const CreateGardenForm = () => {
         width: Number(formData.get('gardenWidth')),
         privacy: selectedPrivacy,
         type: selectedType,
-        hashtags: formData.getAll('gardenHashtag') as string[],
+        tagsInterests: (formData.getAll('gardenHashtag') as string[]).map(
+          (tag) => ({ tag, count: 1 })
+        ),
+        id: 0,
+        deleted: false,
+        createdAt: '',
+        constributors: [],
+        followers: [],
+        parcels: [],
+        plantNurseries: [],
       };
 
       try {
@@ -151,7 +160,7 @@ const CreateGardenForm = () => {
             {translations.metersLong}
           </label>
 
-          <div className="flex items-center justify-around">
+          <div className="flex items-center justify-center">
             <p
               onClick={() =>
                 setGardenLength((prev) => (prev === 0 ? 0 : prev - 1))
@@ -183,7 +192,7 @@ const CreateGardenForm = () => {
             {translations.metersLarge}
           </label>
 
-          <div className="flex items-center justify-around">
+          <div className="flex items-center justify-center">
             <p
               onClick={() =>
                 setGardenWidth((prev) => (prev === 0 ? 0 : prev - 1))
@@ -214,7 +223,7 @@ const CreateGardenForm = () => {
           <LocationPicker
             initialLat={0} //Pour ne pas avoir un pin par défaut
             initialLng={0} //Idem
-            //showUserPosition={true}
+            showUserPosition={true}
           />
 
           <SelectInput

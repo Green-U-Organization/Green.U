@@ -128,14 +128,14 @@ body {
 }
 
 /* TEST D'UN CURSEUR PERSONNALISE */
-.custom-clickable {
+/* .custom-clickable {
   cursor: url('/cursors/hand.cur');
-}
+} */
 
 /* TEST DE LA POLICE SUR LA NAVBAR */
-.navbar {
+/* .navbar {
   font-family: var(--font-jersey);
-}
+} */
 
 .parcelBackground {
   background-image: url('/image/assets/tilesets/parcel.png');

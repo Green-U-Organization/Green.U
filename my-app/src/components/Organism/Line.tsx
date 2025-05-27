@@ -12,16 +12,22 @@ import Image from 'next/image';
 import Cookies from 'js-cookie';
 import {
   useDeleteOneLineByLineIdMutation,
-  useGetCropByLineIdQuery,
-} from '@/slice/fetch';
+  useEditUserByUserIdMutation,
+  useGetUserByIdQuery,
+  // useGetCropByLineIdQuery,
+} from '@/redux/api/fetch';
 import {
   setAddCropPopup,
   setDisplayCropLogPopup,
   setDisplayLineLogPopup,
   setExistantCropPopup,
 } from '@/redux/display/displaySlice';
-import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
+import { deleteLineStore } from '@/redux/garden/gardenSlice';
+import XpTable from '@/utils/Xp';
+import toast from 'react-hot-toast';
+import Toast_XP from '../Molecule/Toast_XP';
+import { setXpUser } from '@/redux/user/userSlice';
 
 const Line: FC<LineProps> = ({ line, lineIndex }) => {
   // Local State
@@ -30,50 +36,83 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
     useState<boolean>(false);
   const [cropIsPresent, setCropIsPresent] = useState<boolean>(false);
 
+  //USER info
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const userId = Number(userCookie?.id);
+
   //RTK Query
   const [deleteLineMutation, { isLoading: deleteLinesIsLoading }] =
     useDeleteOneLineByLineIdMutation();
-  const { data: crops } = useGetCropByLineIdQuery({
-    lineId: line.id,
-  });
+  // const { data: crops } = useGetCropByLineIdQuery({
+  //   lineId: line.id,
+  // });
+  const [addXp] = useEditUserByUserIdMutation();
+  const { data: user } = useGetUserByIdQuery({ userId: userId });
 
   //Hooks
   const dispatch = useDispatch();
   const cropPopupRef = useRef<HTMLDivElement>(null);
   const existantPopupRef = useRef<HTMLDivElement>(null);
 
-  //USER info
-  const userData = Cookies.get('user_data');
-  const userCookie = userData ? JSON.parse(userData) : null;
-  const userId = Number(userCookie?.id);
-
   //Selectors
   const graphicMode = useSelector(
     (state: RootState) => state.garden.graphicMode
   );
+
   const addCropPopupDisplay = useSelector(
     (state: RootState) => state.display.addCropPopup
   );
+
   const ExistantCropPopupDisplay = useSelector(
     (state: RootState) => state.display.existantCropPopup
   );
+
   const displayLineLogPopup = useSelector(
     (state: RootState) => state.display.displayLineLogPopup
   );
+
   const displayCropLogPopup = useSelector(
     (state: RootState) => state.display.displayCropLogPopup
   );
+
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
+
+  const crops = useSelector((state: RootState) => {
+    const parcels = state.garden.selectedGarden?.parcels || [];
+    const foundLines = parcels
+      .flatMap((p) => p.lines || [])
+      .filter((l) => l.id === line.id);
+    return foundLines.length > 0 ? foundLines[0].crops : undefined;
+  });
+
   const id = useSelector((state: RootState) => state.display.id);
 
-  // Fetch
+  //Debug
+  // console.log('crops : ', crops);
+
+  //Queries
   const deletingLine = () => {
     try {
       deleteLineMutation({
         lineId: line.id,
       }).unwrap();
+
+      dispatch(deleteLineStore(line.id));
+
+      //XP
+      const newXp = (user?.content?.xp ?? 0) + XpTable.deleteLine;
+      addXp({
+        userId: userId,
+        xp: newXp,
+      });
+      dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.deleteLine} />);
+
       console.log('line deleted');
     } catch {
       console.log('error deleting line');
@@ -147,8 +186,11 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
   //Handlers
   const handleClickAddCrop = async () => {
     const actualCrops = crops;
+    console.log(crops);
 
-    if (actualCrops) {
+    if (!actualCrops) return;
+
+    if (actualCrops?.length > 0) {
       setCropIsPresent(true);
       dispatch(
         setExistantCropPopup({
@@ -244,9 +286,9 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
           {
             <img
               src={
-                crops?.content[0].icon === ''
+                crops && crops[0]?.icon === ''
                   ? '/image/icons/info.png'
-                  : crops?.content[0].icon
+                  : crops && crops[0]?.icon
               }
               className="w-[6vw]"
               alt=""
@@ -254,7 +296,9 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
                 dispatch(
                   setDisplayCropLogPopup({
                     state: !displayCropLogPopup,
-                    id: Number(crops?.content[0].id),
+                    id: Number(
+                      crops && crops.length > 0 ? crops[0].id : undefined
+                    ),
                   })
                 )
               }
@@ -328,16 +372,16 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
       <div
         style={{
           display:
-            displayCropLogPopup && id === crops?.content[0].id
+            displayCropLogPopup && id === (crops && crops[0]?.id)
               ? 'block'
               : 'none',
         }}
       >
-        <Display_Logs_Popup
-          id={crops?.content[0].id}
+        {/* <Display_Logs_Popup
+          id={crops && crops.length > 0 ? crops[0].id : undefined}
           display={displayCropLogPopup}
           logObject={'crop'}
-        />
+        /> */}
       </div>
 
       <div
@@ -363,7 +407,7 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
         }}
         data-modal
       >
-        <AddCropPopup lineId={line.id} />
+        <AddCropPopup line={line} />
       </div>
 
       {/* Exist Crop Popup */}
@@ -386,11 +430,11 @@ const Line: FC<LineProps> = ({ line, lineIndex }) => {
           display: displayLineLogPopup && id === line.id ? 'block' : 'none',
         }}
       >
-        <Display_Logs_Popup
+        {/* <Display_Logs_Popup
           id={line.id}
           display={displayLineLogPopup}
           logObject={'line'}
-        />
+        /> */}
       </div>
     </>
   );

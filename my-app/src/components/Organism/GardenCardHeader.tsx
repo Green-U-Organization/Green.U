@@ -5,7 +5,7 @@ import { GardenCardHeaderProps } from '@/utils/types';
 import { setSelectedGarden } from '@/redux/garden/gardenSlice';
 import H1 from '../Atom/H1';
 import { useSelector, useDispatch } from 'react-redux';
-import { useGetAllGardenByUserIdQuery } from '@/slice/fetch';
+import { useGetAllGardenByUserIdQuery } from '@/redux/api/fetch';
 import { RootState } from '@/redux/store';
 import Loading from '../Atom/Loading';
 

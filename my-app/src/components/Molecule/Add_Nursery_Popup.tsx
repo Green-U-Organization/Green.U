@@ -6,12 +6,16 @@ import {
   useCreateNurseryMutation,
   useEditUserByUserIdMutation,
   useGetUserByIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import { RootState, useDispatch, useSelector } from '@/redux/store';
 import { setAddNurseryPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
+import { addPlantNurseryStore } from '@/redux/garden/gardenSlice';
+import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from './Toast_XP';
 
 const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
   //Local State
@@ -67,11 +71,21 @@ const AddNurseryPopup: React.FC<{ display: boolean }> = ({ display }) => {
     };
 
     try {
-      await createNewNursery(newNursery).unwrap();
+      const nursery = await createNewNursery(newNursery).unwrap();
+      console.log(nursery);
+      dispatch(addPlantNurseryStore(nursery.content));
+
+      //XP
+      const newXp = (user?.data?.content?.xp ?? 0) + XpTable.addNursery;
       await addXp({
         userId: id,
-        xp: (user?.data?.content?.xp ?? 0) + XpTable.addNursery,
+        xp: newXp,
       });
+      dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.addNursery} />);
+
       console.log('nursery created');
     } catch {
       console.log('error creating nursery');

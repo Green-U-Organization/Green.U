@@ -1,6 +1,5 @@
-import { getAllGardenByUserId } from '@/utils/actions/garden/getAllGardenByUserId';
-import { Garden } from '@/utils/types';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Crop, Garden, Line, Nursery, Parcel } from '@/utils/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GardenState {
   gardens: Garden[];
@@ -24,22 +23,114 @@ const initialState: GardenState = {
   graphicMode: false,
 };
 
-export const getGardenByUserIdFct = createAsyncThunk(
-  'garden/getGardenByUserId',
-  async (userId: number, { rejectWithValue }) => {
-    try {
-      const gardens = await getAllGardenByUserId(userId);
-      return gardens;
-    } catch (error) {
-      return rejectWithValue((error as Error).message);
-    }
-  }
-);
+// export const getGardenByUserIdFct = createAsyncThunk(
+//   'garden/getGardenByUserId',
+//   async (userId: number, { rejectWithValue }) => {
+//     try {
+//       const gardens = await getAllGardenByUserId(userId);
+//       return gardens;
+//     } catch (error) {
+//       return rejectWithValue((error as Error).message);
+//     }
+//   }
+// );
 
 const gardenSlice = createSlice({
   name: 'garden',
   initialState,
   reducers: {
+    //Parcels
+    addParcelStore: (state, action: PayloadAction<Parcel[]>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels.push(...action.payload);
+      }
+    },
+    deleteParcelStore: (state, action: PayloadAction<number>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels = state.selectedGarden.parcels.filter(
+          (p) => p.id !== action.payload
+        );
+      }
+    },
+    // editParcelStore: (state, action: PayloadAction<Parcel>) => {},
+
+    //Lines
+    addLineStore: (state, action: PayloadAction<Line>) => {
+      if (state.selectedGarden) {
+        const parcel = state.selectedGarden.parcels.find(
+          (p) => p.id === action.payload.parcelId
+        );
+        if (parcel) {
+          if (!parcel.lines) {
+            parcel.lines = [];
+          }
+          parcel.lines.push(action.payload);
+        }
+      }
+    },
+    deleteLineStore: (state, action: PayloadAction<number>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels.forEach((parcel) => {
+          if (parcel.lines) {
+            parcel.lines = parcel.lines.filter(
+              (line) => line.id !== action.payload
+            );
+          }
+        });
+      }
+    },
+
+    // editLineStore: (state, action: PayloadAction<Line>) => {},
+
+    //Nurseries
+    addPlantNurseryStore: (state, action: PayloadAction<Nursery>) => {
+      if (state.selectedGarden) {
+        console.log('slice : ', action.payload);
+        state.selectedGarden.plantNurseries.push(action.payload);
+      }
+    },
+    deleteNurseryStore: (state, action: PayloadAction<number>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.plantNurseries =
+          state.selectedGarden.plantNurseries.filter(
+            (p) => p.id !== action.payload
+          );
+      }
+    },
+
+    //Crops
+    addCropLineStore: (state, action: PayloadAction<Crop>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.parcels.forEach((parcel) => {
+          if (parcel.id === action.payload.parcelId && parcel.lines) {
+            const line = parcel.lines.find(
+              (l) => l.id === action.payload.lineId
+            );
+            if (line) {
+              if (!line.crops) {
+                line.crops = [];
+              }
+              line.crops.push(action.payload);
+            }
+          }
+        });
+      }
+    },
+    addCropNurseryStore: (state, action: PayloadAction<Crop>) => {
+      if (state.selectedGarden) {
+        state.selectedGarden.plantNurseries.forEach((nursery) => {
+          if (nursery.id === action.payload.plantNurseryId) {
+            if (!nursery.crops) {
+              nursery.crops = [];
+            }
+            nursery.crops.push(action.payload);
+          }
+        });
+      }
+      console.log('end');
+    },
+
+    //Garden
     setSelectedGarden: (state, action: PayloadAction<Garden>) => {
       state.selectedGarden = action.payload;
     },
@@ -59,24 +150,6 @@ const gardenSlice = createSlice({
       state.graphicMode = !state.graphicMode;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getGardenByUserIdFct.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(
-        getGardenByUserIdFct.fulfilled,
-        (state, action: PayloadAction<Garden[]>) => {
-          state.loading = false;
-          state.gardens = action.payload;
-        }
-      )
-      .addCase(getGardenByUserIdFct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-  },
 });
 
 export const {
@@ -86,5 +159,13 @@ export const {
   setFullscreen,
   setReload,
   setGraphicMode,
+  addParcelStore,
+  deleteParcelStore,
+  addLineStore,
+  deleteLineStore,
+  addCropLineStore,
+  addCropNurseryStore,
+  addPlantNurseryStore,
+  deleteNurseryStore,
 } = gardenSlice.actions;
 export default gardenSlice.reducer;

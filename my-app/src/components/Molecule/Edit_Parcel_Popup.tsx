@@ -4,10 +4,10 @@ import { useDispatch } from 'react-redux';
 import H2 from '../Atom/H2';
 import Card from '../Atom/Card';
 import Button from '../Atom/Button';
-import type { EditParcelPopup } from '@/utils/types';
-import { useEditParcelMutation } from '@/slice/fetch';
+import type { EditParcelPopupProps } from '@/utils/types';
+import { useEditParcelMutation } from '@/redux/api/fetch';
 
-const EditParcelPopup: FC<EditParcelPopup> = ({ parcel }) => {
+const EditParcelPopup: FC<EditParcelPopupProps> = ({ parcel }) => {
   //Local Variables
   const [length, setLength] = useState<number>(parcel.length);
   const [width, setWidth] = useState<number>(parcel.width);

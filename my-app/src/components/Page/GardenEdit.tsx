@@ -26,7 +26,7 @@ const GardenEdit = () => {
         type={'edit'}
       />
 
-      {garden && <Garden garden={garden} scale={0} />}
+      {garden && <Garden />}
     </>
   );
 };

@@ -6,18 +6,22 @@ import Button from '../Atom/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setAddCropNurseryPopup } from '@/redux/display/displaySlice';
-import { Nurcery } from '@/utils/types';
+import { Nursery } from '@/utils/types';
 import H2 from '../Atom/H2';
 import {
   useCreateCropToNurseryMutation,
   useEditUserByUserIdMutation,
   useGetUserByIdQuery,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import XpTable from '@/utils/Xp';
 import Cookies from 'js-cookie';
 import LoadingModal from './LoadingModal';
+import { addCropNurseryStore } from '@/redux/garden/gardenSlice';
+import { setXpUser } from '@/redux/user/userSlice';
+import Toast_XP from './Toast_XP';
+import toast from 'react-hot-toast';
 
-const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
+const AddCropNurseryPopup: FC<{ nursery: Nursery }> = ({ nursery }) => {
   //Local State
   const [potSize, setPotSize] = useState<number>(5);
   const [typeOfAction, setTypeOfAction] = useState<string>('sowing');
@@ -97,11 +101,21 @@ const AddCropNurseryPopup: FC<{ nursery: Nurcery }> = ({ nursery }) => {
     };
 
     try {
-      await createCropToNursery(cropData).unwrap();
+      const crop = await createCropToNursery(cropData).unwrap();
+
+      console.log(crop.content);
+      dispatch(addCropNurseryStore(crop.content));
+
+      //XP
+      const newXp = (user?.data?.content?.xp ?? 0) + XpTable.addCrop;
       await addXp({
         userId: id,
-        xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
+        xp: newXp,
       });
+      dispatch(setXpUser(newXp));
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.addCrop} />);
+
       console.log('crop created');
       dispatch(
         setAddCropNurseryPopup({

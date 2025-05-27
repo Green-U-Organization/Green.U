@@ -8,26 +8,30 @@ import Button from '../Atom/Button';
 import {
   useCreateCropToLineMutation,
   useEditUserByUserIdMutation,
-  useGetNurseryByGardenIdQuery,
+  // useGetNurseryByGardenIdQuery,
   useGetUserByIdQuery,
   usePatchCropMutation,
-} from '@/slice/fetch';
+} from '@/redux/api/fetch';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
-import type { AddCropPopup, CropType } from '@/utils/types';
+import type { Crop, Line } from '@/utils/types';
 import { setAddCropPopup } from '@/redux/display/displaySlice';
 import XpTable from '@/utils/Xp';
 import { RootState, useSelector } from '@/redux/store';
 import LoadingModal from './LoadingModal';
-import CropRow from '../Atom/CropRow';
+// import CropRow from '../Atom/CropRow';
+import { addCropLineStore } from '@/redux/garden/gardenSlice';
+import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from './Toast_XP';
 
-const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
+const AddCropPopup: FC<{ line: Line }> = ({ line }) => {
   //Local State
   const [plantationDistance, setPlantationDistance] = useState<number>(10);
   const [selectedIcon, setSelectedIcon] = useState<string>('');
   const [action, setAction] = useState<string>('sowing');
   const [origin, setOrigin] = useState<string>('fromScratch');
-  const [selectedCropToPlant, setSelectedCropToPlant] = useState<CropType>();
+  const [selectedCropToPlant, setSelectedCropToPlant] = useState<Crop>();
   const [vegetable, setVegetable] = useState('');
   const [variety, setVariety] = useState('');
 
@@ -55,26 +59,29 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
   const dispatch = useDispatch();
 
   //Selectors
-  const garden = useSelector((state: RootState) => state.garden.selectedGarden);
+  const currentGarden = useSelector(
+    (state: RootState) => state.garden.selectedGarden
+  );
+  // const nurseries = useSelector(
+  //   (state: RootState) => state.garden.selectedGarden?.plantNurseries
+  // );
+  const crops = useSelector((state: RootState) => {
+    const nurseries = state.garden.selectedGarden?.plantNurseries || [];
+
+    const foundCrops = nurseries.flatMap((n) => n.crops || []);
+
+    return foundCrops.length > 0 ? foundCrops : undefined;
+  });
 
   //RTK Query
   const [createCropToLine, { isLoading: newCropIsLoading }] =
     useCreateCropToLineMutation();
   const [addXp] = useEditUserByUserIdMutation();
   const user = useGetUserByIdQuery({ userId: id });
-  const { data: nurseries } = useGetNurseryByGardenIdQuery({
-    gardenId: garden?.id ?? 0,
-  });
+  // const { data: nurseries } = useGetNurseryByGardenIdQuery({
+  //   gardenId: garden?.id ?? 0,
+  // });
   const [patchCrop] = usePatchCropMutation();
-
-  // Fetch crops for each nursery and store them in an array
-  // const crops =
-  // nurseries?.content.map((nursery) => {
-  //   const { data: crop } = useGetCropByNurseryIdQuery({
-  //     nurseryId: nursery.id,
-  //   });
-  //   return crop;
-  // }) || [];
 
   //Handlers
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -91,7 +98,9 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
       formData.get('cropAction') === 'planting' ? formatDate(new Date()) : '';
 
     const cropData = {
-      lineId: Number(lineId),
+      lineId: Number(line.id),
+      gardenId: currentGarden?.id ?? 0,
+      parcelId: line.parcelId,
       vegetable: formData.get('vegetable') as string,
       variety: formData.get('variety') as string,
       icon: selectedIcon,
@@ -105,7 +114,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
     if (origin === 'fromNursery' && selectedCropToPlant?.id) {
       const cropData = {
         cropId: selectedCropToPlant?.id,
-        lineId: Number(lineId),
+        lineId: Number(line.id),
         plantNurseryId: 0,
       };
 
@@ -115,7 +124,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
         dispatch(
           setAddCropPopup({
             state: false,
-            id: Number(lineId),
+            id: Number(line.id),
           })
         );
       } catch {
@@ -123,17 +132,26 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
       }
     } else {
       try {
-        await createCropToLine(cropData).unwrap();
+        const crop = await createCropToLine(cropData).unwrap();
+
+        dispatch(addCropLineStore(crop.content));
+
+        //Xp
+        const newXp = (user?.data?.content?.xp ?? 0) + XpTable.addCrop;
         await addXp({
           userId: id,
-          xp: (user?.data?.content?.xp ?? 0) + XpTable.addCrop,
+          xp: newXp,
         });
+        dispatch(setXpUser(newXp));
+
+        //Toast XP
+        toast.custom((t) => <Toast_XP t={t} xp={XpTable.addCrop} />);
 
         console.log('crop created');
         dispatch(
           setAddCropPopup({
             state: false,
-            id: Number(lineId),
+            id: Number(line.id),
           })
         );
       } catch {
@@ -162,7 +180,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
     setOrigin(e.target.value);
   };
 
-  const handleSelectRow = (crop: CropType) => {
+  const handleSelectRow = (crop: Crop) => {
     setSelectedCropToPlant(crop);
     setVegetable(crop.vegetable);
     setVariety(crop.variety);
@@ -225,57 +243,50 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
                 </tr>
               </thead>
               <tbody>
-                {nurseries?.content.map((nursery) => (
-                  <CropRow
-                    key={nursery.id}
-                    nurseryId={nursery.id}
-                    onSelect={handleSelectRow}
-                    selectedCrop={selectedCropToPlant}
-                  />
+                {crops?.map((crop) => (
+                  <tr
+                    key={crop.id}
+                    onClick={() => handleSelectRow(crop)}
+                    className={`${selectedCropToPlant?.id === crop.id ? 'bg-[#f6d4ba]' : ''}`}
+                  >
+                    <td className="border-1 p-1">
+                      <img
+                        src={crop.icon ? crop.icon : '/image/icons/info.webp'}
+                        alt=""
+                        className="mx-auto"
+                      />
+                    </td>
+                    <td className="border-1 p-1">{crop.vegetable}</td>
+                    <td className="border-1 p-1">{crop.variety}</td>
+                    <td className="border-1 p-1">{crop.nPot}</td>
+                    <td className="border-1 p-1">
+                      {crop.potSize}x{crop.potSize}
+                    </td>
+                    <td className="border-1 p-1">
+                      <img
+                        className="mx-auto"
+                        src="/image/icons/info.png"
+                        alt="Display info about line"
+                        style={{
+                          width: '5vw',
+                          height: '5vw',
+                        }}
+                      />
+                    </td>
+                    <td className="border-1 p-1">
+                      <img
+                        className="mx-auto"
+                        src="/image/icons/trash.png"
+                        alt="Delete line"
+                        style={{
+                          width: '5vw',
+                          height: '5vw',
+                        }}
+                        // onClick={() => setDisplayDeletingLinePopup(true)}
+                      />
+                    </td>
+                  </tr>
                 ))}
-
-                {/* {crops.map((cropObject) =>
-                  cropObject?.content.map((crop) => (
-                    <tr
-                      key={crop.id}
-                      onClick={() => handleSelectRow(crop)}
-                      className={`${selectedCropToPlant?.id === crop.id ? 'bg-[#f6d4ba]' : ''}`}
-                    >
-                      <td className="border-1 p-1">
-                        <img src={crop.icon} alt="" className="mx-auto" />
-                      </td>
-                      <td className="border-1 p-1">{crop.vegetable}</td>
-                      <td className="border-1 p-1">{crop.variety}</td>
-                      <td className="border-1 p-1">{crop.nPot}</td>
-                      <td className="border-1 p-1">
-                        {crop.potSize}x{crop.potSize}
-                      </td>
-                      <td className="border-1 p-1">
-                        <img
-                          className="mx-auto"
-                          src="/image/icons/info.png"
-                          alt="Display info about line"
-                          style={{
-                            width: '5vw',
-                            height: '5vw',
-                          }}
-                        />
-                      </td>
-                      <td className="border-1 p-1">
-                        <img
-                          className="mx-auto"
-                          src="/image/icons/trash.png"
-                          alt="Delete line"
-                          style={{
-                            width: '5vw',
-                            height: '5vw',
-                          }}
-                          // onClick={() => setDisplayDeletingLinePopup(true)}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                )} */}
               </tbody>
             </table>
           </div>
@@ -361,7 +372,7 @@ const AddCropPopup: FC<AddCropPopup> = ({ lineId }) => {
                 dispatch(
                   setAddCropPopup({
                     state: false,
-                    id: Number(lineId),
+                    id: Number(line.id),
                   })
                 )
               }

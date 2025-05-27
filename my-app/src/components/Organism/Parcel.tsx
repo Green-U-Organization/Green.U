@@ -9,10 +9,11 @@ import H2 from '../Atom/H2';
 import Confirmation from '../Molecule/Confirmation_Popup';
 import {
   useCreateNewGardenLineMutation,
-  useGetAllLinesByParcelIdQuery,
+  // useGetAllLinesByParcelIdQuery,
   useDeleteOneParcelByParcelIdMutation,
-} from '@/slice/fetch';
-import VegetableIcon from '../Atom/VegetableIcon';
+  useGetUserByIdQuery,
+  useEditUserByUserIdMutation,
+} from '@/redux/api/fetch';
 import EditParcelPopup from '../Molecule/Edit_Parcel_Popup';
 import {
   setDisplayParcelLogPopup,
@@ -21,10 +22,14 @@ import {
 import Loading from '../Atom/Loading';
 import SlimCard from '../Atom/SlimCard';
 import Cookies from 'js-cookie';
-import Display_Logs_Popup from '../Molecule/Display_Logs_Popup';
 import LoadingModal from '../Molecule/LoadingModal';
+import { addLineStore, deleteParcelStore } from '@/redux/garden/gardenSlice';
+import XpTable from '@/utils/Xp';
+import { setXpUser } from '@/redux/user/userSlice';
+import toast from 'react-hot-toast';
+import Toast_XP from '../Molecule/Toast_XP';
 
-const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
+const Parcel: FC<ParcelProps> = ({ parcel, parcelKey }) => {
   //Local State
   const [displayParcelInfo, setDisplayParcelInfo] = useState<boolean>(false);
   const [displayDeletingParcelPopup, setDisplayDeletingParcelPopup] =
@@ -41,15 +46,19 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   const userId = Number(userCookie?.id);
 
   //RTK Query
-  const {
-    data: lines,
-    isLoading: linesIsLoading,
-    isError: linesIsError,
-  } = useGetAllLinesByParcelIdQuery({ parcelId: parcel.id });
+  // const {
+  //   data: lines,
+  //   isLoading: linesIsLoading,
+  //   isError: linesIsError,
+  // } = useGetAllLinesByParcelIdQuery({ parcelId: parcel.id });
   const [createNewLine, { isLoading: newLineIsLoading }] =
     useCreateNewGardenLineMutation();
   const [deleteParcel, { isLoading: deleteParcelIsLoading }] =
     useDeleteOneParcelByParcelIdMutation();
+  const [addXp] = useEditUserByUserIdMutation();
+  const { data: user, isSuccess: userIsSuccess } = useGetUserByIdQuery({
+    userId: userId,
+  });
 
   //Debug
   // console.log('lines : ', lines);
@@ -64,17 +73,39 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
   const currentGarden = useSelector(
     (state: RootState) => state.garden.selectedGarden
   );
+  const lines = useSelector(
+    (state: RootState) =>
+      state.garden.selectedGarden?.parcels.find((p) => p.id === parcel.id)
+        ?.lines
+  );
   const id = useSelector((state: RootState) => state.display.id);
 
-  //Fetch
-  const addLine = () => {
+  if (!userIsSuccess) return <Loading />;
+
+  //Queries
+  const addLine = async () => {
     setDisplayParcelInfo(true);
+
     try {
-      createNewLine({
+      const newLineResponse = await createNewLine({
         parcelId: parcel.id,
+        gardenId: currentGarden?.id ?? 0,
         length: parcel.length, // Je force la longueur de la line égale a la longueur de la parcelle
       }).unwrap();
+
+      dispatch(addLineStore(newLineResponse.content));
       console.log('Line created');
+
+      //XP
+      const newXp = (user?.content?.xp ?? 0) + XpTable.addLine;
+      addXp({
+        userId: userId,
+        xp: newXp,
+      });
+      dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.addLine} />);
     } catch {
       console.log('Error creating line');
     }
@@ -85,23 +116,24 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
       deleteParcel({
         parcelId: parcel.id,
       }).unwrap();
+
+      dispatch(deleteParcelStore(parcel.id));
       console.log('parcel deleted');
+
+      //XP
+      const newXp = (user?.content?.xp ?? 0) - XpTable.deleteParcel;
+      addXp({
+        userId: userId,
+        xp: newXp,
+      });
+      dispatch(setXpUser(newXp));
+
+      //Toast XP
+      toast.custom((t) => <Toast_XP t={t} xp={XpTable.deleteParcel} />);
     } catch {
       console.log('error deleting parcel');
     }
   };
-
-  // Loading and Error Handling
-
-  if (linesIsLoading) {
-    return <Loading />;
-  }
-  if (linesIsError) {
-    console.log('error in currentparcel : ', parcel.id);
-  }
-  // if (lines?. === 0) {
-  //   console.log('Oups, no lines find...');
-  // }
 
   return (
     <>
@@ -117,9 +149,9 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
               <div className="flex items-center justify-between">
                 <H2>Parcel {parcelKey}</H2>
 
-                {lines?.content.map((line) => (
+                {/* {lines?.map((line) => (
                   <VegetableIcon id={line.id} key={line.id} />
-                ))}
+                ))} */}
 
                 <Image
                   onClick={() => setDisplayParcelInfo((prev) => !prev)}
@@ -232,11 +264,11 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                   displayParcelLogPopup && id === parcel.id ? 'block' : 'none',
               }}
             >
-              <Display_Logs_Popup
+              {/* <Display_Logs_Popup
                 id={parcel.id}
                 display={displayParcelLogPopup}
                 logObject={'parcel'}
-              />
+              /> */}
             </div>
             {/* //Line map */}
             {!lines ? (
@@ -248,14 +280,14 @@ const Parcel: FC<ParcelProps> = ({ parcel, scale, parcelKey }) => {
                 <H2>Oup&apos;s there is no line in this parcel.</H2>
               </div>
             ) : (
-              lines?.content.map((line, index) => (
+              lines?.map((line, index) => (
                 <div
                   key={line.id}
                   style={{
                     display: displayParcelInfo ? 'block' : 'none',
                   }}
                 >
-                  <Line line={line} lineIndex={index + 1} scale={scale} />
+                  <Line line={line} lineIndex={index + 1} />
                 </div>
               ))
             )}

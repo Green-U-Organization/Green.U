@@ -1,7 +1,7 @@
 'use client';
 import Card from '@/components/Atom/Card';
 import Garden from '../Organism/Garden';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import MenuSandwich from '../Molecule/MenuSandwichAddInGarden';
@@ -12,58 +12,92 @@ import { setSelectedGarden } from '@/redux/garden/gardenSlice';
 import MenuSandwichOptionInGarden from '../Molecule/MenuSandwichOptionInGarden';
 import { useRouter } from 'next/navigation';
 import Button from '../Atom/Button';
+import {
+  useGetOneGardenByGardenIdQuery,
+  useGetUserByIdQuery,
+} from '@/redux/api/fetch';
+import Loading from '../Atom/Loading';
+import { setUserData } from '@/redux/user/userSlice';
 
-// import Draggable from 'react-draggable';
+type GardenDisplayProps = {
+  gardenId: number;
+};
 
-const GardenDisplay = () => {
-  // Selectors
-  const currentGarden = useSelector(
-    (state: RootState) => state.garden.selectedGarden
-  );
-  const scale = useSelector((state: RootState) => state.garden.scale);
-  const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
-
-  //Cookies
-  const garden = Cookies.get('selected_garden');
-  const userData = Cookies.get('user_data');
-  const userCookie = userData ? JSON.parse(userData) : null;
-  const userId = Number(userCookie?.id);
-
+const GardenDisplay = ({ gardenId }: GardenDisplayProps) => {
   //Hooks
   const dispatch = useDispatch();
   const router = useRouter();
 
-  //Check du State global du garden si jamais refresh de la page
-  if (!currentGarden && garden) {
-    const parsedGarden: Garden = JSON.parse(garden);
-    dispatch(setSelectedGarden(parsedGarden));
+  //Cookies
+  const userData = Cookies.get('user_data');
+  const userCookie = userData ? JSON.parse(userData) : null;
+  const id = Number(userCookie?.id);
+
+  // RTK Query
+  const {
+    data: gardenRaw,
+    isLoading: gardensIsLoading,
+    isError: gardensIsError,
+  } = useGetOneGardenByGardenIdQuery({ gardenId });
+  const user = useGetUserByIdQuery({ userId: id });
+
+  //UserStore
+  const userStored = useSelector((state: RootState) => state.user.userData);
+  if (!userStored) {
+    if (user.data) {
+      console.log(user.data.content);
+      dispatch(setUserData(user.data.content));
+    }
   }
+
+  // Selectors
+  // const currentGarden = useSelector(
+  //   (state: RootState) => state.garden.selectedGarden
+  // );
+  const fullscreen = useSelector((state: RootState) => state.garden.fullscreen);
+
+  // Cookies - utilisation de useEffect pour éviter les différences SSR/CSR
+  const [userId, setUserId] = React.useState<number | null>(null);
+
+  useEffect(() => {
+    const userData = Cookies.get('user_data');
+    const userCookie = userData ? JSON.parse(userData) : null;
+    setUserId(Number(userCookie?.id) || null);
+  }, []);
+
+  // Mise à jour du garden sélectionné
+  useEffect(() => {
+    if (gardenRaw?.content) {
+      dispatch(setSelectedGarden(gardenRaw.content));
+    }
+  }, [gardenRaw, dispatch]);
+
+  if (gardensIsLoading) {
+    return <Loading />;
+  }
+
+  if (gardensIsError || !gardenRaw?.content) {
+    return <div>Error loading garden data</div>;
+  }
+
+  const garden = gardenRaw.content;
 
   return (
     <section className="bg-cardbackground flex min-h-screen items-center justify-center">
       <Card className="min-h-screen overflow-auto">
         <div className="mt-5 flex max-h-[11vh] flex-col items-center overflow-y-auto">
-          <H1>{currentGarden?.name}</H1>
-          <H2>{currentGarden?.description}</H2>
+          <H1>{garden.name} Yololo</H1>
+          <H2>{garden.description}</H2>
         </div>
-        <div
-          style={{
-            display: fullscreen ? 'none' : 'block',
-          }}
-        ></div>
+        <div style={{ display: fullscreen ? 'none' : 'block' }}></div>
         <div className="mt-[5vw] max-h-[90vh] max-w-full overflow-x-auto">
-          {currentGarden && (
-            <Garden garden={currentGarden} scale={scale}></Garden>
-          )}
+          {garden && <Garden />}
         </div>
 
-        <div
-          style={{
-            display: userId === currentGarden?.authorId ? 'block' : 'none',
-          }}
-        >
-          <MenuSandwich iconList={[]}></MenuSandwich>
-        </div>
+        {/* Condition rendue côté client seulement */}
+        {typeof window !== 'undefined' && userId === garden.authorId && (
+          <MenuSandwich iconList={[]} />
+        )}
 
         <div className="fixed right-0 bottom-[20px] left-0 z-2 flex items-center justify-center">
           <Button
@@ -73,7 +107,7 @@ const GardenDisplay = () => {
             Back
           </Button>
         </div>
-        <MenuSandwichOptionInGarden iconList={[]}></MenuSandwichOptionInGarden>
+        <MenuSandwichOptionInGarden iconList={[]} />
       </Card>
     </section>
   );
