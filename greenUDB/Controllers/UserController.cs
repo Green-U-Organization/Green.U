@@ -116,13 +116,13 @@ public class UserController(GreenUDB db) : ControllerBase
             .Where(u => u.Email == user.Email)
             .AnyAsync();
 
-        if (mailExist) return Conflict(new { isEmpty = true, message = "This email is already exists" });
+        if (mailExist) return Conflict(new { isEmpty = true, message = "emailConflict" });
 
         bool userExist = await _db.Users
            .Where(u => u.Username == user.Username)
            .AnyAsync();
 
-        if (userExist) return Conflict(new { isEmpty = true, message = "This username is already exists" });
+        if (userExist) return Conflict(new { isEmpty = true, message = "usernameConflict" });
 
         if (user.Password == null) return BadRequest(new { isEmpty = true, message = "Password is missing" });
 

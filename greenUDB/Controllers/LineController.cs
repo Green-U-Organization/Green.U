@@ -6,11 +6,6 @@ using GreenUApi.Models;
 namespace GreenUApi.Controllers
 {
 
-    //public class LineCreationRequest
-    //{
-    //    public required Line Line { get; set; }
-    //}
-
     public class LineDto
     {
         public long? Id { get; set; }
