@@ -162,18 +162,22 @@ const Landing = () => {
       </div>
 
       {/* Register */}
-      <p
+      <div
         style={{ display: token ? 'none' : 'block' }}
-        className="z-50 text-base text-white"
+        className="z-50 mx-auto flex justify-items-center text-base text-white"
       >
-        {translations.noAccount}
-        <span
-          onClick={() => router.push('register')}
-          className="text-bginput cursor-pointer rounded px-1 text-2xl"
-        >
-          {translations.register}
-        </span>
-      </p>
+        <p>{translations.noAccount}</p>
+        <p>
+          {translations.noPanic}
+
+          <span
+            onClick={() => router.push('register')}
+            className="text-bginput cursor-pointer rounded px-1 text-2xl"
+          >
+            {translations.register}
+          </span>
+        </p>
+      </div>
     </Card>
   );
 };

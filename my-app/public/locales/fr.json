@@ -170,7 +170,8 @@
   "publicGarden": "Public (Tout le monde peut voir ce jardin)",
 
   "__TRANSLATIONS_11": "LANDING PAGE",
-  "noAccount": "Vous n'avez pas de compte ? Pas de panique: ",
+  "noAccount": "Vous n'avez pas de compte ?",
+  "noPanic": "Pas de panique: ",
   "register": "Inscrivez-vous !",
 
   "__TRANSLATIONS_12": "GLOBAL ERRORS",
