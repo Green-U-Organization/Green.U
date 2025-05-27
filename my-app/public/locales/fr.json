@@ -44,6 +44,8 @@
   "networkErrorRetry": "Une erreur réseau est survenue. Veuillez réessayer.",
   "serverError": "Erreur serveur",
   "userCreatedButNotHashtags": "Utilisateur créé, mais les hashtags n'ont pas pu être enregistrés.",
+  "usernameConflict": "Ce nom d'utilisateur existe déjà",
+  "emailConflict": "Cet email existe déjà",
 
   "__TRANSLATIONS_4": "CGU",
   "cgutitle": "Conditions Générales d'Utilisation (CGU)",

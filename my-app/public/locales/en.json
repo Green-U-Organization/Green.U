@@ -44,6 +44,8 @@
   "networkErrorRetry": "A network error has occurred. Please try again.",
   "serverError": "Server error",
   "userCreatedButNotHashtags": "User created, but hashtags could not be saved.",
+  "usernameConflict": "This username is already exists",
+  "emailConflict": "This email is already exists",
 
   "__TRANSLATIONS_4": "CGU",
   "cgutitle": "Terms of Use (ToU)",

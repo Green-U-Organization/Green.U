@@ -121,6 +121,13 @@ const RegisterForm = () => {
 
   //#endregion
 
+  //#region ERRORS
+  const knownErrors: Record<string, string> = {
+    usernameConflict: translations.usernameConflict,
+    emailConflict: translations.emailConflict,
+  };
+  //#endregion
+
   //#region	VALIDITY FUCTIONS
   const step1Validation = (data: Partial<FormData>) => {
     const hasEmptyFields =
@@ -278,6 +285,7 @@ const RegisterForm = () => {
   // Fonction permettant de reculer dans les pages
   const handlePrevStep = (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError(null);
     setStep((prev) => prev - 1);
   };
   //#endregion
@@ -362,11 +370,11 @@ const RegisterForm = () => {
 
     setFormDataRegister((prevFormData) => ({
       ...prevFormData,
+      bio: formDataRegister.bio,
       newsletter: isCheckedNewsletter,
       tou: isCheckedToU,
     }));
 
-    //console.log('FORM OK');
     const bodyRequest = {
       username: formDataRegister.login,
       password: formDataRegister.password,
@@ -381,14 +389,11 @@ const RegisterForm = () => {
       newsletter: isCheckedNewsletter,
       skill_level: formDataRegister.skillLevel,
       bio: formDataRegister.bio,
+      tou: isCheckedToU,
     };
-    console.log('formJson page 2: ', bodyRequest);
+    //console.log('formJson page 2: ', bodyRequest);
 
     //addUser(bodyRequest);
-
-    //--------------------------------------------
-    //IL FAUT RECUPERER LE USERID DANS LA RESPONSE
-    //--------------------------------------------
 
     try {
       setIsSubmitting(true);
@@ -487,9 +492,19 @@ const RegisterForm = () => {
       //Redirige vers la page du dashboard
 
       router.push('/landing');
-    } catch (error: unknown) {
-      console.error('Network error :', error);
-      setSubmitError(translations.networkErrorRetry);
+    } catch (error: any) {
+      //console.error('Network error :', error);
+
+      // Vérifie si le backend a retourné un message d'erreur
+      if (error?.status === 409 && error?.data?.message) {
+        // Gère les erreurs de doublon
+        const translatedMessage = knownErrors[error.data.message];
+        setSubmitError(translatedMessage || error.data.message);
+      } else if (error?.data?.message) {
+        setSubmitError(error.data.message); // Autre message du backend
+      } else {
+        setSubmitError(translations.networkErrorRetry); // Message générique
+      }
     } finally {
       setIsSubmitting(false);
     }
