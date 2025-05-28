@@ -3,6 +3,8 @@ import React, { FC, useEffect, useState } from 'react';
 import Checkbox from '../Atom/Checkbox';
 import { Garden } from '@/utils/types';
 import L from 'leaflet';
+import { useDispatch } from 'react-redux';
+import { setFilteredMarker } from '@/redux/map/mapSlice';
 
 interface ActiveRayonMapProps {
   userPosition: { lat: number; lng: number } | null;
@@ -18,6 +20,7 @@ const ActiveRayonMap: FC<ActiveRayonMapProps> = ({
   multipleMarkers,
 }) => {
   // Hooks
+  const dispatch = useDispatch();
   const { translations } = useLanguage();
   const [radius, setRadius] = useState<number>(5);
   const [pinsInCircleCount, setPinsInCircleCount] = useState<number>(0);
@@ -99,6 +102,8 @@ const ActiveRayonMap: FC<ActiveRayonMapProps> = ({
           }
         )
       : multipleMarkers;
+
+  dispatch(setFilteredMarker(filteredMarkers));
 
   return (
     <div className="bg-extbutton mx-auto w-full max-w-md p-5">

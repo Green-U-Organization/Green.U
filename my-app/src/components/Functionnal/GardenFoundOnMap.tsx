@@ -16,6 +16,8 @@ import Image from 'next/image';
 import { useLanguage } from '@/app/contexts/LanguageProvider';
 import L from 'leaflet';
 import { gardenTypeLabels } from '@/constants/garden';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 interface GardenFoundOnMapProps {
   userPosition: { lat: number; lng: number } | null;
@@ -24,6 +26,10 @@ interface GardenFoundOnMapProps {
 const GardenFoundOnMap: FC<GardenFoundOnMapProps> = ({ userPosition }) => {
   const dispatch = useDispatch();
   const { translations } = useLanguage();
+
+  const filteredMarkers = useSelector(
+    (state: RootState) => state.map.filteredMarker
+  );
 
   // Accède à un jardin public
   const handleGardenClick = (garden: Garden) => {

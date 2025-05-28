@@ -15,6 +15,7 @@ import gardenReducer from './garden/gardenSlice';
 import displayReducer from './display/displaySlice';
 import authReducer from '../redux/auth/authSlice';
 import userReducer from '../redux/user/userSlice';
+import mapReducer from '../redux/map/mapSlice';
 
 // Augment middleware to consider Immutable.JS iterables serializable
 const isSerializable = (value: Date) => value instanceof Date || isPlain(value);
@@ -27,6 +28,7 @@ export const store = configureStore({
     display: displayReducer,
     auth: authReducer,
     user: userReducer,
+    map: mapReducer,
 
     // API reducer
     api: api.reducer,
