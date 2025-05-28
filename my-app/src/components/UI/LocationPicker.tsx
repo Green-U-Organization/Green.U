@@ -59,6 +59,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   } | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
   const [locationEnabled, setLocationEnabled] = useState<boolean | null>(null);
+  console.log(distance);
 
   // Obtenir la position de l'utilisateur au montage si demandée
   useEffect(() => {

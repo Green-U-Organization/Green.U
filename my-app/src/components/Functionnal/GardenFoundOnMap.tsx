@@ -1,10 +1,6 @@
 import React, { FC } from 'react';
 import { Marker, Popup } from 'react-leaflet';
-import {
-  customPrivateIcon,
-  customPublicIcon,
-  customUserIcon,
-} from '@/utils/mapIcon';
+import { customPrivateIcon, customPublicIcon } from '@/utils/mapIcon';
 import { Garden } from '@/utils/types';
 import {
   clearSelectedGarden,
