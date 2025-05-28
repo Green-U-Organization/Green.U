@@ -4,7 +4,7 @@ import Checkbox from '../Atom/Checkbox';
 import { Garden } from '@/utils/types';
 import L from 'leaflet';
 import { useDispatch } from 'react-redux';
-import { setFilteredMarker } from '@/redux/map/mapSlice';
+import { setFilteredMarker, setRadiusStore } from '@/redux/map/mapSlice';
 
 interface ActiveRayonMapProps {
   userPosition: { lat: number; lng: number } | null;
@@ -39,6 +39,7 @@ const ActiveRayonMap: FC<ActiveRayonMapProps> = ({
     let value = Number(e.target.value);
     if (value > 30) value = 30;
     setRadius(value);
+    dispatch(setRadiusStore(radius));
   };
 
   // Gère les changements de filtres publics/privés
@@ -106,55 +107,62 @@ const ActiveRayonMap: FC<ActiveRayonMapProps> = ({
   dispatch(setFilteredMarker(filteredMarkers));
 
   return (
-    <div className="bg-extbutton mx-auto w-full max-w-md p-5">
-      <label className="block font-semibold">{translations.radius}</label>
-      <div className="flex items-center">
-        <input
-          type="range"
-          min="1"
-          max="30"
-          value={radius}
-          onChange={(e) => setRadius(Number(e.target.value))}
-          className="bg-border mr-2 h-2 w-full appearance-none"
-        />
-        <input
-          type="number"
-          min="1"
-          max="30"
-          value={radius}
-          onChange={handleRadiusChange}
-          className="mr-1 ml-2 w-16 rounded border p-1"
-        />
-        km
-      </div>
-      <div className="absolute top-27 left-14 z-[1] rounded border-1 bg-white p-2 shadow-md select-none">
-        <p>
-          {filteredMarkers.length > 1
-            ? translations.gardensFound
-            : translations.gardenFound}
-          <strong>
-            {filteredMarkers.length}/{pinsInCircleCount}
-          </strong>
-        </p>
+    <>
+      <div className="bg-extbutton mx-auto w-full max-w-md p-5">
+        <label className="block font-semibold">{translations.radius}</label>
+        <div className="flex items-center">
+          <input
+            type="range"
+            min="1"
+            max="30"
+            value={radius}
+            onChange={(e) => {
+              setRadius(Number(e.target.value));
+              dispatch(setRadiusStore(radius));
+            }}
+            className="bg-border mr-2 h-2 w-full appearance-none"
+          />
+          <input
+            type="number"
+            min="1"
+            max="30"
+            value={radius}
+            onChange={handleRadiusChange}
+            className="mr-1 ml-2 w-16 rounded border p-1"
+          />
+          km
+        </div>
+        <div className="absolute top-28 left-14 z-[1] rounded border-1 bg-white p-2 shadow-md select-none">
+          <p>
+            {filteredMarkers.length > 1
+              ? translations.gardensFound
+              : translations.gardenFound}
+            <strong>
+              {filteredMarkers.length}/{pinsInCircleCount}
+            </strong>
+          </p>
 
-        <div className="flex items-center gap-1">
-          <Checkbox
-            checked={gardenTypeFilters.public}
-            onChange={() => handleCheckboxChange('public')}
-          />
-          {publicGardensCount > 1 ? translations.publics : translations.public}
-          <strong className="mr-3">{publicGardensCount}</strong>
-          <Checkbox
-            checked={gardenTypeFilters.private}
-            onChange={() => handleCheckboxChange('private')}
-          />
-          {privateGardensCount > 1
-            ? translations.privates
-            : translations.private}
-          <strong>{privateGardensCount}</strong>
+          <div className="flex items-center gap-1">
+            <Checkbox
+              checked={gardenTypeFilters.public}
+              onChange={() => handleCheckboxChange('public')}
+            />
+            {publicGardensCount > 1
+              ? translations.publics
+              : translations.public}
+            <strong className="mr-3">{publicGardensCount}</strong>
+            <Checkbox
+              checked={gardenTypeFilters.private}
+              onChange={() => handleCheckboxChange('private')}
+            />
+            {privateGardensCount > 1
+              ? translations.privates
+              : translations.private}
+            <strong>{privateGardensCount}</strong>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

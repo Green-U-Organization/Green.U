@@ -24,6 +24,8 @@ import { customPublicIcon, customUserIcon } from '@/utils/mapIcon';
 import CenterMapOnUser from '../Functionnal/CenterMapOnUser';
 import ActiveRayonMap from '../Functionnal/ActiveRayonMap';
 import GardenFoundOnMap from '../Functionnal/GardenFoundOnMap';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 // Composant principal : carte interactive avec sélection de localisation
 const LocationPicker: React.FC<LocationPickerProps> = ({
@@ -36,9 +38,11 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   showUserPosition = false,
 }) => {
   // Hooks
-
   const router = useRouter();
   const { translations } = useLanguage();
+
+  //Selectors
+  const radius = useSelector((state: RootState) => state.map.radius);
 
   // Local States
 
@@ -52,8 +56,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
     lat: number;
     lng: number;
   } | null>(null);
-  const [radius, setRadius] = useState<number>(5);
-  // const [distance, setDistance] = useState<number | null>(null);
+  const [distance, setDistance] = useState<number | null>(null);
   const [locationEnabled, setLocationEnabled] = useState<boolean | null>(null);
 
   // Obtenir la position de l'utilisateur au montage si demandée
