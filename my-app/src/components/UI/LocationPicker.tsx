@@ -26,6 +26,7 @@ import ActiveRayonMap from '../Functionnal/ActiveRayonMap';
 import GardenFoundOnMap from '../Functionnal/GardenFoundOnMap';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import L from 'leaflet';
 
 // Composant principal : carte interactive avec sélection de localisation
 const LocationPicker: React.FC<LocationPickerProps> = ({
@@ -75,10 +76,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         onLocationChange?.(lat, lng);
 
         if (showUserPosition && userPosition) {
-          // const userLatLng = L.latLng(userPosition.lat, userPosition.lng);
-          // const clickedLatLng = L.latLng(lat, lng);
-          // const distanceInMeters = userLatLng.distanceTo(clickedLatLng);
-          // setDistance(distanceInMeters);
+          const userLatLng = L.latLng(userPosition.lat, userPosition.lng);
+          const clickedLatLng = L.latLng(lat, lng);
+          const distanceInMeters = userLatLng.distanceTo(clickedLatLng);
+          setDistance(distanceInMeters);
         }
       },
     });
@@ -218,14 +219,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             <Marker position={markerPosition} icon={customPublicIcon} />
           )}
           {/* Marqueurs de jardins dans le rayon */}
-          {readOnly && (
-            <GardenFoundOnMap
-              userPosition={{
-                lat: 0,
-                lng: 0,
-              }}
-            />
-          )}
+          {readOnly && <GardenFoundOnMap userPosition={userPosition} />}
         </MapContainer>
       </div>
 
@@ -237,7 +231,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             type="button"
             onClick={() => router.back()}
           >
-            yoyoyo
+            {translations.back}
           </Button>
         </div>
       )}

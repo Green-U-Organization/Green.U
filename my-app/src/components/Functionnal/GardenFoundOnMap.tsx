@@ -40,6 +40,7 @@ const GardenFoundOnMap: FC<GardenFoundOnMapProps> = ({ userPosition }) => {
       window.location.href = '/garden/display';
     }
   };
+
   return (
     <>
       {filteredMarkers.map((pos) => (

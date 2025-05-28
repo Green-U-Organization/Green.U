@@ -1,7 +1,7 @@
 import Map from '@/components/Page/Map';
 
-const Page = () => {
+const page = () => {
   return <Map />;
 };
 
-export default Page;
+export default page;
