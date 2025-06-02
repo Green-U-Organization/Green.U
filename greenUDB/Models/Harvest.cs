@@ -12,7 +12,7 @@ namespace GreenUApi.Models
 
         public long? GardenId { get; set; }
 
-        public long? CropId { get; set; }
+        public long CropId { get; set; }
 
         public int Quantity { get; set; }
 

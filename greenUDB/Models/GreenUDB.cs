@@ -30,6 +30,8 @@ public partial class GreenUDB : DbContext
 
     public virtual DbSet<BugReport> BugReports { get; set; }
 
+    public virtual DbSet<Harvest> Harvests { get; set; }
+
     public virtual DbSet<Parcel> Parcels { get; set; }
 
     public virtual DbSet<PlantNursery> PlantNursery { get; set;}
