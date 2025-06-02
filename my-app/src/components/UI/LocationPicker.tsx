@@ -1,5 +1,5 @@
 // Importations React et composants Leaflet
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -61,41 +61,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   const [locationEnabled, setLocationEnabled] = useState<boolean | null>(null);
   console.log(distance);
 
-  // Obtenir la position de l'utilisateur au montage si demandée
-  useEffect(() => {
-    if (showUserPosition) handleLocateUser();
-  }, [showUserPosition]);
-
-  // Handlers
-  // Gestion des clics sur la carte (ajoute un pin)
-  const MapClickHandler = () => {
-    useMapEvents({
-      click(e) {
-        if (readOnly || markerPosition) return;
-        const { lat, lng } = e.latlng;
-        setMarkerPosition({ lat, lng });
-        onLocationChange?.(lat, lng);
-
-        if (showUserPosition && userPosition) {
-          const userLatLng = L.latLng(userPosition.lat, userPosition.lng);
-          const clickedLatLng = L.latLng(lat, lng);
-          const distanceInMeters = userLatLng.distanceTo(clickedLatLng);
-          setDistance(distanceInMeters);
-        }
-      },
-    });
-    return null;
-  };
-
-  // Supprime le pin principal
-  const handleRemovePin = () => {
-    setMarkerPosition(null);
-    // setDistance(null);
-    onLocationChange?.(0, 0);
-  };
-
   // Récupère la position géographique de l'utilisateur
-  const handleLocateUser = () => {
+  const handleLocateUser = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -137,6 +104,39 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
       setLocationEnabled(false);
       alert(translations.errGeoNavigator);
     }
+  }, [translations]);
+
+  // Obtenir la position de l'utilisateur au montage si demandée
+  useEffect(() => {
+    if (showUserPosition) handleLocateUser();
+  }, [showUserPosition, handleLocateUser]);
+
+  // Handlers
+  // Gestion des clics sur la carte (ajoute un pin)
+  const MapClickHandler = () => {
+    useMapEvents({
+      click(e) {
+        if (readOnly || markerPosition) return;
+        const { lat, lng } = e.latlng;
+        setMarkerPosition({ lat, lng });
+        onLocationChange?.(lat, lng);
+
+        if (showUserPosition && userPosition) {
+          const userLatLng = L.latLng(userPosition.lat, userPosition.lng);
+          const clickedLatLng = L.latLng(lat, lng);
+          const distanceInMeters = userLatLng.distanceTo(clickedLatLng);
+          setDistance(distanceInMeters);
+        }
+      },
+    });
+    return null;
+  };
+
+  // Supprime le pin principal
+  const handleRemovePin = () => {
+    setMarkerPosition(null);
+    // setDistance(null);
+    onLocationChange?.(0, 0);
   };
 
   return (

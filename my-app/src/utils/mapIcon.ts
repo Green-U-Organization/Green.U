@@ -1,3 +1,5 @@
+import L from 'leaflet';
+
 // Définition des icônes personnalisées
 export const customPublicIcon = L.icon({
   iconUrl: '/image/divers/field-location-public.png',
