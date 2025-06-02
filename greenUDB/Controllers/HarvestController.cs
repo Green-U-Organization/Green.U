@@ -39,5 +39,21 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "Harvest is created !", content = harvest });
 
         }
+
+        [HttpGet("garden/{id}")]
+        public async Task<IActionResult> GetAllHarvestByGardenId([FromRoute] long id)
+        {
+            var GardenExist = await _db.Gardens
+                .Where(g => g.Id == id)
+                .AnyAsync();
+
+            if (!GardenExist) return NotFound(new { isEmpty = true, message = "Garden not found..." });
+
+            var Harvest = await _db.Harvests
+                .Where(h => h.GardenId == id)
+                .ToListAsync();
+
+            return Ok(new { isEmpty = false, message = "All harvest in this garden !", content = Harvest });
+        }
     }
 }
