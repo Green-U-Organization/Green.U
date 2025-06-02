@@ -155,10 +155,10 @@ public partial class GreenUDB : DbContext
 
             entity.ToTable("Garden");
 
-            entity.HasIndex(e => e.AuthorId, "fk_Garden_Admin_id");
+            entity.HasIndex(e => e.AuthorId, "fk_Garden_Author_id");
 
             entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
-            entity.Property(e => e.AuthorId).HasColumnName("Admin_id");
+            entity.Property(e => e.AuthorId).HasColumnName("Author_id");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("Created_at");

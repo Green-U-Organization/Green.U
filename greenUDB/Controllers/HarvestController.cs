@@ -29,7 +29,7 @@ namespace GreenUApi.Controllers
                 })
                 .FirstOrDefaultAsync();
 
-            if (Crop == null) return NotFound(new {isEmpty = true, message = "CropId is wrong..."});
+            if (Crop == null) return NotFound(new { isEmpty = true, message = "CropId is wrong..." });
 
             harvest.GardenId = Crop.GardenId;
 
@@ -54,6 +54,22 @@ namespace GreenUApi.Controllers
                 .ToListAsync();
 
             return Ok(new { isEmpty = false, message = "All harvest in this garden !", content = Harvest });
+        }
+
+        [HttpGet("crop/{id}")]
+        public async Task<IActionResult> GetAllHarvestByCropId([FromRoute] long id)
+        {
+            var CropExist = await _db.Crops
+                .Where(c => c.Id == id)
+                .AnyAsync();
+
+            if (!CropExist) return NotFound(new { isEmpty = true, message = "Crop id is incorrect" });
+
+            var Harvest = await _db.Harvests
+                .Where(h => h.CropId == id)
+                .ToListAsync();
+
+            return Ok(new { isEmpty = false, message = "All harvest with crop ", content = Harvest });
         }
     }
 }
