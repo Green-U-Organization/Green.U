@@ -85,7 +85,7 @@ namespace GreenUApi.Controllers
 
         // SEARCH BAR BY VEGETABLE NAME
         [HttpGet("search/vegetableName={vegetable}")]
-        public async Task<IActionResult> GetAllHarvestByVegetableName([FromRoute] string vegetable)
+        public async Task<IActionResult> GetAllHarvestByVegetableName([FromRoute] string vegetable, [FromQuery] int pageNumber)
         {
             if (vegetable == null)
                 return BadRequest(new { isEmpty = true, message = "Vegetable is needed" });
@@ -94,8 +94,9 @@ namespace GreenUApi.Controllers
                 return BadRequest(new { isEmpty = true, message = "No digit vegetable name" });
 
             vegetable = vegetable.Trim();
-
-            var Harvest = await _db.Crops
+            
+            // Create a query to be use in pagination
+            var harvestQuery = _db.Crops
                 .Where(c => c.Vegetable.Contains(vegetable))
                 .Join(
                     _db.Harvests,
@@ -112,12 +113,44 @@ namespace GreenUApi.Controllers
                         harvestCreatedAt = harvest.CreatedAt,
                         cropCreatedAt = crops.CreatedAt
                     }
-                ).ToListAsync();
+                ).OrderBy(c => c.Vegetable);
 
-            if (Harvest == null)
-                return Ok(new { isEmpty = true, message = "No harvest with this research", content = Array.Empty<Object>() });
+            int pageSize = 10;
 
-            return Ok(new { isEmpty = false, message = "Harvest by vegetable", content = Harvest });
+            if (pageNumber == 0) pageNumber = 1;
+
+            // Create a pagination and use the query
+            var paginateHarvest = await PaginatedList<dynamic>.CreateAsync(
+                harvestQuery, pageNumber, pageSize);  
+
+            if (paginateHarvest == null)
+                return Ok(new { 
+                    isEmpty = true, 
+                    message = "No harvest with this research", 
+                    content = Array.Empty<Object>(),
+                    pagination = new
+                    {
+                        currentPage = pageNumber,
+                        totalPage = 0,
+                        totalItem = 0,
+                        pageSize
+                    }   
+                });
+
+            return Ok(new { 
+                isEmpty = false, 
+                message = "Harvest by vegetable", 
+                content = paginateHarvest,
+                pagination = new
+                {
+                    currentPage = pageNumber,
+                    totalPage = paginateHarvest.TotalPages,
+                    totaItems = await harvestQuery.CountAsync(),
+                    pageSize,
+                    hasNextPage = paginateHarvest.HasNextPage,
+                    hasPreviousPage = paginateHarvest.HasPreviousPage
+                }
+            });
         }
 
         // GET AN HARVEST AND CROP DATA BY VARIETY NAME AND VEGETABLE NAME

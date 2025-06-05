@@ -211,7 +211,7 @@ namespace GreenUApi.Migrations
 
                     b.Property<long>("AuthorId")
                         .HasColumnType("bigint")
-                        .HasColumnName("Admin_id");
+                        .HasColumnName("Author_id");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
@@ -259,7 +259,7 @@ namespace GreenUApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex(new[] { "AuthorId" }, "fk_Garden_Admin_id");
+                    b.HasIndex(new[] { "AuthorId" }, "fk_Garden_Author_id");
 
                     b.ToTable("Garden", (string)null);
                 });
@@ -275,7 +275,7 @@ namespace GreenUApi.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long?>("CropId")
+                    b.Property<long>("CropId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("GardenId")
