@@ -5,9 +5,9 @@ using GreenUApi.Models;
 // TODO
 // POST Create a Harvest V
 // GET GardenId V
-// GET VegetableName V
+// GET VegetableName X
 // GET CropId V
-// GET Vegetable + Variety Name X
+// GET Vegetable + Variety Name V
 
 namespace GreenUApi.Controllers
 {
@@ -83,7 +83,7 @@ namespace GreenUApi.Controllers
         }
 
         // SEARCH BAR BY VEGETABLE NAME
-        [HttpGet("vegetableName={vegetable}")]
+        [HttpGet("search/vegetableName={vegetable}")]
         public async Task<IActionResult> GetAllHarvestByVegetableName([FromRoute] string vegetable)
         {
             var Harvest = await _db.Harvests
@@ -107,22 +107,41 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "All harvest with vegetable name", content = Harvest });
         }
 
+        [HttpGet("search/varietyName={variety}/vegetableName={vegetable}")]
         public async Task<IActionResult> GetHarvestByVegetableNameAndVarietyName([FromRoute] string vegetable, [FromRoute] string variety)
         {
-            var Harvest = await _db.Harvests
+            if (vegetable == null || variety == null)
+                return BadRequest(new { isEmpty = true, message = "Vegetable and variety is needed" });
+
+            if (variety.Any(char.IsDigit) || vegetable.Any(char.IsDigit))
+                return BadRequest(new { isEmpty = true, message = "No digit on variety name or vegetable name" });
+
+            vegetable = vegetable.Trim();
+            variety = variety.Trim();
+
+            var Harvest = await _db.Crops
+                .Where(c => c.Vegetable == vegetable && c.Variety == variety)
                 .Join(
-                _db.Crops,
-                harvest => harvest.CropId,
-                crops => crops.Id,
-                (harvest, crops) => new
-                {
-                    harvest.Id,
-                    harvest.GardenId,
-                    harvest.CropId,
-                    crops.Vegetable,
-                    harvest.CreatedAt
-                }
+                    _db.Harvests,
+                    crops => crops.Id,
+                    harvest => harvest.CropId,
+                    (crops, harvest) => new
+                    {
+                        harvest.Id,
+                        harvest.GardenId,
+                        harvest.CropId,
+                        crops.Vegetable,
+                        crops.Variety,
+                        harvest.Quantity,
+                        harvestCreatedAt = harvest.CreatedAt,
+                        cropCreatedAt = crops.CreatedAt
+                    }
                 ).FirstOrDefaultAsync();
+
+            if (Harvest == null)
+                return Ok(new { isEmpty = true, message = "No harvest with this research", content = Array.Empty<Object>() });
+
+            return Ok(new { isEmpty = false, message = "Harvest by vegetable and variety", content = Harvest });
         }
     }
 }
