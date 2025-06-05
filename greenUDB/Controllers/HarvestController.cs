@@ -2,6 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using GreenUApi.Models;
 
+// TODO
+// POST Create a Harvest V
+// GET GardenId V
+// GET VegetableName V
+// GET CropId V
+// GET Vegetable + Variety Name X
+
 namespace GreenUApi.Controllers
 {
 
