@@ -45,6 +45,7 @@ public class UserController(GreenUDB db) : ControllerBase
 {
     private readonly GreenUDB _db = db;
 
+    // GET USER BY ID
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUser(long id)
     {
@@ -84,6 +85,7 @@ public class UserController(GreenUDB db) : ControllerBase
         });
     }
 
+    // SEARCH USER BY USERNAME
     [HttpGet("search")]
     public async Task<ActionResult<User>> SearchUsers([FromQuery] string inputuser)
     {
@@ -109,6 +111,7 @@ public class UserController(GreenUDB db) : ControllerBase
         return Ok(new { isEmpty = false, message = "User list", content = user });
     }
 
+    // CREATE A NEW USER
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser(User user)
     {
@@ -136,6 +139,7 @@ public class UserController(GreenUDB db) : ControllerBase
         return Ok(new { isEmpty = false, message = "User created !", content = new { id = user.Id, username = user.Username } });
     }
 
+    // EDIT AN USER
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdateUser(long id, UserModification modification)
     {
@@ -186,6 +190,7 @@ public class UserController(GreenUDB db) : ControllerBase
         return Ok(new { isEmpty = true, message = "User is modified" });
     }
 
+    // DELETE AN USER
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(long id)
     {

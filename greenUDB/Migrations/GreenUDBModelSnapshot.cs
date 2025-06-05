@@ -116,6 +116,9 @@ namespace GreenUApi.Migrations
                     b.Property<int?>("Distance_plantation")
                         .HasColumnType("int");
 
+                    b.Property<long?>("GardenId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateOnly?>("Harvesting")
                         .HasColumnType("date");
 
@@ -128,6 +131,9 @@ namespace GreenUApi.Migrations
 
                     b.Property<short?>("NPot")
                         .HasColumnType("smallint");
+
+                    b.Property<long?>("ParcelId")
+                        .HasColumnType("bigint");
 
                     b.Property<long?>("PlantNurseryId")
                         .HasColumnType("bigint");
@@ -258,6 +264,31 @@ namespace GreenUApi.Migrations
                     b.ToTable("Garden", (string)null);
                 });
 
+            modelBuilder.Entity("GreenUApi.Models.Harvest", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long?>("CropId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("GardenId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Harvests");
+                });
+
             modelBuilder.Entity("GreenUApi.Models.Line", b =>
                 {
                     b.Property<long>("Id")
@@ -351,6 +382,8 @@ namespace GreenUApi.Migrations
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
+
+                    b.HasIndex("ParcelId");
 
                     b.HasIndex("UserId");
 
@@ -616,6 +649,10 @@ namespace GreenUApi.Migrations
 
             modelBuilder.Entity("GreenUApi.Models.Log", b =>
                 {
+                    b.HasOne("GreenUApi.Models.Parcel", null)
+                        .WithMany("Logs")
+                        .HasForeignKey("ParcelId");
+
                     b.HasOne("GreenUApi.Models.User", null)
                         .WithMany("Logs")
                         .HasForeignKey("UserId");
@@ -680,6 +717,8 @@ namespace GreenUApi.Migrations
             modelBuilder.Entity("GreenUApi.Models.Parcel", b =>
                 {
                     b.Navigation("Lines");
+
+                    b.Navigation("Logs");
                 });
 
             modelBuilder.Entity("GreenUApi.Models.PlantNursery", b =>
