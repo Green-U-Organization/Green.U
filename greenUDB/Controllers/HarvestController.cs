@@ -106,5 +106,23 @@ namespace GreenUApi.Controllers
 
             return Ok(new { isEmpty = false, message = "All harvest with vegetable name", content = Harvest });
         }
+
+        public async Task<IActionResult> GetHarvestByVegetableNameAndVarietyName([FromRoute] string vegetable, [FromRoute] string variety)
+        {
+            var Harvest = await _db.Harvests
+                .Join(
+                _db.Crops,
+                harvest => harvest.CropId,
+                crops => crops.Id,
+                (harvest, crops) => new
+                {
+                    harvest.Id,
+                    harvest.GardenId,
+                    harvest.CropId,
+                    crops.Vegetable,
+                    harvest.CreatedAt
+                }
+                ).FirstOrDefaultAsync();
+        }
     }
 }
