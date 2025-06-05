@@ -22,6 +22,9 @@ namespace GreenUApi.Controllers
             public required string[] Hashtags { get; set;}
         }
 
+        // ======================================== USER SECTION =======================================
+
+        // GET THE MOST POPULAR TAGS
         [HttpGet("popular")]
         public async Task<ActionResult<TagsInterest>> GetPopularTags()
         {
@@ -41,6 +44,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "All popular tag", content = PopularTags });
         }
 
+        // CREATE ONE TAG BY USER ID
         [HttpPost("user/{id}")]
         public async Task<ActionResult<TagsInterest>> CreateUserTags(long id, [FromBody] TagsInterest Tag)
         {
@@ -63,6 +67,7 @@ namespace GreenUApi.Controllers
           
         }
 
+        // CREATE SOME TAGS FOR AN USER
         [HttpPost("list/user/{id}")]
         public async Task<ActionResult<TagsInterest>> CreateUserTagWithList(long id, [FromBody] TagsInterestDTO container)
         {
@@ -89,6 +94,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "User tag list created !", content = newTags });
         }
 
+        // GET ALL TAGS BY USER ID
         [HttpGet("user/{id}")]
         public async Task<ActionResult<TagsInterest>> GetUserTag(long id)
         {
@@ -110,6 +116,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "User Tag", content = UserTags});
         }
 
+        // GET ALL USER BY TAGS
         [HttpPost("allusers")]
         public async Task<ActionResult<TagsInterest>> GetAllUserByTags([FromBody] HashtagListRequest request)
         {
@@ -180,6 +187,7 @@ namespace GreenUApi.Controllers
             });
         }
 
+        // DELETE ONE TAG BY USER ID AND TAG NAME
         [HttpDelete("user/{id}")]
         public async Task<ActionResult<TagsInterest>> DeleteUserTag(long id, TagsInterest Tag)
         {
@@ -197,6 +205,7 @@ namespace GreenUApi.Controllers
 
         }
 
+        // DELETE SOME TAG BY USER ID AND TAG NAME LIST
         [HttpDelete("list/user/{id}")]
         public async Task<ActionResult<TagsInterest>> DeleteUserTagWithList(long id, [FromBody] TagsInterestDTO tags)
         {
@@ -221,8 +230,9 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "User tag list Deleted !", content = Tags });
         }
 
+        // ========================================= GARDEN SECTION ======================================
 
-
+        // CREATE ONE GARDEN TAG
         [HttpPost("garden/{id}")]
         public async Task<ActionResult<TagsInterest>> CreateGardenTag(long id, [FromBody] TagsInterest Tag)
         {
@@ -244,6 +254,7 @@ namespace GreenUApi.Controllers
 
         }
 
+        // CREATE SOME TAG FOR GARDEN
         [HttpPost("list/garden/{id}")]
         public async Task<ActionResult<TagsInterest>> CreateGardenTagWithList(long id, [FromBody] TagsInterestDTO container)
         {
@@ -265,6 +276,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false,  message = "User tag list created !", content = newTags});
         }
 
+        // GET TAG BY GARDEN ID
         [HttpGet("garden/{id}")]
         public async Task<ActionResult<TagsInterest>> GetGardenTag(long id)
         {
@@ -283,6 +295,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "Your garden tag", content = GardenTag});
         }
 
+        // GET ALL GARDEN BY TAGS LIST
         [HttpPost("allgardens")]
         public async Task<ActionResult<TagsInterest>> GetAllGardensByTags([FromBody] HashtagListRequest request)
         {
@@ -350,6 +363,7 @@ namespace GreenUApi.Controllers
             });
         }
 
+        // DELETE ONE TAG BY GARDEN ID AND TAG NAME
         [HttpDelete("garden/{id}")]
         public async Task<ActionResult<TagsInterest>> DeleteGardenTag(long id, TagsInterest Tag)
         {
@@ -365,6 +379,7 @@ namespace GreenUApi.Controllers
                 return Ok(new { isEmpty = false, message = "Tag Deleted !", content = tag });
         }
 
+        // DELETE SOME TAGS BY GARDEN ID AND TAG NAME LIST
         [HttpDelete("list/garden/{id}")]
         public async Task<ActionResult<TagsInterest>> DeleteGardenTagWithList(long id, [FromBody] TagsInterestDTO tags)
         {

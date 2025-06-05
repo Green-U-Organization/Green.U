@@ -86,25 +86,37 @@ namespace GreenUApi.Controllers
         [HttpGet("search/vegetableName={vegetable}")]
         public async Task<IActionResult> GetAllHarvestByVegetableName([FromRoute] string vegetable)
         {
-            var Harvest = await _db.Harvests
+            if (vegetable == null)
+                return BadRequest(new { isEmpty = true, message = "Vegetable is needed" });
+
+            if (vegetable.Any(char.IsDigit))
+                return BadRequest(new { isEmpty = true, message = "No digit vegetable name" });
+
+            vegetable = vegetable.Trim();
+
+            var Harvest = await _db.Crops
+                .Where(c => c.Vegetable.Contains(vegetable))
                 .Join(
-                _db.Crops,
-                harvest => harvest.CropId,
-                crops => crops.Id,
-                (harvest, crops) => new
-                {
-                    harvest.Id,
-                    harvest.GardenId,
-                    harvest.CropId,
-                    crops.Vegetable,
-                    harvest.CreatedAt
-                }
-                )
-                .ToListAsync();
+                    _db.Harvests,
+                    crops => crops.Id,
+                    harvest => harvest.CropId,
+                    (crops, harvest) => new
+                    {
+                        harvest.Id,
+                        harvest.GardenId,
+                        harvest.CropId,
+                        crops.Vegetable,
+                        crops.Variety,
+                        harvest.Quantity,
+                        harvestCreatedAt = harvest.CreatedAt,
+                        cropCreatedAt = crops.CreatedAt
+                    }
+                ).FirstOrDefaultAsync();
 
-            if (Harvest.Count == 0) return Ok(new { isEmpty = true, message = "No result...", content = Array.Empty<Object>() });
+            if (Harvest == null)
+                return Ok(new { isEmpty = true, message = "No harvest with this research", content = Array.Empty<Object>() });
 
-            return Ok(new { isEmpty = false, message = "All harvest with vegetable name", content = Harvest });
+            return Ok(new { isEmpty = false, message = "Harvest by vegetable", content = Harvest });
         }
 
         [HttpGet("search/varietyName={variety}/vegetableName={vegetable}")]
