@@ -112,7 +112,7 @@ namespace GreenUApi.Controllers
                         harvestCreatedAt = harvest.CreatedAt,
                         cropCreatedAt = crops.CreatedAt
                     }
-                ).FirstOrDefaultAsync();
+                ).ToListAsync();
 
             if (Harvest == null)
                 return Ok(new { isEmpty = true, message = "No harvest with this research", content = Array.Empty<Object>() });
