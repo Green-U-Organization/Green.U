@@ -24,6 +24,7 @@ namespace GreenUApi.Controllers
             _db = db;
         }
 
+        // CREATE NEW HARVEST
         [HttpPost]
         public async Task<IActionResult> CreateHarvest([FromBody] Harvest harvest)
         {
@@ -47,6 +48,7 @@ namespace GreenUApi.Controllers
 
         }
 
+        // GET BY GARDEN ID
         [HttpGet("garden/{id}")]
         public async Task<IActionResult> GetAllHarvestByGardenId([FromRoute] long id)
         {
@@ -63,6 +65,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "All harvest in this garden !", content = Harvest });
         }
 
+        // GET BY CROP ID
         [HttpGet("crop/{id}")]
         public async Task<IActionResult> GetAllHarvestByCropId([FromRoute] long id)
         {
@@ -79,6 +82,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "All harvest with crop ", content = Harvest });
         }
 
+        // SEARCH BAR BY VEGETABLE NAME
         [HttpGet("vegetableName={vegetable}")]
         public async Task<IActionResult> GetAllHarvestByVegetableName([FromRoute] string vegetable)
         {
