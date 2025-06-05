@@ -5,9 +5,10 @@ using GreenUApi.Models;
 // TODO
 // POST Create a Harvest V
 // GET GardenId V
-// GET VegetableName X
+// GET VegetableName V
 // GET CropId V
 // GET Vegetable + Variety Name V
+// GET All harvest by userId X ( Need to talk about that with Pierre )
 
 namespace GreenUApi.Controllers
 {
@@ -119,6 +120,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "Harvest by vegetable", content = Harvest });
         }
 
+        // GET AN HARVEST AND CROP DATA BY VARIETY NAME AND VEGETABLE NAME
         [HttpGet("search/varietyName={variety}/vegetableName={vegetable}")]
         public async Task<IActionResult> GetHarvestByVegetableNameAndVarietyName([FromRoute] string vegetable, [FromRoute] string variety)
         {
