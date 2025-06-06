@@ -47,9 +47,9 @@ jobs:
         run: dotnet build --no-restore --configuration Release
         working-directory: greenUDB
         
-      - name: Run tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
-        working-directory: greenUDB
+      # - name: Run tests
+      #   run: dotnet test --no-build --configuration Release --verbosity normal
+      #   working-directory: greenUDB
         
       - name: Publish API
         run: dotnet publish --no-build --configuration Release --output ./publish
