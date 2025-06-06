@@ -52,5 +52,5 @@ jobs:
       #   working-directory: greenUDB
         
       - name: Publish API
-        run: dotnet publish --no-build --configuration Release --output ./publish
+        run: dotnet publish --no-build --configuration Release
         working-directory: greenUDB
