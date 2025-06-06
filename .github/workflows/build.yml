@@ -1,4 +1,4 @@
-name: Build and Test Next.js App
+name: Build and Test Applications
 
 on:
   pull_request:
@@ -8,28 +8,49 @@ on:
       - staging
 
 jobs:
-  build:
+  build-nextjs:
     runs-on: ubuntu-latest
-
+    name: Build Next.js App
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
       - name: Install dependencies
         run: npm install
         working-directory: my-app
-
       - name: Build Next.js app
         run: npm run build
         working-directory: my-app
-
       - name: Type check
         run: npx tsc --noEmit
         working-directory: my-app
-
       - name: Lint
         run: npm run lint
         working-directory: my-app
+
+  build-csharp-api:
+    runs-on: ubuntu-latest
+    name: Build C# API
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+      
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: greenUDB
+        
+      - name: Build API
+        run: dotnet build --no-restore --configuration Release
+        working-directory: greenUDB
+        
+      # - name: Run tests
+      #   run: dotnet test --no-build --configuration Release --verbosity normal
+      #   working-directory: greenUDB
+        
+      - name: Publish API
+        run: dotnet publish --no-build --configuration Release
+        working-directory: greenUDB

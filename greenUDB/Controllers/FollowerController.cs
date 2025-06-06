@@ -17,6 +17,9 @@ namespace GreenUApi.Controllers
             _db = db;
         }
 
+        // ====================================== USER SECTION =========================================
+
+        // CREATE A NEW FOLLOW
         [HttpPost("user/{id}")]
         public async Task<ActionResult<Follower>> FollowAnUser(long id, Follower followerData)
         {
@@ -43,6 +46,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = true, message = "Follow complete !" });
         }
 
+        // GET FOLLOWER BY USER ID
         [HttpGet("user/{id}")]
         public async Task<ActionResult<Follower>> GetFollowerUser(long id)
         {
@@ -71,6 +75,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "The list of follower", content = Follow });
         }
 
+        // DELETE AN USER FOLLOW
         [HttpDelete("user/{id}")]
         public async Task<ActionResult<Follower>> DeleteUserFollow(long id, Follower follower)
         {
@@ -88,7 +93,9 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = true, message = "Unfollow complete !"});
         }
 
+        // ======================================= GARDEN SECTION ==============================================
 
+        // CREATE A GARDEN FOLLOW
         [HttpPost("garden/{id}")]
         public async Task<ActionResult<Follower>> FollowAGarden(long id, Follower followerData)
         {
@@ -115,6 +122,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = true, message = "Garden Follow complete !" });
         }
 
+        // GET GARDEN FOLLWER BY GARDEN ID
         [HttpGet("garden/{id}")]
         public async Task<ActionResult<Follower>> GetFollowerGarden(long id)
         {
@@ -142,6 +150,7 @@ namespace GreenUApi.Controllers
             return Ok(new { isEmpty = false, message = "The list of garden follower", content = Follow });
         }
 
+        // DELETE A GARDEN FOLLOW
         [HttpDelete("garden/{id}")]
         public async Task<ActionResult<Follower>> DeleteGardenFollow(long id, Follower follower)
         {
