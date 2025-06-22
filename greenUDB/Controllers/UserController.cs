@@ -1,8 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using GreenUApi.authentification;
-using Microsoft.AspNetCore.Mvc;
 using GreenUApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace GreenUApi.Controllers;
 
@@ -109,23 +110,35 @@ public class UserController(GreenUDB db) : ControllerBase
         return Ok(new { isEmpty = false, message = "User list", content = user });
     }
 
+    // ================================== CREATE USER ============================================
+
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser(User user)
     {
+        // Check email
         bool mailExist = await _db.Users
             .Where(u => u.Email == user.Email)
             .AnyAsync();
 
         if (mailExist) return Conflict(new { isEmpty = true, message = "emailConflict" });
 
+        // Check username
         bool userExist = await _db.Users
            .Where(u => u.Username == user.Username)
            .AnyAsync();
 
         if (userExist) return Conflict(new { isEmpty = true, message = "usernameConflict" });
 
+        // Check password
         if (user.Password == null) return BadRequest(new { isEmpty = true, message = "Password is missing" });
 
+        Regex regex = new Regex(@"^(?=.*[!@#$%^&*(),.?""{}|<>]).{8,}$");
+
+        bool passwordCondition = regex.IsMatch(user.Password);
+
+        if (!passwordCondition) return BadRequest(new { isEmpty = true, message = "Password need 8char and 1 special char" });
+
+        // Generate hash
         string[] hashSalt = Authentification.Hasher(user.Password, null);
         user.Password = hashSalt[0];
         user.Salt = hashSalt[1];
